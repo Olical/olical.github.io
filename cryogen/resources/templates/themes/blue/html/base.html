@@ -59,8 +59,9 @@
             <div id="sidebar">
                 <h3>Links</h3>
                 <ul id="links">
-                    <li><a href="https://github.com/Olical">Olical on GitHub</a></li>
-                    <li><a href="https://twitter.com/OliverCaldwell">@OliverCaldwell on Twitter</a></li>
+                    <li><a href="https://twitter.com/OliverCaldwell">@OliverCaldwell</a></li>
+                    <li><a href="https://github.com/Olical">github.com/Olical</a></li>
+                    <li><a href="https://github.com/Olical/olical.github.io">Source code</a></li>
                     <li><a href="/wp-index.html">Archive of my old blog</a></li>
                     {% for page in sidebar-pages %}
                     <li><a href="{{page.uri}}">{{page.title}}</a></li>
@@ -89,8 +90,7 @@
             </div>
         </div>
     </div>
-    <footer>Copyright &copy; {{today|date:yyyy}} {{author}}
-        <p style="text-align: center;">Powered by <a href="http://cryogenweb.org">Cryogen</a></p></footer>
+    <footer><p style="text-align: center;">Powered by <a href="http://cryogenweb.org">Cryogen</a></p></footer>
 </div>
 <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
