@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	
+	>
+<channel>
+	<title>Comments on: Prototypical inheritance done right</title>
+	<atom:link href="/2013/06/01/prototypical-inheritance-done-right/feed/" rel="self" type="application/rss+xml" />
+	<link>/2013/06/01/prototypical-inheritance-done-right/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Mon, 22 May 2017 19:57:20 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>By: Alex Mills</title>
+		<link>/2013/06/01/prototypical-inheritance-done-right/#comment-165</link>
+		<dc:creator><![CDATA[Alex Mills]]></dc:creator>
+		<pubDate>Sat, 12 Sep 2015 20:56:00 +0000</pubDate>
+		<guid isPermaLink="false">/2013/06/01/prototypical-inheritance-done-right#comment-165</guid>
+		<description><![CDATA[yes, but in classical inheritance you also chain constructors :) this does not take care of that]]></description>
+		<content:encoded><![CDATA[<p>yes, but in classical inheritance you also chain constructors 🙂 this does not take care of that</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Oliver Caldwell</title>
+		<link>/2013/06/01/prototypical-inheritance-done-right/#comment-139</link>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+		<pubDate>Tue, 02 Jun 2015 10:15:00 +0000</pubDate>
+		<guid isPermaLink="false">/2013/06/01/prototypical-inheritance-done-right#comment-139</guid>
+		<description><![CDATA[Glad I could help! :)
+
+Feel free to ask if there&#039;s anything that&#039;s still a little foggy around this.]]></description>
+		<content:encoded><![CDATA[<p>Glad I could help! 🙂</p>
+<p>Feel free to ask if there&#8217;s anything that&#8217;s still a little foggy around this.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: folderol</title>
+		<link>/2013/06/01/prototypical-inheritance-done-right/#comment-137</link>
+		<dc:creator><![CDATA[folderol]]></dc:creator>
+		<pubDate>Sat, 30 May 2015 19:39:00 +0000</pubDate>
+		<guid isPermaLink="false">/2013/06/01/prototypical-inheritance-done-right#comment-137</guid>
+		<description><![CDATA[Nicely written.  I&#039;ve been struggling with understanding how to call super methods using Object.create() inheritance, and this article cleared the cobwebs from my mind.]]></description>
+		<content:encoded><![CDATA[<p>Nicely written.  I&#8217;ve been struggling with understanding how to call super methods using Object.create() inheritance, and this article cleared the cobwebs from my mind.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Andrew Petersen</title>
+		<link>/2013/06/01/prototypical-inheritance-done-right/#comment-71</link>
+		<dc:creator><![CDATA[Andrew Petersen]]></dc:creator>
+		<pubDate>Mon, 16 Sep 2013 19:01:00 +0000</pubDate>
+		<guid isPermaLink="false">/2013/06/01/prototypical-inheritance-done-right#comment-71</guid>
+		<description><![CDATA[I think this might be the first time I&#039;ve seen an inheritance-utility function return the parent prototype instead of the child (or undefined), and that it&#039;s a good idea as a shortcut!
+
+
+You might want to note above that this pretty cool shortcut only works if using a contained environment, such as modules (AMD or CJS) or IIFE. Otherwise the last class defined will be the value of parent at runtime (I&#039;m sure you know this, just pointing it out for those reading comments).]]></description>
+		<content:encoded><![CDATA[<p>I think this might be the first time I&#8217;ve seen an inheritance-utility function return the parent prototype instead of the child (or undefined), and that it&#8217;s a good idea as a shortcut!</p>
+<p>You might want to note above that this pretty cool shortcut only works if using a contained environment, such as modules (AMD or CJS) or IIFE. Otherwise the last class defined will be the value of parent at runtime (I&#8217;m sure you know this, just pointing it out for those reading comments).</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Oliver Caldwell</title>
+		<link>/2013/06/01/prototypical-inheritance-done-right/#comment-58</link>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+		<pubDate>Thu, 18 Jul 2013 09:08:00 +0000</pubDate>
+		<guid isPermaLink="false">/2013/06/01/prototypical-inheritance-done-right#comment-58</guid>
+		<description><![CDATA[Thanks! I really appreciate the feedback. I&#039;ll try to keep things in a step by step process in the future. I think it&#039;s a lot easier to learn from than just dumping a solution in front of someone. Good luck with your learning! I hope you enjoy progressing within the language.]]></description>
+		<content:encoded><![CDATA[<p>Thanks! I really appreciate the feedback. I&#8217;ll try to keep things in a step by step process in the future. I think it&#8217;s a lot easier to learn from than just dumping a solution in front of someone. Good luck with your learning! I hope you enjoy progressing within the language.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Nikodem Rafalski</title>
+		<link>/2013/06/01/prototypical-inheritance-done-right/#comment-57</link>
+		<dc:creator><![CDATA[Nikodem Rafalski]]></dc:creator>
+		<pubDate>Thu, 18 Jul 2013 06:11:00 +0000</pubDate>
+		<guid isPermaLink="false">/2013/06/01/prototypical-inheritance-done-right#comment-57</guid>
+		<description><![CDATA[Hey Oli, just wanted to tell you that I really like the way you do explain things.
+Since I&#039;m a js newbie, the step-by-step revealing approach works for me. Keep it that way.
+Thanks!]]></description>
+		<content:encoded><![CDATA[<p>Hey Oli, just wanted to tell you that I really like the way you do explain things.<br />
+Since I&#8217;m a js newbie, the step-by-step revealing approach works for me. Keep it that way.<br />
+Thanks!</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Oliver Caldwell</title>
+		<link>/2013/06/01/prototypical-inheritance-done-right/#comment-45</link>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+		<pubDate>Thu, 06 Jun 2013 09:08:00 +0000</pubDate>
+		<guid isPermaLink="false">/2013/06/01/prototypical-inheritance-done-right#comment-45</guid>
+		<description><![CDATA[I wrote up a gist to explain my reasoning behind this iteration style. Includes an asynchronous HTTP request bust example. Pretty cool example actually. I could of done with this a while back: https://gist.github.com/Wolfy87/5720282]]></description>
+		<content:encoded><![CDATA[<p>I wrote up a gist to explain my reasoning behind this iteration style. Includes an asynchronous HTTP request bust example. Pretty cool example actually. I could of done with this a while back: <a href="https://gist.github.com/Wolfy87/5720282" rel="nofollow">https://gist.github.com/Wolfy87/5720282</a></p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

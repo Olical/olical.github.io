@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>debugging &#8211; Oliver Caldwell&#039;s blog</title>
+	<atom:link href="/tag/debugging/feed/" rel="self" type="application/rss+xml" />
+	<link>/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Wed, 18 Oct 2017 13:50:23 +0000</lastBuildDate>
+	<language>en-GB</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>Understanding Emacs errors</title>
+		<link>/2014/11/05/understanding-emacs-errors/</link>
+		<comments>/2014/11/05/understanding-emacs-errors/#respond</comments>
+		<pubDate>Wed, 05 Nov 2014 08:30:23 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Emacs]]></category>
+		<category><![CDATA[Emacs Lisp]]></category>
+		<category><![CDATA[Lisp]]></category>
+		<category><![CDATA[debugging]]></category>
+		<category><![CDATA[emacs]]></category>
+
+		<guid isPermaLink="false">/?p=220</guid>
+		<description><![CDATA[You can probably begin to get to the bottom of most internal Emacs problems with debug-on-entry. This function prompts for a function name interactively (which also hooks into helm) and will essentially set a breakpoint within Emacs on that function. When it is called you&#8217;ll get to see what functions were called and with what <a class="read-more" href="/2014/11/05/understanding-emacs-errors/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>You can probably begin to get to the bottom of most internal Emacs problems with <a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Function-Debugging.html">debug-on-entry</a>. This function prompts for a function name interactively (which also hooks into helm) and will essentially set a breakpoint within Emacs on that function. When it is called you&#8217;ll get to see what functions were called and with what arguments.</p>
+<p>This came out of my <em>:w</em> (evil write) stopping working today, it was down to <a href="https://bitbucket.org/lyro/evil/commits/b156bd87585a93acce503247bfb3cbd41fc5e179">this commit</a> and fixed in <a href="https://bitbucket.org/lyro/evil/commits/ce5eaa56c30271e212bbfa1b5805d59cb064e07f">this one</a>. The prompt response was much appreciated.</p>
+<p>But you can use debug-on-entry on the offending function (which you should be able to find in the messages buffer) to set a breakpoint and walk up the stack to see if you can understand the problem better. It was interesting in my case but didn&#8217;t solve the issue, I just commented on the GitHub mirror of the commit and the author fixed it for me. Open source rules.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2014/11/05/understanding-emacs-errors/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

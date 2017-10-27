@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>emacs &#8211; Oliver Caldwell&#039;s blog</title>
+	<atom:link href="/tag/emacs-2/feed/" rel="self" type="application/rss+xml" />
+	<link>/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Wed, 18 Oct 2017 13:50:23 +0000</lastBuildDate>
+	<language>en-GB</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>Making El-Get sync like vim-plug</title>
+		<link>/2015/03/03/making-el-get-sync-like-vim-plug/</link>
+		<comments>/2015/03/03/making-el-get-sync-like-vim-plug/#respond</comments>
+		<pubDate>Tue, 03 Mar 2015 22:35:56 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Emacs]]></category>
+		<category><![CDATA[Emacs Lisp]]></category>
+		<category><![CDATA[Lisp]]></category>
+		<category><![CDATA[Text Editors]]></category>
+		<category><![CDATA[Vim]]></category>
+		<category><![CDATA[el-get]]></category>
+		<category><![CDATA[emacs]]></category>
+		<category><![CDATA[package.el]]></category>
+		<category><![CDATA[vim]]></category>
+		<category><![CDATA[vim-plug]]></category>
+
+		<guid isPermaLink="false">/?p=311</guid>
+		<description><![CDATA[As my post from last night says, I&#8217;m giving Emacs another go. And in an even older post, when I was trying Emacs for the first time, I show my approach to getting my packages syncing like I do in Vim (spoiler alert: It didn&#8217;t work very well). My Vim setup will remove unused packages, <a class="read-more" href="/2015/03/03/making-el-get-sync-like-vim-plug/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>As <a title="Giving Emacs another chance" href="/2015/03/02/giving-emacs-another-chance/">my post</a> from last night says, I&#8217;m giving Emacs another go. And in an even older post, when I was trying Emacs for the first time, I show <a title="Making package.el behave like Vundle" href="/2014/10/20/making-package-el-behave-like-vundle/">my approach to getting my packages syncing like I do in Vim</a> (spoiler alert: It didn&#8217;t work very well). My Vim setup will remove unused packages, update what I currently have and then install any that are missing through <a href="https://github.com/Wolfy87/dotfiles/blob/85937edfd5330cc0478a3165f6aa7d132173ef57/vim/.vim/update.sh">this simple script</a> and the use of <a href="https://github.com/junegunn/vim-plug">vim-plug</a>.</p><pre class="crayon-plain-tag">#!/usr/bin/env bash
+
+vim +"PlugSnapshot $HOME/.vim/revert.sh" +PlugUpgrade +PlugClean! +PlugUpdate +qa</pre><p>I&#8217;ve been yearning for the same, or at least similar, experience in Emacs. Without good package management and automatic cleaning I just don&#8217;t want to use it. The main reason for this is that I use <a href="https://github.com/Wolfy87/dotfiles">my dotfiles</a> across multiple machines and I can&#8217;t be dealing with package hell when I pull my dotfiles at work each morning. I need everything to always represent my declarative list of packages in my dotfiles perfectly.</p>
+<p>After a late night Elisp session yesterday, which ended around 1am, I found a very concise approach to manage my packages in a satisfactory way. It&#8217;s nowhere near as clean, efficient and parallel as my Vim set up, but it gets the same result. It&#8217;s a shame it&#8217;s not shiny and perfect, but sometimes good enough is good enough. <a href="https://github.com/Wolfy87/dotfiles/blob/85937edfd5330cc0478a3165f6aa7d132173ef57/emacs/.emacs.d/sync.sh">My synchronisation script for Emacs</a> isn&#8217;t as short and sweet, but it does the job.</p><pre class="crayon-plain-tag">#!/usr/bin/env bash
+
+PACKAGES=~/.emacs.d/config/packages.el
+ELGET=~/.emacs.d/el-get/
+
+if [ ! -d $ELGET ]; then
+    mkdir $ELGET
+    git clone git@github.com:dimitri/el-get.git $ELGET/el-get
+fi
+
+emacs --batch -l $PACKAGES -f dotfiles-sync
+rm ~/.emacs.d/el-get/.loaddefs.*
+emacs --batch -l $PACKAGES</pre><p>This will fetch <a href="https://github.com/dimitri/el-get">el-get</a> if required, boot Emacs once to perform the sync operation (fetch, update and clean), remove the loaddefs because they get out of sync <em>really</em> easily (so if magit was removed, for example, it would still appear in my tab complete although I couldn&#8217;t execute any of the commands, that&#8217;s loaddefs being old) and finally launch it again to generate the new loaddefs file ahead of time. The real magic happens in <a href="https://github.com/Wolfy87/dotfiles/blob/85937edfd5330cc0478a3165f6aa7d132173ef57/emacs/.emacs.d/config/packages.el">my packages configuration module</a> though.</p><pre class="crayon-plain-tag">(add-to-list 'load-path "~/.emacs.d/el-get/el-get")
+(require 'el-get)
+
+(setq dotfiles-packages '())
+
+(defmacro bundle (name &amp;rest content)
+  `(progn
+    (add-to-list 'dotfiles-packages ',name)
+    (el-get-bundle ,name ,@content)))
+
+(defun dotfiles-sync ()
+  (el-get-cleanup dotfiles-packages)
+  (el-get-update-all t))
+
+(bundle monokai-theme
+        (load-theme 'monokai t))</pre><p>That little <em>bundle</em> macro is a passthrough to the <em>el-get-bundle</em> macro, but before it passes the forms off to it the name is stored in a list. That list becomes the &#8220;required packages&#8221; list which we use when performing a cleanup of packages. Basically, when you run <em>el-get-cleanup</em> (which appears to be undocumented? I found it by perusing the source) you can pass it a list of packages <em>not</em> to remove. This list is obtained by intercepting my declarative list of dependencies. Neat, right?</p>
+<p>So I&#8217;ve done it, I&#8217;ve got Emacs packages working the way I needed them to for me to take it seriously. It works just like my Vim + vim-plug setup, albeit not as elegantly. It&#8217;s a small sacrifice to make for all the lisp I could ever ask for.</p>
+<p>It&#8217;s parenthesis time now.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2015/03/03/making-el-get-sync-like-vim-plug/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Giving Emacs another chance</title>
+		<link>/2015/03/02/giving-emacs-another-chance/</link>
+		<comments>/2015/03/02/giving-emacs-another-chance/#respond</comments>
+		<pubDate>Mon, 02 Mar 2015 19:06:25 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Emacs]]></category>
+		<category><![CDATA[Text Editors]]></category>
+		<category><![CDATA[brainfuck]]></category>
+		<category><![CDATA[emacs]]></category>
+		<category><![CDATA[vim]]></category>
+
+		<guid isPermaLink="false">/?p=305</guid>
+		<description><![CDATA[I was originally going to call this post &#8220;Attempting Emacs 2: The Re-Emacsing &#8211; A Vimmers tale&#8221;, I thought better of it. As you may have noticed from my tweets over the recent weeks, I&#8217;m infatuated by Clojure among many other languages that aren&#8217;t the one I&#8217;m paid to write (JavaScript). I&#8217;ve been planning on <a class="read-more" href="/2015/03/02/giving-emacs-another-chance/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>I was originally going to call this post &#8220;Attempting Emacs 2: The Re-Emacsing &#8211; A Vimmers tale&#8221;, I thought better of it.</p>
+<p>As you may have noticed from my tweets over the recent weeks, I&#8217;m infatuated by Clojure among many other languages that aren&#8217;t the one I&#8217;m paid to write (JavaScript). I&#8217;ve been planning on working my way through the two <a href="https://pragprog.com/book/btlang/seven-languages-in-seven-weeks">&#8220;7 languages in 7 weeks&#8221;</a> books for quite some time too but haven&#8217;t been able to start them alongside <a title="A quick reflection on Algorithms" href="/2015/03/01/a-quick-reflection-on-algorithms/">my coursera course on algorithms</a>. Now the course is over (I got as far as I wanted to go just before it officially ended) I am free to start, but first I wish to give Emacs another chance. It&#8217;s also worth mentioning that not only will I be publishing my &#8220;7 languages&#8221; projects on GitHub, but I&#8217;ll also be continuing my <a title="Brainfuck VM in JavaScript" href="/2015/01/05/brainfuck-vm-in-javascript/">brainfuck</a> <a title="Brainfuck VM in Clojure" href="/2015/01/12/brainfuck-vm-in-clojure/">interpreters</a> in each language I look at.</p>
+<p>One thing I won&#8217;t be doing, at least at first, is giving into the temptation of <a href="http://www.emacswiki.org/emacs/Evil">Evil</a>. I tried it out last time which may have lead to the demise of my previous <em>.emacs.d</em>. I think the cognitive dissonance is too great for any seasoned Vim user to handle, I need the distinction this time. Although I do admit the Emacs key bindings are beyond awful when compared with Vim and a bunch of muscle memory. Maybe it&#8217;ll get better over time, but if not I&#8217;m willing to try out <a href="https://github.com/chrisdone/god-mode">God mode</a>. It introduces a sort of normal / insert mode, but still using Emacs keys. It just stops you having to hold down those pesky modifiers all the time. Vim is Vim and Emacs is Emacs, much like planes and cars I have found they do not work well when you put the former <em>inside</em> the latter.</p>
+<p>I think I&#8217;ll be relying on <a href="https://github.com/magit/magit">magit</a>, <a href="https://github.com/bbatsov/projectile">projectile</a> and <a href="https://github.com/emacs-helm/helm">helm</a> to begin with. I&#8217;m not sure how I&#8217;ll navigate the buffer though, maybe I&#8217;ll try <a href="http://www.emacswiki.org/emacs/AceJump">ace jump</a>. It&#8217;s a shame that it just looks like an <a href="https://github.com/Lokaltog/vim-easymotion">EasyMotion</a> knock off though, it doesn&#8217;t appear to support very much of my beloved navigational tool. With EasyMotion I can fly around the screen without a thought.</p>
+<p>I&#8217;ll also be splitting my configuration into smaller modules as I have done with Vim in <a href="https://github.com/Wolfy87/dotfiles">my dotfiles</a>. I plan to use <a href="https://github.com/cask/cask">Cask</a> for package management right now, although that could also go out the window in favour of <a href="https://github.com/dimitri/el-get">el-get</a> or something similar. I&#8217;ve written about <a title="Making package.el behave like Vundle" href="/2014/10/20/making-package-el-behave-like-vundle/">my main gripes</a> with Emacs package management (or lack thereof) in the past, but my main point is things like <a href="https://github.com/junegunn/vim-plug">vim-plug</a> blow all of Emacs&#8217; solutions out of the metaphorical water. In my opinion.</p>
+<p>Maybe the only solution is for me to build a vim-plug of my own in Elisp. Talk about trial by fire.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2015/03/02/giving-emacs-another-chance/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Emacs: There and Back Again</title>
+		<link>/2014/11/16/emacs-there-and-back-again/</link>
+		<comments>/2014/11/16/emacs-there-and-back-again/#respond</comments>
+		<pubDate>Sun, 16 Nov 2014 19:06:17 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Emacs]]></category>
+		<category><![CDATA[Text Editors]]></category>
+		<category><![CDATA[Vim]]></category>
+		<category><![CDATA[dotfiles]]></category>
+		<category><![CDATA[emacs]]></category>
+		<category><![CDATA[vim]]></category>
+
+		<guid isPermaLink="false">/?p=227</guid>
+		<description><![CDATA[So I&#8217;m back in Vim already. I gave Emacs a few months of good usage though and tried out multiple styles of configuration. At first I tried to build my own from the ground up, a la Vim, but it was too fiddly. I found Emacs to be too big to handle cleanly for one <a class="read-more" href="/2014/11/16/emacs-there-and-back-again/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>So I&#8217;m back in Vim already. I gave Emacs a few months of good usage though and tried out multiple styles of configuration. At first I tried to build my own from the ground up, a la Vim, but it was too fiddly. I found Emacs to be too big to handle cleanly for one person, so I eventually resorted to <a href="https://github.com/syl20bnr/spacemacs">Spacemacs</a>.</p>
+<p>Spacemacs worked great and provided me with many of my normal Vim comforts. It essentially uses the space key as the leader and remaps all the functionality you could ever need, be that default or plugin, to the space key.</p>
+<p>I missed the feeling of building my own editor bit by bit however, and only Vim lets me customise a tool that starts out completely devoid of usefulness. Strangely, that&#8217;s a good thing for me. It always felt like I was suppressing some built in tooling with Emacs. Sure it&#8217;s powerful and Lisp is sexp but I couldn&#8217;t shake that &#8220;it&#8217;s just doing too much&#8221; feeling.</p>
+<p>I&#8217;m a huge advocate of the unix philosophy, and even though Vim can break it a bit, Emacs breaks it a lot. As it&#8217;s widely known, it&#8217;s essentially an operating system. Linux is my OS of choice, Vim in my text editor.</p>
+<h2>Good came out of it</h2>
+<p>Emacs is great, don&#8217;t get me wrong. I learnt a lot of useful tricks that I want to translate over to the Vim world since there&#8217;s always an equivalent. A prime example being <a href="https://github.com/emacs-helm/helm">helm</a>, it&#8217;s an excellent piece of software, who&#8217;d have thunk that uniting textual interfaces worked so well. This is where <a href="https://github.com/Shougo/unite.vim">Unite</a> steps in to fill the void in Vim. I&#8217;ve already got it hooked up in my new setup but I&#8217;ll touch on that towards the end of the post.</p>
+<p>I&#8217;ve also learnt the importance of consistent leader bindings. I won&#8217;t be rebinding core Vim functionality to my leader key (as Spacemacs does) but I will be mapping all of my plugins and functionality under common groupings. So anything to do with <a href="https://github.com/tpope/vim-fugitive">fugitive</a> (the best Vim wrapper ever, despite <a href="https://github.com/magit/magit">Magit</a> being great) is under <code>\g*</code> where the asterisk is a mnemonic key for what it&#8217;ll do. <code>\gs</code> is <code>Gstatus</code> for example.</p>
+<p>I&#8217;ve also bound <code>\gj</code> to pull and <code>\gk</code> to push, because they&#8217;re synonymous with up and down. Sure it&#8217;s not mnemonic, but it&#8217;s very Vim.</p>
+<p>So in the end, I found Emacs to be an excellent <em>platform</em> for almost anything you can imagine that can be represented with text. But I want an editor, and I kind of like Vim Script. Please don&#8217;t die from shock. It&#8217;s a horrible language, but a good DSL, in my opinion.</p>
+<h2>Rebuilding my dotfiles</h2>
+<p>All of this discovery and new found ideas prompted me to <code>rm -rf ~/dotfiles</code>, which are stored on GitHub, but still. You get the idea, I started my dotfiles again. Mostly. Go peruse my new <a href="https://github.com/Wolfy87/dotfiles">dotfiles</a> if you so wish.</p>
+<p>I discovered <a href="https://github.com/tpope/vim-sensible">vim-sensible</a> after a quick check up on tpope&#8217;s recent shenanigans. This is like the plugin equivalent of <code>set nocompatible</code>, it switches on so many basic things that every configuration should have anyway. I highly recommend it as a starting point for any new Vim configuration. I found my core Vim configuration shrink considerably since this handles pretty much everything for me.</p>
+<p>As you&#8217;ll be able to see from my repository, I&#8217;ve also swapped to a very modular configuration system. I have a few directories where every Vim Script file is automatically sourced for easy grouping of settings. I did this in my previous setup too, but I&#8217;ve taken it a step further by doing it for bundles too. If I create a file in a certain directory with the same name as a currently installed bundle, it&#8217;ll be sourced at the appropriate time.</p>
+<p>On the subject of bundles, I also swapped from <a href="https://github.com/gmarik/Vundle.vim">Vundle</a> to <a href="https://github.com/Shougo/neobundle.vim">NeoBundle</a>. It originally started as a fork but the underlying principals of it appear to be slowly shifting away from it&#8217;s parent project. I like the parallelism among other things. It&#8217;s definitely a lot quicker, obviously. It delegates to <a href="https://github.com/Shougo/vimproc.vim">vimproc</a> to get those installs running in parallel, which is worth the required <code>make</code> command after installation.</p>
+<p>One key point of this new setup is the fact that it can be installed and linked in with a single bash script. It works incredibly well, check out the readme for more detailed information on the inner workings of my new tooling.</p>
+<h2>Please copy things</h2>
+<p>This is what I hope others will obtain from this post and the actual repository: Take as much as you can from my work, fork if you wish. Just please learn something from it. This is like spring cleaning for my tools, I can&#8217;t wait to refine them over the coming year, especially Vim. I want my changes to inspire others to improve their tooling too.</p>
+<p>Our dotfiles grow and adapt with us, organically, after long enough the fundamental principals need updating which prompts a rebuild such as mine. It&#8217;s refreshing and exciting, I wonder what my next rewrite, possibly years from now, will look like.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2014/11/16/emacs-there-and-back-again/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Spacemacs: Emacs + Vim</title>
+		<link>/2014/11/06/spacemacs-emacs-vim/</link>
+		<comments>/2014/11/06/spacemacs-emacs-vim/#comments</comments>
+		<pubDate>Thu, 06 Nov 2014 08:30:00 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Emacs]]></category>
+		<category><![CDATA[Text Editors]]></category>
+		<category><![CDATA[Vim]]></category>
+		<category><![CDATA[dotfiles]]></category>
+		<category><![CDATA[emacs]]></category>
+		<category><![CDATA[spacemacs]]></category>
+		<category><![CDATA[vim]]></category>
+
+		<guid isPermaLink="false">/?p=222</guid>
+		<description><![CDATA[This post is pretty rough around the edges. I wrote it in Google keep as notes I intended to write up and eventually publish nicely but I don&#8217;t have the time. I&#8217;ve done what I can from my phone but I just wanted to get it out there. I hope you find it useful! What <a class="read-more" href="/2014/11/06/spacemacs-emacs-vim/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p><em>This post is pretty rough around the edges. I wrote it in Google keep as notes I intended to write up and eventually publish nicely but I don&#8217;t have the time. I&#8217;ve done what I can from my phone but I just wanted to get it out there. I hope you find it useful!</em></p>
+<hr/>
+<p>What do you get if you put Vim, Emacs and a dash of pneumonic / consistent key bindings in a blender? A blender full of inedible computer parts, but also <a href="https://github.com/syl20bnr/spacemacs">spacemacs</a>. Go skim the readme first, its like a starter kit for Emacs that emulates Vim incredibly well.</p>
+<p>Things that are hard to get over: Unlearning escape and using fd (still ironing out bugs). Using space for everything, unlearning :w and using SPCfs. SPCgs for git status (magit). SPCph for projectile.</p>
+<p>Configuration layers are excellent. I have my local one and will (eventually) push it upstream for people to hook into. You can activate them by adding the name to the list in <em>~/.spacemacs</em>. Easy.</p>
+<p>It&#8217;s neither Vim nor Emacs. It&#8217;s this cool blend that&#8217;s a little hard to get your head around at first but I think Sylvain, the author, is correct: The best editor is a mix of the two. You have the commands of Emacs with the modal keys of Vim. The huge buster sword of Emacs combined with the subtle dagger of Vim.</p>
+<p>I&#8217;m trying to make JavaScript badass out of the box in the core repository, but using my overlay makes it even better. Or so I feel anyway. I&#8217;m really happy with my JavaScript setup right now. A lot of the changes I built into my layer were actually pulled into the core anyway, so my layer has been getting smaller and smaller.</p>
+<p>When you find yourself holding a modifier for something, M-x for example, hit SPC? and check if there&#8217;s a space leader binding for it. In the case of M-x that would be SPC:. Emacs is not modal in any way, so when you have to use default emacs bindings now and again it feels odd. Vim has some things that are not modal too, such as window management. Spacemacs seems to do a better job than Vim in some places. Everything&#8217;s modal. If it isn&#8217;t, make it modal and PR it in.</p>
+<p>You shouldn&#8217;t even need Ex mode a lot of the time! I&#8217;d highly recommend giving it a go if you are a fan of either editor.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2014/11/06/spacemacs-emacs-vim/feed/</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+		</item>
+		<item>
+		<title>Understanding Emacs errors</title>
+		<link>/2014/11/05/understanding-emacs-errors/</link>
+		<comments>/2014/11/05/understanding-emacs-errors/#respond</comments>
+		<pubDate>Wed, 05 Nov 2014 08:30:23 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Emacs]]></category>
+		<category><![CDATA[Emacs Lisp]]></category>
+		<category><![CDATA[Lisp]]></category>
+		<category><![CDATA[debugging]]></category>
+		<category><![CDATA[emacs]]></category>
+
+		<guid isPermaLink="false">/?p=220</guid>
+		<description><![CDATA[You can probably begin to get to the bottom of most internal Emacs problems with debug-on-entry. This function prompts for a function name interactively (which also hooks into helm) and will essentially set a breakpoint within Emacs on that function. When it is called you&#8217;ll get to see what functions were called and with what <a class="read-more" href="/2014/11/05/understanding-emacs-errors/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>You can probably begin to get to the bottom of most internal Emacs problems with <a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Function-Debugging.html">debug-on-entry</a>. This function prompts for a function name interactively (which also hooks into helm) and will essentially set a breakpoint within Emacs on that function. When it is called you&#8217;ll get to see what functions were called and with what arguments.</p>
+<p>This came out of my <em>:w</em> (evil write) stopping working today, it was down to <a href="https://bitbucket.org/lyro/evil/commits/b156bd87585a93acce503247bfb3cbd41fc5e179">this commit</a> and fixed in <a href="https://bitbucket.org/lyro/evil/commits/ce5eaa56c30271e212bbfa1b5805d59cb064e07f">this one</a>. The prompt response was much appreciated.</p>
+<p>But you can use debug-on-entry on the offending function (which you should be able to find in the messages buffer) to set a breakpoint and walk up the stack to see if you can understand the problem better. It was interesting in my case but didn&#8217;t solve the issue, I just commented on the GitHub mirror of the commit and the author fixed it for me. Open source rules.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2014/11/05/understanding-emacs-errors/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Making package.el behave like Vundle</title>
+		<link>/2014/10/20/making-package-el-behave-like-vundle/</link>
+		<comments>/2014/10/20/making-package-el-behave-like-vundle/#respond</comments>
+		<pubDate>Mon, 20 Oct 2014 21:10:27 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Emacs]]></category>
+		<category><![CDATA[Emacs Lisp]]></category>
+		<category><![CDATA[Lisp]]></category>
+		<category><![CDATA[Text Editors]]></category>
+		<category><![CDATA[Vim]]></category>
+		<category><![CDATA[dotfiles]]></category>
+		<category><![CDATA[emacs]]></category>
+		<category><![CDATA[git]]></category>
+		<category><![CDATA[package.el]]></category>
+		<category><![CDATA[vim]]></category>
+
+		<guid isPermaLink="false">/?p=198</guid>
+		<description><![CDATA[I love Vundle, it allows me to specify a list of packages within my dotfiles repository that is kept up to date and in sync with every other machine I use Vim on. The key point with this is that I can remove a package from all machines by simply deleting the line from my <a class="read-more" href="/2014/10/20/making-package-el-behave-like-vundle/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>I love <a href="https://github.com/gmarik/Vundle.vim">Vundle</a>, it allows me to specify a list of packages within my <a href="https://github.com/Wolfy87/dotfiles">dotfiles repository</a> that is kept up to date and in sync with every other machine I use Vim on. The key point with this is that I can remove a package from all machines by simply deleting the line from my configuration.</p><pre class="crayon-plain-tag">" Load Vundle. Manages all of the bundles.
+filetype off
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+" So Vundle can update itself.
+Plugin 'gmarik/Vundle.vim'
+
+" Colour scheme.
+Plugin 'jonathanfilip/vim-lucius'
+
+" Plugins without settings.
+Plugin 'PeterRincker/vim-argumentative'
+Plugin 'Wolfy87/vim-enmasse'
+Plugin 'helino/vim-json'
+
+
+" I have a lot, so I'll skip a few...
+
+
+Plugin 'myusuf3/numbers.vim'
+  nnoremap &lt;leader&gt;l :NumbersToggle&lt;CR&gt;
+
+" Enable some syntax settings that had to be disabled for Vundle.
+call vundle#end()
+filetype plugin indent on</pre><p>Package management through <em>~/.*rc</em> files is the Shih Tzu. Sadly, <a href="http://wikemacs.org/wiki/Package.el">package.el</a> doesn&#8217;t seem to do this and expects me to use some silly text based menu as well as remembering to keep every single one of my packages in sync. If I remove it from one, I need to remove it from the rest by hand. <strong>NO.</strong></p>
+<p>I&#8217;m not having any of that.</p>
+<h2>Installing missing packages</h2>
+<p>This one&#8217;s easy enough to solve and many people have many solutions. I have a function, <a href="https://github.com/Wolfy87/dotfiles/blob/88926d0f8ad581f4a4953d6fdea40d812638b17d/emacs/init.el#L97-L103"><em>dotfiles-sync</em></a>, which will get the latest package lists from <a href="http://melpa.milkbox.net/">MELPA</a> (and a few others) and installs all packages I currently don&#8217;t have locally. Simple enough and very effective, even if it does require a few reboots to get them all installed, still trying to work that one out.</p><pre class="crayon-plain-tag">;; Main package list to fetch from melpa.
+(defvar dotfiles-packages
+  '(evil
+    evil-args
+    evil-nerd-commenter
+    ;; WAY MORE PACKAGES...
+    ))
+
+;; Package manager configuration.
+(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
+                         ("marmalade" . "http://marmalade-repo.org/packages/")
+                         ("melpa" . "http://melpa.milkbox.net/packages/")))
+(package-initialize)
+
+(defun dotfiles-sync ()
+  "Install packages."
+  (interactive)
+  (package-refresh-contents)
+  (dolist (p dotfiles-packages)
+    (when (not (package-installed-p p))
+      (package-install p))))
+
+;; A macro from milkbox.net to make load hooks easier.
+(defmacro after (mode &amp;rest body)
+  "`eval-after-load' MODE evaluate BODY."
+  (declare (indent defun))
+  `(eval-after-load ,mode
+     '(progn ,@body)))
+
+;; Individual package configuration.
+(defvar evil-want-C-u-scroll t)
+(after `evil-autoloads
+  (evil-mode t))
+
+(after `evil-args-autoloads
+  ;; Bind evil-args text objects.
+  (define-key evil-inner-text-objects-map "a" 'evil-inner-arg)
+  (define-key evil-outer-text-objects-map "a" 'evil-outer-arg)
+
+  ;; Bind evil-forward/backward-args.
+  (define-key evil-normal-state-map "L" 'evil-forward-arg)
+  (define-key evil-normal-state-map "H" 'evil-backward-arg)
+  (define-key evil-motion-state-map "L" 'evil-forward-arg)
+  (define-key evil-motion-state-map "H" 'evil-backward-arg)
+
+  ;; Bind evil-jump-out-args.
+  (define-key evil-normal-state-map "K" 'evil-jump-out-args))
+
+(after `evil-nerd-commenter-autoloads
+  (evilnc-default-hotkeys))
+
+;; WAY MORE PACKAGE CONFIGURATION</pre><p>So here I have a list of packages, a function to fetch them and a macro that I use to wait until each package is loaded before I configure them. To update my packages I have to go into the text based menu, mark out of date packages for upgrade and then execute it all (<em>M-x list-packages RET U x</em>). Despite this being cumbersome and annoying, this appears to be the only way right now.</p>
+<h2>The other problem, pruning</h2>
+<p>So I can install and update fairly easily, albeit not perfectly, but I&#8217;m still lacking the ability to prune old packages that I no longer have listed in my <em>init.el</em> file. My only main requirement for this process is that it executes as part of my synchronisation. Luckily the problem frustrated me enough to construct a solution, now my Emacs package management isn&#8217;t that far behind that of Vim / Vundle&#8217;s, but it still doesn&#8217;t feel quite a smooth. I&#8217;ll take what I can get.</p><pre class="crayon-plain-tag">;; Package pruning tools.
+(defun flatten (mylist)
+  "Flatten MYLIST, taken from http://rosettacode.org/wiki/Flatten_a_list#Emacs_Lisp for sanity."
+  (cond
+   ((null mylist) nil)
+   ((atom mylist) (list mylist))
+   (t
+    (append (flatten (car mylist)) (flatten (cdr mylist))))))
+
+(defun filter (predicate subject)
+  "Use PREDICATE to filter SUBJECT and return the result."
+  (delq nil
+        (mapcar (lambda (x) (and (funcall predicate x) x)) subject)))
+
+(defun get-package-name (package)
+  "Fetch the symbol name of a PACKAGE."
+  (car package))
+
+(defun get-package-version (package)
+  "Return the version string for PACKAGE."
+  (package-version-join (aref (cdr package) 0)))
+
+(defun get-package-dependencies (package)
+  "Fetch the symbol list of PACKAGE dependencies."
+  (mapcar 'car (elt (cdr package) 1)))
+
+(defun get-packages-dependency-tree (packages)
+  "Recursively fetch all dependencies for PACKAGES and return a tree of lists."
+  (mapcar (lambda (package)
+            (list (get-package-name package)
+                  (get-packages-dependency-tree (get-package-dependencies package))))
+          (get-packages-as-alist packages)))
+
+(defun get-packages-as-alist (packages)
+  "Return the list of PACKAGES symbols as an alist, containing version and dependency information."
+  (filter (lambda (n) (car (member (car n) packages))) package-alist))
+
+(defun get-all-current-dependencies (packages)
+  "Return all packages found in PACKAGES with their dependencies recursively."
+  (delq nil (delete-dups (flatten (get-packages-dependency-tree packages)))))
+
+(defun get-all-obsolete-packages (packages)
+  "Return all packages in an alist which are not contained in PACKAGES."
+  (filter (lambda (n) (not (member (car n) (get-all-current-dependencies packages)))) package-alist))
+
+(defun prune-installed-packages (packages)
+  "Delete all packages not listed or depended on by anything in PACKAGES."
+  (mapc (lambda (n)
+          (package-delete
+           (symbol-name (get-package-name n))
+           (get-package-version n)))
+        (get-all-obsolete-packages packages)))</pre><p>I then amended my <a href="https://github.com/Wolfy87/dotfiles/blob/d24591ebd7b3a36f629fb5a4ebd921c72f2b5b91/emacs/init.el#L104-L111"><em>dotfiles-sync</em></a> function to prune my old packages by adding one line. Fantastic.</p><pre class="crayon-plain-tag">(defun dotfiles-sync ()
+  "Install packages."
+  (interactive)
+  (prune-installed-packages dotfiles-packages) ;; &lt;-- THIS ONE :D
+  (package-refresh-contents)
+  (dolist (p dotfiles-packages)
+    (when (not (package-installed-p p))
+      (package-install p))))</pre><p>I hope others will find this useful, I sure feel safer in the knowledge that packages I no longer list in my repository will be removed on my next synchronisation. You can just rip my code from this post, but I suppose I could turn it into a package if there was any real interest in it.</p>
+<p>Edit: I created a <a href="https://www.reddit.com/r/emacs/comments/2jtojf/packageel_didnt_prune_my_unused_packages_so_i/">post</a> on the Emacs subreddit in which syl20bnr ran with the idea and made it far better. The concept can now be found within <a href="https://github.com/syl20bnr/spacemacs/blob/c517424032a9f43e1365d9f157dc246b38debda1/core/contribsys.el#L245-L270">the spacemacs repository</a> and it looks great!</p>
+]]></content:encoded>
+			<wfw:commentRss>/2014/10/20/making-package-el-behave-like-vundle/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>A week (or so) with Emacs</title>
+		<link>/2014/09/28/a-week-or-so-with-emacs/</link>
+		<comments>/2014/09/28/a-week-or-so-with-emacs/#respond</comments>
+		<pubDate>Sun, 28 Sep 2014 15:32:52 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Emacs]]></category>
+		<category><![CDATA[JavaScript]]></category>
+		<category><![CDATA[editors]]></category>
+		<category><![CDATA[emacs]]></category>
+		<category><![CDATA[lisp]]></category>
+
+		<guid isPermaLink="false">/?p=191</guid>
+		<description><![CDATA[So I managed to use Emacs for one whole week of full-time JavaScript work, whilst only falling back to Vim for the odd tweak of JSON or configuration, I count that as a success. It&#8217;s shifted my opinion of it since I set up my package management and JavaScript tooling, you can find all of <a class="read-more" href="/2014/09/28/a-week-or-so-with-emacs/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>So I managed to use Emacs for one whole week of full-time JavaScript work, whilst only falling back to Vim for the odd tweak of JSON or configuration, I count that as a success. It&#8217;s shifted my opinion of it since I set up my package management and JavaScript tooling, you can find all of this within <a href="https://github.com/Wolfy87/dotfiles/blob/master/emacs/init.el">my dotfiles</a>. It&#8217;s become far easier since I started to learn about vanilla Emacs key-bindings, the reason being that when I lost Evil mode for some buffers I was left high and dry.</p>
+<p>The shift in mentality from my Vim workflow is interesting. I&#8217;ve moved away from tmux / tabs / splits and have begun leaning towards searching for buffers I want with <a href="https://github.com/emacs-helm/helm">helm</a> and opening highly coupled files (such as tests) in splits. I&#8217;m yet to really use the terminal buffer, it doesn&#8217;t feel as smooth as my terminal + tmux combination yet. I&#8217;m also yet to get some form of git gutter and unimpaired style bindings set up. I haven&#8217;t managed to use it to resolve git conflicts yet either, I refer to Vim for that still. Git gutter doesn&#8217;t appear to work with my relative line numbers, there must be a way around it.</p>
+<p><a href="/wp-content/uploads/2014/09/Screenshot-280914-162722.png"><img class="alignleft wp-image-192 size-full" title="" src="/wp-content/uploads/2014/09/Screenshot-280914-162722.png" alt="My Emacs setup" width="1920" height="1080" srcset="/wp-content/uploads/2014/09/Screenshot-280914-162722.png 1920w, /wp-content/uploads/2014/09/Screenshot-280914-162722-300x168.png 300w, /wp-content/uploads/2014/09/Screenshot-280914-162722-1024x576.png 1024w" sizes="(max-width: 1920px) 100vw, 1920px" /></a></p>
+<p>Now I&#8217;m going to start on my Clojure setup for use with <a href="http://www.braveclojure.com/">Brave Clojure</a>, we&#8217;ll see how that goes, I&#8217;d imagine rather well. Many thanks to those on twitter who convinced me to stick with it, I think it&#8217;s going to be great in the long run.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2014/09/28/a-week-or-so-with-emacs/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Emacs: A few hours after exposure</title>
+		<link>/2014/09/17/emacs-a-few-hours-after-exposure/</link>
+		<comments>/2014/09/17/emacs-a-few-hours-after-exposure/#respond</comments>
+		<pubDate>Wed, 17 Sep 2014 22:36:59 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Emacs]]></category>
+		<category><![CDATA[easymotion]]></category>
+		<category><![CDATA[emacs]]></category>
+		<category><![CDATA[lisp]]></category>
+		<category><![CDATA[vim]]></category>
+
+		<guid isPermaLink="false">/?p=188</guid>
+		<description><![CDATA[The symptoms are starting to show: fever, babbling, countless browser tabs and an insatiable urge to learn Lisp faster than it can be typed. After just one evening of playing with my configuration I have a system for me to define and load configuration files with ease as well as sync my plugin files from <a class="read-more" href="/2014/09/17/emacs-a-few-hours-after-exposure/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>The symptoms are starting to show: fever, babbling, countless browser tabs and an insatiable urge to learn Lisp faster than it can be typed. After just one evening of <a href="https://github.com/Wolfy87/dotfiles/tree/52b5819f9e9b63685a0546071db163a1da0ce551/emacs">playing with my configuration</a> I have a system for me to <a href="https://github.com/Wolfy87/dotfiles/blob/52b5819f9e9b63685a0546071db163a1da0ce551/emacs/init.el#L1-L2">define and load configuration</a> files with ease as well as sync my plugin files <a href="https://github.com/Wolfy87/dotfiles/blob/52b5819f9e9b63685a0546071db163a1da0ce551/emacs/libraries/packages.el#L7-L8">from a list</a>. I am considering have it run it&#8217;s sync and update cycle on every load though, I&#8217;ll have to see how that works out. At the very least I need to define an update function, which I think I need to do through the <em>interactive</em> function.</p>
+<p>My baseline setup includes evil mode, evil tabs (to bring me Vim tab functionality) and <a href="https://github.com/Wolfy87/dotfiles/blob/52b5819f9e9b63685a0546071db163a1da0ce551/emacs/libraries/tweaks.el">a stripped back UI</a>. This means no glaring logo when I open it up, it drops straight into a buffer with no strange menus or scroll bars loitering in my peripheral vision. I can already navigate around and edit to my hearts content, albeit in a very simplistic manner, all thanks to evil mode. I am however finding myself instinctively trying to invoke commands from my menagerie of wonderful <a href="https://github.com/Wolfy87/dotfiles/blob/52b5819f9e9b63685a0546071db163a1da0ce551/vim/bundles.vim">Vim plugins</a>, I assume I&#8217;ll have to ease that out of my muscle memory over time.</p>
+<p>My next step will be to hook in ace-jump in such a way that it behaves like like EasyMotion, I can&#8217;t actually work out how to bind things through evil yet, but it can&#8217;t be that hard. I use <em>&lt;space&gt;{motion}</em> for EasyMotion, so I should be able to set up a subset of that. Maybe it&#8217;s already been done and I&#8217;m reinventing the wheel, as usual.</p>
+<p>I&#8217;m essentially using a sparse Vim right now, it feels like I&#8217;m running on some fresh machine with <em>:set nocompatible</em> and <em>:syntax on</em> in <em>~/.vimrc</em>, strangely enough, I&#8217;m okay with this. I actually want to bring over as little Vim functionality as possible, obviously I want my modal editing and efficient navigation as well as familiar window management, but being forced to use the native solutions where possible seems like a good idea.</p>
+<p>For example, I was going to bind <em>:Explore</em> to a netrw equivalent (I assume there is one&#8230;), but I&#8217;ve since decided not to because I assume there&#8217;s some Emacs command that is better suited to the job. I want to keep my Vim powers for editing and Emacs for, well, everything else. I may well have to break this rule at some point to get <a href="https://github.com/tpope/vim-vinegar">vim-vinigar</a> functionality though, hitting the hyphen key to drop into a directory browser and then again to go up a level feels too good to leave behind.</p>
+<p>I think I&#8217;m doing okay so far.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2014/09/17/emacs-a-few-hours-after-exposure/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Why a lover of Vim is going to try Emacs</title>
+		<link>/2014/09/16/why-a-lover-of-vim-is-going-to-try-emacs/</link>
+		<comments>/2014/09/16/why-a-lover-of-vim-is-going-to-try-emacs/#respond</comments>
+		<pubDate>Tue, 16 Sep 2014 17:45:04 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Emacs]]></category>
+		<category><![CDATA[Text Editors]]></category>
+		<category><![CDATA[Vim]]></category>
+		<category><![CDATA[blasphemy]]></category>
+		<category><![CDATA[emacs]]></category>
+		<category><![CDATA[vim]]></category>
+
+		<guid isPermaLink="false">/?p=186</guid>
+		<description><![CDATA[I&#8217;ve been using Vim for a couple of years now, despite that making up around half of my entire career, I feel like I&#8217;ve learnt it rather well. I can&#8217;t hack VimL like tpope, all hail, but I can flit around a large project and edit almost without thinking. The editor becomes a language seared <a class="read-more" href="/2014/09/16/why-a-lover-of-vim-is-going-to-try-emacs/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>I&#8217;ve been using Vim for a couple of years now, despite that making up around half of my entire career, I feel like I&#8217;ve learnt it rather well. I can&#8217;t hack VimL like tpope, <em>all hail</em>, but I can flit around a large project and edit almost without thinking. The editor becomes a language seared into your muscle memory. It&#8217;s so good I couldn&#8217;t possibly drop it for a BBOJAAIDE (Big ball of Java as an IDE).</p>
+<p>So why on earth am I going to give the forbidden Emacs a whirl? Partially because of a very good, and lengthy, discussion over twitter with <a href="https://twitter.com/krisajenkins">@krisajenkins</a> and <a href="https://twitter.com/JasonImison">@JasonImison</a> but also because of the following reasons.</p>
+<h3>Modal editing</h3>
+<p>It has an <em>excellent</em> Vim emulation plugin, I actually struggled a little to find holes in it. Obviously there are some, and that&#8217;s okay, vi3w isn&#8217;t a particularly common command. It truly feels that Emacs is a platform and Evil mode is the editor. It&#8217;s Vim if it was written on top of the &#8220;Emacs OS&#8221; instead of Unix, for example.</p>
+<h3>True async</h3>
+<p>Vim with Dispatch can piggyback on tmux to sort of run stuff in the background, but the result that&#8217;s reported back (when the process is finished) is usually fairly garbled plain text. Emacs can lint my JavaScript on the fly instead of on save, I presume it can do something similar with git signs. When performing a long running search it will allow you to interact with those results <em>before </em>it has finished executing.</p>
+<h3>I want to become a Clojarian</h3>
+<p>Enough said.</p>
+<h3>Lisp > VimL</h3>
+<p>The only way I can describe VimL: A beautiful gnarled old tree that can drop a branch on you at any moment. Also, it&#8217;s filled with huge, angry, bees. It seems like something fun to tinker with, but you soon find yourself in a rabbit hole. With the rabbit. It has rabies.</p>
+<p>I know Elisp isn&#8217;t Clojure, but it&#8217;s still a Lisp. Something about the languages really appeals to me, maybe it&#8217;s the minimal syntax, maybe I just have a thing for parentheses. Only time will tell. But I think using Lisp day to day to configure something to write more Lisp will help me along my journey to functional enlightenment.</p>
+<h3>Finally</h3>
+<p>Learning shit is fun.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2014/09/16/why-a-lover-of-vim-is-going-to-try-emacs/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

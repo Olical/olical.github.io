@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>spacemacs &#8211; Oliver Caldwell&#039;s blog</title>
+	<atom:link href="/tag/spacemacs/feed/" rel="self" type="application/rss+xml" />
+	<link>/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Wed, 18 Oct 2017 13:50:23 +0000</lastBuildDate>
+	<language>en-GB</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>Spacemacs: Emacs + Vim</title>
+		<link>/2014/11/06/spacemacs-emacs-vim/</link>
+		<comments>/2014/11/06/spacemacs-emacs-vim/#comments</comments>
+		<pubDate>Thu, 06 Nov 2014 08:30:00 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Emacs]]></category>
+		<category><![CDATA[Text Editors]]></category>
+		<category><![CDATA[Vim]]></category>
+		<category><![CDATA[dotfiles]]></category>
+		<category><![CDATA[emacs]]></category>
+		<category><![CDATA[spacemacs]]></category>
+		<category><![CDATA[vim]]></category>
+
+		<guid isPermaLink="false">/?p=222</guid>
+		<description><![CDATA[This post is pretty rough around the edges. I wrote it in Google keep as notes I intended to write up and eventually publish nicely but I don&#8217;t have the time. I&#8217;ve done what I can from my phone but I just wanted to get it out there. I hope you find it useful! What <a class="read-more" href="/2014/11/06/spacemacs-emacs-vim/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p><em>This post is pretty rough around the edges. I wrote it in Google keep as notes I intended to write up and eventually publish nicely but I don&#8217;t have the time. I&#8217;ve done what I can from my phone but I just wanted to get it out there. I hope you find it useful!</em></p>
+<hr/>
+<p>What do you get if you put Vim, Emacs and a dash of pneumonic / consistent key bindings in a blender? A blender full of inedible computer parts, but also <a href="https://github.com/syl20bnr/spacemacs">spacemacs</a>. Go skim the readme first, its like a starter kit for Emacs that emulates Vim incredibly well.</p>
+<p>Things that are hard to get over: Unlearning escape and using fd (still ironing out bugs). Using space for everything, unlearning :w and using SPCfs. SPCgs for git status (magit). SPCph for projectile.</p>
+<p>Configuration layers are excellent. I have my local one and will (eventually) push it upstream for people to hook into. You can activate them by adding the name to the list in <em>~/.spacemacs</em>. Easy.</p>
+<p>It&#8217;s neither Vim nor Emacs. It&#8217;s this cool blend that&#8217;s a little hard to get your head around at first but I think Sylvain, the author, is correct: The best editor is a mix of the two. You have the commands of Emacs with the modal keys of Vim. The huge buster sword of Emacs combined with the subtle dagger of Vim.</p>
+<p>I&#8217;m trying to make JavaScript badass out of the box in the core repository, but using my overlay makes it even better. Or so I feel anyway. I&#8217;m really happy with my JavaScript setup right now. A lot of the changes I built into my layer were actually pulled into the core anyway, so my layer has been getting smaller and smaller.</p>
+<p>When you find yourself holding a modifier for something, M-x for example, hit SPC? and check if there&#8217;s a space leader binding for it. In the case of M-x that would be SPC:. Emacs is not modal in any way, so when you have to use default emacs bindings now and again it feels odd. Vim has some things that are not modal too, such as window management. Spacemacs seems to do a better job than Vim in some places. Everything&#8217;s modal. If it isn&#8217;t, make it modal and PR it in.</p>
+<p>You shouldn&#8217;t even need Ex mode a lot of the time! I&#8217;d highly recommend giving it a go if you are a fan of either editor.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2014/11/06/spacemacs-emacs-vim/feed/</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+		</item>
+	</channel>
+</rss>

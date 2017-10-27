@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>asynchronicity &#8211; Oliver Caldwell&#039;s blog</title>
+	<atom:link href="/tag/asynchronicity/feed/" rel="self" type="application/rss+xml" />
+	<link>/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Wed, 18 Oct 2017 13:50:23 +0000</lastBuildDate>
+	<language>en-GB</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>Asynchronicity and JavaScript</title>
+		<link>/2016/01/24/asynchronicity-and-javascript/</link>
+		<comments>/2016/01/24/asynchronicity-and-javascript/#comments</comments>
+		<pubDate>Sun, 24 Jan 2016 19:45:22 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Asynchronicity]]></category>
+		<category><![CDATA[JavaScript]]></category>
+		<category><![CDATA[async]]></category>
+		<category><![CDATA[asynchronicity]]></category>
+		<category><![CDATA[csp]]></category>
+		<category><![CDATA[promises]]></category>
+
+		<guid isPermaLink="false">/?p=418</guid>
+		<description><![CDATA[There are two very difficult things in UI development, well, there&#8217;s a lot more than that but here&#8217;s two very important aspects. Management of state Management of asynchronicity A lot has been done to make state less&#8230; evil? (see React, Redux, Cycle, Elm, Om, etc) The same can&#8217;t really be said for async operations, we <a class="read-more" href="/2016/01/24/asynchronicity-and-javascript/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>There are two very difficult things in UI development, well, there&#8217;s a lot more than that but here&#8217;s two very important aspects.</p>
+<ul>
+<li>Management of state</li>
+<li>Management of asynchronicity</li>
+</ul>
+<p>A lot has been done to make state less&#8230; evil? (see React, Redux, Cycle, Elm, Om, etc) The same can&#8217;t really be said for async operations, we kind of dumped some bare bones promise implementation into the language then wandered off to rendering land having done a good job painting callbacks in another colour.</p>
+<p><a href="https://en.wikipedia.org/wiki/Futures_and_promises">Wikipedia</a> describes futures and promises like so.</p>
+<blockquote><p>Futures and promises originated in <a title="Functional programming" href="https://en.wikipedia.org/wiki/Functional_programming">functional programming</a> and related paradigms (such as <a title="Logic programming" href="https://en.wikipedia.org/wiki/Logic_programming">logic programming</a>) to decouple a value (a future) from how it was computed (a promise), allowing the computation to be done more flexibly, notably by parallelizing it. It later found use in <a title="Distributed computing" href="https://en.wikipedia.org/wiki/Distributed_computing">distributed computing</a>, in reducing the latency from communication round trips. <strong>More recently, it has gained popularity by allowing writing asynchronous programs in <a title="Direct style" href="https://en.wikipedia.org/wiki/Direct_style">direct style</a>, rather than in <a title="Continuation-passing style" href="https://en.wikipedia.org/wiki/Continuation-passing_style">continuation-passing style</a>.</strong></p></blockquote>
+<p>Hang on, apparently they allow us to program async in a direct style, which is <em>really</em> nice instead of a continuation passing style (see: callbacks). So <a href="http://clojure.org/">Clojure</a> gives us <a href="https://clojuredocs.org/clojure.core/future">futures</a> which allows async (In another thread! Amazing!) but in a direct programming style. We can follow the code in one function, we don&#8217;t have to go back and forth to work out when it&#8217;ll return.</p>
+<p>JavaScript promises on the other hand, callbacks. Callbacks everywhere. Callbacks all the way down. JavaScript promises are just glorified callbacks, it&#8217;s just another syntax and another style, but it still has the same problems. The caller is not in control of pulling the value back through. It&#8217;s continuation passing style, the thing promises and futures are supposed to help you avoid, but they&#8217;re built upon those concepts in JavaScript.</p>
+<p><a href="/wp-content/uploads/2016/01/wp-1453555723852.jpg" rel="attachment wp-att-420"><img class="size-large wp-image-420 aligncenter" src="/wp-content/uploads/2016/01/wp-1453555723852-1024x768.jpg" alt="wp-1453555723852.jpg" width="640" height="480" srcset="/wp-content/uploads/2016/01/wp-1453555723852-1024x768.jpg 1024w, /wp-content/uploads/2016/01/wp-1453555723852-300x225.jpg 300w, /wp-content/uploads/2016/01/wp-1453555723852-768x576.jpg 768w" sizes="(max-width: 640px) 100vw, 640px" /></a></p>
+<p>So I&#8217;m guessing you think I&#8217;m wrong and that promises in JavaScript are actually different from callback based spaghetti hell in some way? Syntactically, sure, but that&#8217;s as deep as the difference goes.</p><pre class="crayon-plain-tag">function slowAdd(a, b, cb) {
+	const result = a + b
+	setTimeout(() =&gt; cb(result), 1000)
+}
+
+function slowMultiply(a, b, cb) {
+	const result = a * b
+	setTimeout(() =&gt; cb(result), 1000)
+}
+
+slowAdd(5, 10, res =&gt; slowMultiply(res, 2, res =&gt; console.log(res)))</pre><p>That was just callbacks, but I&#8217;m working asynchronously and passing the results through. If you wanted error handling you just have to make the first argument to the callback the &#8220;err&#8221; argument. I&#8217;ve always thought that naming makes the function look uncertain though. It reads like it&#8217;s giving an interview after a particularly bad game of football.</p><pre class="crayon-plain-tag">function slowAdd(a, b) {
+	const result = a + b
+	return new Promise(resolve =&gt; setTimeout(() =&gt; resolve(result), 1000))
+}
+
+function slowMultiply(a, b) {
+	const result = a * b
+	return new Promise(resolve =&gt; setTimeout(() =&gt; resolve(result), 1000))
+}
+
+slowAdd(5, 10)
+	.then(res =&gt; slowMultiply(res, 2))
+	.then(res =&gt; console.log(res))</pre><p>Notice the similarities? The callback approach even looks cleaner in this situation, in my opinion. I&#8217;m not even a proponent of callbacks over promises. I&#8217;m a proponent of neither, my point being that they&#8217;re essentially the exact same thing, you just put the callbacks somewhere else but they&#8217;re still there.</p>
+<p>The promises we have right now add some value over callbacks, but not much. They&#8217;re just a different way of writing the same spaghetti with less indentation. The only good thing about them are the 3rd party implementations (such as <a href="http://bluebirdjs.com/docs/api-reference.html">bluebird</a>) that add some nice functions to handle asynchronous transformation of data. Other than that, promises ~= callbacks.</p>
+<h2>If not those, then what?</h2>
+<p>I&#8217;m calling callbacks bad and promises essentially the same thing with some minor differences. What we actually need is something that allows us to invert control and pull data through (potentially in a blocking fashion) thus eliminating the need for callbacks and handing off control to another function which may <em>never</em> give you the control back.</p>
+<p>Different languages solve this problem in various ways, <a href="https://www.golang-book.com/books/intro/10">Go</a> is fantastic at this, as is <a href="https://clojure.github.io/core.async/">Clojure</a> (which copies the good ideas in Go) among many other languages that were designed for concurrency from the ground up. JavaScript was not designed for concurrency, it was just about designed to make forms submit when a user clicks a button and it struggles with that <del>sometimes</del> most of the time. A lot of the <em>good</em> languages handle this with channels or communicating sequential processes (CSP). There are many other solutions, far better than what JavaScript has to offer, but CSP is the only one I&#8217;m highlighting here.</p>
+<p>ES6 is adding <a href="https://davidwalsh.name/es6-generators">generators</a> and ES7 is adding <a href="https://jakearchibald.com/2014/es7-async-functions/">async/await</a>. You can actually use CSP with generators like Clojure and Go if you try hard enough, <a href="http://swannodette.github.io/2013/08/24/es6-generators-and-csp/">David Nolen wrote something really cool</a> regarding this. There&#8217;s also <a href="https://github.com/ubolonton/js-csp">entire libraries</a> to allow use of CSP in JavaScript via generators. I&#8217;m not sure if it&#8217;s the right way to go since generators are essentially just a way to lazily generate sequences with async as a side effect, but it&#8217;s better than promises. As far as I can tell, async/await is just another syntactic abstraction on top of promises.</p>
+<h2>These aren&#8217;t the solutions</h2>
+<p>All of this syntax being added to JavaScript seems like a really bad idea. Each comes with it&#8217;s own rules, complexities and even more libraries just to be able to use them conveniently. My advice? Use a good language that compiles to JavaScript to escape the impending madness. Yes it works and sort of gets the job done, but setting fire to your house will warm it up and keep heating bills down. It doesn&#8217;t mean there isn&#8217;t a far better alternative out there.</p>
+<p>Do yourself and your team a favour, investigate very well established languages that compile to JavaScript and make async (among many other things) easy by default. You don&#8217;t need to use them if you decide it&#8217;s not for you, but at the very least you may learn that promises aren&#8217;t the best thing since sliced bread as most JavaScript developers appear to believe. They&#8217;re actually pretty mediocre compared to other solutions. Not all promises are bad though, the whole future/promise thing in Scala and Clojure is pretty good, we just have a <em>very</em> simplistic implementation that adds 30% of the value.</p>
+<p>I was originally going to write about how generators + CSP (<strong>not promises</strong>) and maybe async/await would come to save us, but after researching them I honestly can&#8217;t do that. Just think of all the legacy code you&#8217;ll constantly have to wrap and adapt to when each one uses a different approach to containing the async madness. Stick to something simple and widely used (even if it&#8217;s terrible in comparison to other good async solutions) or bite the bullet and learn a good language with good async tooling and use that instead.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2016/01/24/asynchronicity-and-javascript/feed/</wfw:commentRss>
+		<slash:comments>2</slash:comments>
+		</item>
+	</channel>
+</rss>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	
+	>
+<channel>
+	<title>Comments on: An introduction to ClojureScript</title>
+	<atom:link href="/2016/02/27/an-introduction-to-clojurescript/feed/" rel="self" type="application/rss+xml" />
+	<link>/2016/02/27/an-introduction-to-clojurescript/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Mon, 22 May 2017 19:57:20 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>By: Oliver Caldwell</title>
+		<link>/2016/02/27/an-introduction-to-clojurescript/#comment-280</link>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+		<pubDate>Mon, 12 Sep 2016 19:02:00 +0000</pubDate>
+		<guid isPermaLink="false">/?p=452#comment-280</guid>
+		<description><![CDATA[Thank you very much for this, it means a lot. I hope you can learn from either my mistakes or my non-mistakes :)
+
+I hope I can teach more in the future too! I&#039;ll have more to say on Structure and Interpretation of Computer Programs in the coming months. Many interesting topics in there.
+
+Happy learning!]]></description>
+		<content:encoded><![CDATA[<p>Thank you very much for this, it means a lot. I hope you can learn from either my mistakes or my non-mistakes 🙂</p>
+<p>I hope I can teach more in the future too! I&#8217;ll have more to say on Structure and Interpretation of Computer Programs in the coming months. Many interesting topics in there.</p>
+<p>Happy learning!</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Jason Sebring</title>
+		<link>/2016/02/27/an-introduction-to-clojurescript/#comment-279</link>
+		<dc:creator><![CDATA[Jason Sebring]]></dc:creator>
+		<pubDate>Mon, 12 Sep 2016 17:42:00 +0000</pubDate>
+		<guid isPermaLink="false">/?p=452#comment-279</guid>
+		<description><![CDATA[Just want to say thanks for being a great programmer and proliferating your work for others to use as I came across your link in a bower package.]]></description>
+		<content:encoded><![CDATA[<p>Just want to say thanks for being a great programmer and proliferating your work for others to use as I came across your link in a bower package.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: David Stephan</title>
+		<link>/2016/02/27/an-introduction-to-clojurescript/#comment-276</link>
+		<dc:creator><![CDATA[David Stephan]]></dc:creator>
+		<pubDate>Thu, 11 Aug 2016 06:11:00 +0000</pubDate>
+		<guid isPermaLink="false">/?p=452#comment-276</guid>
+		<description><![CDATA[I have read this blog and for me this blog is worth shared. I have got all the required information which I was wondering about clojurescript.. Thanks for this knowledge. :)]]></description>
+		<content:encoded><![CDATA[<p>I have read this blog and for me this blog is worth shared. I have got all the required information which I was wondering about clojurescript.. Thanks for this knowledge. 🙂</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>prolog &#8211; Oliver Caldwell&#039;s blog</title>
+	<atom:link href="/tag/prolog/feed/" rel="self" type="application/rss+xml" />
+	<link>/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Wed, 18 Oct 2017 13:50:23 +0000</lastBuildDate>
+	<language>en-GB</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>Some thoughts on Prolog</title>
+		<link>/2015/05/03/some-thoughts-on-prolog/</link>
+		<comments>/2015/05/03/some-thoughts-on-prolog/#respond</comments>
+		<pubDate>Sun, 03 May 2015 10:00:21 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Langs]]></category>
+		<category><![CDATA[logic]]></category>
+		<category><![CDATA[prolog]]></category>
+
+		<guid isPermaLink="false">/?p=328</guid>
+		<description><![CDATA[I usually write some notes as I read and work then pad those notes out into a full post after I&#8217;m done with the chapter. This time I&#8217;m just going to publish it as is (pretty much). Initial thoughts Very concise. Beautiful, after you spend hours getting it working. Reminds me of my experience with <a class="read-more" href="/2015/05/03/some-thoughts-on-prolog/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>I usually write some notes as I read and work then pad those notes out into a full post after I&#8217;m done with the chapter. This time I&#8217;m just going to publish it as is (pretty much).</p>
+<h3>Initial thoughts</h3>
+<p>Very concise. Beautiful, after you spend hours getting it working. Reminds me of my experience with Haskell (which isn&#8217;t much).</p>
+<p>Obviously not something you&#8217;d want to use for every problem, but as the anecdote in the book illustrates, it&#8217;s great for working out schedules for example.</p>
+<p>I could see myself defining a recipe with it and then getting the optimal way to cook it with how long I think it&#8217;ll take me to perform each step.</p>
+<h3>The exercises</h3>
+<p>Found it difficult to get a solution that worked but was also tail recursive. Also struggled with working out why I would call my function and Prolog kept giving me the same result until I hit enter. So semi-colon would continually yield 10 for example (which was correct) but wouldn&#8217;t just execute and return the single value.</p>
+<p>Reminded me of wiring chips together in <a href="http://en.wikipedia.org/wiki/Hardware_description_language">HDL</a> for the <a href="https://www.coursera.org/course/nand2tetris1">nand2tetris</a> course at some points.</p>
+<p>I realised after I&#8217;d written my own <em>min_list</em> implementation that all it wanted me to do was use <em>min_list</em>. Oops. Could have saved some time there.</p>
+<p>The sudoku and 8 queens solvers on day 3 are beautiful. It feels I&#8217;m comparing a normal TDD tool to <a href="https://hackage.haskell.org/package/QuickCheck">quickcheck</a>. The former has you defining every step whilst the latter has you set the rules and it&#8217;ll figure out the rest.</p>
+<h3>Closing thoughts</h3>
+<p>Sure this &#8220;program is just rules&#8221; idea only applies well to certain problems (sudoku and testing for example) but that doesn&#8217;t mean we should ignore these tools because they&#8217;re not completely general. I could see myself falling back to Prolog (or a logic library in my host language at least) for relevant problems in the future. There&#8217;s a time and a place basically, I&#8217;m just glad I know to look out for those opportunities now.</p>
+<p>I think <a href="http://minikanren.org/">miniKanren</a> (which I&#8217;ll be looking at soon) may spur me on to get logic programming into my day to day work for the right kinds of problems. I&#8217;d certainly prefer that to the JavaScript &#8220;model&#8221; monstrosities that we so frequently rely on as JavaScript developers. I was surprised to find that core.logic (from Clojure) is based on miniKanren, so that&#8217;s looking more and more interesting.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2015/05/03/some-thoughts-on-prolog/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

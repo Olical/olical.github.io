@@ -1,0 +1,1021 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Oliver Caldwell &#8211; Oliver Caldwell&#039;s blog</title>
+	<atom:link href="/author/olical/feed/" rel="self" type="application/rss+xml" />
+	<link>/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Wed, 18 Oct 2017 13:50:23 +0000</lastBuildDate>
+	<language>en-GB</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>Taming clojure.spec with expound</title>
+		<link>/2017/10/18/taming-clojure-spec-with-expound/</link>
+		<comments>/2017/10/18/taming-clojure-spec-with-expound/#respond</comments>
+		<pubDate>Wed, 18 Oct 2017 12:14:45 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Uncategorised]]></category>
+
+		<guid isPermaLink="false">/?p=593</guid>
+		<description><![CDATA[From Clojure 1.9 and up, the core language is guarded by various clojure.spec definitions. This means, even if you&#8217;re not using spec directly yourself, you will potentially encounter spec derived errors. These errors, much like all errors in Clojure, are extremely verbose and make it hard to discern what the actual problem is at a <a class="read-more" href="/2017/10/18/taming-clojure-spec-with-expound/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>From Clojure 1.9 and up, the core language is guarded by various <a href="https://clojure.org/about/spec">clojure.spec</a> definitions. This means, even if you&#8217;re not using spec directly yourself, you will potentially encounter spec derived errors.</p>
+<p>These errors, much like all errors in Clojure, are extremely verbose and make it hard to discern what the actual problem is at a glance. These errors are great for machines but not so great for humans, who happen to be the primary consumer of these errors. I consider this to be a bit of a design flaw within spec, maybe this will improve over time.</p>
+<p>Until such potential improvements are implemented, thanks to the power and wonders of Clojure, we can use a library called <a href="https://github.com/bhb/expound">expound</a> to make our lives easier. This tool is inspired by Elm and it shows. Without expound and this incorrect syntax:</p><pre class="crayon-plain-tag">(let [{:a b} {:a 10}]
+  b)</pre><p>We get this beauty of an error from Clojure itself:</p><pre class="crayon-plain-tag">CompilerException clojure.lang.ExceptionInfo: Call to clojure.core/let did not conform to spec:
+In: [0 0 0 0] val: :a fails spec: :clojure.core.specs.alpha/local-name at: [:args :bindings :binding :map :mb 0 :sym] predicate: simple-symbol?
+In: [0 0 0 0] val: :a fails spec: :clojure.core.specs.alpha/seq-binding-form at: [:args :bindings :binding :map :mb 0 :seq] predicate: vector?
+In: [0 0 0 0] val: :a fails spec: :clojure.core.specs.alpha/map-bindings at: [:args :bindings :binding :map :mb 0 :map] predicate: coll?
+In: [0 0 0 0] val: :a fails spec: :clojure.core.specs.alpha/map-special-binding at: [:args :bindings :binding :map :mb 0 :map] predicate: map?
+In: [0 0 0 0] val: :a fails spec: :clojure.core.specs.alpha/ns-keys at: [:args :bindings :binding :map :nsk 0] predicate: qualified-keyword?
+In: [0 0 0 1] val: b fails spec: :clojure.core.specs.alpha/ns-keys at: [:args :bindings :binding :map :nsk 1] predicate: vector?
+In: [0 0 0 0] val: :a fails spec: :clojure.core.specs.alpha/map-bindings at: [:args :bindings :binding :map :msb 0] predicate: #{:as :or :syms :keys :strs}
+In: [0 0] val: {:a b} fails spec: :clojure.core.specs.alpha/local-name at: [:args :bindings :binding :sym] predicate: simple-symbol?
+In: [0 0] val: {:a b} fails spec: :clojure.core.specs.alpha/seq-binding-form at: [:args :bindings :binding :seq] predicate: vector?
+:clojure.spec.alpha/spec  #object[clojure.spec.alpha$regex_spec_impl$reify__1200 0x6ef7c8e9 "clojure.spec.alpha$regex_spec_impl$reify__1200@6ef7c8e9"]
+:clojure.spec.alpha/value  ([{:a b} {:a 10}] b)
+:clojure.spec.alpha/args  ([{:a b} {:a 10}] b)
+ #:clojure.spec.alpha{:problems ({:path [:args :bindings :binding :sym], :pred clojure.core/simple-symbol?, :val {:a b}, :via [:clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/binding :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/local-name], :in [0 0]} {:path [:args :bindings :binding :seq], :pred clojure.core/vector?, :val {:a b}, :via [:clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/binding :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/seq-binding-form], :in [0 0]} {:path [:args :bindings :binding :map :mb 0 :sym], :pred clojure.core/simple-symbol?, :val :a, :via [:clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/binding :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/map-binding-form :clojure.core.specs.alpha/map-bindings :clojure.core.specs.alpha/map-binding :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/local-name], :in [0 0 0 0]} {:path [:args :bindings :binding :map :mb 0 :seq], :pred clojure.core/vector?, :val :a, :via [:clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/binding :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/map-binding-form :clojure.core.specs.alpha/map-bindings :clojure.core.specs.alpha/map-binding :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/seq-binding-form], :in [0 0 0 0]} {:path [:args :bindings :binding :map :mb 0 :map], :pred clojure.core/coll?, :val :a, :via [:clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/binding :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/map-binding-form :clojure.core.specs.alpha/map-bindings :clojure.core.specs.alpha/map-binding :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/map-binding-form :clojure.core.specs.alpha/map-bindings], :in [0 0 0 0]} {:path [:args :bindings :binding :map :mb 0 :map], :pred map?, :val :a, :via [:clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/binding :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/map-binding-form :clojure.core.specs.alpha/map-bindings :clojure.core.specs.alpha/map-binding :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/map-binding-form :clojure.core.specs.alpha/map-special-binding], :in [0 0 0 0]} {:path [:args :bindings :binding :map :nsk 0], :pred clojure.core/qualified-keyword?, :val :a, :via [:clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/binding :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/map-binding-form :clojure.core.specs.alpha/map-bindings :clojure.core.specs.alpha/ns-keys], :in [0 0 0 0]} {:path [:args :bindings :binding :map :nsk 1], :pred clojure.core/vector?, :val b, :via [:clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/binding :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/map-binding-form :clojure.core.specs.alpha/map-bindings :clojure.core.specs.alpha/ns-keys], :in [0 0 0 1]} {:path [:args :bindings :binding :map :msb 0], :pred #{:as :or :syms :keys :strs}, :val :a, :via [:clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/binding :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/map-binding-form :clojure.core.specs.alpha/map-bindings], :in [0 0 0 0]}), :spec #object[clojure.spec.alpha$regex_spec_impl$reify__1200 0x6ef7c8e9 "clojure.spec.alpha$regex_spec_impl$reify__1200@6ef7c8e9"], :value ([{:a b} {:a 10}] b), :args ([{:a b} {:a 10}] b)}, compiling:(/home/ollie/code.clj:20:1)</pre><p>Can you tell what&#8217;s going on? Probably after a little bit of time if you know what you&#8217;re looking for. Imagine this in a much more complex case though, let&#8217;s say within a few layers of macros. Now here&#8217;s the same response through expound:</p><pre class="crayon-plain-tag">CompilerException clojure.lang.ExceptionInfo: Call to clojure.core/let did not conform to spec:
+-- Spec failed --------------------
+
+  ([[:a ...] ...] ...)
+     ^^
+
+should satisfy
+
+  simple-symbol?
+
+or
+
+  vector?
+
+or
+
+  coll?
+
+or
+
+  map?
+
+or
+
+  qualified-keyword?
+
+-- Relevant specs -------
+
+:clojure.core.specs.alpha/ns-keys:
+  (clojure.spec.alpha/tuple
+   (clojure.spec.alpha/and
+    clojure.core/qualified-keyword?
+    (fn*
+     [p1__45#]
+     (clojure.core/-&gt; p1__45# clojure.core/name #{"syms" "keys"})))
+   (clojure.spec.alpha/coll-of
+    clojure.core/simple-symbol?
+    :kind
+    clojure.core/vector?))
+:clojure.core.specs.alpha/map-special-binding:
+  (clojure.spec.alpha/keys
+   :opt-un
+   [:clojure.core.specs.alpha/as
+    :clojure.core.specs.alpha/or
+    :clojure.core.specs.alpha/keys
+    :clojure.core.specs.alpha/syms
+    :clojure.core.specs.alpha/strs])
+:clojure.core.specs.alpha/seq-binding-form:
+  (clojure.spec.alpha/and
+   clojure.core/vector?
+   (clojure.spec.alpha/cat
+    :elems
+    (clojure.spec.alpha/* :clojure.core.specs.alpha/binding-form)
+    :rest
+    (clojure.spec.alpha/?
+     (clojure.spec.alpha/cat
+      :amp
+      #{'&amp;}
+      :form
+      :clojure.core.specs.alpha/binding-form))
+    :as
+    (clojure.spec.alpha/?
+     (clojure.spec.alpha/cat
+      :as
+      #{:as}
+      :sym
+      :clojure.core.specs.alpha/local-name))))
+:clojure.core.specs.alpha/local-name:
+  (clojure.spec.alpha/and
+   clojure.core/simple-symbol?
+   (clojure.core/fn [%] (clojure.core/not= '&amp; %)))
+:clojure.core.specs.alpha/map-binding:
+  (clojure.spec.alpha/tuple
+   :clojure.core.specs.alpha/binding-form
+   clojure.core/any?)
+:clojure.core.specs.alpha/map-bindings:
+  (clojure.spec.alpha/every
+   (clojure.spec.alpha/or
+    :mb
+    :clojure.core.specs.alpha/map-binding
+    :nsk
+    :clojure.core.specs.alpha/ns-keys
+    :msb
+    (clojure.spec.alpha/tuple
+     #{:as :or :syms :keys :strs}
+     clojure.core/any?))
+   :into
+   {})
+:clojure.core.specs.alpha/map-binding-form:
+  (clojure.spec.alpha/merge
+   :clojure.core.specs.alpha/map-bindings
+   :clojure.core.specs.alpha/map-special-binding)
+:clojure.core.specs.alpha/binding-form:
+  (clojure.spec.alpha/or
+   :sym
+   :clojure.core.specs.alpha/local-name
+   :seq
+   :clojure.core.specs.alpha/seq-binding-form
+   :map
+   :clojure.core.specs.alpha/map-binding-form)
+:clojure.core.specs.alpha/binding:
+  (clojure.spec.alpha/cat
+   :binding
+   :clojure.core.specs.alpha/binding-form
+   :init-expr
+   clojure.core/any?)
+:clojure.core.specs.alpha/bindings:
+  (clojure.spec.alpha/and
+   clojure.core/vector?
+   (clojure.spec.alpha/* :clojure.core.specs.alpha/binding))
+
+-- Spec failed --------------------
+
+  ([[... b] ...] ...)
+         ^
+
+should satisfy
+
+  vector?
+
+-- Relevant specs -------
+
+:clojure.core.specs.alpha/ns-keys:
+  (clojure.spec.alpha/tuple
+   (clojure.spec.alpha/and
+    clojure.core/qualified-keyword?
+    (fn*
+     [p1__45#]
+     (clojure.core/-&gt; p1__45# clojure.core/name #{"syms" "keys"})))
+   (clojure.spec.alpha/coll-of
+    clojure.core/simple-symbol?
+    :kind
+    clojure.core/vector?))
+:clojure.core.specs.alpha/map-bindings:
+  (clojure.spec.alpha/every
+   (clojure.spec.alpha/or
+    :mb
+    :clojure.core.specs.alpha/map-binding
+    :nsk
+    :clojure.core.specs.alpha/ns-keys
+    :msb
+    (clojure.spec.alpha/tuple
+     #{:as :or :syms :keys :strs}
+     clojure.core/any?))
+   :into
+   {})
+:clojure.core.specs.alpha/map-binding-form:
+  (clojure.spec.alpha/merge
+   :clojure.core.specs.alpha/map-bindings
+   :clojure.core.specs.alpha/map-special-binding)
+:clojure.core.specs.alpha/binding-form:
+  (clojure.spec.alpha/or
+   :sym
+   :clojure.core.specs.alpha/local-name
+   :seq
+   :clojure.core.specs.alpha/seq-binding-form
+   :map
+   :clojure.core.specs.alpha/map-binding-form)
+:clojure.core.specs.alpha/binding:
+  (clojure.spec.alpha/cat
+   :binding
+   :clojure.core.specs.alpha/binding-form
+   :init-expr
+   clojure.core/any?)
+:clojure.core.specs.alpha/bindings:
+  (clojure.spec.alpha/and
+   clojure.core/vector?
+   (clojure.spec.alpha/* :clojure.core.specs.alpha/binding))
+
+-- Spec failed --------------------
+
+  ([[:a ...] ...] ...)
+     ^^
+
+should be one of: `:as`,`:or`,`:syms`,`:keys`,`:strs`
+
+-- Relevant specs -------
+
+:clojure.core.specs.alpha/map-bindings:
+  (clojure.spec.alpha/every
+   (clojure.spec.alpha/or
+    :mb
+    :clojure.core.specs.alpha/map-binding
+    :nsk
+    :clojure.core.specs.alpha/ns-keys
+    :msb
+    (clojure.spec.alpha/tuple
+     #{:as :or :syms :keys :strs}
+     clojure.core/any?))
+   :into
+   {})
+:clojure.core.specs.alpha/map-binding-form:
+  (clojure.spec.alpha/merge
+   :clojure.core.specs.alpha/map-bindings
+   :clojure.core.specs.alpha/map-special-binding)
+:clojure.core.specs.alpha/binding-form:
+  (clojure.spec.alpha/or
+   :sym
+   :clojure.core.specs.alpha/local-name
+   :seq
+   :clojure.core.specs.alpha/seq-binding-form
+   :map
+   :clojure.core.specs.alpha/map-binding-form)
+:clojure.core.specs.alpha/binding:
+  (clojure.spec.alpha/cat
+   :binding
+   :clojure.core.specs.alpha/binding-form
+   :init-expr
+   clojure.core/any?)
+:clojure.core.specs.alpha/bindings:
+  (clojure.spec.alpha/and
+   clojure.core/vector?
+   (clojure.spec.alpha/* :clojure.core.specs.alpha/binding))
+
+-------------------------
+Detected 3 errors
+ #:clojure.spec.alpha{:problems ({:path [:args :bindings :binding :sym], :pred clojure.core/simple-symbol?, :val {:a b}, :via [:clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/binding :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/local-name], :in [0 0]} {:path [:args :bindings :binding :seq], :pred clojure.core/vector?, :val {:a b}, :via [:clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/binding :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/seq-binding-form], :in [0 0]} {:path [:args :bindings :binding :map :mb 0 :sym], :pred clojure.core/simple-symbol?, :val :a, :via [:clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/binding :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/map-binding-form :clojure.core.specs.alpha/map-bindings :clojure.core.specs.alpha/map-binding :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/local-name], :in [0 0 0 0]} {:path [:args :bindings :binding :map :mb 0 :seq], :pred clojure.core/vector?, :val :a, :via [:clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/binding :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/map-binding-form :clojure.core.specs.alpha/map-bindings :clojure.core.specs.alpha/map-binding :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/seq-binding-form], :in [0 0 0 0]} {:path [:args :bindings :binding :map :mb 0 :map], :pred clojure.core/coll?, :val :a, :via [:clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/binding :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/map-binding-form :clojure.core.specs.alpha/map-bindings :clojure.core.specs.alpha/map-binding :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/map-binding-form :clojure.core.specs.alpha/map-bindings], :in [0 0 0 0]} {:path [:args :bindings :binding :map :mb 0 :map], :pred map?, :val :a, :via [:clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/binding :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/map-binding-form :clojure.core.specs.alpha/map-bindings :clojure.core.specs.alpha/map-binding :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/map-binding-form :clojure.core.specs.alpha/map-special-binding], :in [0 0 0 0]} {:path [:args :bindings :binding :map :nsk 0], :pred clojure.core/qualified-keyword?, :val :a, :via [:clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/binding :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/map-binding-form :clojure.core.specs.alpha/map-bindings :clojure.core.specs.alpha/ns-keys], :in [0 0 0 0]} {:path [:args :bindings :binding :map :nsk 1], :pred clojure.core/vector?, :val b, :via [:clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/binding :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/map-binding-form :clojure.core.specs.alpha/map-bindings :clojure.core.specs.alpha/ns-keys], :in [0 0 0 1]} {:path [:args :bindings :binding :map :msb 0], :pred #{:as :or :syms :keys :strs}, :val :a, :via [:clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/binding :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/map-binding-form :clojure.core.specs.alpha/map-bindings], :in [0 0 0 0]}), :spec #object[clojure.spec.alpha$regex_spec_impl$reify__1200 0x54ba9618 "clojure.spec.alpha$regex_spec_impl$reify__1200@54ba9618"], :value ([{:a b} {:a 10}] b), :args ([{:a b} {:a 10}] b)}, compiling:(/home/ollie/code.clj:20:1)</pre><p>That&#8217;s much better! Suddenly you don&#8217;t have to run a REPL in your brain to understand what went wrong, the machine is telling you exactly what is wrong, where and what you can do instead. It may not be as succinct as Elm, but the information at the start is just as useful.</p>
+<h2>Integration</h2>
+<p>Luckily, expound happens to be extremely easy to use. Hopefully we can make that easier by including it by default in a lot of beginner friendly code too. The README does a great job of explaining how to use it.</p>
+<blockquote><p>Replace calls to <code>clojure.spec.alpha/explain</code> with <code>expound.alpha/expound</code> and to <code>clojure.spec.alpha/explain-str</code> with <code>expound.alpha/expound-str</code>.</p></blockquote>
+<p>If you don&#8217;t use <em>explain</em> directly and you&#8217;d like <em>all</em> spec errors to be run through expound (including those from Clojure the language), then you can hook it in globally like the following snippet. I&#8217;d recommend running this within your <em>(ns user)</em> before your REPL loads or in the <em>main</em> ns of your application before it starts up.</p><pre class="crayon-plain-tag">(ns user
+  (:require [clojure.spec.alpha :as s]
+            [expound.alpha :as expound]))
+ 
+;; If you're doing this in the user ns for your repl...
+(alter-var-root #'s/*explain-out* (constantly expound/printer))
+
+;; Otherwise, you can use the method from the README.
+(set! s/*explain-out* expound/printer)</pre><p>Now any spec error generated from here on out will be formatted for human consumption by expound, excellent!</p>
+<p>I doubt I&#8217;m alone in thinking that I&#8217;d love this to be the default within Clojure or at least extremely widespread in it&#8217;s usage. Much like figwheel for ClojureScript projects, we would always use expound alongside our specs. Maybe CIDER could be a good entry point for this addition.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2017/10/18/taming-clojure-spec-with-expound/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>An introduction to transcriptor</title>
+		<link>/2017/10/06/an-introduction-to-transcriptor/</link>
+		<comments>/2017/10/06/an-introduction-to-transcriptor/#respond</comments>
+		<pubDate>Fri, 06 Oct 2017 13:46:57 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Clojure]]></category>
+		<category><![CDATA[clojure]]></category>
+		<category><![CDATA[repl]]></category>
+		<category><![CDATA[testing]]></category>
+		<category><![CDATA[transcriptor]]></category>
+
+		<guid isPermaLink="false">/?p=581</guid>
+		<description><![CDATA[Transcriptor is a new Clojure tool released by Stuard Halloway (who literally writes books on Clojure) that approaches testing from a different angle. I only noticed it after he tweeted the following and I asked for him to elaborate. Luckily enough, he did! status: replacing gratuitous test framework goo with information-rich #clojure ex-info — stuarthalloway <a class="read-more" href="/2017/10/06/an-introduction-to-transcriptor/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p><a href="https://github.com/cognitect-labs/transcriptor">Transcriptor</a> is a new <a href="https://clojure.org/">Clojure</a> tool released by <a href="https://twitter.com/stuarthalloway">Stuard Halloway</a> (who literally writes books on Clojure) that approaches testing from a different angle. I only noticed it after he tweeted the following and I asked for him to elaborate. Luckily enough, he did!</p>
+<blockquote class="twitter-tweet" data-lang="en">
+<p dir="ltr" lang="en">status: replacing gratuitous test framework goo with information-rich <a href="https://twitter.com/hashtag/clojure?src=hash&amp;ref_src=twsrc%5Etfw">#clojure</a> ex-info</p>
+<p>— stuarthalloway (@stuarthalloway) <a href="https://twitter.com/stuarthalloway/status/915902870737833984?ref_src=twsrc%5Etfw">October 5, 2017</a></p></blockquote>
+<p><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script></p>
+<p>It allows you to take a REPL interaction and solidify it within a standalone file, this file can be executed later like a normal test suite. Unlike a test suite, you can check the value of any given line in that file against a <a href="https://clojure.org/about/spec">Clojure spec</a>, allowing you to interleave statements and specs.</p>
+<p>I think this is a fantastic idea that will work great for some people but probably not everyone. The world is very hung up on TDD and code coverage, so some may shun this without a second thought. Here&#8217;s how Stuart outlines the problem in the README (very well put, may I add!):</p>
+<blockquote><p>Testing frameworks often introduce their own abstractions for e.g. evaluation order, data validation, reporting, scope, code reuse, state, and lifecycle. In my experience, these abstractions are <em>always</em> needlessly different from (and inferior to) related abstractions provided by the language itself.</p>
+<p>Adapting an already-working REPL interaction to satisfy such testing abstractions is a waste of time, and it throws away the intermediate REPL results that are valuable in diagnosing a problem.</p>
+<p><u>So transcriptor aims to do <em>less</em>, and impose the bare minimum of cognitive load needed to convert a REPL interaction into a test.</u> The entire API is four functions:</p>
+<ul>
+<li><code>xr/run</code> runs a REPL script and produces a transcript</li>
+<li><code>check!</code> validates the last returned value against a Clojure spec</li>
+<li><code>xr/on-exit</code> lets you register cleanup code to run after <code>xr/run</code> completes</li>
+<li><code>xr/repl-files</code> finds the <code>.repl</code> files in a directory tree</li>
+</ul>
+</blockquote>
+<p>The underline is my addition. I&#8217;ve recently come to admire software that solves a specific problem and nothing more with as little code as possible.</p>
+<h2>Usage</h2>
+<p>Thinking about the possibilities is all well and good, but I&#8217;m going to show you a simple concrete usage, something I felt the README lacked (which is fine, it&#8217;s new!). I&#8217;m going to write a dice roller using the REPL to check the code as I go along. I&#8217;ll move these checks out into <em>.repl</em> files, when I&#8217;m done I should have a working dice roller with an example based test suite all thanks to transcriptor.</p>
+<p>I&#8217;m going into this knowing almost nothing about the problem and tooling involved, so I <a href="https://www.youtube.com/watch?v=w8RdTodkxDo">recorded</a> myself (and <a href="https://www.twitch.tv/olliemakesthings">streamed</a>) as I learned about and built this solution.</p>
+<p><iframe width="560" height="315" src="https://www.youtube.com/embed/w8RdTodkxDo" frameborder="0" allowfullscreen="allowfullscreen"></iframe></p>
+<p>As you can see, there wasn&#8217;t much to it, you can find the repository for this video at <a href="https://github.com/Olical/clj-dice-roller">Olical/clj-dice-roller</a>. First I needed to add the following dependencies to my <em>project.clj:</em></p><pre class="crayon-plain-tag">:dependencies [[org.clojure/clojure "1.9.0-beta1"]
+               [org.clojure/spec.alpha "0.1.123"]
+               [com.cognitect/transcriptor "0.1.5"]]</pre><p>Then I wrote my actual dice rolling namespace like this:</p><pre class="crayon-plain-tag">(ns dice-roller.core)
+
+(defn roll
+  "Rolls some dice, like (roll 3 6) would be three d6."
+  [amount die]
+  (vec (map #(inc (rand-int %)) (filter pos? (repeat amount die)))))</pre><p>I included a bunch of calls under my function to check various aspects, which is easier to convey in the video. I was experimenting with different inputs to see what may cause errors and what I should do when someone gives me bad inputs like negative numbers.</p><pre class="crayon-plain-tag">(roll 0 6) ;; []
+(roll 1 6) ;; [3]
+(roll 3 6) ;; [1 3 6]
+(roll 1 0) ;; Error? Empty?
+(roll -1 6) ;; Error?
+(roll 3 -1) ;; Default to 0????</pre><p>I eventually settled on always returning a vector but not rolling invalid dice, as you can see from the finished function above. I then moved these checks into a <em>.repl</em> file with some spec checks.</p><pre class="crayon-plain-tag">(require '[cognitect.transcriptor :as xr]
+         '[clojure.spec.alpha :as s]
+         '[dice-roller.core :as dice])
+
+(s/def ::d6 (s/and int? #(&lt; 0 % 7)))
+
+(dice/roll 0 6)
+(xr/check! (s/and vector? empty?))
+
+(dice/roll 1 6)
+(xr/check! (s/tuple ::d6))
+
+(dice/roll 3 6)
+(xr/check! (s/tuple ::d6 ::d6 ::d6))
+
+(dice/roll 1 0)
+(xr/check! (s/and vector? empty?))
+
+(dice/roll -1 6)
+(xr/check! (s/and vector? empty?))
+
+(dice/roll 3 -1)
+(xr/check! (s/and vector? empty?))</pre><p>I could run the <em>.repl</em> file with <em>xr/run</em> but I created a file called <em>repls/repl_runner.clj</em> that could run all of my projects REPL files in one go.</p><pre class="crayon-plain-tag">(ns repl-runner
+  (:require [cognitect.transcriptor :as xr]))
+
+(defn -main []
+  (doseq [repl-file (xr/repl-files "./repls")]
+    (xr/run repl-file)))</pre><p>I then added an alias to my <em>project.clj</em> so I could run <em>lein repl</em><em>s</em> to execute the scripts.</p><pre class="crayon-plain-tag">:profiles {:dev {:source-paths ["src" "repls"]}}
+:aliases {"repls" ["run" "-m" "repl-runner"]}</pre><p>You could run <em>lein repls</em> (or maybe <em>lein transcriptions</em> is a better name?) within your CI setup, either instead of or alongside your normal test suite. Here&#8217;s an example output from that command.</p><pre class="crayon-plain-tag">(comment {:transcript "./repls/rolls.repl", :namespace cognitect.transcriptor.t_1})
+(require
+ '[cognitect.transcriptor :as xr]
+ '[clojure.spec.alpha :as s]
+ '[dice-roller.core :as dice])
+=&gt; nil
+
+(s/def
+ :cognitect.transcriptor.t_1/d6
+ (s/and int? (fn* [p1__240#] (&lt; 0 p1__240# 7))))
+=&gt; :cognitect.transcriptor.t_1/d6
+
+(dice/roll 0 6)
+=&gt; []
+
+(xr/check! (s/and vector? empty?))
+=&gt; nil
+
+(dice/roll 1 6)
+=&gt; [1]
+
+(xr/check! (s/tuple :cognitect.transcriptor.t_1/d6))
+=&gt; nil
+
+(dice/roll 3 6)
+=&gt; [2 6 6]
+
+(xr/check!
+ (s/tuple
+  :cognitect.transcriptor.t_1/d6
+  :cognitect.transcriptor.t_1/d6
+  :cognitect.transcriptor.t_1/d6))
+=&gt; nil
+
+(dice/roll 1 0)
+=&gt; []
+
+(xr/check! (s/and vector? empty?))
+=&gt; nil
+
+(dice/roll -1 6)
+=&gt; []
+
+(xr/check! (s/and vector? empty?))
+=&gt; nil
+
+(dice/roll 3 -1)
+=&gt; []
+
+(xr/check! (s/and vector? empty?))
+=&gt; nil</pre><p>And, finally, here&#8217;s what happens if I start returning seqs instead of vectors.</p><pre class="crayon-plain-tag">(comment {:transcript "./repls/rolls.repl", :namespace cognitect.transcriptor.t_1})
+(require
+ '[cognitect.transcriptor :as xr]
+ '[clojure.spec.alpha :as s]
+ '[dice-roller.core :as dice])
+=&gt; nil
+
+(s/def
+ :cognitect.transcriptor.t_1/d6
+ (s/and int? (fn* [p1__240#] (&lt; 0 p1__240# 7))))
+=&gt; :cognitect.transcriptor.t_1/d6
+
+(dice/roll 0 6)
+=&gt; ()
+
+(xr/check! (s/and vector? empty?))
+
+Exception in thread "main" clojure.lang.ExceptionInfo: Transcript assertion failed! val: () fails predicate: vector?
+:clojure.spec.alpha/spec  #object[clojure.spec.alpha$and_spec_impl$reify__875 0x765f05af "clojure.spec.alpha$and_spec_impl$reify__875@765f05af"]
+:clojure.spec.alpha/value  ()
+ #:clojure.spec.alpha{:problems [{:path [], :pred clojure.core/vector?, :val (), :via [], :in []}], :spec #object[clojure.spec.alpha$and_spec_impl$reify__875 0x765f05af "clojure.spec.alpha$and_spec_impl$reify__875@765f05af"], :value ()}, compiling:(/tmp/form-init165212537261342855.clj:1:72)
+	at clojure.lang.Compiler.load(Compiler.java:7526)
+	at clojure.lang.Compiler.loadFile(Compiler.java:7452)
+	at clojure.main$load_script.invokeStatic(main.clj:278)
+	at clojure.main$init_opt.invokeStatic(main.clj:280)
+	at clojure.main$init_opt.invoke(main.clj:280)
+	at clojure.main$initialize.invokeStatic(main.clj:311)
+	at clojure.main$null_opt.invokeStatic(main.clj:345)
+	at clojure.main$null_opt.invoke(main.clj:342)
+	at clojure.main$main.invokeStatic(main.clj:424)
+	at clojure.main$main.doInvoke(main.clj:387)
+	at clojure.lang.RestFn.applyTo(RestFn.java:137)
+	at clojure.lang.Var.applyTo(Var.java:702)
+	at clojure.main.main(main.java:37)
+Caused by: clojure.lang.ExceptionInfo: Transcript assertion failed! val: () fails predicate: vector?
+:clojure.spec.alpha/spec  #object[clojure.spec.alpha$and_spec_impl$reify__875 0x765f05af "clojure.spec.alpha$and_spec_impl$reify__875@765f05af"]
+:clojure.spec.alpha/value  ()
+ {:clojure.spec.alpha/problems [{:path [], :pred clojure.core/vector?, :val (), :via [], :in []}], :clojure.spec.alpha/spec #object[clojure.spec.alpha$and_spec_impl$reify__875 0x765f05af "clojure.spec.alpha$and_spec_impl$reify__875@765f05af"], :clojure.spec.alpha/value ()}
+	at clojure.core$ex_info.invokeStatic(core.clj:4744)
+	at clojure.core$ex_info.invoke(core.clj:4744)
+	at cognitect.transcriptor.t_1$eval245.invokeStatic(./repls/rolls.repl:8)
+	at cognitect.transcriptor.t_1$eval245.invoke(./repls/rolls.repl:8)
+	at clojure.lang.Compiler.eval(Compiler.java:7062)
+	at clojure.lang.Compiler.eval(Compiler.java:7025)
+	at clojure.core$eval.invokeStatic(core.clj:3211)
+	at clojure.core$eval.invoke(core.clj:3207)
+	at cognitect.transcriptor$repl$read_eval_print__189$fn__192.invoke(transcriptor.clj:58)
+	at cognitect.transcriptor$repl$read_eval_print__189.invoke(transcriptor.clj:58)
+	at cognitect.transcriptor$repl.invokeStatic(transcriptor.clj:67)
+	at cognitect.transcriptor$repl.invoke(transcriptor.clj:35)
+	at cognitect.transcriptor$repl_on.invokeStatic(transcriptor.clj:78)
+	at cognitect.transcriptor$repl_on.invoke(transcriptor.clj:74)
+	at cognitect.transcriptor$run.invokeStatic(transcriptor.clj:90)
+	at cognitect.transcriptor$run.invoke(transcriptor.clj:82)
+	at repl_runner$_main.invokeStatic(repl_runner.clj:6)
+	at repl_runner$_main.invoke(repl_runner.clj:4)
+	at clojure.lang.Var.invoke(Var.java:377)
+	at user$eval149.invokeStatic(form-init165212537261342855.clj:1)
+	at user$eval149.invoke(form-init165212537261342855.clj:1)
+	at clojure.lang.Compiler.eval(Compiler.java:7062)
+	at clojure.lang.Compiler.eval(Compiler.java:7052)
+	at clojure.lang.Compiler.load(Compiler.java:7514)
+	... 12 more</pre><p>It&#8217;s a wall of text, but a useful one!</p>
+<h2>Thoughts</h2>
+<p>All in all, I really like the approach. It&#8217;s easy to use and should be usable with any problem, you&#8217;ll just have to be wary of setup and teardown in stateful applications. I&#8217;m not sure on the best practice way of using it, but I think this is a good basic start, a canonical lein plugin would be pretty neat though.</p>
+<p>It would be nice to combine this with one of the projects that aims to make spec output more human friendly too, maybe the lein plugin could do that for you automatically.</p>
+<p>I feel like the REPL files are simple enough that you could throw them away and start again easily if you wanted to change the thing you&#8217;re testing a lot. Something I feel strict TDD severely impairs. When I have deeply nested TDD code over hundreds of lines, a tiny change to the source will break everything. TDD taken to the extreme makes your project become allergic to change, obviously too much of anything is harmful though.</p>
+<p>I&#8217;d recommend that you give this a whirl on one of your own projects and see what you get. You may find it suits you perfectly.</p>
+<p>Thank you very much, Stuart, for releasing this into the world. It&#8217;s pretty cool.</p>
+<h2>Edit</h2>
+<p>I went ahead and created <a href="https://github.com/Olical/lein-transcriptor">lein-transcriptor</a>, the dice roller repository used in this post has been updated to use that instead.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2017/10/06/an-introduction-to-transcriptor/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Updating dependencies without CHANGES.md</title>
+		<link>/2017/04/05/updating-dependencies-without-changes-md/</link>
+		<comments>/2017/04/05/updating-dependencies-without-changes-md/#respond</comments>
+		<pubDate>Wed, 05 Apr 2017 09:41:47 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[JavaScript]]></category>
+		<category><![CDATA[changelog]]></category>
+		<category><![CDATA[dependencies]]></category>
+		<category><![CDATA[github]]></category>
+
+		<guid isPermaLink="false">/?p=526</guid>
+		<description><![CDATA[I recently received an issue on EventEmitter, my longest running project I have carried through my entire career so far, asking where the change log was. The bad news is that there isn&#8217;t one. Although I have a pretty thorough&#160;change log for my newer projects like react-faux-dom, I didn&#8217;t even understand&#160;semver&#160;back when I started it <a class="read-more" href="/2017/04/05/updating-dependencies-without-changes-md/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>I recently received an issue on <a href="https://github.com/Olical/EventEmitter">EventEmitter</a>, my longest running project I have carried through my entire career so far, asking<a href="https://github.com/Olical/EventEmitter/issues/126"> where the change log was</a>. The bad news is that there isn&#8217;t one.</p>
+<p>Although I have <a href="https://github.com/Olical/react-faux-dom/blob/master/CHANGES.md">a pretty thorough&nbsp;change log</a> for my newer projects like <a href="https://github.com/Olical/react-faux-dom">react-faux-dom</a>, I didn&#8217;t even understand&nbsp;<a href="http://semver.org/">semver</a>&nbsp;back when I started it all those years ago (it feels like a long time to me, okay). I never considered explaining what changed over time for my users because I&#8217;d never had that requirement or predicament myself. Yet.</p>
+<h2>Some tips will have to do</h2>
+<p>I couldn&#8217;t go back in time and tell younger me to track the changes and I certainly wasn&#8217;t going to trawl through every commit and build one retrospectively. All I could offer the nice fellow was advice I&#8217;ve picked up from books, people and mistakes over time. I&#8217;m putting that here to in the hopes that others outside of my projects issue tracker can learn from what I had to say. I hope it&#8217;s useful and helps you out some day. I pretty much copied it directly but fixed a handful of small typos.</p>
+<blockquote><p>I&#8217;m afraid I started this project at the start of my career and have carried it all the way through so far. I didn&#8217;t know the connotations of semver or the importance of change logs at the time, so I&#8217;m afraid there&#8217;s nothing.</p>
+<p>BUT, I can offer some advice and reassurance. When upgrading any library, even if you <em>think</em> they follow semver to the letter, you should write some tests in your suite around that library. This is a great way to <em>learn</em> a library as well as protect yourself against change. You may even end up fixing something upstream. I know it&#8217;s extra work, but some people think TDD or even tests are extra work, they offer the same reward. A stable system over time.</p>
+<p>The reassurance is that I have deliberately kept the surface API the same. I bumped the major version when I rewrote it, but kept the method signatures the same. I can&#8217;t see you having any issues, but you could always check the docs from the old version (use git tags) and compare them to your desired version.</p>
+<p>If you only use add and remove event listener, you only need to check how they work (or test them!).</p>
+<p>I know it&#8217;s not ideal, but I hope this helps a little, it&#8217;s all I can offer really. I have learnt from this on projects like <a href="https://github.com/Olical/react-faux-dom/blob/master/CHANGES.md">react-faux-dom</a>, but I didn&#8217;t learn that in time for EventEmitter.</p>
+<p>Semver is great and all, but you can&#8217;t put absolute trust in it, you need some tools in your brain to deal with changing dependencies and being sure that they work in your new system. Tests are the best way, in my opinion.</p>
+<p>(sorry that this turned into a sort of blog post, I didn&#8217;t want to just say &#8220;no changelog sorry&#8221;, I wanted to offer <em>some</em> sort of help too)</p></blockquote>
+<p>Well, now it isn&#8217;t a &#8220;sort of blog post&#8221;, now it&#8217;s a &#8220;blog post&#8221;. Just not a very good one I guess. I do think reiterating my points here will mean more people get to see them though, for better or worse.</p>
+<p>The main point I was trying to get across was that you can not trust your dependencies, especially in JavaScript where the default is to let dependencies of dependencies versions slide forward and update silently. <a href="https://yarnpkg.com/lang/en/">Yarn</a> helps with this problem, but you should always be vigilant in ecosystems that rely so&nbsp;heavily on huge trees of dependencies.</p>
+<p>A few tests ahead of time will save you from a world of hurt down the line.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2017/04/05/updating-dependencies-without-changes-md/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>The Collatz conjecture, visualised in Clojure</title>
+		<link>/2017/04/04/the-collatz-conjecture-visualised-in-clojure/</link>
+		<comments>/2017/04/04/the-collatz-conjecture-visualised-in-clojure/#comments</comments>
+		<pubDate>Tue, 04 Apr 2017 21:13:00 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Clojure]]></category>
+		<category><![CDATA[clojure]]></category>
+		<category><![CDATA[collatz]]></category>
+		<category><![CDATA[math]]></category>
+		<category><![CDATA[quil]]></category>
+
+		<guid isPermaLink="false">/?p=491</guid>
+		<description><![CDATA[Before I begin, watch the video that prompted me to do this in the first place. Okay, now you know what I&#8217;m talking about, the Collatz conjecture. It&#8217;s scarily simple, you take a number, if it&#8217;s even you halve it, if it&#8217;s odd you multiply it by three and add one. Repeat this and you <a class="read-more" href="/2017/04/04/the-collatz-conjecture-visualised-in-clojure/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p style="text-align: center;">Before I begin, watch <a href="https://www.youtube.com/watch?v=LqKpkdRRLZw">the video</a> that prompted me to do this in the first place.</p>
+<p style="text-align: center;"><iframe width="560" height="315" src="https://www.youtube.com/embed/LqKpkdRRLZw" frameborder="0" allowfullscreen="allowfullscreen"></iframe></p>
+<p>Okay, now you know what I&#8217;m talking about, the <a href="https://en.wikipedia.org/wiki/Collatz_conjecture">Collatz conjecture</a>. It&#8217;s scarily simple, you take a number, if it&#8217;s even you halve it, if it&#8217;s odd you multiply it by three and add one. Repeat this and you will end up at one, every time. Well, that&#8217;s the conjecture, maybe it doesn&#8217;t end up at one for some numbers, we just haven&#8217;t been able to prove it.</p>
+<p>The video shows a beautiful way of visualising this problem and I felt it was a nice thing to try and render with some code. If you&#8217;ve read any of my previous things or know me even a little, Clojure is not a surprising choice of tool, I love the language and think it is well suited to most, if not all, problems I face.</p>
+<p>I must warn you that I never reproduced the one from the video, just something that follows the same ideas and looks kind of similar from a distance. I honestly can&#8217;t work out what magic was used to get it to look that good, maybe some special rendering techniques that are just beyond me at the moment. Maybe you&#8217;ll be able to take my repository and perfect it!</p>
+<h2>Collatz in Clojure</h2>
+<p>Before I even attempt to render this, I&#8217;ll need some functions that generate the Collatz conjecture numbers. I will refer to these as a Collatz sequence or Collatz seqs. You can find the full code in <a href="https://github.com/Olical/collatz">Olical/collatz</a>, but I will be breaking it down here for you.</p><pre class="crayon-plain-tag">(defn number-gt-zero?
+  "Checks if n is a number that is greater than zero."
+  [n]
+  (and (number? n)
+       (&gt; n 0)))
+
+(defn next-collatz
+  "Returns the next step in the Collatz sequence."
+  [n]
+  {:pre [(number-gt-zero? n)]}
+  (cond
+    (even? n) (-&gt; n (/ 2))
+    (odd? n)  (-&gt; n (* 3) (inc))))
+
+(defn collatz
+  "Generate a lazy-seq of Collatz conjecture numbers starting at the given number."
+  [n]
+  {:pre [(number-gt-zero? n)]}
+  (lazy-seq
+   (cons n
+         (when (&gt; n 1)
+           (collatz (next-collatz n))))))</pre><p>This function provides a lazy sequence abstraction on top of the ideas the Collatz conjecture provides. It allows us to build more interesting things on top of the seq abstraction without worrying about memory or implementation details.</p><pre class="crayon-plain-tag">;; Get the first 10 numbers in the Collatz seq starting at 1000000.
+(take 10 (collatz 1000000))
+
+;; The first number in the seq will always be the argument you provided.
+;; The last will always be 1.
+
+(last (collatz 1000000))
+
+;; 1. We hope.</pre><p>The next logical step from here, in my opinion, is to create a <em>lazy-seq</em> of Collatz seqs. So if I ask for <em>(collatz-tree 10000)</em> I will get a seq of seqs. The first item is the same as <em>(collatz 10000)</em>, the second is <em>(collatz 9999)</em> and the third being <em>(collatz 9998)</em>. You get the idea. What we are left with is a seq abstraction which, if fully realised, would be pretty huge. Luckily, thanks to the magic of lazy sequences, almost nothing will actually be in memory at any one time.</p><pre class="crayon-plain-tag">(defn collatz-tree
+  "Generate a lazy-seq of lazy-seqs from the collatz function. Starts the seqs at (collatz n), counts down until (collatz 1)."
+  [n]
+  {:pre [(number-gt-zero? n)]}
+  (lazy-seq
+   (cons (collatz n)
+         (when (&gt; n 1)
+           (collatz-tree (dec n))))))</pre><p>We can walk this tree, or seq of seqs, to render the visualisation you saw in the video. Or something close to it I hope, I&#8217;m no expert with <a href="https://github.com/quil/quil">Quil</a>, but I&#8217;ll try my best.</p><pre class="crayon-plain-tag">(collatz-tree 4)
+
+;; Yields: ((4 2 1) (3 10 5 16 8 4 2 1) (2 1) (1))</pre><p>The commit at this point was <a href="https://github.com/Olical/collatz/commit/4a155ed3a80e177655cbe41ba38e783978f17cb7">4a155ed</a>. Feel free to take this abstraction and do what you want with it, copy and paste it into your project if that&#8217;s easiest.</p>
+<h2>Visualising the tree</h2>
+<p>Now for the pretty part. I hope. I&#8217;m starting with the default Quil setup the lein template provides you with, this includes the functional middleware which makes it a bit nicer to work with (although I found I wasn&#8217;t really using the state management very much at all). After a little bit of tinkering I ended up with this rough attempt.</p>
+<figure id="attachment_498" style="width: 804px" class="wp-caption aligncenter"><a href="/wp-content/uploads/2017/03/Screenshot_2017-03-31_17-13-04.png"><img class="size-full wp-image-498" src="/wp-content/uploads/2017/03/Screenshot_2017-03-31_17-13-04.png" alt="" width="804" height="802" srcset="/wp-content/uploads/2017/03/Screenshot_2017-03-31_17-13-04.png 804w, /wp-content/uploads/2017/03/Screenshot_2017-03-31_17-13-04-150x150.png 150w, /wp-content/uploads/2017/03/Screenshot_2017-03-31_17-13-04-300x300.png 300w, /wp-content/uploads/2017/03/Screenshot_2017-03-31_17-13-04-768x766.png 768w" sizes="(max-width: 804px) 100vw, 804px" /></a><figcaption class="wp-caption-text">An early render. Kinda ugly and slow to render. Commit was <a class="commit-tease-sha" href="https://github.com/Olical/collatz/commit/299f062b3166d20710cd25f7c74e6edcdddb47dc" data-pjax="">299f062</a>.</figcaption></figure>
+<p>Although if you squint, this sort of looks similar, I&#8217;m not very happy with it. For starters, my use of the Quil API is a bit questionable and it definitely doesn&#8217;t follow the same rules as the one in the video. My ideal goal is to basically mimic the original material including random colours. I really hope this doesn&#8217;t breach copyright or something, if so, I&#8217;m very sorry, send me an email.</p>
+<p>Here&#8217;s what I had after some more tinkering.</p>
+<figure id="attachment_503" style="width: 804px" class="wp-caption aligncenter"><a href="/wp-content/uploads/2017/03/Screenshot_2017-03-31_19-28-43.png"><img class="size-full wp-image-503" src="/wp-content/uploads/2017/03/Screenshot_2017-03-31_19-28-43.png" alt="" width="804" height="802" srcset="/wp-content/uploads/2017/03/Screenshot_2017-03-31_19-28-43.png 804w, /wp-content/uploads/2017/03/Screenshot_2017-03-31_19-28-43-150x150.png 150w, /wp-content/uploads/2017/03/Screenshot_2017-03-31_19-28-43-300x300.png 300w, /wp-content/uploads/2017/03/Screenshot_2017-03-31_19-28-43-768x766.png 768w" sizes="(max-width: 804px) 100vw, 804px" /></a><figcaption class="wp-caption-text">It&#8217;s still not right, but it looks better. Commit was <a class="commit-tease-sha" href="https://github.com/Olical/collatz/commit/8e5a42cb3e1a2838689821a7a0706f03bc6ab4d7" data-pjax="">8e5a42c</a>.</figcaption></figure>
+<blockquote><p>Although I&#8217;m generating the bordered lines with a sort of hack (one bigger black line with a smaller coloured line on top of it), it actually leads to this neat hand drawn effect. So, although it&#8217;s not right, I actually like the outcome. It feels more organic than hard, anti-aliased, machine cut edges. To me, anyway.</p></blockquote>
+<p>It definitely looks better now, but it&#8217;s still not true to the original. A huge problem with this is that I&#8217;m drawing back over lines so many times, I need to optimise the tree so I don&#8217;t repeat myself, this requires a different approach to rendering though, I need a sort of linked list I can follow so I know when I&#8217;m back to somewhere I&#8217;ve been before and can stop rendering that path.</p>
+<p>That&#8217;s going to mean forgoing a bit of laziness and building a big data structure that I can use as a lookup table, I think it&#8217;s worth it for the rendering optimisations. That should allow me to render the branches in different orders too instead of largest to smallest.</p>
+<h2>Epiphany time</h2>
+<p>Two things happened while developing this project and writing this post (I&#8217;ve been writing it as I developed it to capture every step, so it may seem a bit jumbled in places).</p>
+<p>First, I realised that the tree was upside down. The end of any Collatz seq is always one (we think?), if you remember my code from earlier, I iterate over these sequences and draw the segments of the branch one at a time. This means every branch <em>ends</em> with one, but it needs to <em>start</em> with one.</p>
+<p>The other thing that happened was one of the authors of <a href="http://www.bloomsbury.com/uk/visions-of-numberland-9781408888988/">the book</a> that inspired the video that inspired me, <a class="ProfileHeaderCard-nameLink u-textInheritColor js-nav" href="https://twitter.com/Gelada">Edmund Harriss</a>, replied to one of my tweets with a couple of tips I&#8217;ll probably need after I fix the whole upside down problem.</p>
+<div align="center">
+<blockquote class="twitter-tweet" data-lang="en">
+<p dir="ltr" lang="en"><a href="https://twitter.com/OliverCaldwell">@OliverCaldwell</a> The key is balancing the left and right rotation so you go in a straight line if not growing.</p>
+<p>— Edmund Harriss (@Gelada) <a href="https://twitter.com/Gelada/status/848020385459318784">April 1, 2017</a></p></blockquote>
+<p><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script></p>
+<blockquote class="twitter-tweet" data-lang="en">
+<p dir="ltr" lang="en"><a href="https://twitter.com/OliverCaldwell">@OliverCaldwell</a> of course, it is fun to play with. The branches represent either a growth (x2) or a shrink (-1 and /3) the rotations can reflect that.</p>
+<p>— Edmund Harriss (@Gelada) <a href="https://twitter.com/Gelada/status/848158534546206721">April 1, 2017</a></p></blockquote>
+<p><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script></p>
+</div>
+<p style="text-align: center;">Just as a reminder, this is what I want it to look like.</p>
+<figure id="attachment_507" style="width: 792px" class="wp-caption aligncenter"><a href="/wp-content/uploads/2017/04/C8FvTBiW0AAFGpG.jpg"><img class="size-large wp-image-507" src="/wp-content/uploads/2017/04/C8FvTBiW0AAFGpG-809x1024.jpg" alt="" width="792" height="1002" srcset="/wp-content/uploads/2017/04/C8FvTBiW0AAFGpG-809x1024.jpg 809w, /wp-content/uploads/2017/04/C8FvTBiW0AAFGpG-237x300.jpg 237w, /wp-content/uploads/2017/04/C8FvTBiW0AAFGpG-768x972.jpg 768w, /wp-content/uploads/2017/04/C8FvTBiW0AAFGpG.jpg 900w" sizes="(max-width: 792px) 100vw, 792px" /></a><figcaption class="wp-caption-text">The original from the video, saved from <a href="https://twitter.com/numberphile/status/847080594723000320">this tweet</a>.</figcaption></figure>
+<h2>Flipping the tree</h2>
+<p>So I want to get it looking semi-accurate before I try to optimise, maybe the optimisations won&#8217;t actually be required it it&#8217;s &#8220;good enough&#8221;. I&#8217;m going to flip the tree by reversing the Collatz sequences that comprise my &#8220;Collatz tree&#8221; sequence.</p>
+<p>Sadly, even after flipping the tree over and playing around with more parameters, I just couldn&#8217;t match the awesome original design. I guess this is a testament to how good the original authors are at creating visualisations from math alone! Here&#8217;s a few things I ended up with to wrap up my stumbling in the dark.</p>
+<figure id="attachment_512" style="width: 804px" class="wp-caption aligncenter"><a href="/wp-content/uploads/2017/04/Screenshot_2017-04-01_12-22-38.png"><img class="size-full wp-image-512" src="/wp-content/uploads/2017/04/Screenshot_2017-04-01_12-22-38.png" alt="" width="804" height="802" srcset="/wp-content/uploads/2017/04/Screenshot_2017-04-01_12-22-38.png 804w, /wp-content/uploads/2017/04/Screenshot_2017-04-01_12-22-38-150x150.png 150w, /wp-content/uploads/2017/04/Screenshot_2017-04-01_12-22-38-300x300.png 300w, /wp-content/uploads/2017/04/Screenshot_2017-04-01_12-22-38-768x766.png 768w" sizes="(max-width: 804px) 100vw, 804px" /></a><figcaption class="wp-caption-text">It&#8217;s still wrong, but looks kinda nice. Commit was <a class="commit-tease-sha" href="https://github.com/Olical/collatz/commit/185a3ffd7539a74afe17aa587796330f40410c1b" data-pjax="">185a3ff</a>.</figcaption></figure>
+<figure id="attachment_521" style="width: 804px" class="wp-caption aligncenter"><a href="/wp-content/uploads/2017/04/Screenshot_2017-04-04_21-42-51.png"><img class="size-full wp-image-521" src="/wp-content/uploads/2017/04/Screenshot_2017-04-04_21-42-51.png" alt="" width="804" height="802" srcset="/wp-content/uploads/2017/04/Screenshot_2017-04-04_21-42-51.png 804w, /wp-content/uploads/2017/04/Screenshot_2017-04-04_21-42-51-150x150.png 150w, /wp-content/uploads/2017/04/Screenshot_2017-04-04_21-42-51-300x300.png 300w, /wp-content/uploads/2017/04/Screenshot_2017-04-04_21-42-51-768x766.png 768w" sizes="(max-width: 804px) 100vw, 804px" /></a><figcaption class="wp-caption-text">More curve, but not what I want. At <a class="commit-tease-sha" href="https://github.com/Olical/collatz/commit/e9dad2662d5ecf54698625f93b570d3169e4284c" data-pjax="">e9dad26</a>.</figcaption></figure>
+<figure id="attachment_522" style="width: 804px" class="wp-caption aligncenter"><a href="/wp-content/uploads/2017/04/Screenshot_2017-04-04_21-46-43.png"><img class="size-full wp-image-522" src="/wp-content/uploads/2017/04/Screenshot_2017-04-04_21-46-43.png" alt="" width="804" height="802" srcset="/wp-content/uploads/2017/04/Screenshot_2017-04-04_21-46-43.png 804w, /wp-content/uploads/2017/04/Screenshot_2017-04-04_21-46-43-150x150.png 150w, /wp-content/uploads/2017/04/Screenshot_2017-04-04_21-46-43-300x300.png 300w, /wp-content/uploads/2017/04/Screenshot_2017-04-04_21-46-43-768x766.png 768w" sizes="(max-width: 804px) 100vw, 804px" /></a><figcaption class="wp-caption-text">Thinner lines to illustrate just how many I&#8217;m actually rendering here. Could be a tad more efficient. Game programmers, avert your eyes. At <a class="commit-tease-sha" href="https://github.com/Olical/collatz/commit/2cc37b18405d03d4a0e53212bf5f4518949c0ad7" data-pjax="">2cc37b1</a>.</figcaption></figure>
+<figure id="attachment_523" style="width: 804px" class="wp-caption aligncenter"><a href="/wp-content/uploads/2017/04/Screenshot_2017-04-04_21-52-49.png"><img class="size-full wp-image-523" src="/wp-content/uploads/2017/04/Screenshot_2017-04-04_21-52-49.png" alt="" width="804" height="802" srcset="/wp-content/uploads/2017/04/Screenshot_2017-04-04_21-52-49.png 804w, /wp-content/uploads/2017/04/Screenshot_2017-04-04_21-52-49-150x150.png 150w, /wp-content/uploads/2017/04/Screenshot_2017-04-04_21-52-49-300x300.png 300w, /wp-content/uploads/2017/04/Screenshot_2017-04-04_21-52-49-768x766.png 768w" sizes="(max-width: 804px) 100vw, 804px" /></a><figcaption class="wp-caption-text">The spindly version with prime numbers highlighted in green. Pretty neat. At <a class="commit-tease-sha" href="https://github.com/Olical/collatz/commit/ba6700f0cad800ca4cbfa80c21e1d662781368cc" data-pjax="">ba6700f</a>.</figcaption></figure>
+<p>From the thinner versions you can quite clearly see the need for deduplication, if you just draw <em>everything</em> over the top of each other, not only is it slow, but it also looks messy. I definitely needed to prepare my data a little better, but this post that was supposed to be a small little experiment was beginning to drag on by then.</p>
+<h2>Close but no cigar</h2>
+<p>I&#8217;m disappointed that I couldn&#8217;t get it quite right, although I think I probably could if I just put more time into it. Sadly, visualisations aren&#8217;t really my forte or main interest. I&#8217;m more of a &#8220;programming languages, data structures and text editors&#8221; kind of programmer. It&#8217;s a little bit niche, okay.</p>
+<p>I may revisit this some day and attempt to deduplicate that tree since I think there&#8217;s value there in performance and style. Until then feel free to rip the repository to pieces, <a href="https://github.com/Olical/collatz">Olical/collatz</a>, if you didn&#8217;t spot it earlier. I&#8217;ll post the visualisation code below too, just so you don&#8217;t need to go elsewhere to see how badly I messed up, I&#8217;m sure this is obvious to <em>someone</em> out there in the wide and wonderful world.</p>
+<p>I hope you found this slightly interesting, and at the very least it has passed on the inspiration I had to do something far better than I produced.</p><pre class="crayon-plain-tag">(ns collatz.visualisation
+  (:require [quil.core :as q]
+            [quil.middleware :as m]
+            [collatz.core :as c])
+  (:gen-class))
+
+(defn reversed-indexed
+  "Returns the lazy sequence but each item is now a vector pair. The first value
+  is the index, the second is the original value from the seq. The sequence is
+  also reversed."
+  [items]
+  (map-indexed (fn [n v] [n v]) (reverse items)))
+
+(defn gen-tree
+  "Generates a full Collatz tree by building the lazy-seqs and reversing them all."
+  [n]
+  (-&gt;&gt; n c/collatz-tree (map reversed-indexed) reversed-indexed))
+
+(def size {:x 800 :y 800})
+(def tree (gen-tree 10000))
+(def part-size 8)
+
+(defn render-branch
+  "Render a single Collatz branch."
+  [[bn branch]]
+  (q/push-matrix)
+  (doseq [[pn part] branch]
+    (q/stroke 0)
+    (q/stroke-weight 15)
+    (q/line 0 0 0 part-size)
+
+    (q/stroke (+ 155 (mod bn 100)) 100 100)
+    (q/stroke-weight 13)
+    (q/line 0 (if (= pn 0) 0 -3) 0 part-size)
+
+    (q/translate 0 part-size)
+    (q/rotate (q/radians (if (even? part) 4 -4))))
+  (q/pop-matrix))
+
+(defn setup
+  "Set up the context and state."
+  []
+  (q/frame-rate 25)
+  {:tree tree
+   :render? false})
+
+(defn update-state
+  "Perform modifications to the state for the next render."
+  [state]
+  {:tree tree
+   :render? (:should-render? state)})
+
+(defn draw-state
+  "Render the current state."
+  [state]
+  (when (:render? state)
+    (q/background 255 255 255)
+    (q/translate 200 (-&gt; size :y (- 20)))
+    (q/rotate (q/radians 110))
+    (doseq [branch (:tree state)]
+      (render-branch branch))))
+
+(defn key-pressed
+  "Handle a key press event."
+  [state event]
+  (case (:key-code event)
+    10 (assoc state :should-render? true)
+    state))
+
+(defn -main
+  "Initialise the sketch."
+  []
+  (q/sketch
+   :title "Collatz in Clojure"
+   :size (map size [:x :y])
+   :setup #'setup
+   :update #'update-state
+   :draw #'draw-state
+   :features []
+   :middleware [m/fun-mode]
+   :key-pressed key-pressed))</pre><p></p>
+]]></content:encoded>
+			<wfw:commentRss>/2017/04/04/the-collatz-conjecture-visualised-in-clojure/feed/</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+		</item>
+		<item>
+		<title>I&#8217;m on Linode now</title>
+		<link>/2017/03/28/im-on-linode-now/</link>
+		<comments>/2017/03/28/im-on-linode-now/#respond</comments>
+		<pubDate>Tue, 28 Mar 2017 19:36:26 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Linux]]></category>
+		<category><![CDATA[hosting]]></category>
+		<category><![CDATA[linode]]></category>
+		<category><![CDATA[linux]]></category>
+
+		<guid isPermaLink="false">/?p=483</guid>
+		<description><![CDATA[And I&#8217;m pretty damn happy with it, as happy as you can be with a server I guess. Note: There&#8217;s a referral link at the bottom of this post. Some context I&#8217;ve been running my blog off of webfaction for a few years now, I actually used it before then whilst at a previous job <a class="read-more" href="/2017/03/28/im-on-linode-now/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>And I&#8217;m pretty damn happy with it, as happy as you can be with a server I guess.</p>
+<blockquote><p>Note: There&#8217;s a referral link at the bottom of this post.</p></blockquote>
+<h2>Some context</h2>
+<p>I&#8217;ve been running my blog off of <a href="https://www.webfaction.com/">webfaction</a> for a few years now, I actually used it before then whilst at a previous job too, if memory serves correctly (James? Did we?).</p>
+<p>It&#8217;s been working well and I&#8217;ve actually been hosting a whole suite of sites for a community I was a part of on there (wiki, blog, forum, IRC logs etc). It wasn&#8217;t too expensive and it did what I needed. However, I&#8217;ve slowly found the need for my <em>own</em> server that <em>I</em> manage and have responsibility for.</p>
+<p>Webfaction moved my data to a new server recently (it&#8217;s all managed) which prompted me to think about moving, so I started hunting. I was originally going to settle for <a href="https://www.digitalocean.com/">DigitalOcean</a> after a little search, but a colleague (thanks Alan!) convinced me that <a href="https://www.linode.com/">Linode</a> offered everything I wanted for the same price as DigitalOcean, but with more memory. I suppose it&#8217;s an aside, but as far as I know Linode has been around a lot longer too.</p>
+<h2>My Linode</h2>
+<p>After dumping the source and databases of my blog and <em>scp</em>ing it all down to my machine I signed up for Linode. I&#8217;m delighted to report that it works well with LastPass and supports two factor authentication, thankfully.</p>
+<p>They have recipes called StackScripts to provision a server with common things like Apache, WordPress or nginx, but that list is huge since others can submit them. I guess it&#8217;s sort of like community driven Puppet or Chef. I ran the WordPress one and ended up with a server running a LAMP stack with a blank WordPress install in a couple of minutes.</p>
+<p>After performing the basic SSH key exchange I followed the <a href="https://www.linode.com/docs/security/securing-your-server">Linode guide to securing your server</a>. This involved creating a non-root user, locking down SSH, implementing a firewall (easy with <a href="https://www.linode.com/docs/security/firewalls/configure-firewall-with-ufw">ufw</a>) and setting up <a href="https://www.digitalocean.com/community/tutorials/how-fail2ban-works-to-protect-services-on-a-linux-server">fail2ban</a>. I have to say, the Linode documentation is first rate, I&#8217;d happily rely on it for non-Linode systems too.</p>
+<figure id="attachment_485" style="width: 792px" class="wp-caption aligncenter"><a href="/wp-content/uploads/2017/03/Screenshot_2017-03-28_20-09-24.png"><img class="wp-image-485 size-large" src="/wp-content/uploads/2017/03/Screenshot_2017-03-28_20-09-24-1024x604.png" alt="" width="792" height="467" srcset="/wp-content/uploads/2017/03/Screenshot_2017-03-28_20-09-24-1024x604.png 1024w, /wp-content/uploads/2017/03/Screenshot_2017-03-28_20-09-24-300x177.png 300w, /wp-content/uploads/2017/03/Screenshot_2017-03-28_20-09-24-768x453.png 768w, /wp-content/uploads/2017/03/Screenshot_2017-03-28_20-09-24.png 1175w" sizes="(max-width: 792px) 100vw, 792px" /></a><figcaption class="wp-caption-text">My Linode&#8217;s dashboard. I called it Turing.</figcaption></figure>
+<p>Not only does Linode provision and manage the actual image for me, but it also comes with some pretty neat DNS management and Longview, which provides built in, detailed, metrics. They also provide load balancers but I don&#8217;t need those (yet). I previously managed my DNS for this domain through Cloudflare, I&#8217;ve since moved that to Linode for simplicity and haven&#8217;t noticed any issues yet.</p>
+<figure id="attachment_486" style="width: 1008px" class="wp-caption aligncenter"><a href="/wp-content/uploads/2017/03/Screenshot_2017-03-28_20-12-43.png"><img class="wp-image-486 size-full" src="/wp-content/uploads/2017/03/Screenshot_2017-03-28_20-12-43.png" alt="" width="1008" height="955" srcset="/wp-content/uploads/2017/03/Screenshot_2017-03-28_20-12-43.png 1008w, /wp-content/uploads/2017/03/Screenshot_2017-03-28_20-12-43-300x284.png 300w, /wp-content/uploads/2017/03/Screenshot_2017-03-28_20-12-43-768x728.png 768w" sizes="(max-width: 1008px) 100vw, 1008px" /></a><figcaption class="wp-caption-text">What my Longview dashboard looks like.</figcaption></figure>
+<p>You probably won&#8217;t notice or remember (why would you?) but this site used to be <em>http</em>. During the migration I cracked open the old <a href="https://certbot.eff.org/">certbot</a> from the wonderful <a href="https://letsencrypt.org/">Let&#8217;s Encrypt</a> and got that lovely green lock and <em>https</em> you should see at the top of your browser, unless you&#8217;re trying to access this site from a potato. In which case the cert probably failed and you may or may not be reading this. ¯\_(ツ)_/¯</p>
+<p>So now I have my own Linux server running within Linode (in London, actually!) behind a swanky <em>https</em> URL. So far, I can highly recommend them, if you got this far and you&#8217;re as sold as I was, I&#8217;d really appreciate a click of my <a href="https://www.linode.com/?r=6a2af6a5897ea178066c009d778dbb8d847bd813">referral link</a>. You don&#8217;t need to, but it&#8217;d be really cool of you. When in doubt, browse the Linode documentation. Enjoy.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2017/03/28/im-on-linode-now/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>When projects rise from the grave</title>
+		<link>/2016/11/15/when-projects-rise-from-the-grave/</link>
+		<comments>/2016/11/15/when-projects-rise-from-the-grave/#respond</comments>
+		<pubDate>Tue, 15 Nov 2016 09:00:58 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[JavaScript]]></category>
+		<category><![CDATA[github]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[refactoring]]></category>
+		<category><![CDATA[tests]]></category>
+
+		<guid isPermaLink="false">/?p=471</guid>
+		<description><![CDATA[Halloween is supposed to be over, so why is my project coming back from the dead? Olical/Color is something I started in early 2011, I think I was still at my first job as a junior web developer tinkering with WordPress and custom PHP sites. I&#8217;m now on my 5th workplace doing something entirely different. I&#8217;m <a class="read-more" href="/2016/11/15/when-projects-rise-from-the-grave/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>Halloween is supposed to be over, so why is my project coming back from the dead?</p>
+<p><a href="https://github.com/Olical/Color">Olical/Color</a> is something I started in early 2011, I think I was still at my first job as a junior web developer tinkering with WordPress and custom PHP sites. I&#8217;m now on my 5th workplace doing something entirely different. I&#8217;m studying computer science and lisps in my free time instead of &#8220;how do I make this button red&#8221;, which isn&#8217;t to say it&#8217;s better, just different. I have moved on so far from these interests, they feel totally alien looking back.</p>
+<p>I was reminded by <a href="https://github.com/Olical/Color/pull/1">this small pull request</a> to fix a bug in my old untested project. It came up out of the blue and instantly had someone else respond, to my amazement. So what I thought I&#8217;d do is quickly go through the project with 5-6 more years of experience under my belt and share those feelings. Then I want to clean it up to the standards I have today. Maybe even just rewrite the damn thing within tests.</p>
+<h2>Distribution</h2>
+<p>No <em>package.json</em>, no instructions, good luck. Apparently I just wanted people to clone this into their repo or literally copy and paste the file into a directory.</p>
+<p>The minified source is actually commited in (which I see as a big <strong>no</strong> now) and it&#8217;s licensed under two different licences. I presume I was copying jQuery or whatever was hot at the time I guess. I&#8217;ve taken to just using <a href="http://unlicense.org/">The Unlicense</a> now and I&#8217;m a lot happier about it. I don&#8217;t know how I expected anyone to actually depend on this, maybe I didn&#8217;t, maybe I released it as a bit of fun just in case someone would find some of it useful.</p>
+<p>At least I was using <a href="https://developers.google.com/closure/compiler/">Closure Compiler</a>, that&#8217;s pretty cool. I mean, <a href="https://github.com/mishoo/UglifyJS">UglifyJS</a> is enough to get by really, especially at this size, but nice that I was aware of it. I don&#8217;t know why everything is a combination of slightly strange looking <em>Makefile</em> and JavaScript though, that&#8217;s a really weird build toolchain. I still use <em>make</em> to this day, but not in this way. I&#8217;ve just realised I commited the Closure Compiler JAR into the repository too.</p>
+<p><a href="/wp-content/uploads/2016/11/giphy.gif"><img class="aligncenter size-full wp-image-474" src="/wp-content/uploads/2016/11/giphy.gif" alt="Shame Cube" width="350" height="248" /></a></p>
+<h2>Code</h2>
+<p><a href="https://github.com/Olical/Color/blob/45a83fecda62c086e788895182e403a9c9b42807/color.js">Here&#8217;s the source</a>. Why did I feel the need to comment every damn thing? <em>The &#8220;No Shit Sherlock&#8221; award goes to&#8230;</em></p><pre class="crayon-plain-tag">// Initialisation
+var src = require('fs').readFileSync('color.js', 'utf8'),
+	sys = require('sys'),
+	jshint = require('./jshint').JSHINT,
+	i = null,
+	e = null;</pre><p></p><pre class="crayon-plain-tag">// Initialise any required variables
+var i = null,
+    split = [],
+    colors = this.names;</pre><p></p><pre class="crayon-plain-tag">// Return the joined version
+return '#' + color.join('');</pre><p></p><pre class="crayon-plain-tag">// Convert it to an array
+color = this.toArray(color);</pre><p></p><pre class="crayon-plain-tag">// Compare
+if(color[0] === colors[i][0] &amp;&amp; color[1] === colors[i][1] &amp;&amp; color[2] === colors[i][2]) {
+    // Found it, return the name
+    return i;
+}</pre><p>Let this be a warning to you: Don&#8217;t add useless comments, just write clearer code. Some part of me obviously thought I was doing the right thing here, that part of me was horribly wrong.</p>
+<p>The whole thing is pretty damn imperative, lots of loops, no functional stuff. Past me would have probably found the additions of <em>.map(&#8230;)</em> hard to read, current me finds all of these loops even harder. And if I&#8217;d just stored all those constant colours as hex strings I could have searched through with string comparisons, instead I compared every array element in each item of the list.</p>
+<p>Want to know the worst thing about this code though? That&#8217;s rhetorical, this is a blog post and I can&#8217;t hear your response so I&#8217;ll tell you regardless (if you happen to read further into this paragraph, that is): There Are <em>No</em> <strong>Tests</strong>.</p>
+<p>*curtain falls*</p>
+<h2>Fixing what ain&#8217;t broke</h2>
+<p>It&#8217;s fine, honestly, even though I look back and say &#8220;ew&#8221;, it works. Well, apart from that bug that <a href="https://github.com/pypmannetjies">pypmannetjies</a> kindly fixed for me. But that doesn&#8217;t mean it can&#8217;t be &#8220;better&#8221;. Here&#8217;s what I <em>want </em>to do, but I don&#8217;t <em>need</em> to do.</p>
+<ul>
+<li>Write a full test suite for the current code.</li>
+<li>Clean up the build / linting tooling, no more committed &#8220;binaries&#8221;.</li>
+<li>Refactor until it basically doesn&#8217;t resemble the original code.</li>
+<li>Actually have a way to depend on it (probably npm and <a href="https://unpkg.com/#/">unpkg</a>).</li>
+</ul>
+<p>I thought that&#8217;d be a bit much to write up because I&#8217;m lazy, so instead I spent an hour configuring <a href="https://obsproject.com/">OBS</a> on my laptop (totally easier than writing a little bit&#8230;) and recorded the whole thing (another hour). You can watch that <a href="https://youtu.be/dCRK7IHg4Bk">over here</a> or below. It&#8217;s the first time I&#8217;ve recorded myself actually working on something, I hope you like it. I actually want to do more of that in the future, maybe stream building something in Clojure so people that are unfamiliar with it can ask questions as I go.</p>
+<p><iframe width="560" height="315" src="https://www.youtube.com/embed/dCRK7IHg4Bk" frameborder="0" allowfullscreen="allowfullscreen" class="aligncenter"></iframe></p>
+<p>I actually put off the raw code refactor, mainly because now it&#8217;s tested I feel a lot better about it. If I rewrite it, I&#8217;ll end up with the same performance and functionality, but less time to play games and drink coffee. If I ever do refactor any of it now I can do it with confidence, which is great.</p>
+<p>So, go back and do this to one of your old projects, it&#8217;s refreshing to see how differently you do things now.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2016/11/15/when-projects-rise-from-the-grave/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Getting Go Going</title>
+		<link>/2016/10/10/getting-go-going/</link>
+		<comments>/2016/10/10/getting-go-going/#respond</comments>
+		<pubDate>Mon, 10 Oct 2016 21:07:25 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Go]]></category>
+		<category><![CDATA[go]]></category>
+		<category><![CDATA[godep]]></category>
+
+		<guid isPermaLink="false">/?p=468</guid>
+		<description><![CDATA[I recently had to compile and run a go project, I found it thoroughly confusing initially and struggled to find a comprehensive guide on how to manage the repository in an idiomatic way. I&#8217;m going to show you how to get go projects up and running on your machine, I hope it&#8217;s the correct way, <a class="read-more" href="/2016/10/10/getting-go-going/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>I recently had to compile and run a <a href="https://golang.org/">go</a> project, I found it thoroughly confusing initially and struggled to find a comprehensive guide on how to manage the repository in an idiomatic way. I&#8217;m going to show you how to get go projects up and running on your machine, I hope it&#8217;s the correct way, correct me if I&#8217;m wrong!</p>
+<h2>Packages</h2>
+<p>You&#8217;re going to want to fetch two packages, ideally with your package manager of choice. That&#8217;s probably going to be pacman, apt-get or brew, for example. If you don&#8217;t use a package manager: do.</p>
+<ul>
+<li><a href="https://golang.org/">go</a></li>
+<li><a href="https://github.com/tools/godep">godep</a> (there&#8217;s loads of alternatives, but I&#8217;ve tried this and it works well)</li>
+</ul>
+<p>That&#8217;s all we&#8217;re going to need dependency-wise. Hopefully your project specifies it&#8217;s dependencies with a Godep file somewhere. If not, you may need to look up another dependency manager.</p>
+<h2>GOPATH</h2>
+<p>This is the thing that confused me, I thought it was just somewhere go will check for dependencies, like changing your path for .m2 or something, it&#8217;s not. It&#8217;s nothing of the sort.</p>
+<p>The GOPATH is essentially where you want to keep ALL of your go repositories, it&#8217;s more like an IDE project directory path. So go will store a few auxiliary directories in the path you specify as well as all of your go projects under the <em>src</em> directory. So if you have a project called <em>foo</em> in your GitHub user <em>bar</em> it will be stored in <em>$GOPATH/src/github.com/bar/foo</em>.</p>
+<p>I have a <em>~/repos</em> directory where I keep all my projects, so I created a sub-directory of that called <em>go</em> that now houses all of the go repositories. Feel free to adapt this to how you like to manage your repositories.</p>
+<p>You can use <em>go get github.com/bar/foo</em> to fetch something, or just copy the directory into the appropriate path. It should be self explanatory now that you understand the whole project directory idea (I hope).</p>
+<h2>Building and running</h2>
+<p>If your project has dependencies specified with godep, you can just run <em>godep restore</em> to fetch everything specified in the Godep file. I think there are ways built into go now too, although I&#8217;m not sure about those. This will populate your <em>$GOPATH/src/*</em> directories with your dependencies.</p>
+<p>You can now run <em>go build</em> which will compile your project into your current directory. If you are working on your <em>foo</em> project you should have a binary called <em>foo</em>, feel free to execute it! Unless it boots Skynet, in which case, don&#8217;t.</p>
+<p>I hope this helps those of you that are confused and just need to get the damn thing running.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2016/10/10/getting-go-going/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>An introduction to ClojureScript</title>
+		<link>/2016/02/27/an-introduction-to-clojurescript/</link>
+		<comments>/2016/02/27/an-introduction-to-clojurescript/#comments</comments>
+		<pubDate>Sat, 27 Feb 2016 15:08:05 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Clojure]]></category>
+		<category><![CDATA[JavaScript]]></category>
+		<category><![CDATA[Lisp]]></category>
+		<category><![CDATA[clojure]]></category>
+		<category><![CDATA[clojurescript]]></category>
+		<category><![CDATA[lisp]]></category>
+
+		<guid isPermaLink="false">/?p=452</guid>
+		<description><![CDATA[In this post I&#8217;m going to attempt to explain where ClojureScript comes from as well as what it is and what it can do for you. I&#8217;m coming at this from the perspective of someone who writes a lot of JavaScript already, probably with React and Redux. Lisp ClojureScript is a very slight sub-set of <a class="read-more" href="/2016/02/27/an-introduction-to-clojurescript/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>In this post I&#8217;m going to attempt to explain where <a href="https://github.com/clojure/clojurescript">ClojureScript</a> comes from as well as what it is and what it can do for you. I&#8217;m coming at this from the perspective of someone who writes a lot of JavaScript already, probably with React and Redux.</p>
+<h2>Lisp</h2>
+<p>ClojureScript is a very slight sub-set of Clojure, the main difference being one compiles to JavaScript, the other to Java VM bytecode. On the JVM, Clojure has access to threads and other OS level niceties. ClojureScript as a language is very similar to it&#8217;s parent, but it lacks certain things that just aren&#8217;t possible in the browser.</p>
+<p>They are however, both a <a href="https://en.wikipedia.org/wiki/Lisp_%28programming_language%29">Lisp</a>, one of the most fascinating languages ever <em>discovered</em> (see <a href="https://www.quora.com/Do-aliens-have-LISP">do aliens have lisp?</a>). It&#8217;s not a perfect foundation, but it&#8217;s an extremely powerful and flexible one with a long and colourful history. Wikipedia will do a better job at listing that history than I can ever do, but here&#8217;s some key facts.</p>
+<ul>
+<li>It was first specified in <strong>1958</strong> (<a href="https://en.wikipedia.org/wiki/JavaScript">JavaScript</a> appeared in 1995, 37 years later)</li>
+<li>Originally designed for AI research</li>
+<li>Has a huge amount of dialects which share the core tenants, including <a href="https://github.com/clojure/clojurescript">ClojureScript</a>, <a href="http://clojure.org/">Clojure</a>, <a href="https://racket-lang.org/">Racket</a>, <a href="https://en.wikipedia.org/wiki/Scheme_%28programming_language%29">Scheme</a>, <a href="http://lfe.io/">Lisp Flavoured Erlang</a> and many more</li>
+<li>(it&#8217;s (lists (all the way (down))))</li>
+<li>It makes use of macros to define the language in the language, which I demonstrate in my post about <a href="/2014/12/15/a-javascript-clojure-mashup/">implementing a lisp in JavaScript</a></li>
+</ul>
+<p>This extremely exhaustive chart that shows the history of programming languages shows just how early Lisp turned up. It&#8217;s amazing to see what influenced what, click the image to enlarge it.</p>
+<p><a href="/wp-content/uploads/2016/02/history-of-languages.png" rel="attachment wp-att-454"><img class="aligncenter size-large wp-image-454" src="/wp-content/uploads/2016/02/history-of-languages-1024x631.png" alt="history-of-languages" width="792" height="488" srcset="/wp-content/uploads/2016/02/history-of-languages-1024x631.png 1024w, /wp-content/uploads/2016/02/history-of-languages-300x185.png 300w, /wp-content/uploads/2016/02/history-of-languages-768x474.png 768w" sizes="(max-width: 792px) 100vw, 792px" /></a>So it has been around for a very long time and has appeared in many flavours. We&#8217;re going to skip all of the other fascinating Lisps in the middle and jump all the way to Clojure, one of the newest and most popular in recent years.</p>
+<h2>Clojure</h2>
+<p><a href="https://en.wikipedia.org/wiki/Clojure">Clojure</a> is a Lisp dialect that encourages functional programming with immutable data structures. The data structures themselves are pretty amazing and can be found in JavaScript through <a href="https://facebook.github.io/immutable-js/">ImmutableJS</a>. Immutable data structures never change, they only allow you to create new versions of them with your changes applied, this prevents mutation, a source of pain in many systems. They don&#8217;t just copy the data to prevent mutation as some people appear to do in JavaScript, they use efficient algorithms to share as much data as possible to keep things immutable without sacrificing too much speed or efficiency. <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze">Object.freeze</a> is not persistent immutability, neither is cloning things every time. That&#8217;s slow and inefficient. Neither is using <a href="https://gist.github.com/sebmarkbage/005c81e6f2f5ddac443f">the spread operator</a>.</p>
+<p>It runs on the JVM by default, so you can use all the Java libraries out there without having to write Java (yay!). You can also run it on the <a href="https://en.wikipedia.org/wiki/Common_Language_Runtime">Common Language Runtime</a>, which is kind of like the JVM but for Windows, I&#8217;ve never looked into that though. There&#8217;s also support for Unity, VR and JavaScript (through ClojureScript). So it&#8217;s an extremely versatile language that can run almost anywhere with the same core functions and principals.</p>
+<p>One cool thing about Clojure is that the language is defined by the language. By that I mean, there&#8217;s a core interpreter (called a reader) as well as some core functions written outside of Clojure, but the rest is defined in <a href="https://github.com/clojure/clojure/blob/master/src/clj/clojure/core.clj">core.clj</a>, in Clojure. If there&#8217;s ever anything you don&#8217;t understand about the language, you can actually go and read the source code for that feature, like the <a href="https://github.com/clojure/clojure/blob/d5708425995e8c83157ad49007ec2f8f43d8eac8/src/clj/clojure/core.clj#L6087">while macro</a>.</p>
+<h2>Versatility</h2>
+<p>You may wonder what Clojure can actually do, the Wikipedia page just says is &#8220;general purpose&#8221;, but so is JavaScript and anything else you&#8217;ve probably ever used. Well, it&#8217;s more general than you&#8217;ll be used to, if you can name a paradigm that a language supports, Clojure probably has support for it too. Because of it&#8217;s generic macro based nature, you can define any other style within the language. Here&#8217;s a list of libraries that enable awesome paradigms from other languages within Clojure.</p>
+<ul>
+<li><a href="https://github.com/clojure/core.async">core.async</a> &#8211; Like <a href="https://golang.org/">Go</a>&#8216;s channels</li>
+<li><a href="http://typedclojure.org/">core.typed</a> &#8211; Gradual typing</li>
+<li><a href="https://github.com/clojure/core.match">core.match</a> &#8211; Pattern matching</li>
+<li><a href="https://github.com/clojure/core.logic">core.logic</a> &#8211; Logic programming (check out <a href="https://en.wikipedia.org/wiki/Prolog">Prolog</a>, it&#8217;s really cool!)</li>
+<li><a href="https://github.com/mikera/core.matrix">core.matrix</a> &#8211; Matrix and array programming</li>
+<li><a href="https://github.com/plumatic/schema">schema</a> &#8211; Declarative data validation</li>
+<li><a href="https://github.com/brandonbloom/factjor">factjor</a> &#8211; Stack programming</li>
+<li><a href="https://github.com/clojure/test.generative">test.generative</a> &#8211; Generative testing!</li>
+</ul>
+<p>My friend Ludwik at work described it well.</p>
+<blockquote><p>You learn this one thing and it can take you to ALL the places.</p></blockquote>
+<p>No kidding, you can do anything with it, it&#8217;s the most flexible language I&#8217;ve ever researched. To me, it&#8217;s a host unifier, you have every paradigm and every platform within the same beautiful language. This versatility means it&#8217;s being used all over the world in various industries to solve all sorts of interesting and hard problems, as <a href="http://blog.cognitect.com/blog/2016/1/28/state-of-clojure-2015-survey-results">the 2015 survey</a> shows. Ludwik actually uses it day to day at <a href="http://www.qubit.com/">Qubit</a> with his team.</p>
+<h2>Tooling</h2>
+<p>There&#8217;s excellent integration into many popular text editors and IDEs, including: Sublime, Atom, Vim, Emacs and <a href="http://lighttable.com/">LightTable</a> (actually written in ClojureScript). <a href="https://cursive-ide.com/">Cursive</a> is an IDE developed specifically for Clojure which seems pretty cool too, it&#8217;s based off of IntelliJ. I use Vim personally and have <a href="/2014/11/21/essential-vim-bundles-for-javascript-and-clojure/">written about it in the past</a>. All of the tooling hooks into a running REPL which allows you to look up source code, documentation and execute things directly from your editor.</p>
+<p>Editing Clojure is fun too, because you&#8217;re editing the actual AST so you can perform structural editing with things like <a href="http://danmidwood.com/content/2014/11/21/animated-paredit.html">Paredit</a> or <a href="https://shaunlebron.github.io/parinfer/">Parinfer</a>. Forget manually copying and pasting lines around, adjusting quotes and curly braces, you can edit the AST and always keep it correct with powerful tools.</p>
+<p>Now the coolest thing about everything I&#8217;ve mentioned above, it pretty much all works the same with ClojureScript and by extension, in the browser. Yes, you can have live editor integration into something running in your browser with first class language editing support across a plethora of editors. Support for multiple paradigms so you can choose the right tool for the job, wherever your code is running. ClojureScript can be automatically fired into your browser as you edit through the wonderful <a href="https://github.com/bhauman/lein-figwheel">figwheel</a>, this will make the hot module reloading you&#8217;ve seen in JavaScript look pretty basic.</p>
+<p>All of this magic is driven by a very small amount of tooling, no more learning the &#8220;npm + grunt / gulp / broccoli + browserify / webpack + react + redux + immutablejs + &#8230;.&#8221; silliness. All you need is <a href="http://leiningen.org/">Leiningen</a>. A simple &#8220;lein new project-name-here&#8221; will get you up and running.</p>
+<h2>ClojureScript</h2>
+<p>Let&#8217;s assume you&#8217;ve got leiningen installed and you want to create a &#8220;Hello, World!&#8221; application with <a href="https://reagent-project.github.io/">Reagent</a> (a minimalistic React wrapper for ClojureScript, there&#8217;s a few wrappers out there though, go explore!) and live reloading through figwheel.</p><pre class="crayon-plain-tag">lein new reagent hello-reagent
+cd hello-reagent
+lein figwheel
+
+# Now open http://localhost:3449/</pre><p>You now have a live reloading ClojureScript environment with routing and great React support. Arguably a better React than React since the immutable data structures are integrated seamlessly, those allow you to check for changes far faster than plain JavaScript.</p>
+<p>That&#8217;s all there is to it though, getting set up is extremely quick and easy. You then have a live environment to edit in any way you want, you are free to explore the language by moving and editing expression that will be sent to the browser when you write the file. The reloading keeps the state, so you can edit the page&#8217;s source while interacting with it.</p>
+<p>Once you get used to this live / REPL style of programming where you can explore ideas without restarting anything you won&#8217;t want to go back. I won&#8217;t be teaching you ClojureScript here, but I wanted to get you to a point where it&#8217;ll be easy to learn. Now you should go and play, have fun with the language and just try things out. It&#8217;ll look odd at first but lisp will seem normal to you surprisingly quickly. You&#8217;ll quickly feel that editing JavaScript feels clunky since moving things around requires constant adjustment of the syntax as well as regular reloads, even with HMR enabled within webpack, for example. The JavaScript tooling doesn&#8217;t feel like it fits together well, ClojureScript is the opposite.</p>
+<p>So go and learn, read books, build toy projects. Explore everything this cool language and ecosystem has to offer (just look how cool <a href="https://github.com/bhauman/devcards">devcards</a> are!). Even if you don&#8217;t end up using it in production I can promise that it&#8217;ll teach you things that will make you a better programmer. Even if you only learn about lisp and don&#8217;t use it, it&#8217;ll change how you solve problems.</p>
+<p>I hope this helped and that you have fun.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2016/02/27/an-introduction-to-clojurescript/feed/</wfw:commentRss>
+		<slash:comments>3</slash:comments>
+		</item>
+		<item>
+		<title>Working with multiple of lists in JavaScript</title>
+		<link>/2016/02/09/working-with-multiple-of-lists-in-javascript/</link>
+		<comments>/2016/02/09/working-with-multiple-of-lists-in-javascript/#comments</comments>
+		<pubDate>Tue, 09 Feb 2016 23:05:44 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Clojure]]></category>
+		<category><![CDATA[JavaScript]]></category>
+		<category><![CDATA[Lisp]]></category>
+		<category><![CDATA[Projects]]></category>
+		<category><![CDATA[clojure]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[lisp]]></category>
+		<category><![CDATA[lists]]></category>
+
+		<guid isPermaLink="false">/?p=434</guid>
+		<description><![CDATA[If you&#8217;ve ever had to iterate over multiple lists at the same time or map a filtered map of a map, you&#8217;ll understand that nesting all of those blocks and callbacks isn&#8217;t very easy to work with or understand. Luckily, there&#8217;s some cool techniques that make turning several arrays (or infinite sequences created by generators, <a class="read-more" href="/2016/02/09/working-with-multiple-of-lists-in-javascript/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>If you&#8217;ve ever had to iterate over multiple lists at the same time or map a filtered map of a map, you&#8217;ll understand that nesting all of those blocks and callbacks isn&#8217;t very easy to work with or understand.</p>
+<p>Luckily, there&#8217;s some cool techniques that make turning several arrays (or infinite sequences created by generators, for example) into a single array with a concise and powerful syntax. I&#8217;m going to take this rather large list of <a href="https://gist.github.com/Olical/fa1c29fdfa42b52604f5">my public gists</a> and turn it into a list of all file names with the type set to &#8220;JavaScript&#8221;. I&#8217;m using lodash for convenience.</p><pre class="crayon-plain-tag">_.map(_.filter(_.flatMap(gists, (gist) =&gt; {
+  return _.values(gist.files)
+}), (file) =&gt; {
+  return file.language === 'JavaScript'
+}), (file) =&gt; {
+  return file.filename
+})</pre><p>Which yields the following array.</p><pre class="crayon-plain-tag">[ 'lazyArray.js',
+  'thebutton.js',
+  'formatNumberWithCommas.js',
+  'x-example.js',
+  'what-we-do.js',
+  'compile.js',
+  'compile.spec.js',
+  'factory.js',
+  'harvest.js',
+  'main.js',
+  'e.js',
+  'example.js',
+  'EventEmitter.js',
+  'api.js',
+  'example.js',
+  'graphs.js',
+  'colours.js' ]</pre><p>You could extract parts of this into named variables or move it into other functions, but my point being, something fairly simple requires a lot of juggling. If you want to add any more maps or filters in the middle you have to constantly move arguments around. It&#8217;s not easy to change and adapt.</p>
+<p>We can however completely eliminate the need for this nesting by using something called list comprehension.</p>
+<h2>List comprehension</h2>
+<p>My favourite implementation of list comprehension can be found in my favourite language, <a href="https://clojuredocs.org/clojure.core/for">Clojure&#8217;s for</a>. You can also find them in many other languages such as Python and Scala, I&#8217;m just in love with <a href="https://xkcd.com/297/">all those parenthesis</a>.</p>
+<p>JavaScript even <em>had</em> one planned for ES6 although it was pulled from the specification, I&#8217;m not sure why. <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Array_comprehensions">Firefox had something like the ES6 one</a> implemented for a while, but that was non-standard at the time. If it&#8217;s any consolation, I didn&#8217;t like the syntax anyway.</p>
+<p>They allow you to produce a single list from one statement or call that accepts multiple lists alongside some parameters. You should, in theory, be able to reference between those lists and define intermediate values from those lists as they iterate through. You then have a function which is called with singular values from those lists, what it returns becomes your final list.</p>
+<p>I&#8217;ve built one for JavaScript that is a port of the Clojure implementation, I&#8217;ve tried to keep it as close to the original as possible. Including code-as-data based API and laziness all the way down. You can use plain old arrays or infinite generators, it will accept <em>any</em> <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Iteration_protocols">iterable</a>.</p>
+<h2>Introducing <a href="https://github.com/Olical/forc">forc</a> <a style="display: inline-block;" href="https://badge.fury.io/js/forc"><img src="https://badge.fury.io/js/forc.svg" alt="npm version" height="18" /></a></h2>
+<p>The name stems from &#8220;for comprehension&#8221; or maybe even &#8220;for Clojure&#8221;, but mainly because I obviously can&#8217;t use just &#8220;for&#8221; as a name. It allows you to do everything Clojure&#8217;s for does, but with JavaScript and any kind of iterable. It&#8217;s written with all sorts of ES6y things and I&#8217;d recommend using it with Babel, but it will work without them (I compile it at publish time). Pre-ES6 you won&#8217;t have any way to iterate the iterables it generates easily, so I wouldn&#8217;t recommend that.</p>
+<p>Here&#8217;s an example of infinite sequences from the README.</p><pre class="crayon-plain-tag">// An infinite generator of all natural numbers
+function * numbers () {
+  let n = 0
+
+  while (true) {
+    yield n++
+  }
+}
+
+forc([
+  'n', numbers(),
+  ':let', ['square', ({n}) =&gt; n * n],
+  ':while', ({square}) =&gt; square &lt; 100
+], ({square}) =&gt; square)
+
+// Results in only those whos square is &lt; 100
+// [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]</pre><p>The API will look strange to anyone that hasn&#8217;t used the Clojure version, but it&#8217;s extremely powerful. The declarative array based approach allowed me to do some cool rebinding of values as I walk through the instructions. I&#8217;ve seen others do this with long chains of method calls or evals instead, both of which don&#8217;t come close to Clojure&#8217;s elegance, in my opinion. This library accidentally adds a little lisp to JavaScript, <a href="https://github.com/Olical/clojs">again</a>. I can&#8217;t help it.</p>
+<p>Now let&#8217;s solve the initial problem with <a href="https://github.com/Olical/forc">forc</a>.</p><pre class="crayon-plain-tag">forc([
+  'gist', gists,
+  'file', ({gist}) =&gt; _.values(gist.files),
+  ':when', ({file}) =&gt; file.language === 'JavaScript'
+], ({file}) =&gt; file.filename)</pre><p>Pretty succinct, right? I mean, I think so. It&#8217;s a shame the &#8220;_.values&#8221; is required because &#8220;gist.files&#8221; is an object but that&#8217;s just the shape of the data. An object is not an iterable, maybe I could change the API in the future to automatically extract values from objects. This call produces a generator which contains the same contents as the initial call, you can expand it with &#8220;[&#8230;result]&#8221;.</p>
+<p>The cool thing about it being a generator is that it only calculates the values you pull through, this allows you to use infinite iterators, for example. You can even use a generator created by &#8220;forc&#8221; as an argument for &#8220;forc&#8221;, it sill won&#8217;t execute a thing until you pull the values through by resolving the iterator.</p>
+<p>Feel free to check out the README and tests to get a better idea of the capabilities. The Clojure documentation is also pretty good since I&#8217;ve copied the API.</p>
+<p>I hope you find this useful!</p>
+]]></content:encoded>
+			<wfw:commentRss>/2016/02/09/working-with-multiple-of-lists-in-javascript/feed/</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+		</item>
+		<item>
+		<title>Asynchronicity and JavaScript</title>
+		<link>/2016/01/24/asynchronicity-and-javascript/</link>
+		<comments>/2016/01/24/asynchronicity-and-javascript/#comments</comments>
+		<pubDate>Sun, 24 Jan 2016 19:45:22 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Asynchronicity]]></category>
+		<category><![CDATA[JavaScript]]></category>
+		<category><![CDATA[async]]></category>
+		<category><![CDATA[asynchronicity]]></category>
+		<category><![CDATA[csp]]></category>
+		<category><![CDATA[promises]]></category>
+
+		<guid isPermaLink="false">/?p=418</guid>
+		<description><![CDATA[There are two very difficult things in UI development, well, there&#8217;s a lot more than that but here&#8217;s two very important aspects. Management of state Management of asynchronicity A lot has been done to make state less&#8230; evil? (see React, Redux, Cycle, Elm, Om, etc) The same can&#8217;t really be said for async operations, we <a class="read-more" href="/2016/01/24/asynchronicity-and-javascript/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>There are two very difficult things in UI development, well, there&#8217;s a lot more than that but here&#8217;s two very important aspects.</p>
+<ul>
+<li>Management of state</li>
+<li>Management of asynchronicity</li>
+</ul>
+<p>A lot has been done to make state less&#8230; evil? (see React, Redux, Cycle, Elm, Om, etc) The same can&#8217;t really be said for async operations, we kind of dumped some bare bones promise implementation into the language then wandered off to rendering land having done a good job painting callbacks in another colour.</p>
+<p><a href="https://en.wikipedia.org/wiki/Futures_and_promises">Wikipedia</a> describes futures and promises like so.</p>
+<blockquote><p>Futures and promises originated in <a title="Functional programming" href="https://en.wikipedia.org/wiki/Functional_programming">functional programming</a> and related paradigms (such as <a title="Logic programming" href="https://en.wikipedia.org/wiki/Logic_programming">logic programming</a>) to decouple a value (a future) from how it was computed (a promise), allowing the computation to be done more flexibly, notably by parallelizing it. It later found use in <a title="Distributed computing" href="https://en.wikipedia.org/wiki/Distributed_computing">distributed computing</a>, in reducing the latency from communication round trips. <strong>More recently, it has gained popularity by allowing writing asynchronous programs in <a title="Direct style" href="https://en.wikipedia.org/wiki/Direct_style">direct style</a>, rather than in <a title="Continuation-passing style" href="https://en.wikipedia.org/wiki/Continuation-passing_style">continuation-passing style</a>.</strong></p></blockquote>
+<p>Hang on, apparently they allow us to program async in a direct style, which is <em>really</em> nice instead of a continuation passing style (see: callbacks). So <a href="http://clojure.org/">Clojure</a> gives us <a href="https://clojuredocs.org/clojure.core/future">futures</a> which allows async (In another thread! Amazing!) but in a direct programming style. We can follow the code in one function, we don&#8217;t have to go back and forth to work out when it&#8217;ll return.</p>
+<p>JavaScript promises on the other hand, callbacks. Callbacks everywhere. Callbacks all the way down. JavaScript promises are just glorified callbacks, it&#8217;s just another syntax and another style, but it still has the same problems. The caller is not in control of pulling the value back through. It&#8217;s continuation passing style, the thing promises and futures are supposed to help you avoid, but they&#8217;re built upon those concepts in JavaScript.</p>
+<p><a href="/wp-content/uploads/2016/01/wp-1453555723852.jpg" rel="attachment wp-att-420"><img class="size-large wp-image-420 aligncenter" src="/wp-content/uploads/2016/01/wp-1453555723852-1024x768.jpg" alt="wp-1453555723852.jpg" width="640" height="480" srcset="/wp-content/uploads/2016/01/wp-1453555723852-1024x768.jpg 1024w, /wp-content/uploads/2016/01/wp-1453555723852-300x225.jpg 300w, /wp-content/uploads/2016/01/wp-1453555723852-768x576.jpg 768w" sizes="(max-width: 640px) 100vw, 640px" /></a></p>
+<p>So I&#8217;m guessing you think I&#8217;m wrong and that promises in JavaScript are actually different from callback based spaghetti hell in some way? Syntactically, sure, but that&#8217;s as deep as the difference goes.</p><pre class="crayon-plain-tag">function slowAdd(a, b, cb) {
+	const result = a + b
+	setTimeout(() =&gt; cb(result), 1000)
+}
+
+function slowMultiply(a, b, cb) {
+	const result = a * b
+	setTimeout(() =&gt; cb(result), 1000)
+}
+
+slowAdd(5, 10, res =&gt; slowMultiply(res, 2, res =&gt; console.log(res)))</pre><p>That was just callbacks, but I&#8217;m working asynchronously and passing the results through. If you wanted error handling you just have to make the first argument to the callback the &#8220;err&#8221; argument. I&#8217;ve always thought that naming makes the function look uncertain though. It reads like it&#8217;s giving an interview after a particularly bad game of football.</p><pre class="crayon-plain-tag">function slowAdd(a, b) {
+	const result = a + b
+	return new Promise(resolve =&gt; setTimeout(() =&gt; resolve(result), 1000))
+}
+
+function slowMultiply(a, b) {
+	const result = a * b
+	return new Promise(resolve =&gt; setTimeout(() =&gt; resolve(result), 1000))
+}
+
+slowAdd(5, 10)
+	.then(res =&gt; slowMultiply(res, 2))
+	.then(res =&gt; console.log(res))</pre><p>Notice the similarities? The callback approach even looks cleaner in this situation, in my opinion. I&#8217;m not even a proponent of callbacks over promises. I&#8217;m a proponent of neither, my point being that they&#8217;re essentially the exact same thing, you just put the callbacks somewhere else but they&#8217;re still there.</p>
+<p>The promises we have right now add some value over callbacks, but not much. They&#8217;re just a different way of writing the same spaghetti with less indentation. The only good thing about them are the 3rd party implementations (such as <a href="http://bluebirdjs.com/docs/api-reference.html">bluebird</a>) that add some nice functions to handle asynchronous transformation of data. Other than that, promises ~= callbacks.</p>
+<h2>If not those, then what?</h2>
+<p>I&#8217;m calling callbacks bad and promises essentially the same thing with some minor differences. What we actually need is something that allows us to invert control and pull data through (potentially in a blocking fashion) thus eliminating the need for callbacks and handing off control to another function which may <em>never</em> give you the control back.</p>
+<p>Different languages solve this problem in various ways, <a href="https://www.golang-book.com/books/intro/10">Go</a> is fantastic at this, as is <a href="https://clojure.github.io/core.async/">Clojure</a> (which copies the good ideas in Go) among many other languages that were designed for concurrency from the ground up. JavaScript was not designed for concurrency, it was just about designed to make forms submit when a user clicks a button and it struggles with that <del>sometimes</del> most of the time. A lot of the <em>good</em> languages handle this with channels or communicating sequential processes (CSP). There are many other solutions, far better than what JavaScript has to offer, but CSP is the only one I&#8217;m highlighting here.</p>
+<p>ES6 is adding <a href="https://davidwalsh.name/es6-generators">generators</a> and ES7 is adding <a href="https://jakearchibald.com/2014/es7-async-functions/">async/await</a>. You can actually use CSP with generators like Clojure and Go if you try hard enough, <a href="http://swannodette.github.io/2013/08/24/es6-generators-and-csp/">David Nolen wrote something really cool</a> regarding this. There&#8217;s also <a href="https://github.com/ubolonton/js-csp">entire libraries</a> to allow use of CSP in JavaScript via generators. I&#8217;m not sure if it&#8217;s the right way to go since generators are essentially just a way to lazily generate sequences with async as a side effect, but it&#8217;s better than promises. As far as I can tell, async/await is just another syntactic abstraction on top of promises.</p>
+<h2>These aren&#8217;t the solutions</h2>
+<p>All of this syntax being added to JavaScript seems like a really bad idea. Each comes with it&#8217;s own rules, complexities and even more libraries just to be able to use them conveniently. My advice? Use a good language that compiles to JavaScript to escape the impending madness. Yes it works and sort of gets the job done, but setting fire to your house will warm it up and keep heating bills down. It doesn&#8217;t mean there isn&#8217;t a far better alternative out there.</p>
+<p>Do yourself and your team a favour, investigate very well established languages that compile to JavaScript and make async (among many other things) easy by default. You don&#8217;t need to use them if you decide it&#8217;s not for you, but at the very least you may learn that promises aren&#8217;t the best thing since sliced bread as most JavaScript developers appear to believe. They&#8217;re actually pretty mediocre compared to other solutions. Not all promises are bad though, the whole future/promise thing in Scala and Clojure is pretty good, we just have a <em>very</em> simplistic implementation that adds 30% of the value.</p>
+<p>I was originally going to write about how generators + CSP (<strong>not promises</strong>) and maybe async/await would come to save us, but after researching them I honestly can&#8217;t do that. Just think of all the legacy code you&#8217;ll constantly have to wrap and adapt to when each one uses a different approach to containing the async madness. Stick to something simple and widely used (even if it&#8217;s terrible in comparison to other good async solutions) or bite the bullet and learn a good language with good async tooling and use that instead.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2016/01/24/asynchronicity-and-javascript/feed/</wfw:commentRss>
+		<slash:comments>2</slash:comments>
+		</item>
+	</channel>
+</rss>

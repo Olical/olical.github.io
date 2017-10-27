@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>generative-testing &#8211; Oliver Caldwell&#039;s blog</title>
+	<atom:link href="/tag/generative-testing/feed/" rel="self" type="application/rss+xml" />
+	<link>/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Wed, 18 Oct 2017 13:50:23 +0000</lastBuildDate>
+	<language>en-GB</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>Revisiting: Searching JavaScript arrays with a binary search</title>
+		<link>/2014/12/17/revisiting-searching-javascript-arrays-with-a-binary-search/</link>
+		<comments>/2014/12/17/revisiting-searching-javascript-arrays-with-a-binary-search/#comments</comments>
+		<pubDate>Wed, 17 Dec 2014 23:35:04 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[JavaScript]]></category>
+		<category><![CDATA[algo]]></category>
+		<category><![CDATA[binary-search]]></category>
+		<category><![CDATA[generative-testing]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[performance]]></category>
+
+		<guid isPermaLink="false">/?p=271</guid>
+		<description><![CDATA[Last year I wrote a post called Searching JavaScript arrays with a binary search, it&#8217;s actually become quite popular and has seen a large amount of suggestions in the comments as well as helping out PowerArray. The problem is that it&#8217;s an untested, performance chasing, mess of a function. I&#8217;ve always wanted to redo this <a class="read-more" href="/2014/12/17/revisiting-searching-javascript-arrays-with-a-binary-search/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>Last year I wrote a post called <a title="Searching JavaScript arrays with a binary search" href="/2013/06/08/searching-javascript-arrays-with-a-binary-search/">Searching JavaScript arrays with a binary search</a>, it&#8217;s actually become quite popular and has seen a large amount of suggestions in the comments as well as helping out <a href="https://github.com/techfort/PowerArray">PowerArray</a>. The problem is that it&#8217;s an untested, performance chasing, mess of a function. I&#8217;ve always wanted to redo this in a more formal manner because I don&#8217;t want people using code I&#8217;ve written that will probably break on multiple edge cases.</p>
+<p>So, I&#8217;m going to build an actual repository containing a JavaScript binary search function as well as some robust tests. Step one will be to produce a simple reference implementation with benchmarks and generative tests using <a href="https://github.com/leebyron/testcheck-js">testcheck-js</a>, then I will go on to continually speed up the algorithm without breaking that initial suite. I think this&#8217;ll produce something far better than my original post with the potential for more speed too. And it&#8217;s going to be bullet proof. I hope. Why would you be shooting at a searching algorithm anyway?</p>
+<p>You can find the repository at <a href="https://github.com/Wolfy87/binary-search">Wolfy87/binary-search</a>.</p>
+<h2>The baseline</h2>
+<p>So I built up a repository with tests and a function called <em>binarySearch</em> that actually uses <em>indexOf</em> instead. It&#8217;s lying to you, it&#8217;s not a binary search just yet. This provides us with a working example to base the tests against and a good baseline in performance. Here&#8217;s the function which basically does nothing of any significance.</p><pre class="crayon-plain-tag">/**
+ * Performs a binary search on the provided sorted list and returns the index of the item if found. If it can't be found it'll return -1.
+ *
+ * @param {*[]} list Items to search through.
+ * @param {*} item The item to look for.
+ * @return {Number} The index of the item if found, -1 if not.
+ */
+function binarySearch(list, item) {
+    return list.indexOf(item);
+}
+
+module.exports = binarySearch;</pre><p>And the test file that runs in 80ms on my machine using generative testing.</p><pre class="crayon-plain-tag">require('mocha-testcheck').install();
+var assert = require('assert');
+var binarySearch = require('..');
+
+describe('binarySearch', function () {
+    check.it('can find a number in some sorted numbers', [gen.array(gen.int), gen.int], function (list, item) {
+        list.sort();
+        var index = list.indexOf(item);
+        assert(index === binarySearch(list, item));
+    });
+});</pre><p>Now to turn it into an actual binary search. During this process I tried multiple binary search implementations including one from <a href="https://www.khanacademy.org/">Khan Academy</a> and a plethora of other blogs. Including mine from my previous post. The generative testing found holes in every single one, it was amazing yet terrifying. Even one apparently ported from JDK fell apart, although that&#8217;s probably the fault of the port and not in the actual JDK. I hope.</p>
+<p>I eventually gave up with them all and went back to the implementation from Khan. It falls over on calls such as &#8220;( [0,0,0,13,2,2], 13 )&#8221; and &#8220;( [10,6], 6 )&#8221;, which is sort of bad.</p>
+<h2>This is the point where I realised I&#8217;m an idiot and slammed my face into my desk</h2>
+<p>There wasn&#8217;t anything wrong with the search functions. The sorting of the sample arrays was wrong. I noticed it after putting in some logging for failing cases that showed numbers being inserted out of order.</p><pre class="crayon-plain-tag">[ -1, -10, -16, -19, -20, 11, 12, 13, 13, 13, 14, 15, 17, 6 ] 6 13 -1
+[ -10, -16, -19, -20, 11, 12, 13, 13, 13, 14, 15, 17, 6 ] 6 12 -1
+[ -10, -16, -19, -20, 12, 13, 13, 13, 14, 15, 17, 6 ] 6 11 -1
+[ -10, -16, -20, 12, 13, 13, 13, 14, 15, 17, 6 ] 6 10 -1
+[ -10, -16, 12, 13, 13, 13, 14, 15, 17, 6 ] 6 9 -1
+[ -10, -16, 12, 13, 13, 14, 15, 17, 6 ] 6 8 -1
+[ -10, -16, 12, 13, 13, 15, 17, 6 ] 6 7 -1
+[ -10, -16, 13, 13, 15, 17, 6 ] 6 6 -1
+[ -10, -16, 13, 13, 15, 6 ] 6 5 -1
+[ -10, -16, 13, 15, 6 ] 6 4 -1
+[ -10, -16, 15, 6 ] 6 3 -1
+[ -16, 15, 6 ] 6 2 -1
+[ 15, 6 ] 6 1 -1
+[ 12, 6 ] 6 1 -1
+[ 11, 6 ] 6 1 -1
+[ 10, 6 ] 6 1 -1</pre><p><a href="/wp-content/uploads/2014/12/quadruple-facepalm.jpg"><img class="aligncenter wp-image-273 size-full" src="/wp-content/uploads/2014/12/quadruple-facepalm.jpg" alt="quadruple-facepalm" width="486" height="401" srcset="/wp-content/uploads/2014/12/quadruple-facepalm.jpg 486w, /wp-content/uploads/2014/12/quadruple-facepalm-300x247.jpg 300w" sizes="(max-width: 486px) 100vw, 486px" /></a>So using <em>list.sort()</em> in the tests wasn&#8217;t safe, amazingly. I guess it uses string comparison or something crazy like that by default. <strong>Thanks JavaScript!</strong> So I ended up with this binary search from my Khan academy attempt.</p><pre class="crayon-plain-tag">/**
+ * Performs a binary search on the provided sorted list and returns the index of the item if found. If it can't be found it'll return -1.
+ *
+ * @param {*[]} list Items to search through.
+ * @param {*} item The item to look for.
+ * @return {Number} The index of the item if found, -1 if not.
+ */
+function binarySearch(list, item) {
+    var min = 0;
+    var max = list.length - 1;
+    var guess;
+
+    while (min &lt;= max) {
+        guess = Math.floor((min + max) / 2);
+
+        if (list[guess] === item) {
+            return guess;
+        }
+        else {
+            if (list[guess] &lt; item) {
+                min = guess + 1;
+            }
+            else {
+                max = guess - 1;
+            }
+        }
+    }
+
+    return -1;
+}
+
+module.exports = binarySearch;</pre><p>And these tests.</p><pre class="crayon-plain-tag">require('mocha-testcheck').install();
+var assert = require('assert');
+var binarySearch = require('..');
+
+describe('binarySearch', function () {
+    check.it('can find a number in some sorted numbers', [gen.array(gen.int), gen.int], function (list, item) {
+        list.sort(function (a, b) {
+            return a - b;
+        });
+
+        var base = list.indexOf(item);
+        var result = binarySearch(list, item);
+        assert(list[base] === list[result]);
+    });
+});</pre><p></p>
+<h2>Now it&#8217;s safe</h2>
+<p>I am free to change the implementation now since I&#8217;m happy with the test suite (despite it subtly stabbing me in the back). So I can add in every crazy optimisation under the sun, but to be able to tell that it actually improved I&#8217;ll need some benchmarks. I&#8217;m going to use <a href="http://benchmarkjs.com/">Benchmark.js</a>.</p><pre class="crayon-plain-tag">var binarySearch = require('..');
+var sample = require('./sample');
+
+module.exports = {
+    name: 'binarySearch on 1000 items ranging from -100 to 100',
+    tests: [
+        {
+            name: 'First',
+            fn: function () {
+                binarySearch(sample, -100);
+            }
+        },
+        {
+            name: 'Last',
+            fn: function () {
+                binarySearch(sample, 100);
+            }
+        },
+        {
+            name: '~25%',
+            fn: function () {
+                binarySearch(sample, -51);
+            }
+        },
+        {
+            name: '~50%',
+            fn: function () {
+                binarySearch(sample, 3);
+            }
+        },
+        {
+            name: '~75%',
+            fn: function () {
+                binarySearch(sample, 52);
+            }
+        }
+    ]
+};</pre><p>Which produced this nice little output for me to compare against in the future.</p><pre class="crayon-plain-tag">binary-search$ gulp benchmark
+[23:31:53] Using gulpfile ~/Documents/code/javascript/binary-search/gulpfile.js
+[23:31:53] Starting 'benchmark'...
+[23:31:53] Running suite binarySearch on 1000 items ranging from -100 to 100 [/home/oliver/Documents/code/javascript/binary-search/benchmark/binarySearch.js]...
+[23:31:59]    First x 26,740,056 ops/sec ±0.40% (99 runs sampled)
+[23:32:04]    Last x 28,211,591 ops/sec ±0.84% (94 runs sampled)
+[23:32:10]    ~25% x 27,309,183 ops/sec ±0.11% (103 runs sampled)
+[23:32:15]    ~50% x 51,699,650 ops/sec ±0.56% (97 runs sampled)
+[23:32:21]    ~75% x 44,993,017 ops/sec ±0.52% (96 runs sampled)
+[23:32:21] Fastest test is ~50% at 1.15x faster than ~75%
+[23:32:21] Finished 'benchmark' after 27 s</pre><p>I could go through inserting random optimisations now safe in the knowledge that I&#8217;ll be able to see improvements and I won&#8217;t break anything, but it&#8217;s almost midnight and I want to publish this tomorrow morning. Feel free to hack around in <a href="https://github.com/Wolfy87/binary-search">the repository</a> and make it blisteringly fast without breaking anything.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2014/12/17/revisiting-searching-javascript-arrays-with-a-binary-search/feed/</wfw:commentRss>
+		<slash:comments>4</slash:comments>
+		</item>
+	</channel>
+</rss>

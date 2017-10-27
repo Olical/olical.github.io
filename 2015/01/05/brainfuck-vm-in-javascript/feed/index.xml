@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	
+	>
+<channel>
+	<title>Comments on: Brainfuck VM in JavaScript</title>
+	<atom:link href="/2015/01/05/brainfuck-vm-in-javascript/feed/" rel="self" type="application/rss+xml" />
+	<link>/2015/01/05/brainfuck-vm-in-javascript/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Mon, 22 May 2017 19:57:20 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>By: Giving Emacs another chance &#124; Oliver Caldwell&#039;s blog</title>
+		<link>/2015/01/05/brainfuck-vm-in-javascript/#comment-134</link>
+		<dc:creator><![CDATA[Giving Emacs another chance &#124; Oliver Caldwell&#039;s blog]]></dc:creator>
+		<pubDate>Mon, 02 Mar 2015 21:04:51 +0000</pubDate>
+		<guid isPermaLink="false">/?p=280#comment-134</guid>
+		<description><![CDATA[[&#8230;] be publishing my &#8220;7 languages&#8221; projects on GitHub, but I&#8217;ll also be continuing my brainfuck interpreters in each language I look [&#8230;]]]></description>
+		<content:encoded><![CDATA[<p>[&#8230;] be publishing my &#8220;7 languages&#8221; projects on GitHub, but I&#8217;ll also be continuing my brainfuck interpreters in each language I look [&#8230;]</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

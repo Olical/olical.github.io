@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>hosting &#8211; Oliver Caldwell&#039;s blog</title>
+	<atom:link href="/tag/hosting/feed/" rel="self" type="application/rss+xml" />
+	<link>/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Wed, 18 Oct 2017 13:50:23 +0000</lastBuildDate>
+	<language>en-GB</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>I&#8217;m on Linode now</title>
+		<link>/2017/03/28/im-on-linode-now/</link>
+		<comments>/2017/03/28/im-on-linode-now/#respond</comments>
+		<pubDate>Tue, 28 Mar 2017 19:36:26 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Linux]]></category>
+		<category><![CDATA[hosting]]></category>
+		<category><![CDATA[linode]]></category>
+		<category><![CDATA[linux]]></category>
+
+		<guid isPermaLink="false">/?p=483</guid>
+		<description><![CDATA[And I&#8217;m pretty damn happy with it, as happy as you can be with a server I guess. Note: There&#8217;s a referral link at the bottom of this post. Some context I&#8217;ve been running my blog off of webfaction for a few years now, I actually used it before then whilst at a previous job <a class="read-more" href="/2017/03/28/im-on-linode-now/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>And I&#8217;m pretty damn happy with it, as happy as you can be with a server I guess.</p>
+<blockquote><p>Note: There&#8217;s a referral link at the bottom of this post.</p></blockquote>
+<h2>Some context</h2>
+<p>I&#8217;ve been running my blog off of <a href="https://www.webfaction.com/">webfaction</a> for a few years now, I actually used it before then whilst at a previous job too, if memory serves correctly (James? Did we?).</p>
+<p>It&#8217;s been working well and I&#8217;ve actually been hosting a whole suite of sites for a community I was a part of on there (wiki, blog, forum, IRC logs etc). It wasn&#8217;t too expensive and it did what I needed. However, I&#8217;ve slowly found the need for my <em>own</em> server that <em>I</em> manage and have responsibility for.</p>
+<p>Webfaction moved my data to a new server recently (it&#8217;s all managed) which prompted me to think about moving, so I started hunting. I was originally going to settle for <a href="https://www.digitalocean.com/">DigitalOcean</a> after a little search, but a colleague (thanks Alan!) convinced me that <a href="https://www.linode.com/">Linode</a> offered everything I wanted for the same price as DigitalOcean, but with more memory. I suppose it&#8217;s an aside, but as far as I know Linode has been around a lot longer too.</p>
+<h2>My Linode</h2>
+<p>After dumping the source and databases of my blog and <em>scp</em>ing it all down to my machine I signed up for Linode. I&#8217;m delighted to report that it works well with LastPass and supports two factor authentication, thankfully.</p>
+<p>They have recipes called StackScripts to provision a server with common things like Apache, WordPress or nginx, but that list is huge since others can submit them. I guess it&#8217;s sort of like community driven Puppet or Chef. I ran the WordPress one and ended up with a server running a LAMP stack with a blank WordPress install in a couple of minutes.</p>
+<p>After performing the basic SSH key exchange I followed the <a href="https://www.linode.com/docs/security/securing-your-server">Linode guide to securing your server</a>. This involved creating a non-root user, locking down SSH, implementing a firewall (easy with <a href="https://www.linode.com/docs/security/firewalls/configure-firewall-with-ufw">ufw</a>) and setting up <a href="https://www.digitalocean.com/community/tutorials/how-fail2ban-works-to-protect-services-on-a-linux-server">fail2ban</a>. I have to say, the Linode documentation is first rate, I&#8217;d happily rely on it for non-Linode systems too.</p>
+<figure id="attachment_485" style="width: 792px" class="wp-caption aligncenter"><a href="/wp-content/uploads/2017/03/Screenshot_2017-03-28_20-09-24.png"><img class="wp-image-485 size-large" src="/wp-content/uploads/2017/03/Screenshot_2017-03-28_20-09-24-1024x604.png" alt="" width="792" height="467" srcset="/wp-content/uploads/2017/03/Screenshot_2017-03-28_20-09-24-1024x604.png 1024w, /wp-content/uploads/2017/03/Screenshot_2017-03-28_20-09-24-300x177.png 300w, /wp-content/uploads/2017/03/Screenshot_2017-03-28_20-09-24-768x453.png 768w, /wp-content/uploads/2017/03/Screenshot_2017-03-28_20-09-24.png 1175w" sizes="(max-width: 792px) 100vw, 792px" /></a><figcaption class="wp-caption-text">My Linode&#8217;s dashboard. I called it Turing.</figcaption></figure>
+<p>Not only does Linode provision and manage the actual image for me, but it also comes with some pretty neat DNS management and Longview, which provides built in, detailed, metrics. They also provide load balancers but I don&#8217;t need those (yet). I previously managed my DNS for this domain through Cloudflare, I&#8217;ve since moved that to Linode for simplicity and haven&#8217;t noticed any issues yet.</p>
+<figure id="attachment_486" style="width: 1008px" class="wp-caption aligncenter"><a href="/wp-content/uploads/2017/03/Screenshot_2017-03-28_20-12-43.png"><img class="wp-image-486 size-full" src="/wp-content/uploads/2017/03/Screenshot_2017-03-28_20-12-43.png" alt="" width="1008" height="955" srcset="/wp-content/uploads/2017/03/Screenshot_2017-03-28_20-12-43.png 1008w, /wp-content/uploads/2017/03/Screenshot_2017-03-28_20-12-43-300x284.png 300w, /wp-content/uploads/2017/03/Screenshot_2017-03-28_20-12-43-768x728.png 768w" sizes="(max-width: 1008px) 100vw, 1008px" /></a><figcaption class="wp-caption-text">What my Longview dashboard looks like.</figcaption></figure>
+<p>You probably won&#8217;t notice or remember (why would you?) but this site used to be <em>http</em>. During the migration I cracked open the old <a href="https://certbot.eff.org/">certbot</a> from the wonderful <a href="https://letsencrypt.org/">Let&#8217;s Encrypt</a> and got that lovely green lock and <em>https</em> you should see at the top of your browser, unless you&#8217;re trying to access this site from a potato. In which case the cert probably failed and you may or may not be reading this. ¯\_(ツ)_/¯</p>
+<p>So now I have my own Linux server running within Linode (in London, actually!) behind a swanky <em>https</em> URL. So far, I can highly recommend them, if you got this far and you&#8217;re as sold as I was, I&#8217;d really appreciate a click of my <a href="https://www.linode.com/?r=6a2af6a5897ea178066c009d778dbb8d847bd813">referral link</a>. You don&#8217;t need to, but it&#8217;d be really cool of you. When in doubt, browse the Linode documentation. Enjoy.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2017/03/28/im-on-linode-now/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

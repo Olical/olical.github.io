@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	
+	>
+<channel>
+	<title>Comments on: Handling concurrency and asynchronous JavaScript</title>
+	<atom:link href="/2013/09/11/handling-concurrency-and-asynchronous-javascript/feed/" rel="self" type="application/rss+xml" />
+	<link>/2013/09/11/handling-concurrency-and-asynchronous-javascript/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Mon, 22 May 2017 19:57:20 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>By: bguiz</title>
+		<link>/2013/09/11/handling-concurrency-and-asynchronous-javascript/#comment-70</link>
+		<dc:creator><![CDATA[bguiz]]></dc:creator>
+		<pubDate>Thu, 12 Sep 2013 05:31:00 +0000</pubDate>
+		<guid isPermaLink="false">/2013/09/11/handling-concurrency-and-asynchronous-javascript#comment-70</guid>
+		<description><![CDATA[Oliver, 
+
+I have run into this same difficulty myself (as have many others). Executing a batch of asynchronous tasks is hard enough when each has no dependencies on another - such as when the output of one is the input to another. When they do depend on each other such, however, wiring them up becomes a lot harder than iterating over a list.
+
+So I began using promises to help manage this situation. While this certainly got rid of the sideways-pyramid appearance in the lines of code that is typical of callback spaghetti, the task of wiring the promises up still proved to be onerous, and I soon began to call it promise spaghetti.
+
+
+Dissatisfied with this, I sought a means of declaratively specifying the relationships between asynchronous tasks (which I called queries), rather than imperatively wiring up these code paths. I wound up writing a library that would manage a queue of queries:
+
+https://github.com/bguiz/qryq
+
+
+A more detailed description can be found here:
+
+https://github.com/bguiz/qryq/blob/master/doco/present/markdown/present.md
+
+
+
+Cheers,
+Brendan]]></description>
+		<content:encoded><![CDATA[<p>Oliver, </p>
+<p>I have run into this same difficulty myself (as have many others). Executing a batch of asynchronous tasks is hard enough when each has no dependencies on another &#8211; such as when the output of one is the input to another. When they do depend on each other such, however, wiring them up becomes a lot harder than iterating over a list.</p>
+<p>So I began using promises to help manage this situation. While this certainly got rid of the sideways-pyramid appearance in the lines of code that is typical of callback spaghetti, the task of wiring the promises up still proved to be onerous, and I soon began to call it promise spaghetti.</p>
+<p>Dissatisfied with this, I sought a means of declaratively specifying the relationships between asynchronous tasks (which I called queries), rather than imperatively wiring up these code paths. I wound up writing a library that would manage a queue of queries:</p>
+<p><a href="https://github.com/bguiz/qryq" rel="nofollow">https://github.com/bguiz/qryq</a></p>
+<p>A more detailed description can be found here:</p>
+<p><a href="https://github.com/bguiz/qryq/blob/master/doco/present/markdown/present.md" rel="nofollow">https://github.com/bguiz/qryq/blob/master/doco/present/markdown/present.md</a></p>
+<p>Cheers,<br />
+Brendan</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

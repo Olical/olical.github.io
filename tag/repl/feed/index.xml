@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>repl &#8211; Oliver Caldwell&#039;s blog</title>
+	<atom:link href="/tag/repl/feed/" rel="self" type="application/rss+xml" />
+	<link>/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Wed, 18 Oct 2017 13:50:23 +0000</lastBuildDate>
+	<language>en-GB</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>An introduction to transcriptor</title>
+		<link>/2017/10/06/an-introduction-to-transcriptor/</link>
+		<comments>/2017/10/06/an-introduction-to-transcriptor/#respond</comments>
+		<pubDate>Fri, 06 Oct 2017 13:46:57 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Clojure]]></category>
+		<category><![CDATA[clojure]]></category>
+		<category><![CDATA[repl]]></category>
+		<category><![CDATA[testing]]></category>
+		<category><![CDATA[transcriptor]]></category>
+
+		<guid isPermaLink="false">/?p=581</guid>
+		<description><![CDATA[Transcriptor is a new Clojure tool released by Stuard Halloway (who literally writes books on Clojure) that approaches testing from a different angle. I only noticed it after he tweeted the following and I asked for him to elaborate. Luckily enough, he did! status: replacing gratuitous test framework goo with information-rich #clojure ex-info — stuarthalloway <a class="read-more" href="/2017/10/06/an-introduction-to-transcriptor/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p><a href="https://github.com/cognitect-labs/transcriptor">Transcriptor</a> is a new <a href="https://clojure.org/">Clojure</a> tool released by <a href="https://twitter.com/stuarthalloway">Stuard Halloway</a> (who literally writes books on Clojure) that approaches testing from a different angle. I only noticed it after he tweeted the following and I asked for him to elaborate. Luckily enough, he did!</p>
+<blockquote class="twitter-tweet" data-lang="en">
+<p dir="ltr" lang="en">status: replacing gratuitous test framework goo with information-rich <a href="https://twitter.com/hashtag/clojure?src=hash&amp;ref_src=twsrc%5Etfw">#clojure</a> ex-info</p>
+<p>— stuarthalloway (@stuarthalloway) <a href="https://twitter.com/stuarthalloway/status/915902870737833984?ref_src=twsrc%5Etfw">October 5, 2017</a></p></blockquote>
+<p><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script></p>
+<p>It allows you to take a REPL interaction and solidify it within a standalone file, this file can be executed later like a normal test suite. Unlike a test suite, you can check the value of any given line in that file against a <a href="https://clojure.org/about/spec">Clojure spec</a>, allowing you to interleave statements and specs.</p>
+<p>I think this is a fantastic idea that will work great for some people but probably not everyone. The world is very hung up on TDD and code coverage, so some may shun this without a second thought. Here&#8217;s how Stuart outlines the problem in the README (very well put, may I add!):</p>
+<blockquote><p>Testing frameworks often introduce their own abstractions for e.g. evaluation order, data validation, reporting, scope, code reuse, state, and lifecycle. In my experience, these abstractions are <em>always</em> needlessly different from (and inferior to) related abstractions provided by the language itself.</p>
+<p>Adapting an already-working REPL interaction to satisfy such testing abstractions is a waste of time, and it throws away the intermediate REPL results that are valuable in diagnosing a problem.</p>
+<p><u>So transcriptor aims to do <em>less</em>, and impose the bare minimum of cognitive load needed to convert a REPL interaction into a test.</u> The entire API is four functions:</p>
+<ul>
+<li><code>xr/run</code> runs a REPL script and produces a transcript</li>
+<li><code>check!</code> validates the last returned value against a Clojure spec</li>
+<li><code>xr/on-exit</code> lets you register cleanup code to run after <code>xr/run</code> completes</li>
+<li><code>xr/repl-files</code> finds the <code>.repl</code> files in a directory tree</li>
+</ul>
+</blockquote>
+<p>The underline is my addition. I&#8217;ve recently come to admire software that solves a specific problem and nothing more with as little code as possible.</p>
+<h2>Usage</h2>
+<p>Thinking about the possibilities is all well and good, but I&#8217;m going to show you a simple concrete usage, something I felt the README lacked (which is fine, it&#8217;s new!). I&#8217;m going to write a dice roller using the REPL to check the code as I go along. I&#8217;ll move these checks out into <em>.repl</em> files, when I&#8217;m done I should have a working dice roller with an example based test suite all thanks to transcriptor.</p>
+<p>I&#8217;m going into this knowing almost nothing about the problem and tooling involved, so I <a href="https://www.youtube.com/watch?v=w8RdTodkxDo">recorded</a> myself (and <a href="https://www.twitch.tv/olliemakesthings">streamed</a>) as I learned about and built this solution.</p>
+<p><iframe width="560" height="315" src="https://www.youtube.com/embed/w8RdTodkxDo" frameborder="0" allowfullscreen="allowfullscreen"></iframe></p>
+<p>As you can see, there wasn&#8217;t much to it, you can find the repository for this video at <a href="https://github.com/Olical/clj-dice-roller">Olical/clj-dice-roller</a>. First I needed to add the following dependencies to my <em>project.clj:</em></p><pre class="crayon-plain-tag">:dependencies [[org.clojure/clojure "1.9.0-beta1"]
+               [org.clojure/spec.alpha "0.1.123"]
+               [com.cognitect/transcriptor "0.1.5"]]</pre><p>Then I wrote my actual dice rolling namespace like this:</p><pre class="crayon-plain-tag">(ns dice-roller.core)
+
+(defn roll
+  "Rolls some dice, like (roll 3 6) would be three d6."
+  [amount die]
+  (vec (map #(inc (rand-int %)) (filter pos? (repeat amount die)))))</pre><p>I included a bunch of calls under my function to check various aspects, which is easier to convey in the video. I was experimenting with different inputs to see what may cause errors and what I should do when someone gives me bad inputs like negative numbers.</p><pre class="crayon-plain-tag">(roll 0 6) ;; []
+(roll 1 6) ;; [3]
+(roll 3 6) ;; [1 3 6]
+(roll 1 0) ;; Error? Empty?
+(roll -1 6) ;; Error?
+(roll 3 -1) ;; Default to 0????</pre><p>I eventually settled on always returning a vector but not rolling invalid dice, as you can see from the finished function above. I then moved these checks into a <em>.repl</em> file with some spec checks.</p><pre class="crayon-plain-tag">(require '[cognitect.transcriptor :as xr]
+         '[clojure.spec.alpha :as s]
+         '[dice-roller.core :as dice])
+
+(s/def ::d6 (s/and int? #(&lt; 0 % 7)))
+
+(dice/roll 0 6)
+(xr/check! (s/and vector? empty?))
+
+(dice/roll 1 6)
+(xr/check! (s/tuple ::d6))
+
+(dice/roll 3 6)
+(xr/check! (s/tuple ::d6 ::d6 ::d6))
+
+(dice/roll 1 0)
+(xr/check! (s/and vector? empty?))
+
+(dice/roll -1 6)
+(xr/check! (s/and vector? empty?))
+
+(dice/roll 3 -1)
+(xr/check! (s/and vector? empty?))</pre><p>I could run the <em>.repl</em> file with <em>xr/run</em> but I created a file called <em>repls/repl_runner.clj</em> that could run all of my projects REPL files in one go.</p><pre class="crayon-plain-tag">(ns repl-runner
+  (:require [cognitect.transcriptor :as xr]))
+
+(defn -main []
+  (doseq [repl-file (xr/repl-files "./repls")]
+    (xr/run repl-file)))</pre><p>I then added an alias to my <em>project.clj</em> so I could run <em>lein repl</em><em>s</em> to execute the scripts.</p><pre class="crayon-plain-tag">:profiles {:dev {:source-paths ["src" "repls"]}}
+:aliases {"repls" ["run" "-m" "repl-runner"]}</pre><p>You could run <em>lein repls</em> (or maybe <em>lein transcriptions</em> is a better name?) within your CI setup, either instead of or alongside your normal test suite. Here&#8217;s an example output from that command.</p><pre class="crayon-plain-tag">(comment {:transcript "./repls/rolls.repl", :namespace cognitect.transcriptor.t_1})
+(require
+ '[cognitect.transcriptor :as xr]
+ '[clojure.spec.alpha :as s]
+ '[dice-roller.core :as dice])
+=&gt; nil
+
+(s/def
+ :cognitect.transcriptor.t_1/d6
+ (s/and int? (fn* [p1__240#] (&lt; 0 p1__240# 7))))
+=&gt; :cognitect.transcriptor.t_1/d6
+
+(dice/roll 0 6)
+=&gt; []
+
+(xr/check! (s/and vector? empty?))
+=&gt; nil
+
+(dice/roll 1 6)
+=&gt; [1]
+
+(xr/check! (s/tuple :cognitect.transcriptor.t_1/d6))
+=&gt; nil
+
+(dice/roll 3 6)
+=&gt; [2 6 6]
+
+(xr/check!
+ (s/tuple
+  :cognitect.transcriptor.t_1/d6
+  :cognitect.transcriptor.t_1/d6
+  :cognitect.transcriptor.t_1/d6))
+=&gt; nil
+
+(dice/roll 1 0)
+=&gt; []
+
+(xr/check! (s/and vector? empty?))
+=&gt; nil
+
+(dice/roll -1 6)
+=&gt; []
+
+(xr/check! (s/and vector? empty?))
+=&gt; nil
+
+(dice/roll 3 -1)
+=&gt; []
+
+(xr/check! (s/and vector? empty?))
+=&gt; nil</pre><p>And, finally, here&#8217;s what happens if I start returning seqs instead of vectors.</p><pre class="crayon-plain-tag">(comment {:transcript "./repls/rolls.repl", :namespace cognitect.transcriptor.t_1})
+(require
+ '[cognitect.transcriptor :as xr]
+ '[clojure.spec.alpha :as s]
+ '[dice-roller.core :as dice])
+=&gt; nil
+
+(s/def
+ :cognitect.transcriptor.t_1/d6
+ (s/and int? (fn* [p1__240#] (&lt; 0 p1__240# 7))))
+=&gt; :cognitect.transcriptor.t_1/d6
+
+(dice/roll 0 6)
+=&gt; ()
+
+(xr/check! (s/and vector? empty?))
+
+Exception in thread "main" clojure.lang.ExceptionInfo: Transcript assertion failed! val: () fails predicate: vector?
+:clojure.spec.alpha/spec  #object[clojure.spec.alpha$and_spec_impl$reify__875 0x765f05af "clojure.spec.alpha$and_spec_impl$reify__875@765f05af"]
+:clojure.spec.alpha/value  ()
+ #:clojure.spec.alpha{:problems [{:path [], :pred clojure.core/vector?, :val (), :via [], :in []}], :spec #object[clojure.spec.alpha$and_spec_impl$reify__875 0x765f05af "clojure.spec.alpha$and_spec_impl$reify__875@765f05af"], :value ()}, compiling:(/tmp/form-init165212537261342855.clj:1:72)
+	at clojure.lang.Compiler.load(Compiler.java:7526)
+	at clojure.lang.Compiler.loadFile(Compiler.java:7452)
+	at clojure.main$load_script.invokeStatic(main.clj:278)
+	at clojure.main$init_opt.invokeStatic(main.clj:280)
+	at clojure.main$init_opt.invoke(main.clj:280)
+	at clojure.main$initialize.invokeStatic(main.clj:311)
+	at clojure.main$null_opt.invokeStatic(main.clj:345)
+	at clojure.main$null_opt.invoke(main.clj:342)
+	at clojure.main$main.invokeStatic(main.clj:424)
+	at clojure.main$main.doInvoke(main.clj:387)
+	at clojure.lang.RestFn.applyTo(RestFn.java:137)
+	at clojure.lang.Var.applyTo(Var.java:702)
+	at clojure.main.main(main.java:37)
+Caused by: clojure.lang.ExceptionInfo: Transcript assertion failed! val: () fails predicate: vector?
+:clojure.spec.alpha/spec  #object[clojure.spec.alpha$and_spec_impl$reify__875 0x765f05af "clojure.spec.alpha$and_spec_impl$reify__875@765f05af"]
+:clojure.spec.alpha/value  ()
+ {:clojure.spec.alpha/problems [{:path [], :pred clojure.core/vector?, :val (), :via [], :in []}], :clojure.spec.alpha/spec #object[clojure.spec.alpha$and_spec_impl$reify__875 0x765f05af "clojure.spec.alpha$and_spec_impl$reify__875@765f05af"], :clojure.spec.alpha/value ()}
+	at clojure.core$ex_info.invokeStatic(core.clj:4744)
+	at clojure.core$ex_info.invoke(core.clj:4744)
+	at cognitect.transcriptor.t_1$eval245.invokeStatic(./repls/rolls.repl:8)
+	at cognitect.transcriptor.t_1$eval245.invoke(./repls/rolls.repl:8)
+	at clojure.lang.Compiler.eval(Compiler.java:7062)
+	at clojure.lang.Compiler.eval(Compiler.java:7025)
+	at clojure.core$eval.invokeStatic(core.clj:3211)
+	at clojure.core$eval.invoke(core.clj:3207)
+	at cognitect.transcriptor$repl$read_eval_print__189$fn__192.invoke(transcriptor.clj:58)
+	at cognitect.transcriptor$repl$read_eval_print__189.invoke(transcriptor.clj:58)
+	at cognitect.transcriptor$repl.invokeStatic(transcriptor.clj:67)
+	at cognitect.transcriptor$repl.invoke(transcriptor.clj:35)
+	at cognitect.transcriptor$repl_on.invokeStatic(transcriptor.clj:78)
+	at cognitect.transcriptor$repl_on.invoke(transcriptor.clj:74)
+	at cognitect.transcriptor$run.invokeStatic(transcriptor.clj:90)
+	at cognitect.transcriptor$run.invoke(transcriptor.clj:82)
+	at repl_runner$_main.invokeStatic(repl_runner.clj:6)
+	at repl_runner$_main.invoke(repl_runner.clj:4)
+	at clojure.lang.Var.invoke(Var.java:377)
+	at user$eval149.invokeStatic(form-init165212537261342855.clj:1)
+	at user$eval149.invoke(form-init165212537261342855.clj:1)
+	at clojure.lang.Compiler.eval(Compiler.java:7062)
+	at clojure.lang.Compiler.eval(Compiler.java:7052)
+	at clojure.lang.Compiler.load(Compiler.java:7514)
+	... 12 more</pre><p>It&#8217;s a wall of text, but a useful one!</p>
+<h2>Thoughts</h2>
+<p>All in all, I really like the approach. It&#8217;s easy to use and should be usable with any problem, you&#8217;ll just have to be wary of setup and teardown in stateful applications. I&#8217;m not sure on the best practice way of using it, but I think this is a good basic start, a canonical lein plugin would be pretty neat though.</p>
+<p>It would be nice to combine this with one of the projects that aims to make spec output more human friendly too, maybe the lein plugin could do that for you automatically.</p>
+<p>I feel like the REPL files are simple enough that you could throw them away and start again easily if you wanted to change the thing you&#8217;re testing a lot. Something I feel strict TDD severely impairs. When I have deeply nested TDD code over hundreds of lines, a tiny change to the source will break everything. TDD taken to the extreme makes your project become allergic to change, obviously too much of anything is harmful though.</p>
+<p>I&#8217;d recommend that you give this a whirl on one of your own projects and see what you get. You may find it suits you perfectly.</p>
+<p>Thank you very much, Stuart, for releasing this into the world. It&#8217;s pretty cool.</p>
+<h2>Edit</h2>
+<p>I went ahead and created <a href="https://github.com/Olical/lein-transcriptor">lein-transcriptor</a>, the dice roller repository used in this post has been updated to use that instead.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2017/10/06/an-introduction-to-transcriptor/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

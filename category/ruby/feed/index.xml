@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Ruby &#8211; Oliver Caldwell&#039;s blog</title>
+	<atom:link href="/category/ruby/feed/" rel="self" type="application/rss+xml" />
+	<link>/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Wed, 18 Oct 2017 13:50:23 +0000</lastBuildDate>
+	<language>en-GB</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>Some thoughts on Ruby</title>
+		<link>/2015/04/13/some-thoughts-on-ruby/</link>
+		<comments>/2015/04/13/some-thoughts-on-ruby/#comments</comments>
+		<pubDate>Mon, 13 Apr 2015 20:44:09 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Langs]]></category>
+		<category><![CDATA[Ruby]]></category>
+		<category><![CDATA[7langs]]></category>
+
+		<guid isPermaLink="false">/?p=318</guid>
+		<description><![CDATA[You may have noticed that I recently started working my way through Seven Languages in Seven Weeks (which will be shortly followed by Seven More Languages in Seven Weeks). I almost definitely won&#8217;t finish in that time frame with Coursera deadlines looming ever closer, but it&#8217;s worth a shot. I finished the first chapter this <a class="read-more" href="/2015/04/13/some-thoughts-on-ruby/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>You may have noticed that I recently started working my way through <a href="https://pragprog.com/book/btlang/seven-languages-in-seven-weeks">Seven Languages in Seven Weeks</a> (which will be shortly followed by <a href="https://pragprog.com/book/7lang/seven-more-languages-in-seven-weeks">Seven More Languages in Seven Weeks</a>). I almost definitely won&#8217;t finish in that time frame with Coursera deadlines looming ever closer, but it&#8217;s worth a shot. I finished the first chapter this evening, which happens to be on Ruby. I thought I&#8217;d write up my thoughts on it after this first dive into a language I&#8217;ve been meaning to get my head around.</p>
+<p>All of my work for these books can be found within my <a href="https://github.com/Wolfy87/langs">langs</a> repository. So check out the Ruby directory for some more context with regards to what I was asked to do during the little exercises.</p>
+<h2>My thoughts?</h2>
+<p>I <em>like</em> it. I do <strong>not</strong> <em>love</em> it. This is for quite a few reasons, most of which wouldn&#8217;t annoy most other programmers but I&#8217;ll try to list them all here.</p>
+<h3>Sugar</h3>
+<p>There&#8217;s just so much of it, every sentence of the chapter introduced some new magical syntax that did something miraculous yet non-obvious. The meta programming just felt downright clunky when compared to the king of macros, [INSERT ANY LISP HERE]. I know that&#8217;s not really a fair fight, but if you&#8217;re going to let the user add to the language let it be in a beautiful and seamless way.</p>
+<h3>A dozen paths</h3>
+<p>There seems to be an overwhelming amount of ways to do one thing so I felt a little lost when looking for a canonical solution. Sure, this happens to a certain extent in any language, but with Ruby fundamental things like parentheses are optional some of the time. That <em>really</em> threw me.</p>
+<p>Blocks going after the last argument, or maybe there is no arguments list, inferring a single hash argument if you pass <em>foo(:bar =&gt; :baz)</em>, it just became a bit much. The syntax soup is particularly off putting for me, others may be absolutely fine with that.</p>
+<p>I think I&#8217;ve been spoiled by falling in love with simplicity and simple languages. I&#8217;m looking at you, Clojure, you beautiful enigma I yearn to work with.</p>
+<h3>SURPRISE!</h3>
+<p>I felt like the book shouted this at every paragraph and expected me to be happy about it. &#8220;Look at all these shiny features, you can make things happen without having to explicitly execute it! Isn&#8217;t that wonderful!?&#8221;</p>
+<p>No.</p>
+<p>It is not.</p>
+<p>Ruby is putty, you (and every other developer that touches that code base) can mould it into any shape you wish. That lack of rigidity makes me question what it would be like in a large project. I mean million lines of code and upwards project. If I go to do something on a string and someone monkey patched a function with a conflicting name a year ago I wouldn&#8217;t be very happy.</p>
+<p>I just spent a lot of time going &#8220;wat?&#8221; which put me off a little.</p>
+<hr />
+<h2>Right tool for the job</h2>
+<div>I&#8217;m bashing on a fairly good language for things that make it good. I know. It is a great tool for scripting things and just generally getting something done very quickly. I&#8217;d definitely select it over JavaScript / node.js for any scripts or small web services, but that&#8217;s not a hard choice. If JavaScript wasn&#8217;t currently omnipotent I&#8217;d drop it, burn it and erase it from my memory in a heart beat. Then I&#8217;d go use something elegant, well rounded and functional. But that&#8217;s not going to happen for a very long time. <em>Sigh.</em></div>
+<p>I&#8217;m sceptical of Ruby for what I see day to day at work, it wouldn&#8217;t fit there. I think that&#8217;s where my &#8220;ew, no structure&#8221; response comes from. That kind of softness would cause chaos in my current environment, I think. Unless you have a bunch of <em>very</em> experienced and disciplined Ruby developers that won&#8217;t set up a gun to shoot someone else in the foot a year down the line.</p>
+<p>I sure hope this doesn&#8217;t anger anyone. Also, the next chapter is on Io, so that should be fun. Really looking forward to Elm and Haskell too.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2015/04/13/some-thoughts-on-ruby/feed/</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+		</item>
+	</channel>
+</rss>

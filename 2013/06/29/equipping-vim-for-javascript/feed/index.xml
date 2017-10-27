@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	
+	>
+<channel>
+	<title>Comments on: Equipping Vim for JavaScript</title>
+	<atom:link href="/2013/06/29/equipping-vim-for-javascript/feed/" rel="self" type="application/rss+xml" />
+	<link>/2013/06/29/equipping-vim-for-javascript/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Mon, 22 May 2017 19:57:20 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>By: meshugunner</title>
+		<link>/2013/06/29/equipping-vim-for-javascript/#comment-306</link>
+		<dc:creator><![CDATA[meshugunner]]></dc:creator>
+		<pubDate>Tue, 04 Apr 2017 23:00:00 +0000</pubDate>
+		<guid isPermaLink="false">/2013/06/29/equipping-vim-for-javascript#comment-306</guid>
+		<description><![CDATA[I use this mapping 
+
+:nnoremap  -;   mw$a;`w
+
+-;  appends a semicolon to the end of the line without losing your position in the line.]]></description>
+		<content:encoded><![CDATA[<p>I use this mapping </p>
+<p>:nnoremap  -;   mw$a;`w</p>
+<p>-;  appends a semicolon to the end of the line without losing your position in the line.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Costa Michailidis</title>
+		<link>/2013/06/29/equipping-vim-for-javascript/#comment-293</link>
+		<dc:creator><![CDATA[Costa Michailidis]]></dc:creator>
+		<pubDate>Wed, 22 Mar 2017 03:39:00 +0000</pubDate>
+		<guid isPermaLink="false">/2013/06/29/equipping-vim-for-javascript#comment-293</guid>
+		<description><![CDATA[Having trouble customizing colors. How do I customize the colors of various js language features. Like right now, the highlighting of require in node is the same as strings, and that&#039;s just confusing.]]></description>
+		<content:encoded><![CDATA[<p>Having trouble customizing colors. How do I customize the colors of various js language features. Like right now, the highlighting of require in node is the same as strings, and that&#8217;s just confusing.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: MasonicHacker</title>
+		<link>/2013/06/29/equipping-vim-for-javascript/#comment-287</link>
+		<dc:creator><![CDATA[MasonicHacker]]></dc:creator>
+		<pubDate>Tue, 29 Nov 2016 02:27:00 +0000</pubDate>
+		<guid isPermaLink="false">/2013/06/29/equipping-vim-for-javascript#comment-287</guid>
+		<description><![CDATA[You have no idea how much I love this tip!
+
+imap  O]]></description>
+		<content:encoded><![CDATA[<p>You have no idea how much I love this tip!</p>
+<p>imap  O</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: xavier</title>
+		<link>/2013/06/29/equipping-vim-for-javascript/#comment-277</link>
+		<dc:creator><![CDATA[xavier]]></dc:creator>
+		<pubDate>Sun, 21 Aug 2016 05:42:00 +0000</pubDate>
+		<guid isPermaLink="false">/2013/06/29/equipping-vim-for-javascript#comment-277</guid>
+		<description><![CDATA[I need the documentation to MDN and is perfect :/
+Do have an idea?
+Thanks]]></description>
+		<content:encoded><![CDATA[<p>I need the documentation to MDN and is perfect :/<br />
+Do have an idea?<br />
+Thanks</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Avinash</title>
+		<link>/2013/06/29/equipping-vim-for-javascript/#comment-267</link>
+		<dc:creator><![CDATA[Avinash]]></dc:creator>
+		<pubDate>Tue, 12 Jul 2016 09:27:00 +0000</pubDate>
+		<guid isPermaLink="false">/2013/06/29/equipping-vim-for-javascript#comment-267</guid>
+		<description><![CDATA[I keep coming back to this every time create a new VM or project. Thanks again @OliverCaldwell:disqus ! Just a pointer to a dead link on the page :
+
+&quot;... Now you are going to want to install jelera/vim-javascript-syntax by adding this to your .vimrc (or dedicated bundle file &#060;&#062; as I have).&quot;]]></description>
+		<content:encoded><![CDATA[<p>I keep coming back to this every time create a new VM or project. Thanks again @OliverCaldwell:disqus ! Just a pointer to a dead link on the page :</p>
+<p>&#8220;&#8230; Now you are going to want to install jelera/vim-javascript-syntax by adding this to your .vimrc (or dedicated bundle file &lt;&gt; as I have).&#8221;</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Ken Rogers</title>
+		<link>/2013/06/29/equipping-vim-for-javascript/#comment-254</link>
+		<dc:creator><![CDATA[Ken Rogers]]></dc:creator>
+		<pubDate>Tue, 31 May 2016 19:00:00 +0000</pubDate>
+		<guid isPermaLink="false">/2013/06/29/equipping-vim-for-javascript#comment-254</guid>
+		<description><![CDATA[I believe he was saying tern was abandonware, not vim. :)]]></description>
+		<content:encoded><![CDATA[<p>I believe he was saying tern was abandonware, not vim. 🙂</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Avinash</title>
+		<link>/2013/06/29/equipping-vim-for-javascript/#comment-240</link>
+		<dc:creator><![CDATA[Avinash]]></dc:creator>
+		<pubDate>Tue, 01 Mar 2016 10:44:00 +0000</pubDate>
+		<guid isPermaLink="false">/2013/06/29/equipping-vim-for-javascript#comment-240</guid>
+		<description><![CDATA[I will do so right now - thanks for the pointer :-). And maybe, add it to the blog ..]]></description>
+		<content:encoded><![CDATA[<p>I will do so right now &#8211; thanks for the pointer :-). And maybe, add it to the blog ..</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Oliver Caldwell</title>
+		<link>/2013/06/29/equipping-vim-for-javascript/#comment-239</link>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+		<pubDate>Tue, 01 Mar 2016 10:40:00 +0000</pubDate>
+		<guid isPermaLink="false">/2013/06/29/equipping-vim-for-javascript#comment-239</guid>
+		<description><![CDATA[That&#039;s excellent! I hope it&#039;s proving useful :) with regards to repeating, do you have tpope/vim-repeat? That tends to help but there are some situations that aren&#039;t perfect. I find it works perfectly for most cases, but I could just be lucky!]]></description>
+		<content:encoded><![CDATA[<p>That&#8217;s excellent! I hope it&#8217;s proving useful 🙂 with regards to repeating, do you have tpope/vim-repeat? That tends to help but there are some situations that aren&#8217;t perfect. I find it works perfectly for most cases, but I could just be lucky!</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Oliver Caldwell</title>
+		<link>/2013/06/29/equipping-vim-for-javascript/#comment-238</link>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+		<pubDate>Tue, 01 Mar 2016 10:37:00 +0000</pubDate>
+		<guid isPermaLink="false">/2013/06/29/equipping-vim-for-javascript#comment-238</guid>
+		<description><![CDATA[I&#039;m now only using pangloss/vim-javascript, which appears to be the best. You&#039;re probably right in that they may have conflicted. I&#039;m also using mxw/vim-jsx for modern JavaScript  things.]]></description>
+		<content:encoded><![CDATA[<p>I&#8217;m now only using pangloss/vim-javascript, which appears to be the best. You&#8217;re probably right in that they may have conflicted. I&#8217;m also using mxw/vim-jsx for modern JavaScript  things.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Avinash</title>
+		<link>/2013/06/29/equipping-vim-for-javascript/#comment-237</link>
+		<dc:creator><![CDATA[Avinash]]></dc:creator>
+		<pubDate>Tue, 01 Mar 2016 10:31:00 +0000</pubDate>
+		<guid isPermaLink="false">/2013/06/29/equipping-vim-for-javascript#comment-237</guid>
+		<description><![CDATA[Thanks for the wonderful post. I shared this with my entire team, and our dev environment now includes most of the plugins your page mentions. I guess the only thing I find not be working quite satisfactorily is the &#039;.&#039; or the &#039;redo&#039; command in vim. I am assuming it is probably due to &#039;delimitmate&#039;.]]></description>
+		<content:encoded><![CDATA[<p>Thanks for the wonderful post. I shared this with my entire team, and our dev environment now includes most of the plugins your page mentions. I guess the only thing I find not be working quite satisfactorily is the &#8216;.&#8217; or the &#8216;redo&#8217; command in vim. I am assuming it is probably due to &#8216;delimitmate&#8217;.</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

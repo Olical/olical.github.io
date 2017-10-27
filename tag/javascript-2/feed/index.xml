@@ -1,0 +1,836 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>javascript &#8211; Oliver Caldwell&#039;s blog</title>
+	<atom:link href="/tag/javascript-2/feed/" rel="self" type="application/rss+xml" />
+	<link>/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Wed, 18 Oct 2017 13:50:23 +0000</lastBuildDate>
+	<language>en-GB</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>When projects rise from the grave</title>
+		<link>/2016/11/15/when-projects-rise-from-the-grave/</link>
+		<comments>/2016/11/15/when-projects-rise-from-the-grave/#respond</comments>
+		<pubDate>Tue, 15 Nov 2016 09:00:58 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[JavaScript]]></category>
+		<category><![CDATA[github]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[refactoring]]></category>
+		<category><![CDATA[tests]]></category>
+
+		<guid isPermaLink="false">/?p=471</guid>
+		<description><![CDATA[Halloween is supposed to be over, so why is my project coming back from the dead? Olical/Color is something I started in early 2011, I think I was still at my first job as a junior web developer tinkering with WordPress and custom PHP sites. I&#8217;m now on my 5th workplace doing something entirely different. I&#8217;m <a class="read-more" href="/2016/11/15/when-projects-rise-from-the-grave/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>Halloween is supposed to be over, so why is my project coming back from the dead?</p>
+<p><a href="https://github.com/Olical/Color">Olical/Color</a> is something I started in early 2011, I think I was still at my first job as a junior web developer tinkering with WordPress and custom PHP sites. I&#8217;m now on my 5th workplace doing something entirely different. I&#8217;m studying computer science and lisps in my free time instead of &#8220;how do I make this button red&#8221;, which isn&#8217;t to say it&#8217;s better, just different. I have moved on so far from these interests, they feel totally alien looking back.</p>
+<p>I was reminded by <a href="https://github.com/Olical/Color/pull/1">this small pull request</a> to fix a bug in my old untested project. It came up out of the blue and instantly had someone else respond, to my amazement. So what I thought I&#8217;d do is quickly go through the project with 5-6 more years of experience under my belt and share those feelings. Then I want to clean it up to the standards I have today. Maybe even just rewrite the damn thing within tests.</p>
+<h2>Distribution</h2>
+<p>No <em>package.json</em>, no instructions, good luck. Apparently I just wanted people to clone this into their repo or literally copy and paste the file into a directory.</p>
+<p>The minified source is actually commited in (which I see as a big <strong>no</strong> now) and it&#8217;s licensed under two different licences. I presume I was copying jQuery or whatever was hot at the time I guess. I&#8217;ve taken to just using <a href="http://unlicense.org/">The Unlicense</a> now and I&#8217;m a lot happier about it. I don&#8217;t know how I expected anyone to actually depend on this, maybe I didn&#8217;t, maybe I released it as a bit of fun just in case someone would find some of it useful.</p>
+<p>At least I was using <a href="https://developers.google.com/closure/compiler/">Closure Compiler</a>, that&#8217;s pretty cool. I mean, <a href="https://github.com/mishoo/UglifyJS">UglifyJS</a> is enough to get by really, especially at this size, but nice that I was aware of it. I don&#8217;t know why everything is a combination of slightly strange looking <em>Makefile</em> and JavaScript though, that&#8217;s a really weird build toolchain. I still use <em>make</em> to this day, but not in this way. I&#8217;ve just realised I commited the Closure Compiler JAR into the repository too.</p>
+<p><a href="/wp-content/uploads/2016/11/giphy.gif"><img class="aligncenter size-full wp-image-474" src="/wp-content/uploads/2016/11/giphy.gif" alt="Shame Cube" width="350" height="248" /></a></p>
+<h2>Code</h2>
+<p><a href="https://github.com/Olical/Color/blob/45a83fecda62c086e788895182e403a9c9b42807/color.js">Here&#8217;s the source</a>. Why did I feel the need to comment every damn thing? <em>The &#8220;No Shit Sherlock&#8221; award goes to&#8230;</em></p><pre class="crayon-plain-tag">// Initialisation
+var src = require('fs').readFileSync('color.js', 'utf8'),
+	sys = require('sys'),
+	jshint = require('./jshint').JSHINT,
+	i = null,
+	e = null;</pre><p></p><pre class="crayon-plain-tag">// Initialise any required variables
+var i = null,
+    split = [],
+    colors = this.names;</pre><p></p><pre class="crayon-plain-tag">// Return the joined version
+return '#' + color.join('');</pre><p></p><pre class="crayon-plain-tag">// Convert it to an array
+color = this.toArray(color);</pre><p></p><pre class="crayon-plain-tag">// Compare
+if(color[0] === colors[i][0] &amp;&amp; color[1] === colors[i][1] &amp;&amp; color[2] === colors[i][2]) {
+    // Found it, return the name
+    return i;
+}</pre><p>Let this be a warning to you: Don&#8217;t add useless comments, just write clearer code. Some part of me obviously thought I was doing the right thing here, that part of me was horribly wrong.</p>
+<p>The whole thing is pretty damn imperative, lots of loops, no functional stuff. Past me would have probably found the additions of <em>.map(&#8230;)</em> hard to read, current me finds all of these loops even harder. And if I&#8217;d just stored all those constant colours as hex strings I could have searched through with string comparisons, instead I compared every array element in each item of the list.</p>
+<p>Want to know the worst thing about this code though? That&#8217;s rhetorical, this is a blog post and I can&#8217;t hear your response so I&#8217;ll tell you regardless (if you happen to read further into this paragraph, that is): There Are <em>No</em> <strong>Tests</strong>.</p>
+<p>*curtain falls*</p>
+<h2>Fixing what ain&#8217;t broke</h2>
+<p>It&#8217;s fine, honestly, even though I look back and say &#8220;ew&#8221;, it works. Well, apart from that bug that <a href="https://github.com/pypmannetjies">pypmannetjies</a> kindly fixed for me. But that doesn&#8217;t mean it can&#8217;t be &#8220;better&#8221;. Here&#8217;s what I <em>want </em>to do, but I don&#8217;t <em>need</em> to do.</p>
+<ul>
+<li>Write a full test suite for the current code.</li>
+<li>Clean up the build / linting tooling, no more committed &#8220;binaries&#8221;.</li>
+<li>Refactor until it basically doesn&#8217;t resemble the original code.</li>
+<li>Actually have a way to depend on it (probably npm and <a href="https://unpkg.com/#/">unpkg</a>).</li>
+</ul>
+<p>I thought that&#8217;d be a bit much to write up because I&#8217;m lazy, so instead I spent an hour configuring <a href="https://obsproject.com/">OBS</a> on my laptop (totally easier than writing a little bit&#8230;) and recorded the whole thing (another hour). You can watch that <a href="https://youtu.be/dCRK7IHg4Bk">over here</a> or below. It&#8217;s the first time I&#8217;ve recorded myself actually working on something, I hope you like it. I actually want to do more of that in the future, maybe stream building something in Clojure so people that are unfamiliar with it can ask questions as I go.</p>
+<p><iframe width="560" height="315" src="https://www.youtube.com/embed/dCRK7IHg4Bk" frameborder="0" allowfullscreen="allowfullscreen" class="aligncenter"></iframe></p>
+<p>I actually put off the raw code refactor, mainly because now it&#8217;s tested I feel a lot better about it. If I rewrite it, I&#8217;ll end up with the same performance and functionality, but less time to play games and drink coffee. If I ever do refactor any of it now I can do it with confidence, which is great.</p>
+<p>So, go back and do this to one of your old projects, it&#8217;s refreshing to see how differently you do things now.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2016/11/15/when-projects-rise-from-the-grave/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Working with multiple of lists in JavaScript</title>
+		<link>/2016/02/09/working-with-multiple-of-lists-in-javascript/</link>
+		<comments>/2016/02/09/working-with-multiple-of-lists-in-javascript/#comments</comments>
+		<pubDate>Tue, 09 Feb 2016 23:05:44 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Clojure]]></category>
+		<category><![CDATA[JavaScript]]></category>
+		<category><![CDATA[Lisp]]></category>
+		<category><![CDATA[Projects]]></category>
+		<category><![CDATA[clojure]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[lisp]]></category>
+		<category><![CDATA[lists]]></category>
+
+		<guid isPermaLink="false">/?p=434</guid>
+		<description><![CDATA[If you&#8217;ve ever had to iterate over multiple lists at the same time or map a filtered map of a map, you&#8217;ll understand that nesting all of those blocks and callbacks isn&#8217;t very easy to work with or understand. Luckily, there&#8217;s some cool techniques that make turning several arrays (or infinite sequences created by generators, <a class="read-more" href="/2016/02/09/working-with-multiple-of-lists-in-javascript/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>If you&#8217;ve ever had to iterate over multiple lists at the same time or map a filtered map of a map, you&#8217;ll understand that nesting all of those blocks and callbacks isn&#8217;t very easy to work with or understand.</p>
+<p>Luckily, there&#8217;s some cool techniques that make turning several arrays (or infinite sequences created by generators, for example) into a single array with a concise and powerful syntax. I&#8217;m going to take this rather large list of <a href="https://gist.github.com/Olical/fa1c29fdfa42b52604f5">my public gists</a> and turn it into a list of all file names with the type set to &#8220;JavaScript&#8221;. I&#8217;m using lodash for convenience.</p><pre class="crayon-plain-tag">_.map(_.filter(_.flatMap(gists, (gist) =&gt; {
+  return _.values(gist.files)
+}), (file) =&gt; {
+  return file.language === 'JavaScript'
+}), (file) =&gt; {
+  return file.filename
+})</pre><p>Which yields the following array.</p><pre class="crayon-plain-tag">[ 'lazyArray.js',
+  'thebutton.js',
+  'formatNumberWithCommas.js',
+  'x-example.js',
+  'what-we-do.js',
+  'compile.js',
+  'compile.spec.js',
+  'factory.js',
+  'harvest.js',
+  'main.js',
+  'e.js',
+  'example.js',
+  'EventEmitter.js',
+  'api.js',
+  'example.js',
+  'graphs.js',
+  'colours.js' ]</pre><p>You could extract parts of this into named variables or move it into other functions, but my point being, something fairly simple requires a lot of juggling. If you want to add any more maps or filters in the middle you have to constantly move arguments around. It&#8217;s not easy to change and adapt.</p>
+<p>We can however completely eliminate the need for this nesting by using something called list comprehension.</p>
+<h2>List comprehension</h2>
+<p>My favourite implementation of list comprehension can be found in my favourite language, <a href="https://clojuredocs.org/clojure.core/for">Clojure&#8217;s for</a>. You can also find them in many other languages such as Python and Scala, I&#8217;m just in love with <a href="https://xkcd.com/297/">all those parenthesis</a>.</p>
+<p>JavaScript even <em>had</em> one planned for ES6 although it was pulled from the specification, I&#8217;m not sure why. <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Array_comprehensions">Firefox had something like the ES6 one</a> implemented for a while, but that was non-standard at the time. If it&#8217;s any consolation, I didn&#8217;t like the syntax anyway.</p>
+<p>They allow you to produce a single list from one statement or call that accepts multiple lists alongside some parameters. You should, in theory, be able to reference between those lists and define intermediate values from those lists as they iterate through. You then have a function which is called with singular values from those lists, what it returns becomes your final list.</p>
+<p>I&#8217;ve built one for JavaScript that is a port of the Clojure implementation, I&#8217;ve tried to keep it as close to the original as possible. Including code-as-data based API and laziness all the way down. You can use plain old arrays or infinite generators, it will accept <em>any</em> <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Iteration_protocols">iterable</a>.</p>
+<h2>Introducing <a href="https://github.com/Olical/forc">forc</a> <a style="display: inline-block;" href="https://badge.fury.io/js/forc"><img src="https://badge.fury.io/js/forc.svg" alt="npm version" height="18" /></a></h2>
+<p>The name stems from &#8220;for comprehension&#8221; or maybe even &#8220;for Clojure&#8221;, but mainly because I obviously can&#8217;t use just &#8220;for&#8221; as a name. It allows you to do everything Clojure&#8217;s for does, but with JavaScript and any kind of iterable. It&#8217;s written with all sorts of ES6y things and I&#8217;d recommend using it with Babel, but it will work without them (I compile it at publish time). Pre-ES6 you won&#8217;t have any way to iterate the iterables it generates easily, so I wouldn&#8217;t recommend that.</p>
+<p>Here&#8217;s an example of infinite sequences from the README.</p><pre class="crayon-plain-tag">// An infinite generator of all natural numbers
+function * numbers () {
+  let n = 0
+
+  while (true) {
+    yield n++
+  }
+}
+
+forc([
+  'n', numbers(),
+  ':let', ['square', ({n}) =&gt; n * n],
+  ':while', ({square}) =&gt; square &lt; 100
+], ({square}) =&gt; square)
+
+// Results in only those whos square is &lt; 100
+// [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]</pre><p>The API will look strange to anyone that hasn&#8217;t used the Clojure version, but it&#8217;s extremely powerful. The declarative array based approach allowed me to do some cool rebinding of values as I walk through the instructions. I&#8217;ve seen others do this with long chains of method calls or evals instead, both of which don&#8217;t come close to Clojure&#8217;s elegance, in my opinion. This library accidentally adds a little lisp to JavaScript, <a href="https://github.com/Olical/clojs">again</a>. I can&#8217;t help it.</p>
+<p>Now let&#8217;s solve the initial problem with <a href="https://github.com/Olical/forc">forc</a>.</p><pre class="crayon-plain-tag">forc([
+  'gist', gists,
+  'file', ({gist}) =&gt; _.values(gist.files),
+  ':when', ({file}) =&gt; file.language === 'JavaScript'
+], ({file}) =&gt; file.filename)</pre><p>Pretty succinct, right? I mean, I think so. It&#8217;s a shame the &#8220;_.values&#8221; is required because &#8220;gist.files&#8221; is an object but that&#8217;s just the shape of the data. An object is not an iterable, maybe I could change the API in the future to automatically extract values from objects. This call produces a generator which contains the same contents as the initial call, you can expand it with &#8220;[&#8230;result]&#8221;.</p>
+<p>The cool thing about it being a generator is that it only calculates the values you pull through, this allows you to use infinite iterators, for example. You can even use a generator created by &#8220;forc&#8221; as an argument for &#8220;forc&#8221;, it sill won&#8217;t execute a thing until you pull the values through by resolving the iterator.</p>
+<p>Feel free to check out the README and tests to get a better idea of the capabilities. The Clojure documentation is also pretty good since I&#8217;ve copied the API.</p>
+<p>I hope you find this useful!</p>
+]]></content:encoded>
+			<wfw:commentRss>/2016/02/09/working-with-multiple-of-lists-in-javascript/feed/</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+		</item>
+		<item>
+		<title>D3 within React the right way</title>
+		<link>/2015/09/09/d3-within-react-the-right-way/</link>
+		<comments>/2015/09/09/d3-within-react-the-right-way/#comments</comments>
+		<pubDate>Wed, 09 Sep 2015 08:00:57 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[JavaScript]]></category>
+		<category><![CDATA[React]]></category>
+		<category><![CDATA[d3]]></category>
+		<category><![CDATA[dom]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[react]]></category>
+
+		<guid isPermaLink="false">/?p=383</guid>
+		<description><![CDATA[If you follow me on twitter (I’m @OliverCaldwell, if you don’t) you will have noticed that I’ve been tweeting about D3 and React a lot recently. More specifically, how to use both together in a pleasant yet efficient way. After a few weeks of thought and a couple of potential solutions actually being built and <a class="read-more" href="/2015/09/09/d3-within-react-the-right-way/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>If you follow me on twitter (I’m <a href="https://twitter.com/OliverCaldwell">@OliverCaldwell</a>, if you don’t) you will have noticed that I’ve been tweeting about <a href="http://d3js.org/">D3</a> and <a href="http://facebook.github.io/react/">React</a> a lot recently. More specifically, how to use both together in a pleasant yet efficient way. After a few weeks of thought and a couple of potential solutions actually being built and used, I settled on what I think is the ideal way to use DOM mutating JavaScript (like D3) from within React.</p>
+<p>Many solutions involve stepping out of the React tree for that specific component, which <em>does</em> work, but leaves you with a little island of mutable DOM, festering away inside your tree. It just doesn’t feel quite right to me, my solution allows you to even use React developer tools with the SVG generated by D3.</p>
+<p>TL;DR (although I’d quite like it if you read the rest!): Use <a href="https://github.com/Olical/react-faux-dom">react-faux-dom</a> to seamlessly blend D3 and other libraries into your React component tree.</p>
+<h2>The problem</h2>
+<p>D3 (<strong>d</strong>ata <strong>d</strong>riven <strong>d</strong>ocuments), as you probably know, is a JavaScript library that helps you build visualisations or anything else for that matter. It’s actually very general purpose since you can render SVG or regular DOM elements with it.</p>
+<p>It works by mutating the DOM element provided to it, usually a root node you placed into your HTML. You call <code>.append('p')</code> and it inserts a <code>&lt;p&gt;&lt;/p&gt;</code> as a child of the root node you selected.</p>
+<p>React on the other hand has you build your application through one big call stack to various render methods. You create a tree of objects that represents your application and its state then React works out what DOM elements it should mutate, add or remove on your behalf. This process is called <em><a href="https://facebook.github.io/react/docs/reconciliation.html">reconciliation</a></em>.</p>
+<p>If you give an element React created to D3 and say “hey, D3, set the width to 100, thanks” it’ll happily oblige. Then React will notice and get pretty upset that you went behind its back and messed with its perfectly reconciled DOM. This isn’t great, as you can imagine.</p>
+<p>So, the way we usually get around these problems is to tell React that from this component and below, it shouldn’t interfere, we will manage the DOM below this component manually. That’s where things like <a href="https://www.npmjs.com/package/react-d3-wrap">react-d3-wrap</a> come in, they define a component you can inherit from that pulls your code out of the React tree and lets D3 do its thing, React skips happily past this part of the DOM.</p>
+<p>But what if we want to keep the React tree and use D3? What if we don’t want to have part of our DOM not managed by our benevolent DOM reconciling God?</p>
+<h2>First (deprecated) attempt: d3-react</h2>
+<p><a href="https://github.com/Olical/d3-react">d3-react</a> is essentially a plugin for D3 (injected into the D3 prototype) that gives you React methods within the D3 API. What this means is you need to use <code>.prop()</code> instead of <code>.attr()</code> and then you can call <code>.toReact()</code> when you’re done and return that result from your render function.</p>
+<p>You create a DOM node and pass it to D3 on each render. It mutates this detached DOM and then gets converted to React elements when you’re done.</p>
+<p>This has multiple problems, first and foremost: You can’t use the full D3 API or existing components! You have to use <code>.prop</code>, you can’t use <code>.classed</code> or <code>.style</code> for example. This is just unacceptable, any good solution needs to also work with existing components or with minimal tweaking, not a full rewrite.</p>
+<p>The other problem (or one of them, anyway) is that you’re building and mutating a full real DOM tree on every render and then throwing it away. This is pretty inefficient, the DOM isn’t exactly light weight, that’s why we’re using React in the first place! (well, one of the reasons)</p>
+<p>It works, you don’t need to opt out of the React render tree, but it’s not great. So what’s the next step after this?</p>
+<h2>We make our own DOM</h2>
+<p>Yeah. I thought it was a stupid idea when it first came to me, but the more I thought about it the more it made sense. A fake DOM that supported enough methods to work with D3, but no more. If it needs to work with more libraries in the future you just need to add the missing DOM methods, easy.</p>
+<p>And so, <a href="https://github.com/Olical/react-faux-dom">react-faux-dom</a> was born. A fake DOM with enough methods to trick D3, including a selector engine and partial support for <code>addEventListener</code> etc. (<code>addEventListener</code> sets the appropriate <code>prop</code> value, so if you add two, it will overwrite the first, I may improve this later)</p>
+<p>You can use the full D3 API (no special React methods), inspect it with React developer tools, have efficient D3 components without carefully placed <code>.enter()</code> / <code>.exit()</code> calls, use React animation techniques instead of D3s (good and bad, both approaches work well) as well as <em>render on the server side</em>. Yeah, buzzword time, this will allow you to have <strong>isomorphic charts</strong>.</p>
+<blockquote><p>drops mic</p></blockquote>
+<p>I copied <a href="http://bl.ocks.org/mbostock/3883245">one of mbostock’s charts</a> (the awesome creator of D3) and <a href="http://lab.oli.me.uk/d3-to-react-again/">rendered it through react-faux-dom</a> easily. Nothing needed to change, it just works. I’ve also converted a complex chart over to this at work from <code>react-d3-wrap</code>, it was pretty easy to do and now it’s far more efficient. That chart even has dynamic resizing and hover tooltip interaction!</p>
+<p>A side effect of migrating that chart over was that I could make use of <code>this.setState({...})</code> to re-render my chart upon mouse interaction or window resize. It’s now much cleaner and easier to follow in my opinion.</p>
+<p>The best thing I can compare this to is a lightweight and simple version of <a href="https://github.com/tmpvar/jsdom">jsdom</a> that targets React elements and only supports the minimum required DOM API to work with D3 (right now).</p>
+<p><a href="https://github.com/QubitProducts/d3-react-sparkline">d3-react-sparkline</a> is a small React component I built at work (I work at <a href="http://www.qubit.com/">Qubit</a>, it’s awesome here) originally using my first approach but migrated to faux DOM. It serves as a good example, it should be familiar to React users and D3 users alike. All concepts remain the same, <code>react-faux-dom</code> is just the glue in the middle.</p>
+<h2>Other implications</h2>
+<p>Firstly, <strong>ISOMORPHIC CHARTS!</strong> A concept I find so awesome I thought it was worth mentioning again, in bold all caps. No more “we’re just fetching the data for this chart, brb”, send that rendered SVG straight down to the browser and then have React pick up where it left off on the server with the data as it changes over time. Amazing!</p>
+<p>It’s not just charts though, I see a lot of function calls happening in amongst JSX to turn complex data into complex elements. Those elements don’t have to be bars in a chart, it could just be a <code>&lt;ul&gt;</code> with other nested <code>&lt;ul&gt;</code> tags inside. These function calls can be hard to follow when compared to D3’s declarative chaining syntax.</p>
+<p>Why not use D3 as your JSX? D3 is an excellent (if not the best) tool for turning data into DOM.</p><pre class="crayon-plain-tag">function render() {
+  var list = ReactFauxDOM.createElement('ul')
+
+  d3.select(list)
+    .selectAll('li')
+    .data(this.props.data) // 1, 2, 3...
+    .enter()
+    .append('li')
+    .text(function (d) {
+      return d
+    })
+
+  return list.toReact()
+}</pre><p>This results in a list containing each value passed through props, each with a unique key automatically assigned by index if you didn’t provide one. This automatic key assignment allows you to use existing D3 components without getting warnings from React, you can assign your own keys though if you feel it’ll optimise the reconciliation.</p>
+<p>We’re taking the D3 data driven mindset, but running it within the stateless simple world of React seamlessly, no DOM required.</p>
+<p>I’m using this in production right now, this is not just a little script knocked together in a day (although it was), it’s built to solve an existing problem in a nice way. Let me know if you find any any issues with it, raise a bug, even fix it if you can. It’s ready to use on real projects.</p>
+<p>I hope many of you find this post and project useful, I’ve tried to explain “why” and not just “what” it is. Please feel free to give me your feedback, I’m very interested in hearing what others working on similar problems think about this.</p>
+<p>Thanks for reading.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2015/09/09/d3-within-react-the-right-way/feed/</wfw:commentRss>
+		<slash:comments>37</slash:comments>
+		</item>
+		<item>
+		<title>Brainfuck VM in JavaScript</title>
+		<link>/2015/01/05/brainfuck-vm-in-javascript/</link>
+		<comments>/2015/01/05/brainfuck-vm-in-javascript/#comments</comments>
+		<pubDate>Mon, 05 Jan 2015 09:00:11 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Brainfuck]]></category>
+		<category><![CDATA[JavaScript]]></category>
+		<category><![CDATA[async]]></category>
+		<category><![CDATA[brainfuck]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[stdin]]></category>
+
+		<guid isPermaLink="false">/?p=280</guid>
+		<description><![CDATA[Welcome to 2015, I hope you had a good break! Some people may now be taking on resolutions for the year, be that to lose weight or to socialise more. I&#8217;ve opted to learn even more than usual, so that means more coursera courses and toy projects in various languages. This is where my brainfuck <a class="read-more" href="/2015/01/05/brainfuck-vm-in-javascript/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>Welcome to 2015, I hope you had a good break! Some people may now be taking on resolutions for the year, be that to lose weight or to socialise more. I&#8217;ve opted to <a title="My 2015 Bucket Set" href="/2014/12/13/my-2015-bucket-set/">learn even more than usual</a>, so that means <a href="https://www.coursera.org/course/algs4partI">more coursera courses</a> and toy projects in various languages. This is where <a href="https://github.com/Wolfy87/brainfucks">my brainfuck virtual machines</a> come in. I&#8217;ll be writing them in every language I find interesting, starting with my trusty (see: sarcasm) friend, JavaScript.</p>
+<p>This took me far longer than I wished it would and actually involved pretty much starting again at one point. Everything was fairly easy to implement up until the point where I had to synchronously read one character off of stdin. After hours of research, this proved to be nigh on impossible so I had to settle for some awkward callback based hell with two implementations because of an edge case. This is easy in C yet hard in JavaScript. What?</p>
+<p>Besides that, the actual tokenise, parse and execute phases went fairly well. You can find the full code inside my <a href="https://github.com/Wolfy87/brainfucks/tree/master/implementations/javascript">JavaScript implementation directory</a>. I opted to turn the source file into a clean array first then to run through that array of tokens mapping them to an object of command functions. Fairly simple and extensible, I feel. I also performed all of the loop operator matching up front during the parsing, so I didn&#8217;t have to go hunting for <em>]</em> or <em>[</em> during the execution of the program.</p>
+<p>I relied on <a href="https://github.com/caolan/async">async</a> to take some of the pain out of iterating through asynchronous steps. The only reason the steps were asynchronous was because the one stdin reading command required it. If it wasn&#8217;t for node being really awkward on that front, this would have been far simpler.</p>
+<p>Expect a Clojure implementation soon.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2015/01/05/brainfuck-vm-in-javascript/feed/</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+		</item>
+		<item>
+		<title>Revisiting: Searching JavaScript arrays with a binary search</title>
+		<link>/2014/12/17/revisiting-searching-javascript-arrays-with-a-binary-search/</link>
+		<comments>/2014/12/17/revisiting-searching-javascript-arrays-with-a-binary-search/#comments</comments>
+		<pubDate>Wed, 17 Dec 2014 23:35:04 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[JavaScript]]></category>
+		<category><![CDATA[algo]]></category>
+		<category><![CDATA[binary-search]]></category>
+		<category><![CDATA[generative-testing]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[performance]]></category>
+
+		<guid isPermaLink="false">/?p=271</guid>
+		<description><![CDATA[Last year I wrote a post called Searching JavaScript arrays with a binary search, it&#8217;s actually become quite popular and has seen a large amount of suggestions in the comments as well as helping out PowerArray. The problem is that it&#8217;s an untested, performance chasing, mess of a function. I&#8217;ve always wanted to redo this <a class="read-more" href="/2014/12/17/revisiting-searching-javascript-arrays-with-a-binary-search/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>Last year I wrote a post called <a title="Searching JavaScript arrays with a binary search" href="/2013/06/08/searching-javascript-arrays-with-a-binary-search/">Searching JavaScript arrays with a binary search</a>, it&#8217;s actually become quite popular and has seen a large amount of suggestions in the comments as well as helping out <a href="https://github.com/techfort/PowerArray">PowerArray</a>. The problem is that it&#8217;s an untested, performance chasing, mess of a function. I&#8217;ve always wanted to redo this in a more formal manner because I don&#8217;t want people using code I&#8217;ve written that will probably break on multiple edge cases.</p>
+<p>So, I&#8217;m going to build an actual repository containing a JavaScript binary search function as well as some robust tests. Step one will be to produce a simple reference implementation with benchmarks and generative tests using <a href="https://github.com/leebyron/testcheck-js">testcheck-js</a>, then I will go on to continually speed up the algorithm without breaking that initial suite. I think this&#8217;ll produce something far better than my original post with the potential for more speed too. And it&#8217;s going to be bullet proof. I hope. Why would you be shooting at a searching algorithm anyway?</p>
+<p>You can find the repository at <a href="https://github.com/Wolfy87/binary-search">Wolfy87/binary-search</a>.</p>
+<h2>The baseline</h2>
+<p>So I built up a repository with tests and a function called <em>binarySearch</em> that actually uses <em>indexOf</em> instead. It&#8217;s lying to you, it&#8217;s not a binary search just yet. This provides us with a working example to base the tests against and a good baseline in performance. Here&#8217;s the function which basically does nothing of any significance.</p><pre class="crayon-plain-tag">/**
+ * Performs a binary search on the provided sorted list and returns the index of the item if found. If it can't be found it'll return -1.
+ *
+ * @param {*[]} list Items to search through.
+ * @param {*} item The item to look for.
+ * @return {Number} The index of the item if found, -1 if not.
+ */
+function binarySearch(list, item) {
+    return list.indexOf(item);
+}
+
+module.exports = binarySearch;</pre><p>And the test file that runs in 80ms on my machine using generative testing.</p><pre class="crayon-plain-tag">require('mocha-testcheck').install();
+var assert = require('assert');
+var binarySearch = require('..');
+
+describe('binarySearch', function () {
+    check.it('can find a number in some sorted numbers', [gen.array(gen.int), gen.int], function (list, item) {
+        list.sort();
+        var index = list.indexOf(item);
+        assert(index === binarySearch(list, item));
+    });
+});</pre><p>Now to turn it into an actual binary search. During this process I tried multiple binary search implementations including one from <a href="https://www.khanacademy.org/">Khan Academy</a> and a plethora of other blogs. Including mine from my previous post. The generative testing found holes in every single one, it was amazing yet terrifying. Even one apparently ported from JDK fell apart, although that&#8217;s probably the fault of the port and not in the actual JDK. I hope.</p>
+<p>I eventually gave up with them all and went back to the implementation from Khan. It falls over on calls such as &#8220;( [0,0,0,13,2,2], 13 )&#8221; and &#8220;( [10,6], 6 )&#8221;, which is sort of bad.</p>
+<h2>This is the point where I realised I&#8217;m an idiot and slammed my face into my desk</h2>
+<p>There wasn&#8217;t anything wrong with the search functions. The sorting of the sample arrays was wrong. I noticed it after putting in some logging for failing cases that showed numbers being inserted out of order.</p><pre class="crayon-plain-tag">[ -1, -10, -16, -19, -20, 11, 12, 13, 13, 13, 14, 15, 17, 6 ] 6 13 -1
+[ -10, -16, -19, -20, 11, 12, 13, 13, 13, 14, 15, 17, 6 ] 6 12 -1
+[ -10, -16, -19, -20, 12, 13, 13, 13, 14, 15, 17, 6 ] 6 11 -1
+[ -10, -16, -20, 12, 13, 13, 13, 14, 15, 17, 6 ] 6 10 -1
+[ -10, -16, 12, 13, 13, 13, 14, 15, 17, 6 ] 6 9 -1
+[ -10, -16, 12, 13, 13, 14, 15, 17, 6 ] 6 8 -1
+[ -10, -16, 12, 13, 13, 15, 17, 6 ] 6 7 -1
+[ -10, -16, 13, 13, 15, 17, 6 ] 6 6 -1
+[ -10, -16, 13, 13, 15, 6 ] 6 5 -1
+[ -10, -16, 13, 15, 6 ] 6 4 -1
+[ -10, -16, 15, 6 ] 6 3 -1
+[ -16, 15, 6 ] 6 2 -1
+[ 15, 6 ] 6 1 -1
+[ 12, 6 ] 6 1 -1
+[ 11, 6 ] 6 1 -1
+[ 10, 6 ] 6 1 -1</pre><p><a href="/wp-content/uploads/2014/12/quadruple-facepalm.jpg"><img class="aligncenter wp-image-273 size-full" src="/wp-content/uploads/2014/12/quadruple-facepalm.jpg" alt="quadruple-facepalm" width="486" height="401" srcset="/wp-content/uploads/2014/12/quadruple-facepalm.jpg 486w, /wp-content/uploads/2014/12/quadruple-facepalm-300x247.jpg 300w" sizes="(max-width: 486px) 100vw, 486px" /></a>So using <em>list.sort()</em> in the tests wasn&#8217;t safe, amazingly. I guess it uses string comparison or something crazy like that by default. <strong>Thanks JavaScript!</strong> So I ended up with this binary search from my Khan academy attempt.</p><pre class="crayon-plain-tag">/**
+ * Performs a binary search on the provided sorted list and returns the index of the item if found. If it can't be found it'll return -1.
+ *
+ * @param {*[]} list Items to search through.
+ * @param {*} item The item to look for.
+ * @return {Number} The index of the item if found, -1 if not.
+ */
+function binarySearch(list, item) {
+    var min = 0;
+    var max = list.length - 1;
+    var guess;
+
+    while (min &lt;= max) {
+        guess = Math.floor((min + max) / 2);
+
+        if (list[guess] === item) {
+            return guess;
+        }
+        else {
+            if (list[guess] &lt; item) {
+                min = guess + 1;
+            }
+            else {
+                max = guess - 1;
+            }
+        }
+    }
+
+    return -1;
+}
+
+module.exports = binarySearch;</pre><p>And these tests.</p><pre class="crayon-plain-tag">require('mocha-testcheck').install();
+var assert = require('assert');
+var binarySearch = require('..');
+
+describe('binarySearch', function () {
+    check.it('can find a number in some sorted numbers', [gen.array(gen.int), gen.int], function (list, item) {
+        list.sort(function (a, b) {
+            return a - b;
+        });
+
+        var base = list.indexOf(item);
+        var result = binarySearch(list, item);
+        assert(list[base] === list[result]);
+    });
+});</pre><p></p>
+<h2>Now it&#8217;s safe</h2>
+<p>I am free to change the implementation now since I&#8217;m happy with the test suite (despite it subtly stabbing me in the back). So I can add in every crazy optimisation under the sun, but to be able to tell that it actually improved I&#8217;ll need some benchmarks. I&#8217;m going to use <a href="http://benchmarkjs.com/">Benchmark.js</a>.</p><pre class="crayon-plain-tag">var binarySearch = require('..');
+var sample = require('./sample');
+
+module.exports = {
+    name: 'binarySearch on 1000 items ranging from -100 to 100',
+    tests: [
+        {
+            name: 'First',
+            fn: function () {
+                binarySearch(sample, -100);
+            }
+        },
+        {
+            name: 'Last',
+            fn: function () {
+                binarySearch(sample, 100);
+            }
+        },
+        {
+            name: '~25%',
+            fn: function () {
+                binarySearch(sample, -51);
+            }
+        },
+        {
+            name: '~50%',
+            fn: function () {
+                binarySearch(sample, 3);
+            }
+        },
+        {
+            name: '~75%',
+            fn: function () {
+                binarySearch(sample, 52);
+            }
+        }
+    ]
+};</pre><p>Which produced this nice little output for me to compare against in the future.</p><pre class="crayon-plain-tag">binary-search$ gulp benchmark
+[23:31:53] Using gulpfile ~/Documents/code/javascript/binary-search/gulpfile.js
+[23:31:53] Starting 'benchmark'...
+[23:31:53] Running suite binarySearch on 1000 items ranging from -100 to 100 [/home/oliver/Documents/code/javascript/binary-search/benchmark/binarySearch.js]...
+[23:31:59]    First x 26,740,056 ops/sec ±0.40% (99 runs sampled)
+[23:32:04]    Last x 28,211,591 ops/sec ±0.84% (94 runs sampled)
+[23:32:10]    ~25% x 27,309,183 ops/sec ±0.11% (103 runs sampled)
+[23:32:15]    ~50% x 51,699,650 ops/sec ±0.56% (97 runs sampled)
+[23:32:21]    ~75% x 44,993,017 ops/sec ±0.52% (96 runs sampled)
+[23:32:21] Fastest test is ~50% at 1.15x faster than ~75%
+[23:32:21] Finished 'benchmark' after 27 s</pre><p>I could go through inserting random optimisations now safe in the knowledge that I&#8217;ll be able to see improvements and I won&#8217;t break anything, but it&#8217;s almost midnight and I want to publish this tomorrow morning. Feel free to hack around in <a href="https://github.com/Wolfy87/binary-search">the repository</a> and make it blisteringly fast without breaking anything.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2014/12/17/revisiting-searching-javascript-arrays-with-a-binary-search/feed/</wfw:commentRss>
+		<slash:comments>4</slash:comments>
+		</item>
+		<item>
+		<title>A JavaScript / Clojure mashup</title>
+		<link>/2014/12/15/a-javascript-clojure-mashup/</link>
+		<comments>/2014/12/15/a-javascript-clojure-mashup/#comments</comments>
+		<pubDate>Mon, 15 Dec 2014 20:23:13 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Clojure]]></category>
+		<category><![CDATA[JavaScript]]></category>
+		<category><![CDATA[Lisp]]></category>
+		<category><![CDATA[clojure]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[lisp]]></category>
+		<category><![CDATA[lodash]]></category>
+
+		<guid isPermaLink="false">/?p=256</guid>
+		<description><![CDATA[I&#8217;m going to create a nightmare inducing monster and you&#8217;re going to enjoy it. Hear me out: Data as code in plain JavaScript without a pre-compilation step or new language to learn (even if Clojure is beautiful and takes all of 10 minutes to memorise the syntax). Of course we don&#8217;t have the distinction of <a class="read-more" href="/2014/12/15/a-javascript-clojure-mashup/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>I&#8217;m going to create a nightmare inducing monster and you&#8217;re going to enjoy it. Hear me out: Data as code in plain JavaScript without a pre-compilation step or new language to learn (even if Clojure is beautiful and takes all of 10 minutes to memorise the syntax). Of course we don&#8217;t have the distinction of vectors and lists, so arrays will have to do, but I think things like<strong> mother flipping macros</strong> would more than make up for it.</p>
+<p>Join me on an adventure into insanity, forget your current opinions about JavaScript and the web that number more than the amount of stars in the known universe. Forget even the performance implications, they&#8217;re a (sort of) irrelevant detail right now. Just indulge in the concepts with me, this post isn&#8217;t planned, it&#8217;s a learning exercise as much for you as it is for myself.</p>
+<p><a href="http://xkcd.com/297/"><img class="aligncenter" src="http://imgs.xkcd.com/comics/lisp_cycles.png" alt="I've just received word that the Emperor has dissolved the MIT computer science program permanently." width="640" height="211" /></a></p>
+<h2><strong>What I want to end up with</strong></h2>
+<p>So my goal is to execute the following (very simple) Clojure code in JavaScript, but without any kind of string parsing, for example. The only thing I&#8217;ll need to cheat on is swapping parentheses for square braces, adding commas (sorry!) and correcting names that are illegal in JavaScript. My end goal is to start implementing the language in the language, just like Clojure. This little experiment could be cultivated into a DSL within JavaScript.</p><pre class="crayon-plain-tag">(if (&gt; 10 20)
+  "Uh, well this is awkward."
+  (str "EVERYTHING IS FINE, MOVE ALONG " (reduce + [1 2 3])))</pre><p>We should get &#8220;EVERYTHING IS FINE, MOVE ALONG 6&#8221; back. Obviously this won&#8217;t be able to execute directly, even with the array syntax in place and the dependant functions defined, so the JavaScript version will include a function to interpret the data structure. This could potentially cache the result of walking the tree for far greater performance, but I don&#8217;t care right now. Performance smermormance.</p><pre class="crayon-plain-tag">[$if, [$mt, 10, 20],
+    "Uh, well this is awkward.",
+    [str, "EVERYTHING IS FINE, MOVE ALONG ", [reduce, $add, [1, 2, 3]]]]</pre><p>In time I could have this supporting things like defn and multiple arity functions, I have my plans, but for the sake of brevity I&#8217;ve just used this dumb piece of code. It&#8217;s the concept I want to play with right now, not the finished product that could take weeks of work and testing. And for no reason in particular, here&#8217;s the normal JavaScript ES5 syntax for this if it didn&#8217;t use the extra functions I had to invent.</p><pre class="crayon-plain-tag">(function () {
+    if (10 &gt; 20) {
+        return "Uh, well this is awkward.";
+    }
+    else {
+        return "EVERYTHING IS FINE, MOVE ALONG " + [1, 2, 3].reduce(function (a, b) {
+            return a + b;
+        });
+    }
+}());</pre><p>I wrapped it in an IIFE because the return statements would have made no sense otherwise. The array syntax should pass the values back implicitly, normal JavaScript is not so lucky.</p>
+<h2><strong>Science time</strong></h2>
+<p>Let&#8217;s start off small, this function will walk a tree of arrays and execute the first item with the rest of the items as it&#8217;s arguments. The function will first recurse to the bottom of the stack then begin evaluation inside out, just like Lisp.</p><pre class="crayon-plain-tag">function walk(tree) {
+    return tree[0].apply(null, tree.slice(1).map(function (n) {
+        return Array.isArray(n) ? walk(n) : n;
+    }));
+}
+
+// It works!
+function $mt(a, b) { return a &gt; b; }
+function $eq(a, b) { return a === b; }
+walk([$eq, false, [$mt, 10, 20]]); // true</pre><p>Oh, wait, now we&#8217;re 80% of the way there. Hah. The main thing we&#8217;re lacking is meta data on functions and lists (I refuse to call them arrays from here on in) being able to change their behaviour as the walker plods through the data structure. We need a way to &#8220;quote&#8221; and &#8220;unquote&#8221; lists for example to defer execution and allow the existence of macros. This essentially means that we should be able to make some lists exempt from execution, so they&#8217;re just lists. How do we unquote? Well, the top level function is already an unquote! Amazing! Yet terrifying!</p><pre class="crayon-plain-tag">function unquote(tree) {
+    if (tree.$quoted) {
+        var unquoted = tree.map(function (n) {
+            return Array.isArray(n) ? unquote(n) : n;
+        });
+        delete unquoted.$quoted;
+        return unquoted;
+    }
+    else {
+        return tree[0].apply(null, tree.slice(1).map(function (n) {
+            return Array.isArray(n) ? unquote(n) : n;
+        }));
+    }
+}
+
+function quote(tree) {
+    var quoted = tree.map(function (n) {
+        return Array.isArray(n) ? quote(n) : n;
+    });
+
+    quoted.$quoted = true;
+    return quoted;
+}
+
+// Again, it works!
+function $map(fn, n) { return n.map(fn); }
+function $inc(n) { return n + 1; }
+unquote([$map, $inc, quote([1, 2, 3])]); // [2, 3, 4]</pre><p>One thing to note here is that I&#8217;m getting a lot of code duplication, this is because I wrote this part at midnight and I&#8217;m just trying to make a point. If you want it pretty, ask for a full on repository. And now for the silly magic. The point where we pull the metaphorical rabbit out of the metaphorical fedora. <a href="http://gph.is/1a0ge2I">Macros. In. JavaScript</a> (I was going to embed the gif on the other end of that link but I thought it might be too distracting / awesome).</p><pre class="crayon-plain-tag">function unquote(tree) {
+    if (tree.$quoted) {
+        var unquoted = tree.map(function (n) {
+            return Array.isArray(n) ? unquote(n) : n;
+        });
+        delete unquoted.$quoted;
+        return unquoted;
+    }
+    else {
+        var fn = tree[0];
+        var args = tree.slice(1);
+
+        if (fn.$macro) {
+            return fn.apply(null, args);
+        }
+        else {
+            return fn.apply(null, args.map(function (n) {
+                return Array.isArray(n) ? unquote(n) : n;
+            }));
+        }
+    }
+}
+
+function quote(tree) {
+    var quoted = tree.map(function (n) {
+        return Array.isArray(n) ? quote(n) : n;
+    });
+
+    quoted.$quoted = true;
+    return quoted;
+}
+
+function macro(fn) {
+    var wrapped = function () {
+        var result = fn.apply(null, arguments);
+        return Array.isArray(result) ? unquote(result) : result;
+    };
+
+    wrapped.$macro = true;
+    return wrapped;
+}
+
+// So now we define the macro "postfixNotation" (as used in Clojure for the Brave and True).
+// http://www.braveclojure.com/writing-macros/#2__Anatomy_of_a_Macro
+// And it works beautifully.
+function $add(a, b) { return a + b; }
+var postfixNotation = macro(function (expr) {
+    var butLast = expr.slice(0, -1);
+    var last = expr.slice(-1);
+    return last.concat(butLast);
+});
+var res = unquote([postfixNotation, [5, 5, $add]]);</pre><p>Getting this working caused me to swear in surprise involuntarily. I just defined a macro in my own little meta language that runs off of a few small functions. And now, without further ado, the if macro.</p><pre class="crayon-plain-tag">function $eq(a, b) { return a === b; }
+var $if = macro(function (expr, t, f) {
+    return unquote(expr) ? t : f;
+});
+
+unquote([$if, [$eq, 5, 5], 'Yep!', 'Nope!']); // Yep!</pre><p>I don&#8217;t know about you, but I find this incredible even if it does look <strong>really</strong> weird, the fact that it&#8217;s so easy to implement too is ludicrous. And now to bring it all together and run it.</p><pre class="crayon-plain-tag">function $mt (a, b) {
+    return a &gt; b;
+}
+
+function $add (a, b) {
+    return a + b;
+}
+
+function str() {
+    return [].slice.call(arguments).join('');
+}
+
+function reduce(fn, list) {
+    return list.reduce(fn);
+}
+
+var $if = macro(function (expr, t, f) {
+    return unquote(expr) ? t : f;
+});
+
+unquote(
+    [$if, [$mt, 10, 20],
+        'Uh, well this is awkward.',
+        [str, 'EVERYTHING IS FINE, MOVE ALONG ', [reduce, $add, quote([1, 2, 3])]]]);
+
+// EVERYTHING IS FINE, MOVE ALONG 6</pre><p>It works! Had to quote that array and define all of the required functions, but it works! Only the required code path is executed too, which I find very cool for an array.</p>
+<h2><strong>Take it further?</strong></h2>
+<p>It could perform some kind of caching as it walked the tree so you had a compile and execution step to this process. That allows you to build certain code paths and probably make it faster. Maybe not, maybe it&#8217;s fast enough right now and the simplicity is a far greater advantage. I would lean towards the latter. I would like to add defun, multiple arity functions and other such sugar. This is all something I would do if I carried this idea further into a more complex project. Even if nobody will ever use it, myself included, I think it would be fun. A language within a language.</p>
+<p>I could produce a standard library and obviously flesh it out into an open source repository with tests, documentation and the <a href="http://unlicense.org/">unlicense</a>, as is my way. Or maybe this concept is pure silliness and it should go no further than this page. Either way, I hope it provides at least a little entertainment for those of you that tread the sad line between JavaScript and Clojure. Where the grass is truly greener on the other side, as well as being shaped like parentheses, but you can&#8217;t quite drag it kicking and screaming into your day job. Just yet, anyway.</p>
+<p>Here&#8217;s <a href="https://github.com/Wolfy87/clojs">the repository</a> for the code I developed during this post. Complete with late night commit messages!</p>
+<p>Really thinking about how to implement a macro or macro system and why it should be like that has made Clojure macros quite a bit easier to understand too. So at the very least, I got that out of this exercise. I would love to hear your thoughts, even if they&#8217;re simply internal screaming.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2014/12/15/a-javascript-clojure-mashup/feed/</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+		</item>
+		<item>
+		<title>My 2015 Bucket Set</title>
+		<link>/2014/12/13/my-2015-bucket-set/</link>
+		<comments>/2014/12/13/my-2015-bucket-set/#respond</comments>
+		<pubDate>Sat, 13 Dec 2014 12:00:58 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Meta]]></category>
+		<category><![CDATA[brainfuck]]></category>
+		<category><![CDATA[clojure]]></category>
+		<category><![CDATA[clojurescript]]></category>
+		<category><![CDATA[coursera]]></category>
+		<category><![CDATA[elixir]]></category>
+		<category><![CDATA[haskell]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[khan]]></category>
+
+		<guid isPermaLink="false">/?p=248</guid>
+		<description><![CDATA[I&#8217;m not really one for New Year&#8217;s resolutions, but this year I thought I&#8217;d create a sort of bucket list of programming related things to learn. But it&#8217;s more of a bucket set because the items are unique, I really want to focus on algorithms and data structures as well as a plethora of functional <a class="read-more" href="/2014/12/13/my-2015-bucket-set/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>I&#8217;m not really one for New Year&#8217;s resolutions, but this year I thought I&#8217;d create a sort of bucket list of programming related things to learn. But it&#8217;s more of a bucket set because the items are unique, I really want to focus on algorithms and data structures as well as a plethora of functional programming languages. So without further ado, here&#8217;s all the things I want to accomplish next year, this may grow considerably.</p>
+<ul>
+<li><a href="https://www.khanacademy.org/">Khan Academy</a> algorithms as well as anything else I can fit in. Especially math and computer science related topics. I want to have something on the go at all times.</li>
+<li>Algorithms <a href="https://www.coursera.org/course/algs4partI">part I</a> and <a href="https://www.coursera.org/course/algs4partII">part II</a> as well as <a href="https://www.coursera.org/course/datavisualization">Data Visualisation</a> courses on <a href="https://www.coursera.org/">Coursera</a>. I&#8217;ve completed the <a href="https://www.coursera.org/course/progfun">Functional Programming in Scala</a> course and completed most of Algo I, but this time I want to really ace it. I&#8217;ll have way more free time when I don&#8217;t have to commute for 2:30/3:00 hours a day.</li>
+<li>More Vim plugins, I want to have five by the end of the year. So that&#8217;s three more on top of <a href="https://github.com/Wolfy87/vim-enmasse">vim-enmasse</a> and <a href="https://github.com/Wolfy87/vim-expand">vim-expand</a>. I have a few ideas lined up, but I can always rip good configuration out of my <a href="https://github.com/Wolfy87/dotfiles">dotfiles</a> and flesh it out.</li>
+<li>A <a href="http://en.wikipedia.org/wiki/Brainfuck">brainfuck</a> VM (idea courtesy of <a href="https://twitter.com/krisajenkins/status/543359911821053953">Kris Jenkins</a>, thanks Kris!).</li>
+<li>A simple and useless language I am yet to design. I think it could end up being a project I can take as far as I want. Or drop it as soon as I get an MVP if I won&#8217;t learn any more.</li>
+</ul>
+<p>And the languages I&#8217;d like to learn and apply to this sort of thing are as follows.</p>
+<ul>
+<li>Clojure (I&#8217;m going to <a href="https://skillsmatter.com/conferences/6861-clojure-exchange-2015">ClojureX</a> at the end of 2015, so there&#8217;s an incentive!)</li>
+<li>ClojureScript</li>
+<li>Haskell</li>
+<li>Elixir</li>
+</ul>
+<p>Other languages I may dip into if I feel like it.</p>
+<ul>
+<li>C</li>
+<li>Java</li>
+<li>Scala</li>
+<li>Erlang</li>
+<li>Ruby</li>
+</ul>
+<p>I&#8217;m pretty handy with JavaScript, but I&#8217;d like to build some stuff with <a href="http://facebook.github.io/react/">React</a> at some point too.</p>
+<p>The projects and language lists may still grow, but I&#8217;d like to build and use these as a minimum. I&#8217;ll continue to blog about my endeavours and probably write a wrap up at the end of the year with a new set of goals for 2016. I think this goal based approach will help to accelerate my learning even more than my day to day work does. I may has skipped on university, but there&#8217;s no way I&#8217;m letting that leave a hole in my knowledge.</p>
+<h2>In closing</h2>
+<p>What&#8217;s better than a brainfuck VM?</p>
+<p>A whole repository of them in different languages and styles. I&#8217;m going to implement a VM in languages I&#8217;m trying to learn that runs a brainfuck &#8220;Hello, World!&#8221;. I think that&#8217;ll teach me a fair amount about each language. I think it&#8217;ll be pretty cool if I use brainfuck as my platform for learning over the next year, it also gives me an excuse to litter my posts with profanities. So expect to see them appearing over at <a href="https://github.com/Wolfy87/brainfucks">Wolfy87/brainfucks</a> in the near future.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2014/12/13/my-2015-bucket-set/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>My thoughts on React, Flux and Reflux</title>
+		<link>/2014/12/06/my-thoughts-on-react-flux-and-reflux/</link>
+		<comments>/2014/12/06/my-thoughts-on-react-flux-and-reflux/#comments</comments>
+		<pubDate>Sat, 06 Dec 2014 16:31:46 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[JavaScript]]></category>
+		<category><![CDATA[React]]></category>
+		<category><![CDATA[flux]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[react]]></category>
+		<category><![CDATA[reflux]]></category>
+
+		<guid isPermaLink="false">/?p=237</guid>
+		<description><![CDATA[I could have used &#8220;My reaction to React, Flux and Reflux&#8221; in this title, but I thought it&#8217;d seem unprofessional, so I moved it down to the first point of this post. Because my blog is not an incredibly professional place. I spent a week of evenings and most of a weekend building an application <a class="read-more" href="/2014/12/06/my-thoughts-on-react-flux-and-reflux/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>I could have used &#8220;My reaction to React, Flux and Reflux&#8221; in this title, but I thought it&#8217;d seem unprofessional, so I moved it down to the first point of this post. Because my blog is not an incredibly professional place.</p>
+<p>I spent a week of evenings and most of a weekend building an application much like a nested todo list with <a href="http://facebook.github.io/react/">React</a> and <a href="https://github.com/spoike/refluxjs/">Reflux</a>. I&#8217;ve gone from zero to slightly more than zero knowledge in that time and it&#8217;s been an interesting experience, I want to share how I approached the problem from a high level, show some examples and finally point out all of the glaringly obvious things I&#8217;ve missed but will use next time.</p>
+<p>I&#8217;d also like to mention <a href="http://dev.hubspot.com/blog/moving-backbone-to-flux-react">this tangential video</a> that explains what Flux and React solve perfectly, it also talks about things such as optimistic fulfilment within the UI. A concept in which you respond to user input immediately, even if you have to ask the server, and then roll back the state by popping some snapshots off of a stack if a promise fails. This sort of thing would be a monumental challenge in any other world, but it&#8217;s feasible with React and Flux.</p>
+<h2>My structure</h2>
+<p>Since I was using Reflux, I tried to follow the general architecture of the <a href="https://github.com/spoike/refluxjs-todo">reflux-todo</a> example. I really like Reflux&#8217;s approach to the Flux architecture, it kicks out the useless string passing in the dispatcher and binds things together through concrete function calls and references. I sincerely hope the project gains traction and continues to grow in this direction. I&#8217;d really like to see some immutable data structure integration too.</p>
+<ul>
+<li>build/
+<ul>
+<li>index.html</li>
+<li>style.css</li>
+<li>{main.js is generated here by gulp + browserify}</li>
+</ul>
+</li>
+<li>src/
+<ul>
+<li>actions/
+<ul>
+<li>listActions.js</li>
+</ul>
+</li>
+<li>components/ (which I think are referred to as elements now)
+<ul>
+<li>App.js</li>
+<li>Dashboard.js</li>
+<li>ListItem.js</li>
+<li>ListItemAttribute.js (these are the<a href="http://inception.davepedu.com/"> sub-list items in a list item</a>)</li>
+<li>Manifest.js</li>
+</ul>
+</li>
+<li>stores/
+<ul>
+<li>listStore.js</li>
+</ul>
+</li>
+<li>utils/
+<ul>
+<li>compile.js (my custom array -&gt; React DOM factory)</li>
+<li>persistence.js (tiny layer on top of localStorage)</li>
+</ul>
+</li>
+<li>main.js (kicks everything off and configures <a href="https://github.com/rackt/react-router">react-router</a>, which is <em>amazing</em> by the way)</li>
+</ul>
+</li>
+<li>test/ (mirrors the src structure and files, but didn&#8217;t test components)</li>
+</ul>
+<p>You may be shocked by that last line, I didn&#8217;t test my components. This is mostly because I ran out of time and realised all too late that I should have been using <a href="http://facebook.github.io/jest/">Jest</a> all along. I tested everything else, especially my store, using <a href="http://mochajs.org/">Mocha</a> and <a href="https://github.com/shouldjs/should.js">Should</a>. I just found it difficult to test my components directly this way without it being boilerplate filled and generally yucky. Luckily, my components didn&#8217;t really hold any state whatsoever, so it wasn&#8217;t too bad. Testing the store was the most important part.</p>
+<p>As you can tell from the general lack of files, it was a pretty small project and didn&#8217;t require many actions. The thing that caused this to take a week of evenings and a lot of the weekend was not reading the manual and diving straight in. I&#8217;d highly recommend reading all of the documentation before starting something with React, Flux or Reflux. Because of Reflux&#8217;s awesomeness, my actions file simply contained this.</p><pre class="crayon-plain-tag">var Reflux = require('reflux');
+
+/**
+ * These are used to construct the actions. Actions are used within Reflux by the components to tell the stores what to do.
+ *
+ * @type {String[]}
+ */
+var requiredActions = [
+    'addItem',
+    'updateItem',
+    'removeItem',
+    'addItemAttribute',
+    'updateItemAttribute',
+    'removeItemAttribute',
+    'clear'
+];
+
+var listActions = Reflux.createActions(requiredActions);
+
+module.exports = listActions;</pre><p>Then I plug it into my store with one line, which is pretty damn incredible.</p><pre class="crayon-plain-tag">// ...
+var listStore = Reflux.createStore({
+    listenables: listActions,
+    // ...</pre><p>I also ended up with a couple of utility files that made localStorage access even easier and a way to compile an array structure to React DOM, which I now realise was pretty pointless. I don&#8217;t want to use JSX right now, but I could have just used the <em>React.DOM</em> API and had basically the same experience as my array DSL. It was fun to build though, I guess I was just yearning for something Lisp / Clojure like.</p><pre class="crayon-plain-tag">/**
+ * An API into localStorage that won't explode if it isn't available (like in node.js).
+ *
+ * Will also serialise and parse with JSON.
+ *
+ * @type {Object}
+ */
+var persistence = {
+    write: function (key, value) {
+        if (typeof localStorage === 'object') {
+            localStorage.setItem(key, JSON.stringify(value));
+        }
+    },
+    read: function (key) {
+        if (typeof localStorage === 'object') {
+            return JSON.parse(localStorage.getItem(key));
+        }
+    }
+};
+
+module.exports = persistence;</pre><p></p><pre class="crayon-plain-tag">var React = require('react');
+var _ = require('lodash');
+
+/**
+ * Compiles an array into a React DOM structure recursively. All segments of the node array are optional.
+ *
+ * The array segments can be in any order apart from the node type, that always needs to be first.
+ *
+ * Actually works really well, I'd quite like to open source this with CSS selector parsing in the nodeName.
+ *
+ * @param {*[]} node Comprised of a string DOM node name, params object and string content or child node(s). The nodes can be more arrays or compiled React elements.
+ * @return {Object} A react DOM tree built from your data structure recursively.
+ */
+function compile(node) {
+    if (_.isArray(node)) {
+        var nodeName = _.first(node);
+        var findProp = _.partial(_.find, _.rest(node));
+        var props = _.mapValues({
+            attrs: _.isPlainObject,
+            children: _.isArray,
+            compiled: React.isValidElement,
+            text: _.isString
+        }, findProp);
+
+        var child = props.text || props.compiled || _.map(props.children, compile);
+
+        return React.createElement(nodeName, props.attrs, child);
+    }
+    else {
+        return node;
+    }
+}
+
+module.exports = compile;</pre><p>So that should give you a rough idea as to what I was playing with. I may well open up the repository to public ridicule in the coming months. Now onto the things I wish I&#8217;d known about before.</p>
+<h2>Things I would have done differently</h2>
+<figure style="width: 624px" class="wp-caption alignnone"><img class="" title="" src="http://img3.wikia.nocookie.net/__cb20101028071113/southpark/images/d/d8/Coon2Hindsight10.png" alt="Captain Hindsight" width="624" height="352" /><figcaption class="wp-caption-text">Captain Hindsight turned up once I was done</figcaption></figure>
+<ol>
+<li><a href="http://facebook.github.io/react/docs/reusable-components.html#prop-validation">propTypes</a> &#8211; YOU CAN ADD TYPE ANNOTATIONS?!</li>
+<li><a href="http://facebook.github.io/react/docs/reusable-components.html#default-prop-values">defaultProps</a> &#8211; Great for optional configuration.</li>
+<li><a href="http://facebook.github.io/react/docs/more-about-refs.html">ref</a> &#8211; A property to allow deep linking into component hierarchy.</li>
+<li><a href="http://facebook.github.io/react/docs/top-level-api.html#react.children">this.props.children</a> &#8211; Essentially transclude from Angular land but with some really cool helper utilities.</li>
+<li><a href="http://facebook.github.io/react/docs/transferring-props.html">transferPropsTo</a> &#8211; Something I see in Angular all too much made easy. Although hopefully you won&#8217;t get into the situation where you have that many props. That smells of SRP violation.</li>
+<li>I should have been using the component life cycle hooks <strong>way</strong> more. They&#8217;re great and there&#8217;s probably one for your exact need, you just have to select carefully. It does remind me of building WordPress plugins and themes though&#8230;</li>
+</ol>
+<p>I hope others can learn from my mishaps! Basically, <a href="http://en.wikipedia.org/wiki/RTFM">RTFM</a> before you go out into the big not so bad world of sane UI development.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2014/12/06/my-thoughts-on-react-flux-and-reflux/feed/</wfw:commentRss>
+		<slash:comments>5</slash:comments>
+		</item>
+		<item>
+		<title>Essential Vim bundles for JavaScript and Clojure</title>
+		<link>/2014/11/21/essential-vim-bundles-for-javascript-and-clojure/</link>
+		<comments>/2014/11/21/essential-vim-bundles-for-javascript-and-clojure/#comments</comments>
+		<pubDate>Fri, 21 Nov 2014 08:30:08 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[JavaScript]]></category>
+		<category><![CDATA[Text Editors]]></category>
+		<category><![CDATA[Vim]]></category>
+		<category><![CDATA[clojure]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[vim]]></category>
+
+		<guid isPermaLink="false">/?p=231</guid>
+		<description><![CDATA[I mention using NeoBundle in this post, but I&#8217;ve since made the switch to vim-plug. Do it, it&#8217;s wonderful. My two primary languages that go through Vim right now are JavaScript and Clojure. Obviously there&#8217;s others such as HTML, CSS and the odd bit of Java, but these two stand out since they can have <a class="read-more" href="/2014/11/21/essential-vim-bundles-for-javascript-and-clojure/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p><em>I mention using NeoBundle in this post, but I&#8217;ve since made the switch to <a href="https://github.com/junegunn/vim-plug">vim-plug</a>. Do it, it&#8217;s wonderful.</em></p>
+<p>My two primary languages that go through Vim right now are JavaScript and Clojure. Obviously there&#8217;s others such as HTML, CSS and the odd bit of Java, but these two stand out since they can have astounding tooling if you select carefully. So can Java if you wish to go down the <a href="http://eclim.org/">eclim</a> route (which I may well do at some point) as one of my colleagues has.</p>
+<p>This is just a quick dependency list for those already using the languages or are just starting out. I feel that they are essential. To install these you will need a bundle manager, I recommend <a href="https://github.com/Shougo/neobundle.vim">NeoBundle</a>, <a href="https://github.com/gmarik/Vundle.vim">Vundle</a> or <a href="https://github.com/junegunn/vim-plug">vim-plug</a>. I am currently using NeoBundle but may well swap to vim-plug soon for the minimalism and impressive parallelism.</p>
+<h2>Common bundles</h2>
+<p>These are extremely useful for either language, and generally enhance Vim in many ways. So really, these will improve your experience no matter what you write.</p>
+<ul>
+<li><a href="https://github.com/Valloric/YouCompleteMe">YouCompleteMe</a> &#8211; Fast automatic code completion. Works well with completion engines and falls back to a really good fuzzy string search. So good for plain text or languages without a completer.</li>
+<li><a href="https://github.com/scrooloose/syntastic">syntastic</a> &#8211; Linting using a multitude of backends. Make sure you have JSHint installed for JavaScript! (<em>npm install -g jshint</em>)</li>
+<li><a href="https://github.com/Lokaltog/vim-distinguished">vim-distinguished</a> &#8211; An excellent theme if you don&#8217;t already have a preference, especially for JavaScript.</li>
+<li><a href="https://github.com/tpope/vim-projectionist">vim-projectionist</a> &#8211; Project configuration to create associations between files and other goodies such as pre-filling a file with a JavaScript AMD module definition on creation. I can execute <em>:AV</em> to open the alternate file to the one I&#8217;m currently editing, this could be the tests for this source or the other way around.</li>
+<li><a href="https://github.com/embear/vim-localvimrc">vim-localvimrc</a> &#8211; Have per-project configuration, I have things like <em>&lt;localleader&gt;tt</em> mapped to execute the very specific command to <strong>t</strong>est <strong>t</strong>his file.</li>
+<li><a href="https://github.com/Lokaltog/vim-easymotion">vim-easymotion</a> &#8211; Jump to anywhere. This is essential for anything in Vim.</li>
+</ul>
+<h2>JavaScript</h2>
+<p>The common bundles pretty much cover JavaScript, but there&#8217;s still a few specific things you need.</p>
+<ul>
+<li><a href="https://github.com/wookiehangover/jshint.vim">jshint.vim</a> &#8211; As well as having JSHint installed as a global node module for syntastic, I&#8217;d highly recommend this to actively check things and add them to the quickfix list.</li>
+<li><a href="https://github.com/marijnh/tern_for_vim">tern_for_vim</a> &#8211; <a href="http://ternjs.net/">Tern</a> omnicomplete support that YouCompleteMe hooks in to. Works very well if set up correctly. It can even infer or read types from <a href="http://usejsdoc.org/">JSDoc</a> comments.</li>
+<li><a href="https://github.com/pangloss/vim-javascript">vim-javascript</a> &#8211; Provides improved syntax and indentation.</li>
+</ul>
+<h2>Clojure</h2>
+<p>There&#8217;s a few more for Clojure and they each have their own learning curves, namely paredit and fireplace. It&#8217;ll take you a while to get proficient, but you&#8217;ll be very happy when you get there.</p>
+<ul>
+<li><a href="https://github.com/kien/rainbow_parentheses.vim">rainbow_parentheses.vim</a> &#8211; Makes Clojure&#8217;s endless parentheses even more pretty. Colours pairs of parentheses for you, which also works rather well for other languages too!</li>
+<li><a href="https://github.com/vim-scripts/paredit.vim">paredit.vim</a> &#8211; Stops you from unbalancing the parentheses and provides a plethora of bindings for manipulating the file.</li>
+<li><a href="https://github.com/tpope/vim-fireplace">vim-fireplace</a> &#8211; Bridges Vim to a REPL process. Can even spin one up for you if you use <a href="https://github.com/tpope/vim-dispatch">vim-dispatch</a>!</li>
+<li><a href="https://github.com/guns/vim-clojure-static">vim-clojure-static</a> &#8211; Better static highlighting.</li>
+<li><a href="https://github.com/guns/vim-clojure-highlight">vim-clojure-highlight</a> &#8211; More dynamic highlighting that tries to fetch context and more information from fireplace. An extension to static.</li>
+</ul>
+<h2>There&#8217;s a lot more</h2>
+<p>You have to discover some things for yourself because you probably don&#8217;t like everything I do. Saying that, here&#8217;s my <a href="https://github.com/Wolfy87/dotfiles">dotfiles</a> that you can fork, copy, steal or retrofit to fit your needs.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2014/11/21/essential-vim-bundles-for-javascript-and-clojure/feed/</wfw:commentRss>
+		<slash:comments>5</slash:comments>
+		</item>
+		<item>
+		<title>Angular feels like you&#8217;re always viewing a tiny piece of the puzzle</title>
+		<link>/2014/11/03/angular-feels-like-youre-always-viewing-a-tiny-piece-of-the-puzzle/</link>
+		<comments>/2014/11/03/angular-feels-like-youre-always-viewing-a-tiny-piece-of-the-puzzle/#respond</comments>
+		<pubDate>Mon, 03 Nov 2014 19:04:43 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[JavaScript]]></category>
+		<category><![CDATA[angular]]></category>
+		<category><![CDATA[clojurescript]]></category>
+		<category><![CDATA[javascript]]></category>
+
+		<guid isPermaLink="false">/?p=218</guid>
+		<description><![CDATA[You only see the directive, controller or template. Sometimes parts are in the same place and you can make sense of it. A lot of the time they are disparate and hard to comprehend. I&#8217;m wasting time trying to understand how value X gets from A to B, let alone what happens to it along <a class="read-more" href="/2014/11/03/angular-feels-like-youre-always-viewing-a-tiny-piece-of-the-puzzle/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>You only see the directive, controller or template. Sometimes parts are in the same place and you can make sense of it. A lot of the time they are disparate and hard to comprehend. I&#8217;m wasting time trying to understand how value X gets from A to B, let alone what happens to it along the way or at the other end. Or even what X actually is!</p>
+<p>I don&#8217;t like Angular for various reasons after working with it closely for around a year. I think this is largely because of the constant weaving in and out of multiple files and DOM structures. There&#8217;s no continuity and clear zones to create or find things. I&#8217;m sure someone that cares enough will retort with an architecture that sort of looks alright, but it&#8217;s still string based soft bindings all over the place and mutation left, right and center.</p>
+<p>I may be biased. I want to move towards ClojureScript and immutable data structures. If I can&#8217;t have ClojureScript I want to emulate the best things about it, Angular is very different to the world I want to be in.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2014/11/03/angular-feels-like-youre-always-viewing-a-tiny-piece-of-the-puzzle/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

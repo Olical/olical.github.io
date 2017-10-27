@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>plugins &#8211; Oliver Caldwell&#039;s blog</title>
+	<atom:link href="/tag/plugins/feed/" rel="self" type="application/rss+xml" />
+	<link>/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Wed, 18 Oct 2017 13:50:23 +0000</lastBuildDate>
+	<language>en-GB</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>Wrangling JavaScript with Vim</title>
+		<link>/2015/06/17/wrangling-javascript-with-vim/</link>
+		<comments>/2015/06/17/wrangling-javascript-with-vim/#comments</comments>
+		<pubDate>Wed, 17 Jun 2015 09:00:51 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[JavaScript]]></category>
+		<category><![CDATA[Vim]]></category>
+		<category><![CDATA[plugins]]></category>
+		<category><![CDATA[workflow]]></category>
+
+		<guid isPermaLink="false">/?p=362</guid>
+		<description><![CDATA[I&#8217;ve created a few posts on here about writing JavaScript with Vim, this is because it&#8217;s what I do all day (and night) long, I&#8217;ve refined my editor to make writing this slightly questionable language as easy as possible. I&#8217;ve now hit a point, once again, where I feel like I should share my tooling <a class="read-more" href="/2015/06/17/wrangling-javascript-with-vim/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>I&#8217;ve created a <a href="/2013/06/29/equipping-vim-for-javascript/">few</a> <a href="/2014/11/21/essential-vim-bundles-for-javascript-and-clojure/">posts</a> on here about writing JavaScript with Vim, this is because it&#8217;s what I do all day (and night) long, I&#8217;ve refined my editor to make writing this slightly questionable language as easy as possible. I&#8217;ve now hit a point, once again, where I feel like I should share my tooling for everyone else to take advantage of. You can find everything I&#8217;m going to talk about in my <a href="https://github.com/Wolfy87/dotfiles">dotfiles</a> under the Vim directory if you&#8217;re curious.</p>
+<h2>Plugin management</h2>
+<p>I&#8217;ve gone through a few different systems since starting to use Vim, I&#8217;ve finally settled on one that&#8217;ll be tough to beat: <a href="https://github.com/junegunn/vim-plug">vim-plug</a>. A good plugin manager is essential to any good Vim configuration, in my opinion. It allows me to easily add, remove and update plugins as well as keep them in sync across machines. The parallel processing and optional deferred loading are excellent features.</p>
+<p>My configuration is modularised by having <a href="https://github.com/Wolfy87/dotfiles/blob/9c5f008620287bb495e56452123d6bff76bb4639/vim/.vim/bootstrap.vim">bootstrap.vim</a> load all files in my <a href="https://github.com/Wolfy87/dotfiles/tree/9c5f008620287bb495e56452123d6bff76bb4639/vim/.vim/modules">modules</a> directory, one of these is <a href="https://github.com/Wolfy87/dotfiles/blob/9c5f008620287bb495e56452123d6bff76bb4639/vim/.vim/modules/plugins.vim">plugins.vim</a> which configures vim-plug and then loads the individual configuration files for each plugin from <a href="https://github.com/Wolfy87/dotfiles/tree/9c5f008620287bb495e56452123d6bff76bb4639/vim/.vim/modules/plugins">modules/plugins</a>. This allows <a href="https://github.com/Wolfy87/dotfiles/blob/9c5f008620287bb495e56452123d6bff76bb4639/vim/.vim/plugins.vim">my actual plugin list</a> to remain clean and concise. I recommend following a similar pattern to keep your configuration clean.</p>
+<p>The point of this section being: Make sure you have a good plugin manager and a nice place to list your plugins as well as their configuration. It&#8217;ll help keep things clean. Feel free to copy my system exactly, in fact, I encourage it. Fork my dotfiles if you so wish.</p>
+<h2>Essential plugins</h2>
+<p>I&#8217;m going to list a fairly exhaustive list of every plugin I use that can help with JavaScript development. There&#8217;s going to be a lot here, but I&#8217;ll try to justify each one as best as I can. Adding all of them will have no impact on the performance of your editor (unless you&#8217;re on a Raspberry Pi for example) and vim-plug will fetch / update them incredibly quickly. I actually use <a href="https://github.com/Wolfy87/dotfiles/blob/9c5f008620287bb495e56452123d6bff76bb4639/vim/.vim/plugins.vim">a lot more</a> than this, but these are some of the most relevant.</p>
+<ul>
+<li><span class="pl-s"><a href="https://github.com/Lokaltog/vim-easymotion">Lokaltog/vim-easymotion</a> &#8211; <em>The</em> way to navigate a file quickly, regardless of language.<br />
+</span></li>
+<li><span class="pl-s"><a href="https://github.com/PeterRincker/vim-argumentative">PeterRincker/vim-argumentative</a></span> &#8211; Allows you to change the order of arguments with ease.</li>
+<li><span class="pl-s"><a href="https://github.com/Raimondi/delimitMate">Raimondi/delimitMate</a></span> &#8211; Automatically match pairs intelligently.</li>
+<li><span class="pl-s"><a href="http://github.com/Valloric/YouCompleteMe">Valloric/YouCompleteMe</a> &#8211; The best completion engine I&#8217;ve found.<br />
+</span></li>
+<li><span class="pl-s"><a href="http://github.com/Olical/vim-enmasse">Olical/vim-enmasse</a></span> &#8211; My own, allows you to edit your quickfix list and write the changes to their files. Like find and replace, but better.</li>
+<li><span class="pl-s"><a href="http://github.com/ctrlpvim/ctrlp.vim">ctrlpvim/ctrlp.vim</a></span> &#8211; <em>The</em> way to jump around your code base by rough file names.</li>
+<li><span class="pl-s"><a href="http://github.com/helino/vim-json">helino/vim-json</a></span> &#8211; We work with a lot of it, show it some love.</li>
+<li><span class="pl-s"><a href="http://github.com/junegunn/vim-easy-align">junegunn/vim-easy-align</a></span> &#8211; Makes those funny alignment issues trivial.</li>
+<li><span class="pl-s"><a href="http://github.com/marijnh/tern_for_vim">marijnh/tern_for_vim</a></span> &#8211; Provides pretty good completion in JavaScript, works great with YouCompleteMe. Checkout the <a href="http://ternjs.net/">tern</a> website for more information.</li>
+<li><span class="pl-s"><a href="http://github.com/mhinz/vim-signify">mhinz/vim-signify</a></span> &#8211; Git info in the gutter.</li>
+<li><span class="pl-s"><a href="http://github.com/pangloss/vim-javascript">pangloss/vim-javascript</a></span> &#8211; My favourite JavaScript syntax plugin of them all so far. (has great conceal features which I&#8217;ll talk about below)</li>
+<li><span class="pl-s"><a href="http://github.com/rking/ag.vim">rking/ag.vim</a></span> &#8211; We have to search for a lot of stuff across a lot of files, <a href="http://geoff.greer.fm/ag/">Ag</a> does it best.</li>
+<li><span class="pl-s"><a href="http://github.com/scrooloose/syntastic">scrooloose/syntastic</a></span> &#8211; Provides automatic JSHint linting. (among many other JavaScript linters, check the docs)</li>
+<li><a href="https://github.com/Wolfy87/dotfiles/blob/9c5f008620287bb495e56452123d6bff76bb4639/vim/.vim/plugins.vim#L40-L57">Too many to list</a> from <a href="https://github.com/tpope">tpope</a>, but honestly, I use almost all of these on a daily basis. Feel free to pick and choose any that sound cool, <a href="https://github.com/tpope/vim-sensible">vim-sensible</a> is a start and <a href="https://github.com/tpope/vim-surround">vim-surround</a> is essential.</li>
+</ul>
+<h2>Project specific configuration</h2>
+<p>I use <span class="pl-s"><a href="http://embear/vim-localvimrc">embear/vim-localvimrc</a></span> to provide project specific functionality such as executing tests or running the build. Because this is something that isn&#8217;t universal, having a <em>.lvimrc</em> to hand is extremely useful. I have the following binding defined at the moment so I can just hit &#8220;&lt;<a href="http://learnvimscriptthehardway.stevelosh.com/chapters/06.html#local-leader">localleader</a>&gt;tt&#8221; (which is &#8220;|tt&#8221; right now for me) to <strong>t</strong>est <strong>t</strong>his file, it doesn&#8217;t matter if I&#8217;m in the source or test file, it just works.</p><pre class="crayon-plain-tag">command! Test Dispatch grunt test-dev --filter %:t:r
+nnoremap &lt;localleader&gt;tt :Test&lt;CR&gt;</pre><p>This is relying on <a href="https://github.com/tpope/vim-dispatch">vim-dispatch</a> to make the whole thing asynchronous. It actually executes in a tmux split and pulls the results into my Vim quickfix list when done.</p>
+<p>I also have my <em>path</em> set to some greedy globs and <em>suffixesadd</em> set to contain <em>.js</em>. This allows me to press <em>gf</em> (<a href="http://vim.wikia.com/wiki/Open_file_under_cursor">open file under cursor</a>) on the following require statement, and it will actually take me to the source (if it exists)!</p><pre class="crayon-plain-tag">// Where httpService.js exists somewhere in this project.
+// I press gf within the quotes and it will take me there.
+
+var httpService = require('httpService');</pre><p>And here&#8217;s the configuration I&#8217;m currently using for that particular bit of magic.</p><pre class="crayon-plain-tag">set path+=**/src/main/**,**
+set suffixesadd+=.js</pre><p></p>
+<h2>Snippets</h2>
+<p>I use <a href="https://github.com/SirVer/ultisnips">UltiSnips</a> to manage my snippets, which is a fantastic tool. The key to snippets, however, is to not have too many. That is why <a href="https://github.com/Wolfy87/dotfiles/blob/9c5f008620287bb495e56452123d6bff76bb4639/vim/.vim/UltiSnips/javascript.snippets">I only have three</a> at the time of writing. It&#8217;s pretty obvious what they&#8217;re for, the most used being <em>fn</em>. Having a few for your most common patterns is a good idea, but delete them if you find you&#8217;re not using them, keep your snippets clean.</p>
+<h2>Concealing</h2>
+<p>Concealing is a neat (and relatively new) feature in Vim that allows you to mask a set of characters as a single character. It just so happens that <a href="https://github.com/pangloss/vim-javascript">vim-javascript</a> has some excellent conceal configuration that&#8217;s easy to use and very effective. Here&#8217;s what I currently use, it&#8217;s pretty self explanatory.</p><pre class="crayon-plain-tag">" General conceal settings. Will keep things concealed
+" even when your cursor is on top of them.
+set conceallevel=1
+set concealcursor=nvic
+
+" vim-javascript conceal settings.
+let g:javascript_conceal_function = "λ"
+let g:javascript_conceal_this = "@"
+let g:javascript_conceal_return = "&lt;"
+let g:javascript_conceal_prototype = "#"</pre><p>This is all well and good, but it got me thinking, what if I could just press the @ key and have it expand to &#8220;this&#8221; but still show an @ through conceal? Essentially creating a cute little language on top of JavaScript within Vim that&#8217;s arguably easier to write and read.</p>
+<h2>Expanding and concealing</h2>
+<p>This is where my <a href="https://github.com/Wolfy87/vim-syntax-expand">vim-syntax-expand</a> plugin comes in. Here&#8217;s a quick demo to give you an idea of what I mean if my previous paragraph was not clear.</p>
+<p><a href="https://asciinema.org/a/ag49t530108fu0qp2cuefondl" target="_blank"><img src="https://asciinema.org/a/ag49t530108fu0qp2cuefondl.png" alt="" width="994" /></a></p>
+<p>I can write concealed characters and see concealed characters, but it actually writes the real JavaScript to the file. It&#8217;s caused some people to be slightly confused when looking at my screen, but normal JavaScript is only a <em>set conceallevel=0</em> away. And yes, it&#8217;s intelligent enough to not expand in comments or strings, so you can still type @ or # when required.</p>
+<p>The &lt; to &#8220;return&#8221; mapping uses a special rule that will only work if you&#8217;re at the beginning of a line, so you can still type &#8220;&lt;=&#8221;. Here&#8217;s my full configuration, which is also featured in the repository README.md.</p><pre class="crayon-plain-tag">" Map the conceal characters to their expanded forms.
+inoremap &lt;silent&gt; @ &lt;C-r&gt;=syntax_expand#expand("@", "this")&lt;CR&gt;
+inoremap &lt;silent&gt; # &lt;C-r&gt;=syntax_expand#expand("#", "prototype")&lt;CR&gt;
+inoremap &lt;silent&gt; &lt; &lt;C-r&gt;=syntax_expand#expand_head("&lt;", "return")&lt;CR&gt;
+
+" Keeps everything concealed at all times. Even when my cursor is on the word.
+set conceallevel=1
+set concealcursor=nvic
+
+" JavaScript thanks to pangloss/vim-javascript
+let g:javascript_conceal_function = "λ"
+let g:javascript_conceal_this = "@"
+let g:javascript_conceal_return = "&lt;"
+let g:javascript_conceal_prototype = "#"</pre><p>I&#8217;ve been using it for around and week so far and it feels great. I guess I&#8217;m just yearning for a more concise functional language. I type <em>fn</em>, hit &#8220;&lt;C-j&gt;&#8221; and I get a lambda symbol and a block to write in. Then I can return true by typing &#8220;&lt; true&#8221;.</p>
+<p class="yt watch-title-container">This is the sort of thing Vim is amazing at, removing the cruft between you and your text, so you can edit without thinking and concentrate on the problem at hand. Yes it takes practice to use efficiently, but so does every good tool.</p>
+<p class="yt watch-title-container"><span id="eow-title" class="watch-title " dir="ltr" title="Shia LaBeouf delivers the most intense motivational speech of all-time">This is Shia LaBeouf responding to your &#8220;should I give Vim a go?&#8221; thoughts.<br />
+</span></p>
+<p><iframe width="560" height="315" src="https://www.youtube.com/embed/ZXsQAXx_ao0" frameborder="0" allowfullscreen></iframe></p>
+]]></content:encoded>
+			<wfw:commentRss>/2015/06/17/wrangling-javascript-with-vim/feed/</wfw:commentRss>
+		<slash:comments>22</slash:comments>
+		</item>
+	</channel>
+</rss>

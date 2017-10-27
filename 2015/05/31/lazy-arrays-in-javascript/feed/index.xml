@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	
+	>
+<channel>
+	<title>Comments on: Lazy arrays in JavaScript</title>
+	<atom:link href="/2015/05/31/lazy-arrays-in-javascript/feed/" rel="self" type="application/rss+xml" />
+	<link>/2015/05/31/lazy-arrays-in-javascript/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Mon, 22 May 2017 19:57:20 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>By: Lazy Arrays &#124; CodangoNet</title>
+		<link>/2015/05/31/lazy-arrays-in-javascript/#comment-143</link>
+		<dc:creator><![CDATA[Lazy Arrays &#124; CodangoNet]]></dc:creator>
+		<pubDate>Fri, 05 Jun 2015 05:12:29 +0000</pubDate>
+		<guid isPermaLink="false">/?p=343#comment-143</guid>
+		<description><![CDATA[[&#8230;] Caldwell has been working on a module that lets you use lazy arrays (GitHub: Wolfy87/lazy-array, License: The Unlicense, npm: lazy-array) in JavaScript. If [&#8230;]]]></description>
+		<content:encoded><![CDATA[<p>[&#8230;] Caldwell has been working on a module that lets you use lazy arrays (GitHub: Wolfy87/lazy-array, License: The Unlicense, npm: lazy-array) in JavaScript. If [&#8230;]</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Lazy Arrays &#124; The Web Geek</title>
+		<link>/2015/05/31/lazy-arrays-in-javascript/#comment-142</link>
+		<dc:creator><![CDATA[Lazy Arrays &#124; The Web Geek]]></dc:creator>
+		<pubDate>Thu, 04 Jun 2015 20:26:17 +0000</pubDate>
+		<guid isPermaLink="false">/?p=343#comment-142</guid>
+		<description><![CDATA[[&#8230;] Caldwell has been working on a module that lets you use lazy arrays (GitHub: Wolfy87/lazy-array, License: The Unlicense, npm: lazy-array) in JavaScript. If [&#8230;]]]></description>
+		<content:encoded><![CDATA[<p>[&#8230;] Caldwell has been working on a module that lets you use lazy arrays (GitHub: Wolfy87/lazy-array, License: The Unlicense, npm: lazy-array) in JavaScript. If [&#8230;]</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Lazy Arrays - InfoLogs</title>
+		<link>/2015/05/31/lazy-arrays-in-javascript/#comment-141</link>
+		<dc:creator><![CDATA[Lazy Arrays - InfoLogs]]></dc:creator>
+		<pubDate>Thu, 04 Jun 2015 19:03:11 +0000</pubDate>
+		<guid isPermaLink="false">/?p=343#comment-141</guid>
+		<description><![CDATA[[&#8230;] Caldwell has been working on a module that lets you use lazy arrays (GitHub: Wolfy87/lazy-array, License: The Unlicense, npm: lazy-array) in JavaScript. If [&#8230;]]]></description>
+		<content:encoded><![CDATA[<p>[&#8230;] Caldwell has been working on a module that lets you use lazy arrays (GitHub: Wolfy87/lazy-array, License: The Unlicense, npm: lazy-array) in JavaScript. If [&#8230;]</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

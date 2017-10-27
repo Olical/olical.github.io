@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	
+	>
+<channel>
+	<title>Comments on: D3 within React the right way</title>
+	<atom:link href="/2015/09/09/d3-within-react-the-right-way/feed/" rel="self" type="application/rss+xml" />
+	<link>/2015/09/09/d3-within-react-the-right-way/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Mon, 22 May 2017 19:57:20 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>By: Adil Baaj</title>
+		<link>/2015/09/09/d3-within-react-the-right-way/#comment-290</link>
+		<dc:creator><![CDATA[Adil Baaj]]></dc:creator>
+		<pubDate>Tue, 03 Jan 2017 16:11:00 +0000</pubDate>
+		<guid isPermaLink="false">/?p=383#comment-290</guid>
+		<description><![CDATA[I wrote an article for beginners like me who try to use d3 with react based on react-faux-dom: 
+https://blog.sicara.com/a-starting-point-on-using-d3-with-react-869fdf3dfaf]]></description>
+		<content:encoded><![CDATA[<p>I wrote an article for beginners like me who try to use d3 with react based on react-faux-dom:<br />
+<a href="https://blog.sicara.com/a-starting-point-on-using-d3-with-react-869fdf3dfaf" rel="nofollow">https://blog.sicara.com/a-starting-point-on-using-d3-with-react-869fdf3dfaf</a></p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: James Hurliman</title>
+		<link>/2015/09/09/d3-within-react-the-right-way/#comment-288</link>
+		<dc:creator><![CDATA[James Hurliman]]></dc:creator>
+		<pubDate>Wed, 21 Dec 2016 22:39:00 +0000</pubDate>
+		<guid isPermaLink="false">/?p=383#comment-288</guid>
+		<description><![CDATA[I imagined I was the only one thinking this! Everyone seems to be totally ditching a large reason of using D3 (the data function) and just using the axes as helper functions, or making unnecessary abstractions so React will do all the rendering.]]></description>
+		<content:encoded><![CDATA[<p>I imagined I was the only one thinking this! Everyone seems to be totally ditching a large reason of using D3 (the data function) and just using the axes as helper functions, or making unnecessary abstractions so React will do all the rendering.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Ash1</title>
+		<link>/2015/09/09/d3-within-react-the-right-way/#comment-286</link>
+		<dc:creator><![CDATA[Ash1]]></dc:creator>
+		<pubDate>Tue, 22 Nov 2016 14:27:00 +0000</pubDate>
+		<guid isPermaLink="false">/?p=383#comment-286</guid>
+		<description><![CDATA[Hi Oliver, nice article.   I&#039;m wondering where I can find actual code examples of simple React/D3 Tree examples using divs instead of circles ?  I just want a simple tree, root node in the middle (div) and 6 div nodes surrounding the root like a star.  I see a lot of &quot;theory&quot; about how it should be done, but no actual code examples (that compile and work).]]></description>
+		<content:encoded><![CDATA[<p>Hi Oliver, nice article.   I&#8217;m wondering where I can find actual code examples of simple React/D3 Tree examples using divs instead of circles ?  I just want a simple tree, root node in the middle (div) and 6 div nodes surrounding the root like a star.  I see a lot of &#8220;theory&#8221; about how it should be done, but no actual code examples (that compile and work).</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Ash1</title>
+		<link>/2015/09/09/d3-within-react-the-right-way/#comment-285</link>
+		<dc:creator><![CDATA[Ash1]]></dc:creator>
+		<pubDate>Mon, 21 Nov 2016 16:03:00 +0000</pubDate>
+		<guid isPermaLink="false">/?p=383#comment-285</guid>
+		<description><![CDATA[Hi,  Thanks for the article.   I am currently trying to create a simple D3 tree with divs instead of circles in a React component, but I have not been able to find any actual working code example to start with.  I just want a root node in the middle and 6 children nodes connected to it surrounding the root node like a star.
+Any ideas of where to find a sample React/D3 Tree with divs  ? ... :-)]]></description>
+		<content:encoded><![CDATA[<p>Hi,  Thanks for the article.   I am currently trying to create a simple D3 tree with divs instead of circles in a React component, but I have not been able to find any actual working code example to start with.  I just want a root node in the middle and 6 children nodes connected to it surrounding the root node like a star.<br />
+Any ideas of where to find a sample React/D3 Tree with divs  ? &#8230; 🙂</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Andrea Casaccia</title>
+		<link>/2015/09/09/d3-within-react-the-right-way/#comment-281</link>
+		<dc:creator><![CDATA[Andrea Casaccia]]></dc:creator>
+		<pubDate>Tue, 27 Sep 2016 10:58:00 +0000</pubDate>
+		<guid isPermaLink="false">/?p=383#comment-281</guid>
+		<description><![CDATA[Maybe I am missing something, but what&#039;s the advantage of this on just creating the chart on `componentDidMount` and updating it with `componentWillReceiveProps`?]]></description>
+		<content:encoded><![CDATA[<p>Maybe I am missing something, but what&#8217;s the advantage of this on just creating the chart on <code>componentDidMount</code> and updating it with <code>componentWillReceiveProps</code>?</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Oliver Caldwell</title>
+		<link>/2015/09/09/d3-within-react-the-right-way/#comment-266</link>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+		<pubDate>Mon, 04 Jul 2016 09:16:00 +0000</pubDate>
+		<guid isPermaLink="false">/?p=383#comment-266</guid>
+		<description><![CDATA[I&#039;m very sorry for not replying! I didn&#039;t notice the comment, disqus does seem to be a little subtle with it&#039;s notifications sometimes. This is an excellent breakdown, thank you very much. I certainly agree that it&#039;s slower, mainly because it spends more time in D3 / JS land than it does in the DOM. Whereas React expects you to spend little time rendering your UI and it&#039;ll handle the presumed slow part, the DOM.
+
+You could cache parts of the chart that are expensive to build in the closure of the component / module then reuse them, or keep them as part of component local state. However what this really points towards is something that the faux DOM just isn&#039;t very good at. If you want a large complex and fast chart, I think you should use regular D3 since it&#039;s optimised for mutations.
+
+ReactFauxDOM is actually very light and should be pretty fast, there&#039;s just a little recursion and looping going on. The D3 rendering should be the slow part. If you want D3 to be fast, you can&#039;t throw away the built chart, you need to mutate it.
+
+So it comes down to the tradeoff. Efficiency of D3, which you may *need* to make it usable, or stateless immutable components that are easy to reason about. I think if it&#039;s not a perceivable hit on performance, the latter is preferable.]]></description>
+		<content:encoded><![CDATA[<p>I&#8217;m very sorry for not replying! I didn&#8217;t notice the comment, disqus does seem to be a little subtle with it&#8217;s notifications sometimes. This is an excellent breakdown, thank you very much. I certainly agree that it&#8217;s slower, mainly because it spends more time in D3 / JS land than it does in the DOM. Whereas React expects you to spend little time rendering your UI and it&#8217;ll handle the presumed slow part, the DOM.</p>
+<p>You could cache parts of the chart that are expensive to build in the closure of the component / module then reuse them, or keep them as part of component local state. However what this really points towards is something that the faux DOM just isn&#8217;t very good at. If you want a large complex and fast chart, I think you should use regular D3 since it&#8217;s optimised for mutations.</p>
+<p>ReactFauxDOM is actually very light and should be pretty fast, there&#8217;s just a little recursion and looping going on. The D3 rendering should be the slow part. If you want D3 to be fast, you can&#8217;t throw away the built chart, you need to mutate it.</p>
+<p>So it comes down to the tradeoff. Efficiency of D3, which you may *need* to make it usable, or stateless immutable components that are easy to reason about. I think if it&#8217;s not a perceivable hit on performance, the latter is preferable.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Oliver Caldwell</title>
+		<link>/2015/09/09/d3-within-react-the-right-way/#comment-265</link>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+		<pubDate>Mon, 04 Jul 2016 09:06:00 +0000</pubDate>
+		<guid isPermaLink="false">/?p=383#comment-265</guid>
+		<description><![CDATA[Thanks for this. It&#039;s definitely an arrow function thing, not a faux DOM thing :)]]></description>
+		<content:encoded><![CDATA[<p>Thanks for this. It&#8217;s definitely an arrow function thing, not a faux DOM thing 🙂</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Liran Brimer</title>
+		<link>/2015/09/09/d3-within-react-the-right-way/#comment-264</link>
+		<dc:creator><![CDATA[Liran Brimer]]></dc:creator>
+		<pubDate>Mon, 04 Jul 2016 08:31:00 +0000</pubDate>
+		<guid isPermaLink="false">/?p=383#comment-264</guid>
+		<description><![CDATA[whats the advantages of using this approach over Abhisek Jana&#039;s approach? is it the ability to call &quot;append&quot;?
+because he seem to overcome this with ReactDOM (see his tutorial below).]]></description>
+		<content:encoded><![CDATA[<p>whats the advantages of using this approach over Abhisek Jana&#8217;s approach? is it the ability to call &#8220;append&#8221;?<br />
+because he seem to overcome this with ReactDOM (see his tutorial below).</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Alasdair Campbell</title>
+		<link>/2015/09/09/d3-within-react-the-right-way/#comment-258</link>
+		<dc:creator><![CDATA[Alasdair Campbell]]></dc:creator>
+		<pubDate>Wed, 08 Jun 2016 10:50:00 +0000</pubDate>
+		<guid isPermaLink="false">/?p=383#comment-258</guid>
+		<description><![CDATA[Beg your pardon, was an issue with no default userAgent set in my build environment. Still learning here.]]></description>
+		<content:encoded><![CDATA[<p>Beg your pardon, was an issue with no default userAgent set in my build environment. Still learning here.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Alasdair Campbell</title>
+		<link>/2015/09/09/d3-within-react-the-right-way/#comment-257</link>
+		<dc:creator><![CDATA[Alasdair Campbell]]></dc:creator>
+		<pubDate>Wed, 08 Jun 2016 10:28:00 +0000</pubDate>
+		<guid isPermaLink="false">/?p=383#comment-257</guid>
+		<description><![CDATA[hi, thanks for this post.
+
+I see errors during sever side rendering in query-selector due to navigator.userAgent being undefined. How exactly is the isomorphic element of this approach supposed to work?]]></description>
+		<content:encoded><![CDATA[<p>hi, thanks for this post.</p>
+<p>I see errors during sever side rendering in query-selector due to navigator.userAgent being undefined. How exactly is the isomorphic element of this approach supposed to work?</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

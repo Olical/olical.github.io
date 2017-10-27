@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	
+	>
+<channel>
+	<title>Comments on: Implementing a message bus in JavaScript</title>
+	<atom:link href="/2013/06/05/implementing-a-message-bus-in-javascript/feed/" rel="self" type="application/rss+xml" />
+	<link>/2013/06/05/implementing-a-message-bus-in-javascript/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Mon, 22 May 2017 19:57:20 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>By: &#124;&#124;370</title>
+		<link>/2013/06/05/implementing-a-message-bus-in-javascript/#comment-273</link>
+		<dc:creator><![CDATA[&#124;&#124;370]]></dc:creator>
+		<pubDate>Fri, 22 Jul 2016 13:25:00 +0000</pubDate>
+		<guid isPermaLink="false">/2013/06/05/implementing-a-message-bus-in-javascript#comment-273</guid>
+		<description><![CDATA[Man this post is pure joy. Thanks a lot!]]></description>
+		<content:encoded><![CDATA[<p>Man this post is pure joy. Thanks a lot!</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: niorad</title>
+		<link>/2013/06/05/implementing-a-message-bus-in-javascript/#comment-180</link>
+		<dc:creator><![CDATA[niorad]]></dc:creator>
+		<pubDate>Fri, 02 Oct 2015 14:22:00 +0000</pubDate>
+		<guid isPermaLink="false">/2013/06/05/implementing-a-message-bus-in-javascript#comment-180</guid>
+		<description><![CDATA[Thank you for this article. I was looking for an event-system to add to my JS-Game but this is totally sufficient. I&#039;m emptying the whole messages-array at the end of the game-loop, so there&#039;s no danger of it getting too large.
+
+I&#039;m using an Entity-Component-Systems-Architecture where the Systems can communicate with the Game-States/Levels via the messages.
+
+The cool thing with JS is of course, that the systems can pass entire functions back to the Level-State, not only values.]]></description>
+		<content:encoded><![CDATA[<p>Thank you for this article. I was looking for an event-system to add to my JS-Game but this is totally sufficient. I&#8217;m emptying the whole messages-array at the end of the game-loop, so there&#8217;s no danger of it getting too large.</p>
+<p>I&#8217;m using an Entity-Component-Systems-Architecture where the Systems can communicate with the Game-States/Levels via the messages.</p>
+<p>The cool thing with JS is of course, that the systems can pass entire functions back to the Level-State, not only values.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Oliver Caldwell</title>
+		<link>/2013/06/05/implementing-a-message-bus-in-javascript/#comment-83</link>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+		<pubDate>Thu, 14 Nov 2013 11:49:00 +0000</pubDate>
+		<guid isPermaLink="false">/2013/06/05/implementing-a-message-bus-in-javascript#comment-83</guid>
+		<description><![CDATA[Got it now, somehow past-me managed to confuse present-me. Thanks again, I&#039;ll probably update this soon so it actually makes sense :D]]></description>
+		<content:encoded><![CDATA[<p>Got it now, somehow past-me managed to confuse present-me. Thanks again, I&#8217;ll probably update this soon so it actually makes sense 😀</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Kiran Kashalkar</title>
+		<link>/2013/06/05/implementing-a-message-bus-in-javascript/#comment-82</link>
+		<dc:creator><![CDATA[Kiran Kashalkar]]></dc:creator>
+		<pubDate>Wed, 13 Nov 2013 23:47:00 +0000</pubDate>
+		<guid isPermaLink="false">/2013/06/05/implementing-a-message-bus-in-javascript#comment-82</guid>
+		<description><![CDATA[Oliver, when you take things out from the other end, it means that the first item in is first out and last in is last out. Push pop works as a stack which is FILO/LIFO.
+:)]]></description>
+		<content:encoded><![CDATA[<p>Oliver, when you take things out from the other end, it means that the first item in is first out and last in is last out. Push pop works as a stack which is FILO/LIFO.<br />
+🙂</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Oliver Caldwell</title>
+		<link>/2013/06/05/implementing-a-message-bus-in-javascript/#comment-81</link>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+		<pubDate>Wed, 13 Nov 2013 22:55:00 +0000</pubDate>
+		<guid isPermaLink="false">/2013/06/05/implementing-a-message-bus-in-javascript#comment-81</guid>
+		<description><![CDATA[With shift I think it becomes first in, last out, because you&#039;re removing from the other end of the stack that you&#039;re adding to. Thanks for pointing this out!]]></description>
+		<content:encoded><![CDATA[<p>With shift I think it becomes first in, last out, because you&#8217;re removing from the other end of the stack that you&#8217;re adding to. Thanks for pointing this out!</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Kiran Kashalkar</title>
+		<link>/2013/06/05/implementing-a-message-bus-in-javascript/#comment-80</link>
+		<dc:creator><![CDATA[Kiran Kashalkar]]></dc:creator>
+		<pubDate>Wed, 13 Nov 2013 21:59:00 +0000</pubDate>
+		<guid isPermaLink="false">/2013/06/05/implementing-a-message-bus-in-javascript#comment-80</guid>
+		<description><![CDATA[Just one thing needs correction here - with push and pop you have LIFO/FILO and with shift you&#039;ll get FIFO/LILO. I think your explanation has it reversed.]]></description>
+		<content:encoded><![CDATA[<p>Just one thing needs correction here &#8211; with push and pop you have LIFO/FILO and with shift you&#8217;ll get FIFO/LILO. I think your explanation has it reversed.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: John Reeves</title>
+		<link>/2013/06/05/implementing-a-message-bus-in-javascript/#comment-53</link>
+		<dc:creator><![CDATA[John Reeves]]></dc:creator>
+		<pubDate>Sun, 09 Jun 2013 16:58:00 +0000</pubDate>
+		<guid isPermaLink="false">/2013/06/05/implementing-a-message-bus-in-javascript#comment-53</guid>
+		<description><![CDATA[I find Message Busses come into their own when you explicitly create a contract that message handlers will be executed in registration order and that the handlers will be processed in an async. fashion.  This allows handlers to both modify the message and terminate the message.  This is useful in situations where you want to perform processing (Message Processing) on an action, rather than just reacting to an event (Event Dispatching).
+
+I&#039;ve jotted this down in a gist: https://gist.github.com/jonnyreeves/5744277]]></description>
+		<content:encoded><![CDATA[<p>I find Message Busses come into their own when you explicitly create a contract that message handlers will be executed in registration order and that the handlers will be processed in an async. fashion.  This allows handlers to both modify the message and terminate the message.  This is useful in situations where you want to perform processing (Message Processing) on an action, rather than just reacting to an event (Event Dispatching).</p>
+<p>I&#8217;ve jotted this down in a gist: <a href="https://gist.github.com/jonnyreeves/5744277" rel="nofollow">https://gist.github.com/jonnyreeves/5744277</a></p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Oliver Caldwell</title>
+		<link>/2013/06/05/implementing-a-message-bus-in-javascript/#comment-46</link>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+		<pubDate>Thu, 06 Jun 2013 13:54:00 +0000</pubDate>
+		<guid isPermaLink="false">/2013/06/05/implementing-a-message-bus-in-javascript#comment-46</guid>
+		<description><![CDATA[I wrote up a gist to explain my reasoning behind this iteration style. 
+Includes an asynchronous HTTP request bust example. Pretty cool example 
+actually. I could of done with this a while back: https://gist.github.com/Wolfy87/5720282]]></description>
+		<content:encoded><![CDATA[<p>I wrote up a gist to explain my reasoning behind this iteration style.<br />
+Includes an asynchronous HTTP request bust example. Pretty cool example<br />
+actually. I could of done with this a while back: <a href="https://gist.github.com/Wolfy87/5720282" rel="nofollow">https://gist.github.com/Wolfy87/5720282</a></p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	
+	>
+<channel>
+	<title>Comments on: Installing Arch Linux on a Dell XPS 13 (9350)</title>
+	<atom:link href="/2015/11/06/installing-arch-linux-on-a-dell-xps-13-9350/feed/" rel="self" type="application/rss+xml" />
+	<link>/2015/11/06/installing-arch-linux-on-a-dell-xps-13-9350/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Mon, 22 May 2017 19:57:20 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>By: Oliver Caldwell</title>
+		<link>/2015/11/06/installing-arch-linux-on-a-dell-xps-13-9350/#comment-275</link>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+		<pubDate>Tue, 09 Aug 2016 13:43:00 +0000</pubDate>
+		<guid isPermaLink="false">/?p=390#comment-275</guid>
+		<description><![CDATA[I&#039;m using this right now and it works okay. https://www.amazon.co.uk/MINIX-NEO-USB-C-Multiport-Adapter/dp/B01ANITHVQ
+
+The HDMI port is terrible and the slightest vibration will cause the screen to flicker. Nothing to do with the laptop or USB-C though, just shoddy hardware (for £60!). I use a cable that has a male DVI at one and and a male HDMI at the other.
+
+I run this script to dock and undock from my desk when I connect or disconnect everything. https://github.com/Olical/dotfiles/blob/95ea0e948fb83c200c1acc865d6118265e6f6b7d/i3/.i3/docker.sh
+
+It performs xrandr magic and also swaps my left and right mouse buttons around. When I&#039;m in desktop mode I have the &quot;left click&quot; on the right, because I&#039;m left handed. When it&#039;s in laptop mode I need the left click on the left because I&#039;m not that much of a monster.]]></description>
+		<content:encoded><![CDATA[<p>I&#8217;m using this right now and it works okay. <a href="https://www.amazon.co.uk/MINIX-NEO-USB-C-Multiport-Adapter/dp/B01ANITHVQ" rel="nofollow">https://www.amazon.co.uk/MINIX-NEO-USB-C-Multiport-Adapter/dp/B01ANITHVQ</a></p>
+<p>The HDMI port is terrible and the slightest vibration will cause the screen to flicker. Nothing to do with the laptop or USB-C though, just shoddy hardware (for £60!). I use a cable that has a male DVI at one and and a male HDMI at the other.</p>
+<p>I run this script to dock and undock from my desk when I connect or disconnect everything. <a href="https://github.com/Olical/dotfiles/blob/95ea0e948fb83c200c1acc865d6118265e6f6b7d/i3/.i3/docker.sh" rel="nofollow">https://github.com/Olical/dotfiles/blob/95ea0e948fb83c200c1acc865d6118265e6f6b7d/i3/.i3/docker.sh</a></p>
+<p>It performs xrandr magic and also swaps my left and right mouse buttons around. When I&#8217;m in desktop mode I have the &#8220;left click&#8221; on the right, because I&#8217;m left handed. When it&#8217;s in laptop mode I need the left click on the left because I&#8217;m not that much of a monster.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Oliver Caldwell</title>
+		<link>/2015/11/06/installing-arch-linux-on-a-dell-xps-13-9350/#comment-272</link>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+		<pubDate>Fri, 15 Jul 2016 20:03:00 +0000</pubDate>
+		<guid isPermaLink="false">/?p=390#comment-272</guid>
+		<description><![CDATA[Nope, just worked I&#039;m afraid :/ be sure to update your BIOS!]]></description>
+		<content:encoded><![CDATA[<p>Nope, just worked I&#8217;m afraid :/ be sure to update your BIOS!</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: ferN</title>
+		<link>/2015/11/06/installing-arch-linux-on-a-dell-xps-13-9350/#comment-270</link>
+		<dc:creator><![CDATA[ferN]]></dc:creator>
+		<pubDate>Thu, 14 Jul 2016 23:44:00 +0000</pubDate>
+		<guid isPermaLink="false">/?p=390#comment-270</guid>
+		<description><![CDATA[Strange. Did you do something to get it working? Any drivers except alsa, any configurations, etc.?]]></description>
+		<content:encoded><![CDATA[<p>Strange. Did you do something to get it working? Any drivers except alsa, any configurations, etc.?</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Oliver Caldwell</title>
+		<link>/2015/11/06/installing-arch-linux-on-a-dell-xps-13-9350/#comment-269</link>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+		<pubDate>Wed, 13 Jul 2016 21:11:00 +0000</pubDate>
+		<guid isPermaLink="false">/?p=390#comment-269</guid>
+		<description><![CDATA[I was running LTS for a while since the latest version was causing my screen to flash black occasionally. I am now running 4.6.3-1 and it&#039;s working fine. I would imagine it&#039;s at the alsa / pulse levels, not the kernel.]]></description>
+		<content:encoded><![CDATA[<p>I was running LTS for a while since the latest version was causing my screen to flash black occasionally. I am now running 4.6.3-1 and it&#8217;s working fine. I would imagine it&#8217;s at the alsa / pulse levels, not the kernel.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: ferN</title>
+		<link>/2015/11/06/installing-arch-linux-on-a-dell-xps-13-9350/#comment-268</link>
+		<dc:creator><![CDATA[ferN]]></dc:creator>
+		<pubDate>Wed, 13 Jul 2016 10:02:00 +0000</pubDate>
+		<guid isPermaLink="false">/?p=390#comment-268</guid>
+		<description><![CDATA[Have you updated your kernel ever since? I&#039;ve just bought xps 13 9343 an week ago, an the sound is not working on 4.6.3 neither on lts (4.4-13). I&#039;ve tried recompiling the 4.6.3 kernel with acpi override (hda sound) and its irrelevant. Right now Im compiling lts (4.4-13) with it and I will tell you if it works.]]></description>
+		<content:encoded><![CDATA[<p>Have you updated your kernel ever since? I&#8217;ve just bought xps 13 9343 an week ago, an the sound is not working on 4.6.3 neither on lts (4.4-13). I&#8217;ve tried recompiling the 4.6.3 kernel with acpi override (hda sound) and its irrelevant. Right now Im compiling lts (4.4-13) with it and I will tell you if it works.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: polandroid</title>
+		<link>/2015/11/06/installing-arch-linux-on-a-dell-xps-13-9350/#comment-261</link>
+		<dc:creator><![CDATA[polandroid]]></dc:creator>
+		<pubDate>Sun, 12 Jun 2016 13:21:00 +0000</pubDate>
+		<guid isPermaLink="false">/?p=390#comment-261</guid>
+		<description><![CDATA[Thanks, good to know :)]]></description>
+		<content:encoded><![CDATA[<p>Thanks, good to know 🙂</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Oliver Caldwell</title>
+		<link>/2015/11/06/installing-arch-linux-on-a-dell-xps-13-9350/#comment-260</link>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+		<pubDate>Sun, 12 Jun 2016 12:27:00 +0000</pubDate>
+		<guid isPermaLink="false">/?p=390#comment-260</guid>
+		<description><![CDATA[It hadn&#039;t been released when I bought my personal XPS. I now have one at work too which is a developer edition, I can&#039;t spot the difference, I&#039;d highly recommend getting the developer edition to avoid the broadcom chip as well as the default Windows install.]]></description>
+		<content:encoded><![CDATA[<p>It hadn&#8217;t been released when I bought my personal XPS. I now have one at work too which is a developer edition, I can&#8217;t spot the difference, I&#8217;d highly recommend getting the developer edition to avoid the broadcom chip as well as the default Windows install.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: polandroid</title>
+		<link>/2015/11/06/installing-arch-linux-on-a-dell-xps-13-9350/#comment-259</link>
+		<dc:creator><![CDATA[polandroid]]></dc:creator>
+		<pubDate>Sun, 12 Jun 2016 12:05:00 +0000</pubDate>
+		<guid isPermaLink="false">/?p=390#comment-259</guid>
+		<description><![CDATA[So since you have to change the broadcom card in the standard version, would you recommend to buy the Developer Edition with Intel card instead? Or are there bigger differences between those versions? ]]></description>
+		<content:encoded><![CDATA[<p>So since you have to change the broadcom card in the standard version, would you recommend to buy the Developer Edition with Intel card instead? Or are there bigger differences between those versions? </p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Oliver Caldwell</title>
+		<link>/2015/11/06/installing-arch-linux-on-a-dell-xps-13-9350/#comment-252</link>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+		<pubDate>Thu, 19 May 2016 08:41:00 +0000</pubDate>
+		<guid isPermaLink="false">/?p=390#comment-252</guid>
+		<description><![CDATA[I&#039;ve been using a DVI -&#062; USB-C adapter and it works great (on the developer edition running Arch Linux still). I&#039;m trying to use it through a USB-C hub now which isn&#039;t working, but plugging in directly does.]]></description>
+		<content:encoded><![CDATA[<p>I&#8217;ve been using a DVI -&gt; USB-C adapter and it works great (on the developer edition running Arch Linux still). I&#8217;m trying to use it through a USB-C hub now which isn&#8217;t working, but plugging in directly does.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: gettons</title>
+		<link>/2015/11/06/installing-arch-linux-on-a-dell-xps-13-9350/#comment-250</link>
+		<dc:creator><![CDATA[gettons]]></dc:creator>
+		<pubDate>Fri, 06 May 2016 22:18:00 +0000</pubDate>
+		<guid isPermaLink="false">/?p=390#comment-250</guid>
+		<description><![CDATA[for the sake of clarity. the problem was with psense and the freeradius version it was running. with the latest pfsense it &#039; s all good.]]></description>
+		<content:encoded><![CDATA[<p>for the sake of clarity. the problem was with psense and the freeradius version it was running. with the latest pfsense it &#8216; s all good.</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

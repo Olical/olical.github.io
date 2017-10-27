@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>beginner &#8211; Oliver Caldwell&#039;s blog</title>
+	<atom:link href="/tag/beginner/feed/" rel="self" type="application/rss+xml" />
+	<link>/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Wed, 18 Oct 2017 13:50:23 +0000</lastBuildDate>
+	<language>en-GB</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>Vim for people that don&#8217;t want to use it</title>
+		<link>/2015/02/01/vim-for-people-that-dont-want-to-use-it/</link>
+		<comments>/2015/02/01/vim-for-people-that-dont-want-to-use-it/#comments</comments>
+		<pubDate>Sun, 01 Feb 2015 15:34:46 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Text Editors]]></category>
+		<category><![CDATA[Vim]]></category>
+		<category><![CDATA[beginner]]></category>
+		<category><![CDATA[vim]]></category>
+
+		<guid isPermaLink="false">/?p=297</guid>
+		<description><![CDATA[This is for those of you that use a GUI IDE / editor happily but sometimes use Vim because you have to in your terminal. (think commit messages, SSH and tiny tweaks to files) I agree, Vim is not perfect, although nothing is perfect in every situation. Most of my colleagues use IntelliJ or similar <a class="read-more" href="/2015/02/01/vim-for-people-that-dont-want-to-use-it/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>This is for those of you that use a GUI IDE / editor happily but sometimes use Vim because you have to in your terminal. (think commit messages, SSH and tiny tweaks to files)</p>
+<p>I agree, Vim is not perfect, although nothing is perfect in every situation. Most of my colleagues use IntelliJ or similar IDEs and editors, which is fine since they&#8217;re also great tools. Sometimes you will find yourself on a command line with your familiar tools out of reach and you&#8217;ll have to quickly dip into Vim. This could be to write a commit message, amend a readme or correct a variable name on a remote server. My point being: Even those of you that think a text editor in your terminal is for masochists need to use it every now and then. I&#8217;m going to show you some <em>very small</em> changes you can make to create a much more modern Vim. I can&#8217;t stand using the default set up on someone else&#8217;s machine, so why should you?</p>
+<h2>Absolute minimum</h2>
+<p>You can add two lines to your <em>~/.vimrc</em> (Vim loads this when you start it, it&#8217;s essentially your settings but can do a whole lot more) that will remove a lot of the legacy compatibility and enable syntax highlighting. Two core tenants to any editor.</p><pre class="crayon-plain-tag">set nocompatible
+syntax enable</pre><p>So for those of you that really don&#8217;t care and just wish it wasn&#8217;t a black and white program of despair, that should get you going.</p>
+<h2>Dig deeper for a much better tool</h2>
+<p>The power of Vim lies not in it&#8217;s modal editing features, but the extensibility and community. You can find a plugin for almost anything, including managing plugins. If you follow the guide to install <a href="https://github.com/junegunn/vim-plug">vim-plug</a> then you will easily be able to install <a href="https://github.com/tpope/vim-sensible">vim-sensible</a> (an excellent set of defaults that make everything even more modern looking) and <a href="https://github.com/tpope/vim-sleuth">vim-sleuth</a> which detects and manages your indentation settings for you. With all of this installed (which will not take you long at all) you can add a few more settings to make it even better.</p><pre class="crayon-plain-tag">" Enable line numbers.
+set number
+
+" Enable invisible characters.
+set list
+
+" More natural splitting.
+set splitbelow
+set splitright
+
+" Set a default indent, but vim-sleuth should adjust it.
+set tabstop=4
+
+" Enable mouse. Great for resizing windows and keeping co-workers sane.
+set mouse=a
+
+" Disable swap files.
+set noswapfile</pre><p>You won&#8217;t actually need <em>syntax enable</em> after this either since vim-sensible adds it for you. I highly recommend performing all of the above actions to get an editor that contains everything you&#8217;d expect in a modern tool. You can do even more though if you begin to like the experience. <a href="https://github.com/ctrlpvim/ctrlp.vim">CtrlP</a> adds a fuzzy file finder under the obvious key binding and <a href="https://github.com/Lokaltog/vim-easymotion">EasyMotion</a> will make navigating your file easy. You essentially ask Vim &#8220;where are all the possible words I could jump to?&#8221; and it will assign a key on your keyboard to every word on the screen. You then press the key to jump to the word. But it doesn&#8217;t just work for words, it works for any motion, so you can jump around in a couple of keys as opposed to reaching the mouse or pressing <em>w</em> 50 times.</p>
+<p>You should definitely spend 20 minutes or so playing with some basic Vim configuration so as to save you much more time later when you&#8217;re stuck on a command line for some reason. Maybe you&#8217;ll realise it&#8217;s not so bad and begin building your own personal configuration. You can find mine in <a href="https://github.com/Wolfy87/dotfiles">my dotfiles repository</a>, which may provide a good starting point. Good luck.</p>
+<p>&nbsp;</p>
+]]></content:encoded>
+			<wfw:commentRss>/2015/02/01/vim-for-people-that-dont-want-to-use-it/feed/</wfw:commentRss>
+		<slash:comments>2</slash:comments>
+		</item>
+	</channel>
+</rss>

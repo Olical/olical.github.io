@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Brainfuck &#8211; Oliver Caldwell&#039;s blog</title>
+	<atom:link href="/category/brainfuck/feed/" rel="self" type="application/rss+xml" />
+	<link>/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Wed, 18 Oct 2017 13:50:23 +0000</lastBuildDate>
+	<language>en-GB</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>Brainfuck VM in Clojure</title>
+		<link>/2015/01/12/brainfuck-vm-in-clojure/</link>
+		<comments>/2015/01/12/brainfuck-vm-in-clojure/#respond</comments>
+		<pubDate>Mon, 12 Jan 2015 08:50:35 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Brainfuck]]></category>
+		<category><![CDATA[Clojure]]></category>
+		<category><![CDATA[Lisp]]></category>
+		<category><![CDATA[brainfuck]]></category>
+		<category><![CDATA[clojure]]></category>
+		<category><![CDATA[interpretor]]></category>
+		<category><![CDATA[vm]]></category>
+
+		<guid isPermaLink="false">/?p=285</guid>
+		<description><![CDATA[This is my second implementation for my repository of brainfuck interpretors, this time in the wonderful language Clojure (the first was JavaScript). It largely follows the same format of my initial machine but takes a route that I want to eventually refactor my JavaScript implementation to use as well. It builds a list of token <a class="read-more" href="/2015/01/12/brainfuck-vm-in-clojure/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>This is my second implementation for my repository of <a href="https://github.com/Wolfy87/brainfucks">brainfuck interpretors</a>, this time in the wonderful language Clojure (the first was <a title="Brainfuck VM in JavaScript" href="/2015/01/05/brainfuck-vm-in-javascript/">JavaScript</a>). It largely follows the same format of my initial machine but takes a route that I want to eventually refactor my JavaScript implementation to use as well. It builds a list of token hash-maps that each contain any required meta data. The JavaScript implementation (at the time of writing) uses two arrays, one for the tokens and one for the jump (loop) meta data.</p>
+<h2>The same but better</h2>
+<p>I feel that the approach I have taken with my Clojure version is far superior. This is because it allows me to encode an optimisation in the future extremely easily. I wish to detect batches of characters, such as &#8220;+++++&#8221;, and transform it into a single &#8220;+&#8221; token with a multiplier attribute that causes the &#8220;+&#8221; token handler to increment by the multiplier, not just one. This is small but potentially significant if there&#8217;s a lot of loops and batches of tokens. It may save quite a few iterations.</p>
+<p>I&#8217;d also like to eliminate dead code such as &#8220;[]&#8221; and &#8220;+++&#8212;&#8221; which may crop up by accident sometimes. Basically I want my program to optimise the given source as much as possible, I know a few ways and I will probably implement more of them as I develop more implementations. Speaking of which, my next one will hopefully be in Haskell. I may not survive that one.</p>
+<h2>My desired flow</h2>
+<p>Here&#8217;s my ideal scenario for a brainfuck interpreter as it stands. The Clojure version isn&#8217;t quite there, but it&#8217;s still a good example.</p>
+<ol>
+<li>Read the provided brainfuck source file into memory.</li>
+<li>Check if the square braces are balanced, exit early if not.</li>
+<li>Filter the source down to the valid characters.</li>
+<li>Eliminate noops such as &#8220;[]&#8221; and &#8220;+++&#8212;&#8220;</li>
+<li>Map those characters into objects with a token attribute.</li>
+<li>Condense chains of tokens (such as &#8220;+++++&#8221;) down to a single token with a multiplier attribute.</li>
+<li>Find all jumps between square braces and assign that data to the token objects.</li>
+</ol>
+<p>Now we have the compiled program we can execute it in the obvious way.</p>
+<ol>
+<li>Initialise a state object containing a state and memory pointer as well as a blank memory array.</li>
+<li>Iterate or recurse through the tokens passing the state and program values through the appropriate handler function for the token.</li>
+<li>Increment the program pointer after each step.</li>
+<li>Exit if the program pointer is equal to the length of the program.</li>
+</ol>
+<p>This is a fairly complex beast for such a simple language and problem, I just want to set the bar high so I really have to learn these languages in order to solve the problem with them. The harder I make it for myself the more I learn about JavaScript, Clojure, Haskell and, strangely, brainfuck. I currently have 10 more languages in my &#8220;to do&#8221; list for this project. I have no idea if I&#8217;ll ever hit that number but I can at least give it a go.</p>
+<h2>Multimethodmadness</h2>
+<p>I relied on Clojure&#8217;s multimethods for the &#8220;select a handler for this token&#8221; part, which worked really well. Here&#8217;s <strong>all</strong> of the execution code.</p><pre class="crayon-plain-tag">(def console-reader (ConsoleReader.))
+
+(defn read-character []
+  "Reads a character from STDIN"
+  (.readCharacter console-reader))
+
+(defn safe-inc [n]
+  "Treat nil values as zero."
+  (inc (if (= n nil) 0 n)))
+
+(defn safe-dec [n]
+  "Treat nil values as zero."
+  (dec (if (= n nil) 0 n)))
+
+(defn current-memory-zero? [state]
+  "Returns true if the current memory item of the state is 0."
+  (let [value (get-in state [:memory (:memory-pointer state)])]
+    (= 0 (if (= nil value) 0 value))))
+
+(defmulti step (fn [program state] (:token (nth program (:program-pointer state)))))
+(defmethod step \&gt; [program state] (update-in state [:memory-pointer] inc))
+(defmethod step \&lt; [program state] (update-in state [:memory-pointer] dec))
+(defmethod step \+ [program state] (update-in state [:memory (:memory-pointer state)] safe-inc))
+(defmethod step \- [program state] (update-in state [:memory (:memory-pointer state)] safe-dec))
+(defmethod step \. [program state] (print (char (get-in state [:memory (:memory-pointer state)]))) (flush) state)
+(defmethod step \, [program state] (assoc-in state [:memory (:memory-pointer state)] (read-character)))
+(defmethod step \[ [program state] (if (current-memory-zero? state)
+                                     (update-in state [:program-pointer] #(:destination (nth program %)))
+                                     state))
+(defmethod step \] [program state] (if (not (current-memory-zero? state))
+                                     (update-in state [:program-pointer] #(:destination (nth program %)))
+                                     state))
+
+(defn execute [program]
+  "Executes a compiled brainfuck program."
+  (let [program-length (count program)]
+    (loop [state {:memory (hash-map 0 0)
+                  :memory-pointer 0
+                  :program-pointer 0}]
+      (if (&lt; (:program-pointer state) program-length)
+        (recur (update-in (step program state) [:program-pointer] inc))))))</pre><p>You can find the rest of the source in the <a href="https://github.com/Wolfy87/brainfucks/blob/master/implementations/clojure/src/brainfuck/core.clj">Clojure implementation directory</a> of my project.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2015/01/12/brainfuck-vm-in-clojure/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Brainfuck VM in JavaScript</title>
+		<link>/2015/01/05/brainfuck-vm-in-javascript/</link>
+		<comments>/2015/01/05/brainfuck-vm-in-javascript/#comments</comments>
+		<pubDate>Mon, 05 Jan 2015 09:00:11 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Brainfuck]]></category>
+		<category><![CDATA[JavaScript]]></category>
+		<category><![CDATA[async]]></category>
+		<category><![CDATA[brainfuck]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[stdin]]></category>
+
+		<guid isPermaLink="false">/?p=280</guid>
+		<description><![CDATA[Welcome to 2015, I hope you had a good break! Some people may now be taking on resolutions for the year, be that to lose weight or to socialise more. I&#8217;ve opted to learn even more than usual, so that means more coursera courses and toy projects in various languages. This is where my brainfuck <a class="read-more" href="/2015/01/05/brainfuck-vm-in-javascript/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>Welcome to 2015, I hope you had a good break! Some people may now be taking on resolutions for the year, be that to lose weight or to socialise more. I&#8217;ve opted to <a title="My 2015 Bucket Set" href="/2014/12/13/my-2015-bucket-set/">learn even more than usual</a>, so that means <a href="https://www.coursera.org/course/algs4partI">more coursera courses</a> and toy projects in various languages. This is where <a href="https://github.com/Wolfy87/brainfucks">my brainfuck virtual machines</a> come in. I&#8217;ll be writing them in every language I find interesting, starting with my trusty (see: sarcasm) friend, JavaScript.</p>
+<p>This took me far longer than I wished it would and actually involved pretty much starting again at one point. Everything was fairly easy to implement up until the point where I had to synchronously read one character off of stdin. After hours of research, this proved to be nigh on impossible so I had to settle for some awkward callback based hell with two implementations because of an edge case. This is easy in C yet hard in JavaScript. What?</p>
+<p>Besides that, the actual tokenise, parse and execute phases went fairly well. You can find the full code inside my <a href="https://github.com/Wolfy87/brainfucks/tree/master/implementations/javascript">JavaScript implementation directory</a>. I opted to turn the source file into a clean array first then to run through that array of tokens mapping them to an object of command functions. Fairly simple and extensible, I feel. I also performed all of the loop operator matching up front during the parsing, so I didn&#8217;t have to go hunting for <em>]</em> or <em>[</em> during the execution of the program.</p>
+<p>I relied on <a href="https://github.com/caolan/async">async</a> to take some of the pain out of iterating through asynchronous steps. The only reason the steps were asynchronous was because the one stdin reading command required it. If it wasn&#8217;t for node being really awkward on that front, this would have been far simpler.</p>
+<p>Expect a Clojure implementation soon.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2015/01/05/brainfuck-vm-in-javascript/feed/</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+		</item>
+	</channel>
+</rss>

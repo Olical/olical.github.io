@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>angular &#8211; Oliver Caldwell&#039;s blog</title>
+	<atom:link href="/tag/angular/feed/" rel="self" type="application/rss+xml" />
+	<link>/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Wed, 18 Oct 2017 13:50:23 +0000</lastBuildDate>
+	<language>en-GB</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>Angular feels like you&#8217;re always viewing a tiny piece of the puzzle</title>
+		<link>/2014/11/03/angular-feels-like-youre-always-viewing-a-tiny-piece-of-the-puzzle/</link>
+		<comments>/2014/11/03/angular-feels-like-youre-always-viewing-a-tiny-piece-of-the-puzzle/#respond</comments>
+		<pubDate>Mon, 03 Nov 2014 19:04:43 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[JavaScript]]></category>
+		<category><![CDATA[angular]]></category>
+		<category><![CDATA[clojurescript]]></category>
+		<category><![CDATA[javascript]]></category>
+
+		<guid isPermaLink="false">/?p=218</guid>
+		<description><![CDATA[You only see the directive, controller or template. Sometimes parts are in the same place and you can make sense of it. A lot of the time they are disparate and hard to comprehend. I&#8217;m wasting time trying to understand how value X gets from A to B, let alone what happens to it along <a class="read-more" href="/2014/11/03/angular-feels-like-youre-always-viewing-a-tiny-piece-of-the-puzzle/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>You only see the directive, controller or template. Sometimes parts are in the same place and you can make sense of it. A lot of the time they are disparate and hard to comprehend. I&#8217;m wasting time trying to understand how value X gets from A to B, let alone what happens to it along the way or at the other end. Or even what X actually is!</p>
+<p>I don&#8217;t like Angular for various reasons after working with it closely for around a year. I think this is largely because of the constant weaving in and out of multiple files and DOM structures. There&#8217;s no continuity and clear zones to create or find things. I&#8217;m sure someone that cares enough will retort with an architecture that sort of looks alright, but it&#8217;s still string based soft bindings all over the place and mutation left, right and center.</p>
+<p>I may be biased. I want to move towards ClojureScript and immutable data structures. If I can&#8217;t have ClojureScript I want to emulate the best things about it, Angular is very different to the world I want to be in.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2014/11/03/angular-feels-like-youre-always-viewing-a-tiny-piece-of-the-puzzle/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	
+	>
+<channel>
+	<title>Comments on: My new prompt (oh-my-zsh)</title>
+	<atom:link href="/2015/08/03/my-new-prompt-oh-my-zsh/feed/" rel="self" type="application/rss+xml" />
+	<link>/2015/08/03/my-new-prompt-oh-my-zsh/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Mon, 22 May 2017 19:57:20 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>By: Oliver Caldwell</title>
+		<link>/2015/08/03/my-new-prompt-oh-my-zsh/#comment-221</link>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+		<pubDate>Thu, 21 Jan 2016 23:48:00 +0000</pubDate>
+		<guid isPermaLink="false">/?p=372#comment-221</guid>
+		<description><![CDATA[The font is whatever asciinema uses :) it&#039;s not a video of my terminal but a recording of the output. I use DejaVu Sans Mono for my i3wm UI and terminal though.]]></description>
+		<content:encoded><![CDATA[<p>The font is whatever asciinema uses 🙂 it&#8217;s not a video of my terminal but a recording of the output. I use DejaVu Sans Mono for my i3wm UI and terminal though.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: George</title>
+		<link>/2015/08/03/my-new-prompt-oh-my-zsh/#comment-220</link>
+		<dc:creator><![CDATA[George]]></dc:creator>
+		<pubDate>Thu, 21 Jan 2016 23:19:00 +0000</pubDate>
+		<guid isPermaLink="false">/?p=372#comment-220</guid>
+		<description><![CDATA[Nice, whats the font?]]></description>
+		<content:encoded><![CDATA[<p>Nice, whats the font?</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

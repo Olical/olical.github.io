@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	
+	>
+<channel>
+	<title>Comments on: Asynchronicity and JavaScript</title>
+	<atom:link href="/2016/01/24/asynchronicity-and-javascript/feed/" rel="self" type="application/rss+xml" />
+	<link>/2016/01/24/asynchronicity-and-javascript/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Mon, 22 May 2017 19:57:20 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>By: Oliver Caldwell</title>
+		<link>/2016/01/24/asynchronicity-and-javascript/#comment-228</link>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+		<pubDate>Tue, 02 Feb 2016 09:22:00 +0000</pubDate>
+		<guid isPermaLink="false">/?p=418#comment-228</guid>
+		<description><![CDATA[Hey, Miles. Long time no see! :)
+
+Thanks a lot. I changed my aim half way through the post when I realised whatever I say is better doesn&#039;t matter. If you&#039;re writing JavaScript, unless you write every dependency yourself (or at least wrap them) you&#039;ll have to use different syntax and techniques with each.
+
+Although because of JavaScript, everything you do will essentially be promise based under the hood and by extension: Callbacks. We will never escape it, the only way to not deal with these nested and chained stack trace hells is to not use JavaScript.
+
+Use a language that was designed for asynchronicity, better still, concurrency. Or just use a language that was generally designed well in the first place. I don&#039;t mind what, but anything will be better.
+
+The ecosystem as a whole scares me, https://docs.npmjs.com/how-npm-works/npm3-nondet says that the non-determinism won&#039;t affect you. It&#039;s caused subtle bugs for me multiple times in the last month. I don&#039;t like the direction anything JavaScript related is heading in. Other than ClojureScript, Elm and React.
+
+Thanks for the interesting comment!]]></description>
+		<content:encoded><![CDATA[<p>Hey, Miles. Long time no see! 🙂</p>
+<p>Thanks a lot. I changed my aim half way through the post when I realised whatever I say is better doesn&#8217;t matter. If you&#8217;re writing JavaScript, unless you write every dependency yourself (or at least wrap them) you&#8217;ll have to use different syntax and techniques with each.</p>
+<p>Although because of JavaScript, everything you do will essentially be promise based under the hood and by extension: Callbacks. We will never escape it, the only way to not deal with these nested and chained stack trace hells is to not use JavaScript.</p>
+<p>Use a language that was designed for asynchronicity, better still, concurrency. Or just use a language that was generally designed well in the first place. I don&#8217;t mind what, but anything will be better.</p>
+<p>The ecosystem as a whole scares me, <a href="https://docs.npmjs.com/how-npm-works/npm3-nondet" rel="nofollow">https://docs.npmjs.com/how-npm-works/npm3-nondet</a> says that the non-determinism won&#8217;t affect you. It&#8217;s caused subtle bugs for me multiple times in the last month. I don&#8217;t like the direction anything JavaScript related is heading in. Other than ClojureScript, Elm and React.</p>
+<p>Thanks for the interesting comment!</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Miles Rout</title>
+		<link>/2016/01/24/asynchronicity-and-javascript/#comment-227</link>
+		<dc:creator><![CDATA[Miles Rout]]></dc:creator>
+		<pubDate>Tue, 02 Feb 2016 04:22:00 +0000</pubDate>
+		<guid isPermaLink="false">/?p=418#comment-227</guid>
+		<description><![CDATA[Love this post. The thing I dislike about the (now quite prolific) async/await syntax is that it basically creates a second, incompatible language within the language. It&#039;s really viral, which is quite unfortunate. I&#039;m sure there&#039;s a way to do stackless CSP/CSC (they&#039;re not really what we think of as processes these days, they&#039;re coroutines) without it being so viral.]]></description>
+		<content:encoded><![CDATA[<p>Love this post. The thing I dislike about the (now quite prolific) async/await syntax is that it basically creates a second, incompatible language within the language. It&#8217;s really viral, which is quite unfortunate. I&#8217;m sure there&#8217;s a way to do stackless CSP/CSC (they&#8217;re not really what we think of as processes these days, they&#8217;re coroutines) without it being so viral.</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

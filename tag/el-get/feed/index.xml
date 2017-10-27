@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>el-get &#8211; Oliver Caldwell&#039;s blog</title>
+	<atom:link href="/tag/el-get/feed/" rel="self" type="application/rss+xml" />
+	<link>/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Wed, 18 Oct 2017 13:50:23 +0000</lastBuildDate>
+	<language>en-GB</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>Making El-Get sync like vim-plug</title>
+		<link>/2015/03/03/making-el-get-sync-like-vim-plug/</link>
+		<comments>/2015/03/03/making-el-get-sync-like-vim-plug/#respond</comments>
+		<pubDate>Tue, 03 Mar 2015 22:35:56 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Emacs]]></category>
+		<category><![CDATA[Emacs Lisp]]></category>
+		<category><![CDATA[Lisp]]></category>
+		<category><![CDATA[Text Editors]]></category>
+		<category><![CDATA[Vim]]></category>
+		<category><![CDATA[el-get]]></category>
+		<category><![CDATA[emacs]]></category>
+		<category><![CDATA[package.el]]></category>
+		<category><![CDATA[vim]]></category>
+		<category><![CDATA[vim-plug]]></category>
+
+		<guid isPermaLink="false">/?p=311</guid>
+		<description><![CDATA[As my post from last night says, I&#8217;m giving Emacs another go. And in an even older post, when I was trying Emacs for the first time, I show my approach to getting my packages syncing like I do in Vim (spoiler alert: It didn&#8217;t work very well). My Vim setup will remove unused packages, <a class="read-more" href="/2015/03/03/making-el-get-sync-like-vim-plug/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>As <a title="Giving Emacs another chance" href="/2015/03/02/giving-emacs-another-chance/">my post</a> from last night says, I&#8217;m giving Emacs another go. And in an even older post, when I was trying Emacs for the first time, I show <a title="Making package.el behave like Vundle" href="/2014/10/20/making-package-el-behave-like-vundle/">my approach to getting my packages syncing like I do in Vim</a> (spoiler alert: It didn&#8217;t work very well). My Vim setup will remove unused packages, update what I currently have and then install any that are missing through <a href="https://github.com/Wolfy87/dotfiles/blob/85937edfd5330cc0478a3165f6aa7d132173ef57/vim/.vim/update.sh">this simple script</a> and the use of <a href="https://github.com/junegunn/vim-plug">vim-plug</a>.</p><pre class="crayon-plain-tag">#!/usr/bin/env bash
+
+vim +"PlugSnapshot $HOME/.vim/revert.sh" +PlugUpgrade +PlugClean! +PlugUpdate +qa</pre><p>I&#8217;ve been yearning for the same, or at least similar, experience in Emacs. Without good package management and automatic cleaning I just don&#8217;t want to use it. The main reason for this is that I use <a href="https://github.com/Wolfy87/dotfiles">my dotfiles</a> across multiple machines and I can&#8217;t be dealing with package hell when I pull my dotfiles at work each morning. I need everything to always represent my declarative list of packages in my dotfiles perfectly.</p>
+<p>After a late night Elisp session yesterday, which ended around 1am, I found a very concise approach to manage my packages in a satisfactory way. It&#8217;s nowhere near as clean, efficient and parallel as my Vim set up, but it gets the same result. It&#8217;s a shame it&#8217;s not shiny and perfect, but sometimes good enough is good enough. <a href="https://github.com/Wolfy87/dotfiles/blob/85937edfd5330cc0478a3165f6aa7d132173ef57/emacs/.emacs.d/sync.sh">My synchronisation script for Emacs</a> isn&#8217;t as short and sweet, but it does the job.</p><pre class="crayon-plain-tag">#!/usr/bin/env bash
+
+PACKAGES=~/.emacs.d/config/packages.el
+ELGET=~/.emacs.d/el-get/
+
+if [ ! -d $ELGET ]; then
+    mkdir $ELGET
+    git clone git@github.com:dimitri/el-get.git $ELGET/el-get
+fi
+
+emacs --batch -l $PACKAGES -f dotfiles-sync
+rm ~/.emacs.d/el-get/.loaddefs.*
+emacs --batch -l $PACKAGES</pre><p>This will fetch <a href="https://github.com/dimitri/el-get">el-get</a> if required, boot Emacs once to perform the sync operation (fetch, update and clean), remove the loaddefs because they get out of sync <em>really</em> easily (so if magit was removed, for example, it would still appear in my tab complete although I couldn&#8217;t execute any of the commands, that&#8217;s loaddefs being old) and finally launch it again to generate the new loaddefs file ahead of time. The real magic happens in <a href="https://github.com/Wolfy87/dotfiles/blob/85937edfd5330cc0478a3165f6aa7d132173ef57/emacs/.emacs.d/config/packages.el">my packages configuration module</a> though.</p><pre class="crayon-plain-tag">(add-to-list 'load-path "~/.emacs.d/el-get/el-get")
+(require 'el-get)
+
+(setq dotfiles-packages '())
+
+(defmacro bundle (name &amp;rest content)
+  `(progn
+    (add-to-list 'dotfiles-packages ',name)
+    (el-get-bundle ,name ,@content)))
+
+(defun dotfiles-sync ()
+  (el-get-cleanup dotfiles-packages)
+  (el-get-update-all t))
+
+(bundle monokai-theme
+        (load-theme 'monokai t))</pre><p>That little <em>bundle</em> macro is a passthrough to the <em>el-get-bundle</em> macro, but before it passes the forms off to it the name is stored in a list. That list becomes the &#8220;required packages&#8221; list which we use when performing a cleanup of packages. Basically, when you run <em>el-get-cleanup</em> (which appears to be undocumented? I found it by perusing the source) you can pass it a list of packages <em>not</em> to remove. This list is obtained by intercepting my declarative list of dependencies. Neat, right?</p>
+<p>So I&#8217;ve done it, I&#8217;ve got Emacs packages working the way I needed them to for me to take it seriously. It works just like my Vim + vim-plug setup, albeit not as elegantly. It&#8217;s a small sacrifice to make for all the lisp I could ever ask for.</p>
+<p>It&#8217;s parenthesis time now.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2015/03/03/making-el-get-sync-like-vim-plug/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>editors &#8211; Oliver Caldwell&#039;s blog</title>
+	<atom:link href="/tag/editors/feed/" rel="self" type="application/rss+xml" />
+	<link>/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Wed, 18 Oct 2017 13:50:23 +0000</lastBuildDate>
+	<language>en-GB</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>A week (or so) with Emacs</title>
+		<link>/2014/09/28/a-week-or-so-with-emacs/</link>
+		<comments>/2014/09/28/a-week-or-so-with-emacs/#respond</comments>
+		<pubDate>Sun, 28 Sep 2014 15:32:52 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Emacs]]></category>
+		<category><![CDATA[JavaScript]]></category>
+		<category><![CDATA[editors]]></category>
+		<category><![CDATA[emacs]]></category>
+		<category><![CDATA[lisp]]></category>
+
+		<guid isPermaLink="false">/?p=191</guid>
+		<description><![CDATA[So I managed to use Emacs for one whole week of full-time JavaScript work, whilst only falling back to Vim for the odd tweak of JSON or configuration, I count that as a success. It&#8217;s shifted my opinion of it since I set up my package management and JavaScript tooling, you can find all of <a class="read-more" href="/2014/09/28/a-week-or-so-with-emacs/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>So I managed to use Emacs for one whole week of full-time JavaScript work, whilst only falling back to Vim for the odd tweak of JSON or configuration, I count that as a success. It&#8217;s shifted my opinion of it since I set up my package management and JavaScript tooling, you can find all of this within <a href="https://github.com/Wolfy87/dotfiles/blob/master/emacs/init.el">my dotfiles</a>. It&#8217;s become far easier since I started to learn about vanilla Emacs key-bindings, the reason being that when I lost Evil mode for some buffers I was left high and dry.</p>
+<p>The shift in mentality from my Vim workflow is interesting. I&#8217;ve moved away from tmux / tabs / splits and have begun leaning towards searching for buffers I want with <a href="https://github.com/emacs-helm/helm">helm</a> and opening highly coupled files (such as tests) in splits. I&#8217;m yet to really use the terminal buffer, it doesn&#8217;t feel as smooth as my terminal + tmux combination yet. I&#8217;m also yet to get some form of git gutter and unimpaired style bindings set up. I haven&#8217;t managed to use it to resolve git conflicts yet either, I refer to Vim for that still. Git gutter doesn&#8217;t appear to work with my relative line numbers, there must be a way around it.</p>
+<p><a href="/wp-content/uploads/2014/09/Screenshot-280914-162722.png"><img class="alignleft wp-image-192 size-full" title="" src="/wp-content/uploads/2014/09/Screenshot-280914-162722.png" alt="My Emacs setup" width="1920" height="1080" srcset="/wp-content/uploads/2014/09/Screenshot-280914-162722.png 1920w, /wp-content/uploads/2014/09/Screenshot-280914-162722-300x168.png 300w, /wp-content/uploads/2014/09/Screenshot-280914-162722-1024x576.png 1024w" sizes="(max-width: 1920px) 100vw, 1920px" /></a></p>
+<p>Now I&#8217;m going to start on my Clojure setup for use with <a href="http://www.braveclojure.com/">Brave Clojure</a>, we&#8217;ll see how that goes, I&#8217;d imagine rather well. Many thanks to those on twitter who convinced me to stick with it, I think it&#8217;s going to be great in the long run.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2014/09/28/a-week-or-so-with-emacs/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

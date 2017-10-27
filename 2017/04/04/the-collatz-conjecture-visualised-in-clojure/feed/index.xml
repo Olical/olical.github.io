@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	
+	>
+<channel>
+	<title>Comments on: The Collatz conjecture, visualised in Clojure</title>
+	<atom:link href="/2017/04/04/the-collatz-conjecture-visualised-in-clojure/feed/" rel="self" type="application/rss+xml" />
+	<link>/2017/04/04/the-collatz-conjecture-visualised-in-clojure/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Mon, 22 May 2017 19:57:20 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>By: Matematikte Çözülemeyen Problemler &#8211; Collazt Conjecture &#124; Can&#039;ın Yazdıkları</title>
+		<link>/2017/04/04/the-collatz-conjecture-visualised-in-clojure/#comment-308</link>
+		<dc:creator><![CDATA[Matematikte Çözülemeyen Problemler &#8211; Collazt Conjecture &#124; Can&#039;ın Yazdıkları]]></dc:creator>
+		<pubDate>Mon, 22 May 2017 19:57:20 +0000</pubDate>
+		<guid isPermaLink="false">/?p=491#comment-308</guid>
+		<description><![CDATA[[&#8230;] Kaynak: /2017/04/04/the-collatz-conjecture-visualised-in-clojure/ [&#8230;]]]></description>
+		<content:encoded><![CDATA[<p>[&#8230;] Kaynak: /2017/04/04/the-collatz-conjecture-visualised-in-clojure/ [&#8230;]</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

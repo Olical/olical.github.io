@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>brainfuck &#8211; Oliver Caldwell&#039;s blog</title>
+	<atom:link href="/tag/brainfuck/feed/" rel="self" type="application/rss+xml" />
+	<link>/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Wed, 18 Oct 2017 13:50:23 +0000</lastBuildDate>
+	<language>en-GB</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>Giving Emacs another chance</title>
+		<link>/2015/03/02/giving-emacs-another-chance/</link>
+		<comments>/2015/03/02/giving-emacs-another-chance/#respond</comments>
+		<pubDate>Mon, 02 Mar 2015 19:06:25 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Emacs]]></category>
+		<category><![CDATA[Text Editors]]></category>
+		<category><![CDATA[brainfuck]]></category>
+		<category><![CDATA[emacs]]></category>
+		<category><![CDATA[vim]]></category>
+
+		<guid isPermaLink="false">/?p=305</guid>
+		<description><![CDATA[I was originally going to call this post &#8220;Attempting Emacs 2: The Re-Emacsing &#8211; A Vimmers tale&#8221;, I thought better of it. As you may have noticed from my tweets over the recent weeks, I&#8217;m infatuated by Clojure among many other languages that aren&#8217;t the one I&#8217;m paid to write (JavaScript). I&#8217;ve been planning on <a class="read-more" href="/2015/03/02/giving-emacs-another-chance/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>I was originally going to call this post &#8220;Attempting Emacs 2: The Re-Emacsing &#8211; A Vimmers tale&#8221;, I thought better of it.</p>
+<p>As you may have noticed from my tweets over the recent weeks, I&#8217;m infatuated by Clojure among many other languages that aren&#8217;t the one I&#8217;m paid to write (JavaScript). I&#8217;ve been planning on working my way through the two <a href="https://pragprog.com/book/btlang/seven-languages-in-seven-weeks">&#8220;7 languages in 7 weeks&#8221;</a> books for quite some time too but haven&#8217;t been able to start them alongside <a title="A quick reflection on Algorithms" href="/2015/03/01/a-quick-reflection-on-algorithms/">my coursera course on algorithms</a>. Now the course is over (I got as far as I wanted to go just before it officially ended) I am free to start, but first I wish to give Emacs another chance. It&#8217;s also worth mentioning that not only will I be publishing my &#8220;7 languages&#8221; projects on GitHub, but I&#8217;ll also be continuing my <a title="Brainfuck VM in JavaScript" href="/2015/01/05/brainfuck-vm-in-javascript/">brainfuck</a> <a title="Brainfuck VM in Clojure" href="/2015/01/12/brainfuck-vm-in-clojure/">interpreters</a> in each language I look at.</p>
+<p>One thing I won&#8217;t be doing, at least at first, is giving into the temptation of <a href="http://www.emacswiki.org/emacs/Evil">Evil</a>. I tried it out last time which may have lead to the demise of my previous <em>.emacs.d</em>. I think the cognitive dissonance is too great for any seasoned Vim user to handle, I need the distinction this time. Although I do admit the Emacs key bindings are beyond awful when compared with Vim and a bunch of muscle memory. Maybe it&#8217;ll get better over time, but if not I&#8217;m willing to try out <a href="https://github.com/chrisdone/god-mode">God mode</a>. It introduces a sort of normal / insert mode, but still using Emacs keys. It just stops you having to hold down those pesky modifiers all the time. Vim is Vim and Emacs is Emacs, much like planes and cars I have found they do not work well when you put the former <em>inside</em> the latter.</p>
+<p>I think I&#8217;ll be relying on <a href="https://github.com/magit/magit">magit</a>, <a href="https://github.com/bbatsov/projectile">projectile</a> and <a href="https://github.com/emacs-helm/helm">helm</a> to begin with. I&#8217;m not sure how I&#8217;ll navigate the buffer though, maybe I&#8217;ll try <a href="http://www.emacswiki.org/emacs/AceJump">ace jump</a>. It&#8217;s a shame that it just looks like an <a href="https://github.com/Lokaltog/vim-easymotion">EasyMotion</a> knock off though, it doesn&#8217;t appear to support very much of my beloved navigational tool. With EasyMotion I can fly around the screen without a thought.</p>
+<p>I&#8217;ll also be splitting my configuration into smaller modules as I have done with Vim in <a href="https://github.com/Wolfy87/dotfiles">my dotfiles</a>. I plan to use <a href="https://github.com/cask/cask">Cask</a> for package management right now, although that could also go out the window in favour of <a href="https://github.com/dimitri/el-get">el-get</a> or something similar. I&#8217;ve written about <a title="Making package.el behave like Vundle" href="/2014/10/20/making-package-el-behave-like-vundle/">my main gripes</a> with Emacs package management (or lack thereof) in the past, but my main point is things like <a href="https://github.com/junegunn/vim-plug">vim-plug</a> blow all of Emacs&#8217; solutions out of the metaphorical water. In my opinion.</p>
+<p>Maybe the only solution is for me to build a vim-plug of my own in Elisp. Talk about trial by fire.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2015/03/02/giving-emacs-another-chance/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Brainfuck VM in Clojure</title>
+		<link>/2015/01/12/brainfuck-vm-in-clojure/</link>
+		<comments>/2015/01/12/brainfuck-vm-in-clojure/#respond</comments>
+		<pubDate>Mon, 12 Jan 2015 08:50:35 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Brainfuck]]></category>
+		<category><![CDATA[Clojure]]></category>
+		<category><![CDATA[Lisp]]></category>
+		<category><![CDATA[brainfuck]]></category>
+		<category><![CDATA[clojure]]></category>
+		<category><![CDATA[interpretor]]></category>
+		<category><![CDATA[vm]]></category>
+
+		<guid isPermaLink="false">/?p=285</guid>
+		<description><![CDATA[This is my second implementation for my repository of brainfuck interpretors, this time in the wonderful language Clojure (the first was JavaScript). It largely follows the same format of my initial machine but takes a route that I want to eventually refactor my JavaScript implementation to use as well. It builds a list of token <a class="read-more" href="/2015/01/12/brainfuck-vm-in-clojure/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>This is my second implementation for my repository of <a href="https://github.com/Wolfy87/brainfucks">brainfuck interpretors</a>, this time in the wonderful language Clojure (the first was <a title="Brainfuck VM in JavaScript" href="/2015/01/05/brainfuck-vm-in-javascript/">JavaScript</a>). It largely follows the same format of my initial machine but takes a route that I want to eventually refactor my JavaScript implementation to use as well. It builds a list of token hash-maps that each contain any required meta data. The JavaScript implementation (at the time of writing) uses two arrays, one for the tokens and one for the jump (loop) meta data.</p>
+<h2>The same but better</h2>
+<p>I feel that the approach I have taken with my Clojure version is far superior. This is because it allows me to encode an optimisation in the future extremely easily. I wish to detect batches of characters, such as &#8220;+++++&#8221;, and transform it into a single &#8220;+&#8221; token with a multiplier attribute that causes the &#8220;+&#8221; token handler to increment by the multiplier, not just one. This is small but potentially significant if there&#8217;s a lot of loops and batches of tokens. It may save quite a few iterations.</p>
+<p>I&#8217;d also like to eliminate dead code such as &#8220;[]&#8221; and &#8220;+++&#8212;&#8221; which may crop up by accident sometimes. Basically I want my program to optimise the given source as much as possible, I know a few ways and I will probably implement more of them as I develop more implementations. Speaking of which, my next one will hopefully be in Haskell. I may not survive that one.</p>
+<h2>My desired flow</h2>
+<p>Here&#8217;s my ideal scenario for a brainfuck interpreter as it stands. The Clojure version isn&#8217;t quite there, but it&#8217;s still a good example.</p>
+<ol>
+<li>Read the provided brainfuck source file into memory.</li>
+<li>Check if the square braces are balanced, exit early if not.</li>
+<li>Filter the source down to the valid characters.</li>
+<li>Eliminate noops such as &#8220;[]&#8221; and &#8220;+++&#8212;&#8220;</li>
+<li>Map those characters into objects with a token attribute.</li>
+<li>Condense chains of tokens (such as &#8220;+++++&#8221;) down to a single token with a multiplier attribute.</li>
+<li>Find all jumps between square braces and assign that data to the token objects.</li>
+</ol>
+<p>Now we have the compiled program we can execute it in the obvious way.</p>
+<ol>
+<li>Initialise a state object containing a state and memory pointer as well as a blank memory array.</li>
+<li>Iterate or recurse through the tokens passing the state and program values through the appropriate handler function for the token.</li>
+<li>Increment the program pointer after each step.</li>
+<li>Exit if the program pointer is equal to the length of the program.</li>
+</ol>
+<p>This is a fairly complex beast for such a simple language and problem, I just want to set the bar high so I really have to learn these languages in order to solve the problem with them. The harder I make it for myself the more I learn about JavaScript, Clojure, Haskell and, strangely, brainfuck. I currently have 10 more languages in my &#8220;to do&#8221; list for this project. I have no idea if I&#8217;ll ever hit that number but I can at least give it a go.</p>
+<h2>Multimethodmadness</h2>
+<p>I relied on Clojure&#8217;s multimethods for the &#8220;select a handler for this token&#8221; part, which worked really well. Here&#8217;s <strong>all</strong> of the execution code.</p><pre class="crayon-plain-tag">(def console-reader (ConsoleReader.))
+
+(defn read-character []
+  "Reads a character from STDIN"
+  (.readCharacter console-reader))
+
+(defn safe-inc [n]
+  "Treat nil values as zero."
+  (inc (if (= n nil) 0 n)))
+
+(defn safe-dec [n]
+  "Treat nil values as zero."
+  (dec (if (= n nil) 0 n)))
+
+(defn current-memory-zero? [state]
+  "Returns true if the current memory item of the state is 0."
+  (let [value (get-in state [:memory (:memory-pointer state)])]
+    (= 0 (if (= nil value) 0 value))))
+
+(defmulti step (fn [program state] (:token (nth program (:program-pointer state)))))
+(defmethod step \&gt; [program state] (update-in state [:memory-pointer] inc))
+(defmethod step \&lt; [program state] (update-in state [:memory-pointer] dec))
+(defmethod step \+ [program state] (update-in state [:memory (:memory-pointer state)] safe-inc))
+(defmethod step \- [program state] (update-in state [:memory (:memory-pointer state)] safe-dec))
+(defmethod step \. [program state] (print (char (get-in state [:memory (:memory-pointer state)]))) (flush) state)
+(defmethod step \, [program state] (assoc-in state [:memory (:memory-pointer state)] (read-character)))
+(defmethod step \[ [program state] (if (current-memory-zero? state)
+                                     (update-in state [:program-pointer] #(:destination (nth program %)))
+                                     state))
+(defmethod step \] [program state] (if (not (current-memory-zero? state))
+                                     (update-in state [:program-pointer] #(:destination (nth program %)))
+                                     state))
+
+(defn execute [program]
+  "Executes a compiled brainfuck program."
+  (let [program-length (count program)]
+    (loop [state {:memory (hash-map 0 0)
+                  :memory-pointer 0
+                  :program-pointer 0}]
+      (if (&lt; (:program-pointer state) program-length)
+        (recur (update-in (step program state) [:program-pointer] inc))))))</pre><p>You can find the rest of the source in the <a href="https://github.com/Wolfy87/brainfucks/blob/master/implementations/clojure/src/brainfuck/core.clj">Clojure implementation directory</a> of my project.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2015/01/12/brainfuck-vm-in-clojure/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Brainfuck VM in JavaScript</title>
+		<link>/2015/01/05/brainfuck-vm-in-javascript/</link>
+		<comments>/2015/01/05/brainfuck-vm-in-javascript/#comments</comments>
+		<pubDate>Mon, 05 Jan 2015 09:00:11 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Brainfuck]]></category>
+		<category><![CDATA[JavaScript]]></category>
+		<category><![CDATA[async]]></category>
+		<category><![CDATA[brainfuck]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[stdin]]></category>
+
+		<guid isPermaLink="false">/?p=280</guid>
+		<description><![CDATA[Welcome to 2015, I hope you had a good break! Some people may now be taking on resolutions for the year, be that to lose weight or to socialise more. I&#8217;ve opted to learn even more than usual, so that means more coursera courses and toy projects in various languages. This is where my brainfuck <a class="read-more" href="/2015/01/05/brainfuck-vm-in-javascript/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>Welcome to 2015, I hope you had a good break! Some people may now be taking on resolutions for the year, be that to lose weight or to socialise more. I&#8217;ve opted to <a title="My 2015 Bucket Set" href="/2014/12/13/my-2015-bucket-set/">learn even more than usual</a>, so that means <a href="https://www.coursera.org/course/algs4partI">more coursera courses</a> and toy projects in various languages. This is where <a href="https://github.com/Wolfy87/brainfucks">my brainfuck virtual machines</a> come in. I&#8217;ll be writing them in every language I find interesting, starting with my trusty (see: sarcasm) friend, JavaScript.</p>
+<p>This took me far longer than I wished it would and actually involved pretty much starting again at one point. Everything was fairly easy to implement up until the point where I had to synchronously read one character off of stdin. After hours of research, this proved to be nigh on impossible so I had to settle for some awkward callback based hell with two implementations because of an edge case. This is easy in C yet hard in JavaScript. What?</p>
+<p>Besides that, the actual tokenise, parse and execute phases went fairly well. You can find the full code inside my <a href="https://github.com/Wolfy87/brainfucks/tree/master/implementations/javascript">JavaScript implementation directory</a>. I opted to turn the source file into a clean array first then to run through that array of tokens mapping them to an object of command functions. Fairly simple and extensible, I feel. I also performed all of the loop operator matching up front during the parsing, so I didn&#8217;t have to go hunting for <em>]</em> or <em>[</em> during the execution of the program.</p>
+<p>I relied on <a href="https://github.com/caolan/async">async</a> to take some of the pain out of iterating through asynchronous steps. The only reason the steps were asynchronous was because the one stdin reading command required it. If it wasn&#8217;t for node being really awkward on that front, this would have been far simpler.</p>
+<p>Expect a Clojure implementation soon.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2015/01/05/brainfuck-vm-in-javascript/feed/</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+		</item>
+		<item>
+		<title>My 2015 Bucket Set</title>
+		<link>/2014/12/13/my-2015-bucket-set/</link>
+		<comments>/2014/12/13/my-2015-bucket-set/#respond</comments>
+		<pubDate>Sat, 13 Dec 2014 12:00:58 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Meta]]></category>
+		<category><![CDATA[brainfuck]]></category>
+		<category><![CDATA[clojure]]></category>
+		<category><![CDATA[clojurescript]]></category>
+		<category><![CDATA[coursera]]></category>
+		<category><![CDATA[elixir]]></category>
+		<category><![CDATA[haskell]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[khan]]></category>
+
+		<guid isPermaLink="false">/?p=248</guid>
+		<description><![CDATA[I&#8217;m not really one for New Year&#8217;s resolutions, but this year I thought I&#8217;d create a sort of bucket list of programming related things to learn. But it&#8217;s more of a bucket set because the items are unique, I really want to focus on algorithms and data structures as well as a plethora of functional <a class="read-more" href="/2014/12/13/my-2015-bucket-set/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>I&#8217;m not really one for New Year&#8217;s resolutions, but this year I thought I&#8217;d create a sort of bucket list of programming related things to learn. But it&#8217;s more of a bucket set because the items are unique, I really want to focus on algorithms and data structures as well as a plethora of functional programming languages. So without further ado, here&#8217;s all the things I want to accomplish next year, this may grow considerably.</p>
+<ul>
+<li><a href="https://www.khanacademy.org/">Khan Academy</a> algorithms as well as anything else I can fit in. Especially math and computer science related topics. I want to have something on the go at all times.</li>
+<li>Algorithms <a href="https://www.coursera.org/course/algs4partI">part I</a> and <a href="https://www.coursera.org/course/algs4partII">part II</a> as well as <a href="https://www.coursera.org/course/datavisualization">Data Visualisation</a> courses on <a href="https://www.coursera.org/">Coursera</a>. I&#8217;ve completed the <a href="https://www.coursera.org/course/progfun">Functional Programming in Scala</a> course and completed most of Algo I, but this time I want to really ace it. I&#8217;ll have way more free time when I don&#8217;t have to commute for 2:30/3:00 hours a day.</li>
+<li>More Vim plugins, I want to have five by the end of the year. So that&#8217;s three more on top of <a href="https://github.com/Wolfy87/vim-enmasse">vim-enmasse</a> and <a href="https://github.com/Wolfy87/vim-expand">vim-expand</a>. I have a few ideas lined up, but I can always rip good configuration out of my <a href="https://github.com/Wolfy87/dotfiles">dotfiles</a> and flesh it out.</li>
+<li>A <a href="http://en.wikipedia.org/wiki/Brainfuck">brainfuck</a> VM (idea courtesy of <a href="https://twitter.com/krisajenkins/status/543359911821053953">Kris Jenkins</a>, thanks Kris!).</li>
+<li>A simple and useless language I am yet to design. I think it could end up being a project I can take as far as I want. Or drop it as soon as I get an MVP if I won&#8217;t learn any more.</li>
+</ul>
+<p>And the languages I&#8217;d like to learn and apply to this sort of thing are as follows.</p>
+<ul>
+<li>Clojure (I&#8217;m going to <a href="https://skillsmatter.com/conferences/6861-clojure-exchange-2015">ClojureX</a> at the end of 2015, so there&#8217;s an incentive!)</li>
+<li>ClojureScript</li>
+<li>Haskell</li>
+<li>Elixir</li>
+</ul>
+<p>Other languages I may dip into if I feel like it.</p>
+<ul>
+<li>C</li>
+<li>Java</li>
+<li>Scala</li>
+<li>Erlang</li>
+<li>Ruby</li>
+</ul>
+<p>I&#8217;m pretty handy with JavaScript, but I&#8217;d like to build some stuff with <a href="http://facebook.github.io/react/">React</a> at some point too.</p>
+<p>The projects and language lists may still grow, but I&#8217;d like to build and use these as a minimum. I&#8217;ll continue to blog about my endeavours and probably write a wrap up at the end of the year with a new set of goals for 2016. I think this goal based approach will help to accelerate my learning even more than my day to day work does. I may has skipped on university, but there&#8217;s no way I&#8217;m letting that leave a hole in my knowledge.</p>
+<h2>In closing</h2>
+<p>What&#8217;s better than a brainfuck VM?</p>
+<p>A whole repository of them in different languages and styles. I&#8217;m going to implement a VM in languages I&#8217;m trying to learn that runs a brainfuck &#8220;Hello, World!&#8221;. I think that&#8217;ll teach me a fair amount about each language. I think it&#8217;ll be pretty cool if I use brainfuck as my platform for learning over the next year, it also gives me an excuse to litter my posts with profanities. So expect to see them appearing over at <a href="https://github.com/Wolfy87/brainfucks">Wolfy87/brainfucks</a> in the near future.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2014/12/13/my-2015-bucket-set/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

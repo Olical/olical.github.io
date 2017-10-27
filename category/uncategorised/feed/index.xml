@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Uncategorised &#8211; Oliver Caldwell&#039;s blog</title>
+	<atom:link href="/category/uncategorised/feed/" rel="self" type="application/rss+xml" />
+	<link>/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Wed, 18 Oct 2017 13:50:23 +0000</lastBuildDate>
+	<language>en-GB</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>Taming clojure.spec with expound</title>
+		<link>/2017/10/18/taming-clojure-spec-with-expound/</link>
+		<comments>/2017/10/18/taming-clojure-spec-with-expound/#respond</comments>
+		<pubDate>Wed, 18 Oct 2017 12:14:45 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Uncategorised]]></category>
+
+		<guid isPermaLink="false">/?p=593</guid>
+		<description><![CDATA[From Clojure 1.9 and up, the core language is guarded by various clojure.spec definitions. This means, even if you&#8217;re not using spec directly yourself, you will potentially encounter spec derived errors. These errors, much like all errors in Clojure, are extremely verbose and make it hard to discern what the actual problem is at a <a class="read-more" href="/2017/10/18/taming-clojure-spec-with-expound/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>From Clojure 1.9 and up, the core language is guarded by various <a href="https://clojure.org/about/spec">clojure.spec</a> definitions. This means, even if you&#8217;re not using spec directly yourself, you will potentially encounter spec derived errors.</p>
+<p>These errors, much like all errors in Clojure, are extremely verbose and make it hard to discern what the actual problem is at a glance. These errors are great for machines but not so great for humans, who happen to be the primary consumer of these errors. I consider this to be a bit of a design flaw within spec, maybe this will improve over time.</p>
+<p>Until such potential improvements are implemented, thanks to the power and wonders of Clojure, we can use a library called <a href="https://github.com/bhb/expound">expound</a> to make our lives easier. This tool is inspired by Elm and it shows. Without expound and this incorrect syntax:</p><pre class="crayon-plain-tag">(let [{:a b} {:a 10}]
+  b)</pre><p>We get this beauty of an error from Clojure itself:</p><pre class="crayon-plain-tag">CompilerException clojure.lang.ExceptionInfo: Call to clojure.core/let did not conform to spec:
+In: [0 0 0 0] val: :a fails spec: :clojure.core.specs.alpha/local-name at: [:args :bindings :binding :map :mb 0 :sym] predicate: simple-symbol?
+In: [0 0 0 0] val: :a fails spec: :clojure.core.specs.alpha/seq-binding-form at: [:args :bindings :binding :map :mb 0 :seq] predicate: vector?
+In: [0 0 0 0] val: :a fails spec: :clojure.core.specs.alpha/map-bindings at: [:args :bindings :binding :map :mb 0 :map] predicate: coll?
+In: [0 0 0 0] val: :a fails spec: :clojure.core.specs.alpha/map-special-binding at: [:args :bindings :binding :map :mb 0 :map] predicate: map?
+In: [0 0 0 0] val: :a fails spec: :clojure.core.specs.alpha/ns-keys at: [:args :bindings :binding :map :nsk 0] predicate: qualified-keyword?
+In: [0 0 0 1] val: b fails spec: :clojure.core.specs.alpha/ns-keys at: [:args :bindings :binding :map :nsk 1] predicate: vector?
+In: [0 0 0 0] val: :a fails spec: :clojure.core.specs.alpha/map-bindings at: [:args :bindings :binding :map :msb 0] predicate: #{:as :or :syms :keys :strs}
+In: [0 0] val: {:a b} fails spec: :clojure.core.specs.alpha/local-name at: [:args :bindings :binding :sym] predicate: simple-symbol?
+In: [0 0] val: {:a b} fails spec: :clojure.core.specs.alpha/seq-binding-form at: [:args :bindings :binding :seq] predicate: vector?
+:clojure.spec.alpha/spec  #object[clojure.spec.alpha$regex_spec_impl$reify__1200 0x6ef7c8e9 "clojure.spec.alpha$regex_spec_impl$reify__1200@6ef7c8e9"]
+:clojure.spec.alpha/value  ([{:a b} {:a 10}] b)
+:clojure.spec.alpha/args  ([{:a b} {:a 10}] b)
+ #:clojure.spec.alpha{:problems ({:path [:args :bindings :binding :sym], :pred clojure.core/simple-symbol?, :val {:a b}, :via [:clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/binding :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/local-name], :in [0 0]} {:path [:args :bindings :binding :seq], :pred clojure.core/vector?, :val {:a b}, :via [:clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/binding :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/seq-binding-form], :in [0 0]} {:path [:args :bindings :binding :map :mb 0 :sym], :pred clojure.core/simple-symbol?, :val :a, :via [:clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/binding :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/map-binding-form :clojure.core.specs.alpha/map-bindings :clojure.core.specs.alpha/map-binding :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/local-name], :in [0 0 0 0]} {:path [:args :bindings :binding :map :mb 0 :seq], :pred clojure.core/vector?, :val :a, :via [:clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/binding :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/map-binding-form :clojure.core.specs.alpha/map-bindings :clojure.core.specs.alpha/map-binding :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/seq-binding-form], :in [0 0 0 0]} {:path [:args :bindings :binding :map :mb 0 :map], :pred clojure.core/coll?, :val :a, :via [:clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/binding :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/map-binding-form :clojure.core.specs.alpha/map-bindings :clojure.core.specs.alpha/map-binding :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/map-binding-form :clojure.core.specs.alpha/map-bindings], :in [0 0 0 0]} {:path [:args :bindings :binding :map :mb 0 :map], :pred map?, :val :a, :via [:clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/binding :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/map-binding-form :clojure.core.specs.alpha/map-bindings :clojure.core.specs.alpha/map-binding :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/map-binding-form :clojure.core.specs.alpha/map-special-binding], :in [0 0 0 0]} {:path [:args :bindings :binding :map :nsk 0], :pred clojure.core/qualified-keyword?, :val :a, :via [:clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/binding :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/map-binding-form :clojure.core.specs.alpha/map-bindings :clojure.core.specs.alpha/ns-keys], :in [0 0 0 0]} {:path [:args :bindings :binding :map :nsk 1], :pred clojure.core/vector?, :val b, :via [:clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/binding :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/map-binding-form :clojure.core.specs.alpha/map-bindings :clojure.core.specs.alpha/ns-keys], :in [0 0 0 1]} {:path [:args :bindings :binding :map :msb 0], :pred #{:as :or :syms :keys :strs}, :val :a, :via [:clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/binding :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/map-binding-form :clojure.core.specs.alpha/map-bindings], :in [0 0 0 0]}), :spec #object[clojure.spec.alpha$regex_spec_impl$reify__1200 0x6ef7c8e9 "clojure.spec.alpha$regex_spec_impl$reify__1200@6ef7c8e9"], :value ([{:a b} {:a 10}] b), :args ([{:a b} {:a 10}] b)}, compiling:(/home/ollie/code.clj:20:1)</pre><p>Can you tell what&#8217;s going on? Probably after a little bit of time if you know what you&#8217;re looking for. Imagine this in a much more complex case though, let&#8217;s say within a few layers of macros. Now here&#8217;s the same response through expound:</p><pre class="crayon-plain-tag">CompilerException clojure.lang.ExceptionInfo: Call to clojure.core/let did not conform to spec:
+-- Spec failed --------------------
+
+  ([[:a ...] ...] ...)
+     ^^
+
+should satisfy
+
+  simple-symbol?
+
+or
+
+  vector?
+
+or
+
+  coll?
+
+or
+
+  map?
+
+or
+
+  qualified-keyword?
+
+-- Relevant specs -------
+
+:clojure.core.specs.alpha/ns-keys:
+  (clojure.spec.alpha/tuple
+   (clojure.spec.alpha/and
+    clojure.core/qualified-keyword?
+    (fn*
+     [p1__45#]
+     (clojure.core/-&gt; p1__45# clojure.core/name #{"syms" "keys"})))
+   (clojure.spec.alpha/coll-of
+    clojure.core/simple-symbol?
+    :kind
+    clojure.core/vector?))
+:clojure.core.specs.alpha/map-special-binding:
+  (clojure.spec.alpha/keys
+   :opt-un
+   [:clojure.core.specs.alpha/as
+    :clojure.core.specs.alpha/or
+    :clojure.core.specs.alpha/keys
+    :clojure.core.specs.alpha/syms
+    :clojure.core.specs.alpha/strs])
+:clojure.core.specs.alpha/seq-binding-form:
+  (clojure.spec.alpha/and
+   clojure.core/vector?
+   (clojure.spec.alpha/cat
+    :elems
+    (clojure.spec.alpha/* :clojure.core.specs.alpha/binding-form)
+    :rest
+    (clojure.spec.alpha/?
+     (clojure.spec.alpha/cat
+      :amp
+      #{'&amp;}
+      :form
+      :clojure.core.specs.alpha/binding-form))
+    :as
+    (clojure.spec.alpha/?
+     (clojure.spec.alpha/cat
+      :as
+      #{:as}
+      :sym
+      :clojure.core.specs.alpha/local-name))))
+:clojure.core.specs.alpha/local-name:
+  (clojure.spec.alpha/and
+   clojure.core/simple-symbol?
+   (clojure.core/fn [%] (clojure.core/not= '&amp; %)))
+:clojure.core.specs.alpha/map-binding:
+  (clojure.spec.alpha/tuple
+   :clojure.core.specs.alpha/binding-form
+   clojure.core/any?)
+:clojure.core.specs.alpha/map-bindings:
+  (clojure.spec.alpha/every
+   (clojure.spec.alpha/or
+    :mb
+    :clojure.core.specs.alpha/map-binding
+    :nsk
+    :clojure.core.specs.alpha/ns-keys
+    :msb
+    (clojure.spec.alpha/tuple
+     #{:as :or :syms :keys :strs}
+     clojure.core/any?))
+   :into
+   {})
+:clojure.core.specs.alpha/map-binding-form:
+  (clojure.spec.alpha/merge
+   :clojure.core.specs.alpha/map-bindings
+   :clojure.core.specs.alpha/map-special-binding)
+:clojure.core.specs.alpha/binding-form:
+  (clojure.spec.alpha/or
+   :sym
+   :clojure.core.specs.alpha/local-name
+   :seq
+   :clojure.core.specs.alpha/seq-binding-form
+   :map
+   :clojure.core.specs.alpha/map-binding-form)
+:clojure.core.specs.alpha/binding:
+  (clojure.spec.alpha/cat
+   :binding
+   :clojure.core.specs.alpha/binding-form
+   :init-expr
+   clojure.core/any?)
+:clojure.core.specs.alpha/bindings:
+  (clojure.spec.alpha/and
+   clojure.core/vector?
+   (clojure.spec.alpha/* :clojure.core.specs.alpha/binding))
+
+-- Spec failed --------------------
+
+  ([[... b] ...] ...)
+         ^
+
+should satisfy
+
+  vector?
+
+-- Relevant specs -------
+
+:clojure.core.specs.alpha/ns-keys:
+  (clojure.spec.alpha/tuple
+   (clojure.spec.alpha/and
+    clojure.core/qualified-keyword?
+    (fn*
+     [p1__45#]
+     (clojure.core/-&gt; p1__45# clojure.core/name #{"syms" "keys"})))
+   (clojure.spec.alpha/coll-of
+    clojure.core/simple-symbol?
+    :kind
+    clojure.core/vector?))
+:clojure.core.specs.alpha/map-bindings:
+  (clojure.spec.alpha/every
+   (clojure.spec.alpha/or
+    :mb
+    :clojure.core.specs.alpha/map-binding
+    :nsk
+    :clojure.core.specs.alpha/ns-keys
+    :msb
+    (clojure.spec.alpha/tuple
+     #{:as :or :syms :keys :strs}
+     clojure.core/any?))
+   :into
+   {})
+:clojure.core.specs.alpha/map-binding-form:
+  (clojure.spec.alpha/merge
+   :clojure.core.specs.alpha/map-bindings
+   :clojure.core.specs.alpha/map-special-binding)
+:clojure.core.specs.alpha/binding-form:
+  (clojure.spec.alpha/or
+   :sym
+   :clojure.core.specs.alpha/local-name
+   :seq
+   :clojure.core.specs.alpha/seq-binding-form
+   :map
+   :clojure.core.specs.alpha/map-binding-form)
+:clojure.core.specs.alpha/binding:
+  (clojure.spec.alpha/cat
+   :binding
+   :clojure.core.specs.alpha/binding-form
+   :init-expr
+   clojure.core/any?)
+:clojure.core.specs.alpha/bindings:
+  (clojure.spec.alpha/and
+   clojure.core/vector?
+   (clojure.spec.alpha/* :clojure.core.specs.alpha/binding))
+
+-- Spec failed --------------------
+
+  ([[:a ...] ...] ...)
+     ^^
+
+should be one of: `:as`,`:or`,`:syms`,`:keys`,`:strs`
+
+-- Relevant specs -------
+
+:clojure.core.specs.alpha/map-bindings:
+  (clojure.spec.alpha/every
+   (clojure.spec.alpha/or
+    :mb
+    :clojure.core.specs.alpha/map-binding
+    :nsk
+    :clojure.core.specs.alpha/ns-keys
+    :msb
+    (clojure.spec.alpha/tuple
+     #{:as :or :syms :keys :strs}
+     clojure.core/any?))
+   :into
+   {})
+:clojure.core.specs.alpha/map-binding-form:
+  (clojure.spec.alpha/merge
+   :clojure.core.specs.alpha/map-bindings
+   :clojure.core.specs.alpha/map-special-binding)
+:clojure.core.specs.alpha/binding-form:
+  (clojure.spec.alpha/or
+   :sym
+   :clojure.core.specs.alpha/local-name
+   :seq
+   :clojure.core.specs.alpha/seq-binding-form
+   :map
+   :clojure.core.specs.alpha/map-binding-form)
+:clojure.core.specs.alpha/binding:
+  (clojure.spec.alpha/cat
+   :binding
+   :clojure.core.specs.alpha/binding-form
+   :init-expr
+   clojure.core/any?)
+:clojure.core.specs.alpha/bindings:
+  (clojure.spec.alpha/and
+   clojure.core/vector?
+   (clojure.spec.alpha/* :clojure.core.specs.alpha/binding))
+
+-------------------------
+Detected 3 errors
+ #:clojure.spec.alpha{:problems ({:path [:args :bindings :binding :sym], :pred clojure.core/simple-symbol?, :val {:a b}, :via [:clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/binding :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/local-name], :in [0 0]} {:path [:args :bindings :binding :seq], :pred clojure.core/vector?, :val {:a b}, :via [:clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/binding :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/seq-binding-form], :in [0 0]} {:path [:args :bindings :binding :map :mb 0 :sym], :pred clojure.core/simple-symbol?, :val :a, :via [:clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/binding :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/map-binding-form :clojure.core.specs.alpha/map-bindings :clojure.core.specs.alpha/map-binding :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/local-name], :in [0 0 0 0]} {:path [:args :bindings :binding :map :mb 0 :seq], :pred clojure.core/vector?, :val :a, :via [:clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/binding :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/map-binding-form :clojure.core.specs.alpha/map-bindings :clojure.core.specs.alpha/map-binding :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/seq-binding-form], :in [0 0 0 0]} {:path [:args :bindings :binding :map :mb 0 :map], :pred clojure.core/coll?, :val :a, :via [:clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/binding :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/map-binding-form :clojure.core.specs.alpha/map-bindings :clojure.core.specs.alpha/map-binding :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/map-binding-form :clojure.core.specs.alpha/map-bindings], :in [0 0 0 0]} {:path [:args :bindings :binding :map :mb 0 :map], :pred map?, :val :a, :via [:clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/binding :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/map-binding-form :clojure.core.specs.alpha/map-bindings :clojure.core.specs.alpha/map-binding :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/map-binding-form :clojure.core.specs.alpha/map-special-binding], :in [0 0 0 0]} {:path [:args :bindings :binding :map :nsk 0], :pred clojure.core/qualified-keyword?, :val :a, :via [:clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/binding :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/map-binding-form :clojure.core.specs.alpha/map-bindings :clojure.core.specs.alpha/ns-keys], :in [0 0 0 0]} {:path [:args :bindings :binding :map :nsk 1], :pred clojure.core/vector?, :val b, :via [:clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/binding :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/map-binding-form :clojure.core.specs.alpha/map-bindings :clojure.core.specs.alpha/ns-keys], :in [0 0 0 1]} {:path [:args :bindings :binding :map :msb 0], :pred #{:as :or :syms :keys :strs}, :val :a, :via [:clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/bindings :clojure.core.specs.alpha/binding :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/binding-form :clojure.core.specs.alpha/map-binding-form :clojure.core.specs.alpha/map-bindings], :in [0 0 0 0]}), :spec #object[clojure.spec.alpha$regex_spec_impl$reify__1200 0x54ba9618 "clojure.spec.alpha$regex_spec_impl$reify__1200@54ba9618"], :value ([{:a b} {:a 10}] b), :args ([{:a b} {:a 10}] b)}, compiling:(/home/ollie/code.clj:20:1)</pre><p>That&#8217;s much better! Suddenly you don&#8217;t have to run a REPL in your brain to understand what went wrong, the machine is telling you exactly what is wrong, where and what you can do instead. It may not be as succinct as Elm, but the information at the start is just as useful.</p>
+<h2>Integration</h2>
+<p>Luckily, expound happens to be extremely easy to use. Hopefully we can make that easier by including it by default in a lot of beginner friendly code too. The README does a great job of explaining how to use it.</p>
+<blockquote><p>Replace calls to <code>clojure.spec.alpha/explain</code> with <code>expound.alpha/expound</code> and to <code>clojure.spec.alpha/explain-str</code> with <code>expound.alpha/expound-str</code>.</p></blockquote>
+<p>If you don&#8217;t use <em>explain</em> directly and you&#8217;d like <em>all</em> spec errors to be run through expound (including those from Clojure the language), then you can hook it in globally like the following snippet. I&#8217;d recommend running this within your <em>(ns user)</em> before your REPL loads or in the <em>main</em> ns of your application before it starts up.</p><pre class="crayon-plain-tag">(ns user
+  (:require [clojure.spec.alpha :as s]
+            [expound.alpha :as expound]))
+ 
+;; If you're doing this in the user ns for your repl...
+(alter-var-root #'s/*explain-out* (constantly expound/printer))
+
+;; Otherwise, you can use the method from the README.
+(set! s/*explain-out* expound/printer)</pre><p>Now any spec error generated from here on out will be formatted for human consumption by expound, excellent!</p>
+<p>I doubt I&#8217;m alone in thinking that I&#8217;d love this to be the default within Clojure or at least extremely widespread in it&#8217;s usage. Much like figwheel for ClojureScript projects, we would always use expound alongside our specs. Maybe CIDER could be a good entry point for this addition.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2017/10/18/taming-clojure-spec-with-expound/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>My new prompt (oh-my-zsh)</title>
+		<link>/2015/08/03/my-new-prompt-oh-my-zsh/</link>
+		<comments>/2015/08/03/my-new-prompt-oh-my-zsh/#comments</comments>
+		<pubDate>Mon, 03 Aug 2015 19:53:17 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Uncategorised]]></category>
+
+		<guid isPermaLink="false">/?p=372</guid>
+		<description><![CDATA[I&#8217;ve rewritten this in fish shell functions since writing this, you can find that in a gist. I&#8217;ve been thinking about my terminal prompt recently, more specifically my oh-my-zsh theme and what I actually need it to show. I&#8217;ve been using the &#8220;clean&#8221; theme since I began using oh-my-zsh but I&#8217;ve realised I basically ignored <a class="read-more" href="/2015/08/03/my-new-prompt-oh-my-zsh/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>I&#8217;ve rewritten this in fish shell functions since writing this, you can find that in <a href="https://gist.github.com/Olical/1491b2072f0daf84072a">a gist</a>.</p>
+<hr />
+<p>I&#8217;ve been thinking about my terminal prompt recently, more specifically my <a href="http://ohmyz.sh/">oh-my-zsh</a> theme and what I actually need it to show. I&#8217;ve been using the &#8220;clean&#8221; theme since I began using oh-my-zsh but I&#8217;ve realised I basically ignored the information it&#8217;s showing me most of the time.</p>
+<p>I type gs continually to check my git status (provided by the wonderful <a href="https://github.com/robbyrussell/oh-my-zsh/blob/master/plugins/git/git.plugin.zsh">oh-my-zsh git plugin</a>) and know which terminal is in which directory (most of the time). I&#8217;d rather have something much more concise since I can type a small command to get the information I need when I need it.</p>
+<p>So I&#8217;ve written my own little theme that displays a single lambda (<span lang="el" xml:lang="el"><a href="https://en.wikipedia.org/wiki/Lambda">λ</a></span>) character. No matter what. If it&#8217;s underlined, my git status is dirty, if it&#8217;s red the last command had a bad exist status. Otherwise it&#8217;s green. I could make it bold or italic in some special cases too, I just haven&#8217;t found a use for those just yet.</p>
+<p>Whenever I need to know where I am I execute the other great oh-my-zsh command, d, to list my directory stack. With regards to navigating that stack, you can use &#8220;cd -&#8221; to jump to the previous directory, or &#8220;cd -{index}&#8221; to jump to the directory at the given index.</p>
+<p>Here it is in action.</p>
+<p><script id="asciicast-csscyrm562d1xw6wb0pdooidz" src="https://asciinema.org/a/csscyrm562d1xw6wb0pdooidz.js" async="" type="text/javascript"></script>I hope you like the minimalistic approach I&#8217;ve taken, it feels quite refreshing to have a slightly faster prompt (I think) that stays consistent after each command. You can find it in my <a href="https://github.com/Olical/dotfiles">dotfiles</a>, but I&#8217;ve inserted it below as well. The oh-my-zsh documentation shows you <a href="https://github.com/robbyrussell/oh-my-zsh/wiki/Customization">how to add custom themes</a>.<script src="https://gist.github.com/Olical/4775599ee271128b939b.js"></script></p>
+]]></content:encoded>
+			<wfw:commentRss>/2015/08/03/my-new-prompt-oh-my-zsh/feed/</wfw:commentRss>
+		<slash:comments>2</slash:comments>
+		</item>
+		<item>
+		<title>Things I learned about Docker the hard way</title>
+		<link>/2015/05/07/things-i-learned-about-docker-the-hard-way/</link>
+		<comments>/2015/05/07/things-i-learned-about-docker-the-hard-way/#respond</comments>
+		<pubDate>Thu, 07 May 2015 12:11:34 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Uncategorised]]></category>
+		<category><![CDATA[docker]]></category>
+
+		<guid isPermaLink="false">/?p=337</guid>
+		<description><![CDATA[This list was just ripped from a Google Keep item I wrote late last night, just wanted to share. A process per container is noble but hard for existing projects. Use one container if you have multiple components with a startup order / dependency. Write a script to manage the processes. When you build a <a class="read-more" href="/2015/05/07/things-i-learned-about-docker-the-hard-way/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>This list was just ripped from a Google Keep item I wrote late last night, just wanted to share.</p>
+<ul>
+<li>A process per container is noble but hard for existing projects.</li>
+<li>Use one container if you have multiple components with a startup order / dependency.</li>
+<li>Write a script to manage the processes.</li>
+<li>When you build a directory with a Dockerfile it will push the entire content of that directory into tmp.</li>
+<li>I tried it with a big thing, overflowed tmp and tried to fill up my root partition.</li>
+<li>Have a context directory which is almost empty, that&#8217;s where you put your Dockerfile and anything you need to ADD.</li>
+<li>Docker compose link doesn&#8217;t wire the exposed ports together on the same localhost / interface. It gives you a host in /etc/hosts that you must point to by name. I wasted days thinking two containers could somehow mesh their ports together.</li>
+<li>This means you have to be able to configure the addresses of every link between components, sometimes that&#8217;s awkward.</li>
+<li>Save time and hair, use one container with a process management script. Keep the Dockerfile in it&#8217;s own small directory.</li>
+<li>Use volumes through docker compose for things like your npm cache. It works wonders. I have a data directory where I mount all volumes. Including the entire root directory.</li>
+<li>A process inside the container may just refuse connections and give you &#8220;reset by peer&#8221; errors. This is because it&#8217;s bound to localhost, bind it to 0.0.0.0. I&#8217;ve only seen it happen with some processes for some reason though. Others are okay with localhost.</li>
+</ul>
+]]></content:encoded>
+			<wfw:commentRss>/2015/05/07/things-i-learned-about-docker-the-hard-way/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

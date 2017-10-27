@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	
+	>
+<channel>
+	<title>Comments on: Use verbose naming in JavaScript</title>
+	<atom:link href="/2013/07/17/use-verbose-naming-in-javascript/feed/" rel="self" type="application/rss+xml" />
+	<link>/2013/07/17/use-verbose-naming-in-javascript/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Mon, 22 May 2017 19:57:20 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>By: kybernetikos</title>
+		<link>/2013/07/17/use-verbose-naming-in-javascript/#comment-79</link>
+		<dc:creator><![CDATA[kybernetikos]]></dc:creator>
+		<pubDate>Mon, 04 Nov 2013 20:01:00 +0000</pubDate>
+		<guid isPermaLink="false">/2013/07/17/use-verbose-naming-in-javascript#comment-79</guid>
+		<description><![CDATA[I really dislike &#039;on&#039; and especially &#039;off&#039; on emitters, but then again, we want our code to feel familiar to other developers...  
+
+&#039;addListener&#039; expresses intent better, but if a developer already knows what &#039;on&#039; does, that communicates intent even better than &#039;addListener&#039; where they might have to go &#039;hmm, does this do the same thing as the &quot;on&quot; function that I know, or something different&#039;.]]></description>
+		<content:encoded><![CDATA[<p>I really dislike &#8216;on&#8217; and especially &#8216;off&#8217; on emitters, but then again, we want our code to feel familiar to other developers&#8230;  </p>
+<p>&#8216;addListener&#8217; expresses intent better, but if a developer already knows what &#8216;on&#8217; does, that communicates intent even better than &#8216;addListener&#8217; where they might have to go &#8216;hmm, does this do the same thing as the &#8220;on&#8221; function that I know, or something different&#8217;.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Agreement</title>
+		<link>/2013/07/17/use-verbose-naming-in-javascript/#comment-77</link>
+		<dc:creator><![CDATA[Agreement]]></dc:creator>
+		<pubDate>Sun, 29 Sep 2013 22:13:00 +0000</pubDate>
+		<guid isPermaLink="false">/2013/07/17/use-verbose-naming-in-javascript#comment-77</guid>
+		<description><![CDATA[I&#039;ve seen this so many times, so have to agree. Verbosity, ftw.
+
+]]></description>
+		<content:encoded><![CDATA[<p>I&#8217;ve seen this so many times, so have to agree. Verbosity, ftw.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Donniel Thomas</title>
+		<link>/2013/07/17/use-verbose-naming-in-javascript/#comment-66</link>
+		<dc:creator><![CDATA[Donniel Thomas]]></dc:creator>
+		<pubDate>Mon, 29 Jul 2013 18:44:00 +0000</pubDate>
+		<guid isPermaLink="false">/2013/07/17/use-verbose-naming-in-javascript#comment-66</guid>
+		<description><![CDATA[Good article, and I love how you&#039;ve conveyed your conclusions, arguments and examples in a short, easy-to-digest post!]]></description>
+		<content:encoded><![CDATA[<p>Good article, and I love how you&#8217;ve conveyed your conclusions, arguments and examples in a short, easy-to-digest post!</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: DimitrisK</title>
+		<link>/2013/07/17/use-verbose-naming-in-javascript/#comment-63</link>
+		<dc:creator><![CDATA[DimitrisK]]></dc:creator>
+		<pubDate>Mon, 29 Jul 2013 10:37:00 +0000</pubDate>
+		<guid isPermaLink="false">/2013/07/17/use-verbose-naming-in-javascript#comment-63</guid>
+		<description><![CDATA[I like it. I do exactly the same. The code get better documented right on site, without having to look all around or pray for some comments explaining what the hell is going in there.]]></description>
+		<content:encoded><![CDATA[<p>I like it. I do exactly the same. The code get better documented right on site, without having to look all around or pray for some comments explaining what the hell is going in there.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Mark Petherbridge</title>
+		<link>/2013/07/17/use-verbose-naming-in-javascript/#comment-62</link>
+		<dc:creator><![CDATA[Mark Petherbridge]]></dc:creator>
+		<pubDate>Mon, 29 Jul 2013 09:07:00 +0000</pubDate>
+		<guid isPermaLink="false">/2013/07/17/use-verbose-naming-in-javascript#comment-62</guid>
+		<description><![CDATA[Nice article. :)]]></description>
+		<content:encoded><![CDATA[<p>Nice article. 🙂</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

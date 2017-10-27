@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>vim-expand &#8211; Oliver Caldwell&#039;s blog</title>
+	<atom:link href="/tag/vim-expand/feed/" rel="self" type="application/rss+xml" />
+	<link>/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Wed, 18 Oct 2017 13:50:23 +0000</lastBuildDate>
+	<language>en-GB</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>vim-expand, my second {plugin,bundle}!</title>
+		<link>/2014/12/10/vim-expand-my-second-pluginbundle/</link>
+		<comments>/2014/12/10/vim-expand-my-second-pluginbundle/#respond</comments>
+		<pubDate>Wed, 10 Dec 2014 22:37:03 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Projects]]></category>
+		<category><![CDATA[Text Editors]]></category>
+		<category><![CDATA[Vim]]></category>
+		<category><![CDATA[plugin]]></category>
+		<category><![CDATA[vim]]></category>
+		<category><![CDATA[vim-expand]]></category>
+
+		<guid isPermaLink="false">/?p=244</guid>
+		<description><![CDATA[So I just pushed up my second ever Vim plugin, vim-expand. It allows you to expand things like {foo,bar}, {1..10} and $HOME inline with a single command. It&#8217;s not just limited to single lines though, you can also execute it on a visual range! Here&#8217;s a quick video of it in action. There&#8217;s way more <a class="read-more" href="/2014/12/10/vim-expand-my-second-pluginbundle/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>So I just pushed up my second ever Vim plugin, <a href="https://github.com/Wolfy87/vim-expand">vim-expand</a>. It allows you to expand things like {foo,bar}, {1..10} and $HOME inline with a single command. It&#8217;s not just limited to single lines though, you can also execute it on a visual range! Here&#8217;s a quick video of it in action.</p>
+<p><script id="asciicast-14558" src="https://asciinema.org/a/14558.js" async="" type="text/javascript"></script></p>
+<p>There&#8217;s way more information in the repository, so have a read through that. I hope it comes in useful for others some day, it&#8217;s been useful for me a few times already!</p>
+]]></content:encoded>
+			<wfw:commentRss>/2014/12/10/vim-expand-my-second-pluginbundle/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

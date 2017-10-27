@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>lazy &#8211; Oliver Caldwell&#039;s blog</title>
+	<atom:link href="/tag/lazy/feed/" rel="self" type="application/rss+xml" />
+	<link>/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Wed, 18 Oct 2017 13:50:23 +0000</lastBuildDate>
+	<language>en-GB</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>Lazy arrays in JavaScript</title>
+		<link>/2015/05/31/lazy-arrays-in-javascript/</link>
+		<comments>/2015/05/31/lazy-arrays-in-javascript/#comments</comments>
+		<pubDate>Sun, 31 May 2015 11:28:23 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[JavaScript]]></category>
+		<category><![CDATA[Projects]]></category>
+		<category><![CDATA[arrays]]></category>
+		<category><![CDATA[clojure]]></category>
+		<category><![CDATA[lazy]]></category>
+		<category><![CDATA[lisp]]></category>
+		<category><![CDATA[seq]]></category>
+
+		<guid isPermaLink="false">/?p=343</guid>
+		<description><![CDATA[So I built a thing called lazy-array. It came off the back of a tiny gist and grew into something quite powerful (if I do say so myself). This project allows you to define lazy arrays in JavaScript, surprisingly enough, but what are they? Lazy arrays A lazy array is a sort of collection that <a class="read-more" href="/2015/05/31/lazy-arrays-in-javascript/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>So I built a thing called <a href="https://github.com/Wolfy87/lazy-array">lazy-array</a>. It came off the back of <a href="https://gist.github.com/Wolfy87/75b435fce2091f79155e">a tiny gist</a> and grew into something quite powerful (if I do say so myself). This project allows you to define lazy arrays in JavaScript, surprisingly enough, but what are they?</p>
+<h3>Lazy arrays</h3>
+<p>A lazy array is a sort of collection that doesn&#8217;t actually do or contain anything until it&#8217;s absolutely necessary. So a lazy <a href="http://clojure.org/sequences">sequence</a> in Clojure will do as little as possible until required. I&#8217;ve actually modelled my implementation on that of <a href="http://theatticlight.net/posts/Lazy-Sequences-in-Clojure/">Clojure&#8217;s lazy sequences</a>.</p>
+<p>This allows you to represent things that don&#8217;t exist yet or are infinite, such as the entire Fibonacci sequence. That&#8217;s a powerful concept that I want to explore a little within the JavaScript UI space.</p>
+<h3>This implementation</h3>
+<p>My implementation actually works fine with vanilla arrays as well as the lazy variety, so my library ends up being a set of array manipulation functions (like map and filter) that evaluate at the last possible moment and can consume infinite lazy arrays of all positive integers, for example.</p>
+<p>A map or filter over a value would not yield another value, they produce another lazy array and don&#8217;t actually execute anything at the time. They only resolve when you force them to using the <em>all</em> function or you request a specific item from the array (like the first or 10th). The results of a lazy array instance are also cached and used the next time it&#8217;s requested, just like Clojure, so that&#8217;s worth bearing in mind. I haven&#8217;t seen it cause issues, but it should in theory make repeated calls to things very fast.</p>
+<blockquote class="twitter-tweet" lang="en">
+<p dir="ltr" lang="en"><a href="https://twitter.com/OliverCaldwell">@OliverCaldwell</a> <a href="https://twitter.com/closuresaddict">@closuresaddict</a> I think you now which route I favour. Once you&#8217;ve amassed enough lipstick, it&#8217;s time to get rid of the pig.</p>
+<p>— MacroServices (@krisajenkins) <a href="https://twitter.com/krisajenkins/status/602045724164038657">May 23, 2015</a></p></blockquote>
+<p><script src="//platform.twitter.com/widgets.js" async="" charset="utf-8"></script></p>
+<p>Well said, <a href="https://twitter.com/krisajenkins">Kris</a>. This is more lipstick. I hope it&#8217;s good lipstick.</p>
+<h3>Fibonacci: The classic</h3>
+<p>Every time someone discusses laziness they create an example using the Fibonacci sequence, this is no exception. I&#8217;m going to port this little Clojure implementation from <a href="http://en.wikibooks.org/wiki/Clojure_Programming/Examples/Lazy_Fibonacci">a wiki</a> to lazy-array.</p><pre class="crayon-plain-tag">(defn fib [a b] (lazy-seq (cons a (fib b (+ a b)))))
+
+
+(take 5 (fib 1 1))
+
+;; Results in: (1 1 2 3 5)</pre><p>The Clojure implementation is very elegant, fitting for such a lovely language. When a lazy sequence is printed to the command line in Clojure it is automatically resolved, so they didn&#8217;t have to use <em>doall</em>, in the following JavaScript example I will use my equivalent to Clojure&#8217;s <em>doall</em>, <em>all</em>, just to illustrate how it would actually be expanded.</p><pre class="crayon-plain-tag">'use strict';
+
+var assert = require('assert');
+var larr = require('..');
+
+/**
+ * Creates a lazy array that generates the Fibonacci sequence. Requires you to
+ * pass in the initial numbers, probably 1 and 1.
+ *
+ * @param {Number} a
+ * @param {Number} b
+ * @return {LazyArray}
+ */
+function fib(a, b) {
+    return larr.create(function () {
+        return larr.cons(a, fib(b, a + b));
+    });
+}
+
+describe('fib', function () {
+    var f;
+
+    beforeEach(function () {
+        f = fib(1, 1);
+    });
+
+    it('should provide the 50th number in the sequence', function () {
+        // Actually at index 49 since nth is zero indexed.
+        var fib50 = 12586269025;
+        assert.strictEqual(larr.nth(f, 49), fib50);
+    });
+
+    it('should provide the 10th to the 20th', function () {
+        // Actually drop 9 and take 11 to get this result.
+        var fib10to20 = [
+            55,
+            89,
+            144,
+            233,
+            377,
+            610,
+            987,
+            1597,
+            2584,
+            4181,
+            6765
+        ];
+
+        var actual = larr.all(larr.take(11, larr.drop(9, f)));
+        assert.deepEqual(actual, fib10to20);
+    });
+});</pre><p>So that&#8217;s an actual test that I&#8217;ve just added to the project which showcases a lot of the functionality. The most interesting thing is the simplicity of the <em>fib</em> function which creates the lazy array. You may say &#8220;well a recursive solution would also be that succinct&#8221; <strong>but</strong>, a recursive solution would eventually blow up since JavaScript does not have <a href="http://en.wikipedia.org/wiki/Tail_call">tail call optimisation</a> (<a href="http://www.reddit.com/r/javascript/comments/162tth/javascript_es6_has_tail_call_optimization/">yet</a>). Thanks to a single tiny while loop inside one of my functions, lazy arrays can just keep going. So at the very least lazy-array allows you to do sort of tail call optimised recursion in JavaScript.</p>
+<h3>Applications within the UI</h3>
+<p>I don&#8217;t know about you, but I don&#8217;t get to write numerical sequences for a living (boo). We JavaScript frontend wranglers deal with events, networking and state all day long, so building this had me wondering if I could apply laziness to the UI domain. The more I thought about this concept and talked with colleagues about it I realised that I&#8217;m essentially heading towards <a href="http://en.wikipedia.org/wiki/Functional_reactive_programming">functional reactive programming</a>, with <a href="https://baconjs.github.io/">bacon.js</a> as a JavaScript example.</p>
+<p>I think it&#8217;s cool that I&#8217;m heading towards this same realm of reactivity pretty much by accident, it&#8217;s the natural progression once you&#8217;ve got the core functions down I feel. I don&#8217;t know how I could use lazy arrays to replace something such as bacon.js just yet, but we can still use laziness for more practical problems. Suppose we were building a calendar, we could model every day <em>ever</em> as part of an infinite lazy sequence. Then we can run that through a lazy map to convert those raw <em>new Date()</em> instances into pretty strings. Here&#8217;s another test file I added to the repository to illustrate this.</p><pre class="crayon-plain-tag">'use strict';
+
+var assert = require('assert');
+var larr = require('..');
+
+// Amount of milliseconds in a day.
+var DAY = 86400000;
+
+/**
+ * Creates an infinite lazy array of all possible times using a given start
+ * date and step timestamp. Providing a negative step will make it go
+ * backwards.
+ *
+ * @param {Date} now
+ * @param {Number} step
+ */
+function dates(now, step) {
+    return larr.create(function () {
+        var next = new Date(now.getTime() + step);
+        return larr.cons(now, dates(next, step));
+    });
+}
+
+describe('date', function () {
+    var start = new Date('1994 Jan 27');
+    var d;
+
+    beforeEach(function () {
+        d = dates(start, DAY);
+    });
+
+    it('should have the start date as the first value', function () {
+        assert.strictEqual(larr.first(d).getTime(), start.getTime());
+    });
+
+    it('should allow me to skip forward some days', function () {
+        var future = larr.nth(d, 3);
+        assert.strictEqual(future.getTime(), new Date('1994 Jan 30').getTime());
+    });
+
+    it('should allow me to map a sequence of dates to strings', function () {
+        function str(date) {
+            return date.toDateString();
+        }
+
+        var days = larr.all(larr.map(str, larr.take(3, d)));
+        var expected = [
+            'Thu Jan 27 1994',
+            'Fri Jan 28 1994',
+            'Sat Jan 29 1994'
+        ];
+
+        assert.deepEqual(days, expected);
+    });
+});</pre><p>As you can see, a simple function can produce some interesting and powerful results. We could quite easily generate an infinite lazy array of every Thursday for the next decade. We could filter out any date that falls on the 25th and then reduce their timestamps down to a value. I don&#8217;t know why you&#8217;d want to do that, but it illustrates the point, lazy arrays allow you to do some really difficult things very easily. You just have to know when to apply them to your problem.</p>
+<h3>A long way to go</h3>
+<p>These are only the fundamentals really, I could carry on until I had ported the entire <a href="http://clojure.org/sequences#toc5">Clojure seq library</a>, which I would actually be quite happy to do. I think this could provide a powerful tool for problems that are well suited to lazy solutions, you&#8217;d just have to implement a few functions that you&#8217;re used to having to hand with other more feature rich implementations.</p>
+<p>If this receives any interest I&#8217;d put some more time into it to flesh it out, but for now I think the basics are enough. It could also really do with some documentation, but comprehensive tests and abundant JSDoc comments will have to do for now. It wouldn&#8217;t be hard to generate API documentation from the comments and supply a bunch more examples in the readme. I&#8217;d love to hear what you think and what you could imagine using these techniques for.</p>
+<p>Just imagine if this supported transducers and other such wonders too.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2015/05/31/lazy-arrays-in-javascript/feed/</wfw:commentRss>
+		<slash:comments>3</slash:comments>
+		</item>
+	</channel>
+</rss>

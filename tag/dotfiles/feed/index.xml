@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>dotfiles &#8211; Oliver Caldwell&#039;s blog</title>
+	<atom:link href="/tag/dotfiles/feed/" rel="self" type="application/rss+xml" />
+	<link>/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Wed, 18 Oct 2017 13:50:23 +0000</lastBuildDate>
+	<language>en-GB</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>Emacs: There and Back Again</title>
+		<link>/2014/11/16/emacs-there-and-back-again/</link>
+		<comments>/2014/11/16/emacs-there-and-back-again/#respond</comments>
+		<pubDate>Sun, 16 Nov 2014 19:06:17 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Emacs]]></category>
+		<category><![CDATA[Text Editors]]></category>
+		<category><![CDATA[Vim]]></category>
+		<category><![CDATA[dotfiles]]></category>
+		<category><![CDATA[emacs]]></category>
+		<category><![CDATA[vim]]></category>
+
+		<guid isPermaLink="false">/?p=227</guid>
+		<description><![CDATA[So I&#8217;m back in Vim already. I gave Emacs a few months of good usage though and tried out multiple styles of configuration. At first I tried to build my own from the ground up, a la Vim, but it was too fiddly. I found Emacs to be too big to handle cleanly for one <a class="read-more" href="/2014/11/16/emacs-there-and-back-again/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>So I&#8217;m back in Vim already. I gave Emacs a few months of good usage though and tried out multiple styles of configuration. At first I tried to build my own from the ground up, a la Vim, but it was too fiddly. I found Emacs to be too big to handle cleanly for one person, so I eventually resorted to <a href="https://github.com/syl20bnr/spacemacs">Spacemacs</a>.</p>
+<p>Spacemacs worked great and provided me with many of my normal Vim comforts. It essentially uses the space key as the leader and remaps all the functionality you could ever need, be that default or plugin, to the space key.</p>
+<p>I missed the feeling of building my own editor bit by bit however, and only Vim lets me customise a tool that starts out completely devoid of usefulness. Strangely, that&#8217;s a good thing for me. It always felt like I was suppressing some built in tooling with Emacs. Sure it&#8217;s powerful and Lisp is sexp but I couldn&#8217;t shake that &#8220;it&#8217;s just doing too much&#8221; feeling.</p>
+<p>I&#8217;m a huge advocate of the unix philosophy, and even though Vim can break it a bit, Emacs breaks it a lot. As it&#8217;s widely known, it&#8217;s essentially an operating system. Linux is my OS of choice, Vim in my text editor.</p>
+<h2>Good came out of it</h2>
+<p>Emacs is great, don&#8217;t get me wrong. I learnt a lot of useful tricks that I want to translate over to the Vim world since there&#8217;s always an equivalent. A prime example being <a href="https://github.com/emacs-helm/helm">helm</a>, it&#8217;s an excellent piece of software, who&#8217;d have thunk that uniting textual interfaces worked so well. This is where <a href="https://github.com/Shougo/unite.vim">Unite</a> steps in to fill the void in Vim. I&#8217;ve already got it hooked up in my new setup but I&#8217;ll touch on that towards the end of the post.</p>
+<p>I&#8217;ve also learnt the importance of consistent leader bindings. I won&#8217;t be rebinding core Vim functionality to my leader key (as Spacemacs does) but I will be mapping all of my plugins and functionality under common groupings. So anything to do with <a href="https://github.com/tpope/vim-fugitive">fugitive</a> (the best Vim wrapper ever, despite <a href="https://github.com/magit/magit">Magit</a> being great) is under <code>\g*</code> where the asterisk is a mnemonic key for what it&#8217;ll do. <code>\gs</code> is <code>Gstatus</code> for example.</p>
+<p>I&#8217;ve also bound <code>\gj</code> to pull and <code>\gk</code> to push, because they&#8217;re synonymous with up and down. Sure it&#8217;s not mnemonic, but it&#8217;s very Vim.</p>
+<p>So in the end, I found Emacs to be an excellent <em>platform</em> for almost anything you can imagine that can be represented with text. But I want an editor, and I kind of like Vim Script. Please don&#8217;t die from shock. It&#8217;s a horrible language, but a good DSL, in my opinion.</p>
+<h2>Rebuilding my dotfiles</h2>
+<p>All of this discovery and new found ideas prompted me to <code>rm -rf ~/dotfiles</code>, which are stored on GitHub, but still. You get the idea, I started my dotfiles again. Mostly. Go peruse my new <a href="https://github.com/Wolfy87/dotfiles">dotfiles</a> if you so wish.</p>
+<p>I discovered <a href="https://github.com/tpope/vim-sensible">vim-sensible</a> after a quick check up on tpope&#8217;s recent shenanigans. This is like the plugin equivalent of <code>set nocompatible</code>, it switches on so many basic things that every configuration should have anyway. I highly recommend it as a starting point for any new Vim configuration. I found my core Vim configuration shrink considerably since this handles pretty much everything for me.</p>
+<p>As you&#8217;ll be able to see from my repository, I&#8217;ve also swapped to a very modular configuration system. I have a few directories where every Vim Script file is automatically sourced for easy grouping of settings. I did this in my previous setup too, but I&#8217;ve taken it a step further by doing it for bundles too. If I create a file in a certain directory with the same name as a currently installed bundle, it&#8217;ll be sourced at the appropriate time.</p>
+<p>On the subject of bundles, I also swapped from <a href="https://github.com/gmarik/Vundle.vim">Vundle</a> to <a href="https://github.com/Shougo/neobundle.vim">NeoBundle</a>. It originally started as a fork but the underlying principals of it appear to be slowly shifting away from it&#8217;s parent project. I like the parallelism among other things. It&#8217;s definitely a lot quicker, obviously. It delegates to <a href="https://github.com/Shougo/vimproc.vim">vimproc</a> to get those installs running in parallel, which is worth the required <code>make</code> command after installation.</p>
+<p>One key point of this new setup is the fact that it can be installed and linked in with a single bash script. It works incredibly well, check out the readme for more detailed information on the inner workings of my new tooling.</p>
+<h2>Please copy things</h2>
+<p>This is what I hope others will obtain from this post and the actual repository: Take as much as you can from my work, fork if you wish. Just please learn something from it. This is like spring cleaning for my tools, I can&#8217;t wait to refine them over the coming year, especially Vim. I want my changes to inspire others to improve their tooling too.</p>
+<p>Our dotfiles grow and adapt with us, organically, after long enough the fundamental principals need updating which prompts a rebuild such as mine. It&#8217;s refreshing and exciting, I wonder what my next rewrite, possibly years from now, will look like.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2014/11/16/emacs-there-and-back-again/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Spacemacs: Emacs + Vim</title>
+		<link>/2014/11/06/spacemacs-emacs-vim/</link>
+		<comments>/2014/11/06/spacemacs-emacs-vim/#comments</comments>
+		<pubDate>Thu, 06 Nov 2014 08:30:00 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Emacs]]></category>
+		<category><![CDATA[Text Editors]]></category>
+		<category><![CDATA[Vim]]></category>
+		<category><![CDATA[dotfiles]]></category>
+		<category><![CDATA[emacs]]></category>
+		<category><![CDATA[spacemacs]]></category>
+		<category><![CDATA[vim]]></category>
+
+		<guid isPermaLink="false">/?p=222</guid>
+		<description><![CDATA[This post is pretty rough around the edges. I wrote it in Google keep as notes I intended to write up and eventually publish nicely but I don&#8217;t have the time. I&#8217;ve done what I can from my phone but I just wanted to get it out there. I hope you find it useful! What <a class="read-more" href="/2014/11/06/spacemacs-emacs-vim/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p><em>This post is pretty rough around the edges. I wrote it in Google keep as notes I intended to write up and eventually publish nicely but I don&#8217;t have the time. I&#8217;ve done what I can from my phone but I just wanted to get it out there. I hope you find it useful!</em></p>
+<hr/>
+<p>What do you get if you put Vim, Emacs and a dash of pneumonic / consistent key bindings in a blender? A blender full of inedible computer parts, but also <a href="https://github.com/syl20bnr/spacemacs">spacemacs</a>. Go skim the readme first, its like a starter kit for Emacs that emulates Vim incredibly well.</p>
+<p>Things that are hard to get over: Unlearning escape and using fd (still ironing out bugs). Using space for everything, unlearning :w and using SPCfs. SPCgs for git status (magit). SPCph for projectile.</p>
+<p>Configuration layers are excellent. I have my local one and will (eventually) push it upstream for people to hook into. You can activate them by adding the name to the list in <em>~/.spacemacs</em>. Easy.</p>
+<p>It&#8217;s neither Vim nor Emacs. It&#8217;s this cool blend that&#8217;s a little hard to get your head around at first but I think Sylvain, the author, is correct: The best editor is a mix of the two. You have the commands of Emacs with the modal keys of Vim. The huge buster sword of Emacs combined with the subtle dagger of Vim.</p>
+<p>I&#8217;m trying to make JavaScript badass out of the box in the core repository, but using my overlay makes it even better. Or so I feel anyway. I&#8217;m really happy with my JavaScript setup right now. A lot of the changes I built into my layer were actually pulled into the core anyway, so my layer has been getting smaller and smaller.</p>
+<p>When you find yourself holding a modifier for something, M-x for example, hit SPC? and check if there&#8217;s a space leader binding for it. In the case of M-x that would be SPC:. Emacs is not modal in any way, so when you have to use default emacs bindings now and again it feels odd. Vim has some things that are not modal too, such as window management. Spacemacs seems to do a better job than Vim in some places. Everything&#8217;s modal. If it isn&#8217;t, make it modal and PR it in.</p>
+<p>You shouldn&#8217;t even need Ex mode a lot of the time! I&#8217;d highly recommend giving it a go if you are a fan of either editor.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2014/11/06/spacemacs-emacs-vim/feed/</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+		</item>
+		<item>
+		<title>Making package.el behave like Vundle</title>
+		<link>/2014/10/20/making-package-el-behave-like-vundle/</link>
+		<comments>/2014/10/20/making-package-el-behave-like-vundle/#respond</comments>
+		<pubDate>Mon, 20 Oct 2014 21:10:27 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Emacs]]></category>
+		<category><![CDATA[Emacs Lisp]]></category>
+		<category><![CDATA[Lisp]]></category>
+		<category><![CDATA[Text Editors]]></category>
+		<category><![CDATA[Vim]]></category>
+		<category><![CDATA[dotfiles]]></category>
+		<category><![CDATA[emacs]]></category>
+		<category><![CDATA[git]]></category>
+		<category><![CDATA[package.el]]></category>
+		<category><![CDATA[vim]]></category>
+
+		<guid isPermaLink="false">/?p=198</guid>
+		<description><![CDATA[I love Vundle, it allows me to specify a list of packages within my dotfiles repository that is kept up to date and in sync with every other machine I use Vim on. The key point with this is that I can remove a package from all machines by simply deleting the line from my <a class="read-more" href="/2014/10/20/making-package-el-behave-like-vundle/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>I love <a href="https://github.com/gmarik/Vundle.vim">Vundle</a>, it allows me to specify a list of packages within my <a href="https://github.com/Wolfy87/dotfiles">dotfiles repository</a> that is kept up to date and in sync with every other machine I use Vim on. The key point with this is that I can remove a package from all machines by simply deleting the line from my configuration.</p><pre class="crayon-plain-tag">" Load Vundle. Manages all of the bundles.
+filetype off
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+" So Vundle can update itself.
+Plugin 'gmarik/Vundle.vim'
+
+" Colour scheme.
+Plugin 'jonathanfilip/vim-lucius'
+
+" Plugins without settings.
+Plugin 'PeterRincker/vim-argumentative'
+Plugin 'Wolfy87/vim-enmasse'
+Plugin 'helino/vim-json'
+
+
+" I have a lot, so I'll skip a few...
+
+
+Plugin 'myusuf3/numbers.vim'
+  nnoremap &lt;leader&gt;l :NumbersToggle&lt;CR&gt;
+
+" Enable some syntax settings that had to be disabled for Vundle.
+call vundle#end()
+filetype plugin indent on</pre><p>Package management through <em>~/.*rc</em> files is the Shih Tzu. Sadly, <a href="http://wikemacs.org/wiki/Package.el">package.el</a> doesn&#8217;t seem to do this and expects me to use some silly text based menu as well as remembering to keep every single one of my packages in sync. If I remove it from one, I need to remove it from the rest by hand. <strong>NO.</strong></p>
+<p>I&#8217;m not having any of that.</p>
+<h2>Installing missing packages</h2>
+<p>This one&#8217;s easy enough to solve and many people have many solutions. I have a function, <a href="https://github.com/Wolfy87/dotfiles/blob/88926d0f8ad581f4a4953d6fdea40d812638b17d/emacs/init.el#L97-L103"><em>dotfiles-sync</em></a>, which will get the latest package lists from <a href="http://melpa.milkbox.net/">MELPA</a> (and a few others) and installs all packages I currently don&#8217;t have locally. Simple enough and very effective, even if it does require a few reboots to get them all installed, still trying to work that one out.</p><pre class="crayon-plain-tag">;; Main package list to fetch from melpa.
+(defvar dotfiles-packages
+  '(evil
+    evil-args
+    evil-nerd-commenter
+    ;; WAY MORE PACKAGES...
+    ))
+
+;; Package manager configuration.
+(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
+                         ("marmalade" . "http://marmalade-repo.org/packages/")
+                         ("melpa" . "http://melpa.milkbox.net/packages/")))
+(package-initialize)
+
+(defun dotfiles-sync ()
+  "Install packages."
+  (interactive)
+  (package-refresh-contents)
+  (dolist (p dotfiles-packages)
+    (when (not (package-installed-p p))
+      (package-install p))))
+
+;; A macro from milkbox.net to make load hooks easier.
+(defmacro after (mode &amp;rest body)
+  "`eval-after-load' MODE evaluate BODY."
+  (declare (indent defun))
+  `(eval-after-load ,mode
+     '(progn ,@body)))
+
+;; Individual package configuration.
+(defvar evil-want-C-u-scroll t)
+(after `evil-autoloads
+  (evil-mode t))
+
+(after `evil-args-autoloads
+  ;; Bind evil-args text objects.
+  (define-key evil-inner-text-objects-map "a" 'evil-inner-arg)
+  (define-key evil-outer-text-objects-map "a" 'evil-outer-arg)
+
+  ;; Bind evil-forward/backward-args.
+  (define-key evil-normal-state-map "L" 'evil-forward-arg)
+  (define-key evil-normal-state-map "H" 'evil-backward-arg)
+  (define-key evil-motion-state-map "L" 'evil-forward-arg)
+  (define-key evil-motion-state-map "H" 'evil-backward-arg)
+
+  ;; Bind evil-jump-out-args.
+  (define-key evil-normal-state-map "K" 'evil-jump-out-args))
+
+(after `evil-nerd-commenter-autoloads
+  (evilnc-default-hotkeys))
+
+;; WAY MORE PACKAGE CONFIGURATION</pre><p>So here I have a list of packages, a function to fetch them and a macro that I use to wait until each package is loaded before I configure them. To update my packages I have to go into the text based menu, mark out of date packages for upgrade and then execute it all (<em>M-x list-packages RET U x</em>). Despite this being cumbersome and annoying, this appears to be the only way right now.</p>
+<h2>The other problem, pruning</h2>
+<p>So I can install and update fairly easily, albeit not perfectly, but I&#8217;m still lacking the ability to prune old packages that I no longer have listed in my <em>init.el</em> file. My only main requirement for this process is that it executes as part of my synchronisation. Luckily the problem frustrated me enough to construct a solution, now my Emacs package management isn&#8217;t that far behind that of Vim / Vundle&#8217;s, but it still doesn&#8217;t feel quite a smooth. I&#8217;ll take what I can get.</p><pre class="crayon-plain-tag">;; Package pruning tools.
+(defun flatten (mylist)
+  "Flatten MYLIST, taken from http://rosettacode.org/wiki/Flatten_a_list#Emacs_Lisp for sanity."
+  (cond
+   ((null mylist) nil)
+   ((atom mylist) (list mylist))
+   (t
+    (append (flatten (car mylist)) (flatten (cdr mylist))))))
+
+(defun filter (predicate subject)
+  "Use PREDICATE to filter SUBJECT and return the result."
+  (delq nil
+        (mapcar (lambda (x) (and (funcall predicate x) x)) subject)))
+
+(defun get-package-name (package)
+  "Fetch the symbol name of a PACKAGE."
+  (car package))
+
+(defun get-package-version (package)
+  "Return the version string for PACKAGE."
+  (package-version-join (aref (cdr package) 0)))
+
+(defun get-package-dependencies (package)
+  "Fetch the symbol list of PACKAGE dependencies."
+  (mapcar 'car (elt (cdr package) 1)))
+
+(defun get-packages-dependency-tree (packages)
+  "Recursively fetch all dependencies for PACKAGES and return a tree of lists."
+  (mapcar (lambda (package)
+            (list (get-package-name package)
+                  (get-packages-dependency-tree (get-package-dependencies package))))
+          (get-packages-as-alist packages)))
+
+(defun get-packages-as-alist (packages)
+  "Return the list of PACKAGES symbols as an alist, containing version and dependency information."
+  (filter (lambda (n) (car (member (car n) packages))) package-alist))
+
+(defun get-all-current-dependencies (packages)
+  "Return all packages found in PACKAGES with their dependencies recursively."
+  (delq nil (delete-dups (flatten (get-packages-dependency-tree packages)))))
+
+(defun get-all-obsolete-packages (packages)
+  "Return all packages in an alist which are not contained in PACKAGES."
+  (filter (lambda (n) (not (member (car n) (get-all-current-dependencies packages)))) package-alist))
+
+(defun prune-installed-packages (packages)
+  "Delete all packages not listed or depended on by anything in PACKAGES."
+  (mapc (lambda (n)
+          (package-delete
+           (symbol-name (get-package-name n))
+           (get-package-version n)))
+        (get-all-obsolete-packages packages)))</pre><p>I then amended my <a href="https://github.com/Wolfy87/dotfiles/blob/d24591ebd7b3a36f629fb5a4ebd921c72f2b5b91/emacs/init.el#L104-L111"><em>dotfiles-sync</em></a> function to prune my old packages by adding one line. Fantastic.</p><pre class="crayon-plain-tag">(defun dotfiles-sync ()
+  "Install packages."
+  (interactive)
+  (prune-installed-packages dotfiles-packages) ;; &lt;-- THIS ONE :D
+  (package-refresh-contents)
+  (dolist (p dotfiles-packages)
+    (when (not (package-installed-p p))
+      (package-install p))))</pre><p>I hope others will find this useful, I sure feel safer in the knowledge that packages I no longer list in my repository will be removed on my next synchronisation. You can just rip my code from this post, but I suppose I could turn it into a package if there was any real interest in it.</p>
+<p>Edit: I created a <a href="https://www.reddit.com/r/emacs/comments/2jtojf/packageel_didnt_prune_my_unused_packages_so_i/">post</a> on the Emacs subreddit in which syl20bnr ran with the idea and made it far better. The concept can now be found within <a href="https://github.com/syl20bnr/spacemacs/blob/c517424032a9f43e1365d9f157dc246b38debda1/core/contribsys.el#L245-L270">the spacemacs repository</a> and it looks great!</p>
+]]></content:encoded>
+			<wfw:commentRss>/2014/10/20/making-package-el-behave-like-vundle/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

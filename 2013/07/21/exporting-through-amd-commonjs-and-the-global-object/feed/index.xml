@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	
+	>
+<channel>
+	<title>Comments on: Exporting through AMD, CommonJS and the global object</title>
+	<atom:link href="/2013/07/21/exporting-through-amd-commonjs-and-the-global-object/feed/" rel="self" type="application/rss+xml" />
+	<link>/2013/07/21/exporting-through-amd-commonjs-and-the-global-object/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Mon, 22 May 2017 19:57:20 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>By: Pierre Roudaut</title>
+		<link>/2013/07/21/exporting-through-amd-commonjs-and-the-global-object/#comment-307</link>
+		<dc:creator><![CDATA[Pierre Roudaut]]></dc:creator>
+		<pubDate>Wed, 03 May 2017 08:45:00 +0000</pubDate>
+		<guid isPermaLink="false">/2013/07/21/exporting-through-amd-commonjs-and-the-global-object#comment-307</guid>
+		<description><![CDATA[Is there a way to support ES6 Modules as well ?]]></description>
+		<content:encoded><![CDATA[<p>Is there a way to support ES6 Modules as well ?</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Alexej Yaroshevich</title>
+		<link>/2013/07/21/exporting-through-amd-commonjs-and-the-global-object/#comment-154</link>
+		<dc:creator><![CDATA[Alexej Yaroshevich]]></dc:creator>
+		<pubDate>Sat, 18 Jul 2015 20:58:00 +0000</pubDate>
+		<guid isPermaLink="false">/2013/07/21/exporting-through-amd-commonjs-and-the-global-object#comment-154</guid>
+		<description><![CDATA[It&#039;s not working for new env. https://babeljs.io/docs/faq/#why-is-this-being-remapped-to-undefined-
+
+.call(this) becomes .call(undefined) after babelifying. ;-(]]></description>
+		<content:encoded><![CDATA[<p>It&#8217;s not working for new env. <a href="https://babeljs.io/docs/faq/#why-is-this-being-remapped-to-undefined-" rel="nofollow">https://babeljs.io/docs/faq/#why-is-this-being-remapped-to-undefined-</a></p>
+<p>.call(this) becomes .call(undefined) after babelifying. ;-(</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>blasphemy &#8211; Oliver Caldwell&#039;s blog</title>
+	<atom:link href="/tag/blasphemy/feed/" rel="self" type="application/rss+xml" />
+	<link>/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Wed, 18 Oct 2017 13:50:23 +0000</lastBuildDate>
+	<language>en-GB</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>Why a lover of Vim is going to try Emacs</title>
+		<link>/2014/09/16/why-a-lover-of-vim-is-going-to-try-emacs/</link>
+		<comments>/2014/09/16/why-a-lover-of-vim-is-going-to-try-emacs/#respond</comments>
+		<pubDate>Tue, 16 Sep 2014 17:45:04 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Emacs]]></category>
+		<category><![CDATA[Text Editors]]></category>
+		<category><![CDATA[Vim]]></category>
+		<category><![CDATA[blasphemy]]></category>
+		<category><![CDATA[emacs]]></category>
+		<category><![CDATA[vim]]></category>
+
+		<guid isPermaLink="false">/?p=186</guid>
+		<description><![CDATA[I&#8217;ve been using Vim for a couple of years now, despite that making up around half of my entire career, I feel like I&#8217;ve learnt it rather well. I can&#8217;t hack VimL like tpope, all hail, but I can flit around a large project and edit almost without thinking. The editor becomes a language seared <a class="read-more" href="/2014/09/16/why-a-lover-of-vim-is-going-to-try-emacs/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>I&#8217;ve been using Vim for a couple of years now, despite that making up around half of my entire career, I feel like I&#8217;ve learnt it rather well. I can&#8217;t hack VimL like tpope, <em>all hail</em>, but I can flit around a large project and edit almost without thinking. The editor becomes a language seared into your muscle memory. It&#8217;s so good I couldn&#8217;t possibly drop it for a BBOJAAIDE (Big ball of Java as an IDE).</p>
+<p>So why on earth am I going to give the forbidden Emacs a whirl? Partially because of a very good, and lengthy, discussion over twitter with <a href="https://twitter.com/krisajenkins">@krisajenkins</a> and <a href="https://twitter.com/JasonImison">@JasonImison</a> but also because of the following reasons.</p>
+<h3>Modal editing</h3>
+<p>It has an <em>excellent</em> Vim emulation plugin, I actually struggled a little to find holes in it. Obviously there are some, and that&#8217;s okay, vi3w isn&#8217;t a particularly common command. It truly feels that Emacs is a platform and Evil mode is the editor. It&#8217;s Vim if it was written on top of the &#8220;Emacs OS&#8221; instead of Unix, for example.</p>
+<h3>True async</h3>
+<p>Vim with Dispatch can piggyback on tmux to sort of run stuff in the background, but the result that&#8217;s reported back (when the process is finished) is usually fairly garbled plain text. Emacs can lint my JavaScript on the fly instead of on save, I presume it can do something similar with git signs. When performing a long running search it will allow you to interact with those results <em>before </em>it has finished executing.</p>
+<h3>I want to become a Clojarian</h3>
+<p>Enough said.</p>
+<h3>Lisp > VimL</h3>
+<p>The only way I can describe VimL: A beautiful gnarled old tree that can drop a branch on you at any moment. Also, it&#8217;s filled with huge, angry, bees. It seems like something fun to tinker with, but you soon find yourself in a rabbit hole. With the rabbit. It has rabies.</p>
+<p>I know Elisp isn&#8217;t Clojure, but it&#8217;s still a Lisp. Something about the languages really appeals to me, maybe it&#8217;s the minimal syntax, maybe I just have a thing for parentheses. Only time will tell. But I think using Lisp day to day to configure something to write more Lisp will help me along my journey to functional enlightenment.</p>
+<h3>Finally</h3>
+<p>Learning shit is fun.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2014/09/16/why-a-lover-of-vim-is-going-to-try-emacs/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

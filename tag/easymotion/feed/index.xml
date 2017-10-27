@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>easymotion &#8211; Oliver Caldwell&#039;s blog</title>
+	<atom:link href="/tag/easymotion/feed/" rel="self" type="application/rss+xml" />
+	<link>/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Wed, 18 Oct 2017 13:50:23 +0000</lastBuildDate>
+	<language>en-GB</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>Emacs: A few hours after exposure</title>
+		<link>/2014/09/17/emacs-a-few-hours-after-exposure/</link>
+		<comments>/2014/09/17/emacs-a-few-hours-after-exposure/#respond</comments>
+		<pubDate>Wed, 17 Sep 2014 22:36:59 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Emacs]]></category>
+		<category><![CDATA[easymotion]]></category>
+		<category><![CDATA[emacs]]></category>
+		<category><![CDATA[lisp]]></category>
+		<category><![CDATA[vim]]></category>
+
+		<guid isPermaLink="false">/?p=188</guid>
+		<description><![CDATA[The symptoms are starting to show: fever, babbling, countless browser tabs and an insatiable urge to learn Lisp faster than it can be typed. After just one evening of playing with my configuration I have a system for me to define and load configuration files with ease as well as sync my plugin files from <a class="read-more" href="/2014/09/17/emacs-a-few-hours-after-exposure/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>The symptoms are starting to show: fever, babbling, countless browser tabs and an insatiable urge to learn Lisp faster than it can be typed. After just one evening of <a href="https://github.com/Wolfy87/dotfiles/tree/52b5819f9e9b63685a0546071db163a1da0ce551/emacs">playing with my configuration</a> I have a system for me to <a href="https://github.com/Wolfy87/dotfiles/blob/52b5819f9e9b63685a0546071db163a1da0ce551/emacs/init.el#L1-L2">define and load configuration</a> files with ease as well as sync my plugin files <a href="https://github.com/Wolfy87/dotfiles/blob/52b5819f9e9b63685a0546071db163a1da0ce551/emacs/libraries/packages.el#L7-L8">from a list</a>. I am considering have it run it&#8217;s sync and update cycle on every load though, I&#8217;ll have to see how that works out. At the very least I need to define an update function, which I think I need to do through the <em>interactive</em> function.</p>
+<p>My baseline setup includes evil mode, evil tabs (to bring me Vim tab functionality) and <a href="https://github.com/Wolfy87/dotfiles/blob/52b5819f9e9b63685a0546071db163a1da0ce551/emacs/libraries/tweaks.el">a stripped back UI</a>. This means no glaring logo when I open it up, it drops straight into a buffer with no strange menus or scroll bars loitering in my peripheral vision. I can already navigate around and edit to my hearts content, albeit in a very simplistic manner, all thanks to evil mode. I am however finding myself instinctively trying to invoke commands from my menagerie of wonderful <a href="https://github.com/Wolfy87/dotfiles/blob/52b5819f9e9b63685a0546071db163a1da0ce551/vim/bundles.vim">Vim plugins</a>, I assume I&#8217;ll have to ease that out of my muscle memory over time.</p>
+<p>My next step will be to hook in ace-jump in such a way that it behaves like like EasyMotion, I can&#8217;t actually work out how to bind things through evil yet, but it can&#8217;t be that hard. I use <em>&lt;space&gt;{motion}</em> for EasyMotion, so I should be able to set up a subset of that. Maybe it&#8217;s already been done and I&#8217;m reinventing the wheel, as usual.</p>
+<p>I&#8217;m essentially using a sparse Vim right now, it feels like I&#8217;m running on some fresh machine with <em>:set nocompatible</em> and <em>:syntax on</em> in <em>~/.vimrc</em>, strangely enough, I&#8217;m okay with this. I actually want to bring over as little Vim functionality as possible, obviously I want my modal editing and efficient navigation as well as familiar window management, but being forced to use the native solutions where possible seems like a good idea.</p>
+<p>For example, I was going to bind <em>:Explore</em> to a netrw equivalent (I assume there is one&#8230;), but I&#8217;ve since decided not to because I assume there&#8217;s some Emacs command that is better suited to the job. I want to keep my Vim powers for editing and Emacs for, well, everything else. I may well have to break this rule at some point to get <a href="https://github.com/tpope/vim-vinegar">vim-vinigar</a> functionality though, hitting the hyphen key to drop into a directory browser and then again to go up a level feels too good to leave behind.</p>
+<p>I think I&#8217;m doing okay so far.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2014/09/17/emacs-a-few-hours-after-exposure/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

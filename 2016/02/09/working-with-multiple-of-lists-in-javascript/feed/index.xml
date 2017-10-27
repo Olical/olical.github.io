@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	
+	>
+<channel>
+	<title>Comments on: Working with multiple of lists in JavaScript</title>
+	<atom:link href="/2016/02/09/working-with-multiple-of-lists-in-javascript/feed/" rel="self" type="application/rss+xml" />
+	<link>/2016/02/09/working-with-multiple-of-lists-in-javascript/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Mon, 22 May 2017 19:57:20 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>By: guest</title>
+		<link>/2016/02/09/working-with-multiple-of-lists-in-javascript/#comment-256</link>
+		<dc:creator><![CDATA[guest]]></dc:creator>
+		<pubDate>Sat, 04 Jun 2016 11:54:00 +0000</pubDate>
+		<guid isPermaLink="false">/?p=434#comment-256</guid>
+		<description><![CDATA[It could be succinct by chaining:
+
+    _(gists).flatMap(gist =&#062; _.values(gist.files))
+    .filter(file =&#062; file.language === &#039;JavaScript&#039;)
+    .map(file =&#062; file.filename)
+    .values()]]></description>
+		<content:encoded><![CDATA[<p>It could be succinct by chaining:</p>
+<p>    _(gists).flatMap(gist =&gt; _.values(gist.files))<br />
+    .filter(file =&gt; file.language === &#8216;JavaScript&#8217;)<br />
+    .map(file =&gt; file.filename)<br />
+    .values()</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

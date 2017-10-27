@@ -1,0 +1,1160 @@
+
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="pingback" href="/xmlrpc.php">
+
+<title>D3 within React the right way | Oliver Caldwell&#039;s blog</title>
+
+<!-- All in One SEO Pack 2.4.2 by Michael Torbert of Semper Fi Web Design[311,383] -->
+<link rel="author" href="https://plus.google.com/+OliverCaldwell" />
+<meta name="description"  content="If you follow me on twitter (I&#039;m @OliverCaldwell, if you don&#039;t) you will have noticed that I&#039;ve been tweeting about D3 and React a lot recently. More" />
+
+<meta name="keywords"  content="d3,dom,javascript,react" />
+
+<link rel="canonical" href="/2015/09/09/d3-within-react-the-right-way/" />
+			<script type="text/javascript" >
+				window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+				ga('create', 'UA-29131116-1', 'auto');
+				// Plugins
+				
+				ga('send', 'pageview');
+			</script>
+			<script async src="https://www.google-analytics.com/analytics.js"></script>
+			<!-- /all in one seo pack -->
+<link rel='dns-prefetch' href='//fonts.googleapis.com' />
+<link rel='dns-prefetch' href='//s.w.org' />
+<link rel="alternate" type="application/rss+xml" title="Oliver Caldwell&#039;s blog &raquo; Feed" href="/feed/" />
+<link rel="alternate" type="application/rss+xml" title="Oliver Caldwell&#039;s blog &raquo; Comments Feed" href="/comments/feed/" />
+<link rel="alternate" type="application/rss+xml" title="Oliver Caldwell&#039;s blog &raquo; D3 within React the right way Comments Feed" href="/2015/09/09/d3-within-react-the-right-way/feed/" />
+		<script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2.3\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2.3\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/oli.me.uk\/wp-includes\/js\/wp-emoji-release.min.js?ver=4.8.2"}};
+			!function(a,b,c){function d(a){var b,c,d,e,f=String.fromCharCode;if(!k||!k.fillText)return!1;switch(k.clearRect(0,0,j.width,j.height),k.textBaseline="top",k.font="600 32px Arial",a){case"flag":return k.fillText(f(55356,56826,55356,56819),0,0),b=j.toDataURL(),k.clearRect(0,0,j.width,j.height),k.fillText(f(55356,56826,8203,55356,56819),0,0),c=j.toDataURL(),b!==c&&(k.clearRect(0,0,j.width,j.height),k.fillText(f(55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447),0,0),b=j.toDataURL(),k.clearRect(0,0,j.width,j.height),k.fillText(f(55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447),0,0),c=j.toDataURL(),b!==c);case"emoji4":return k.fillText(f(55358,56794,8205,9794,65039),0,0),d=j.toDataURL(),k.clearRect(0,0,j.width,j.height),k.fillText(f(55358,56794,8203,9794,65039),0,0),e=j.toDataURL(),d!==e}return!1}function e(a){var c=b.createElement("script");c.src=a,c.defer=c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var f,g,h,i,j=b.createElement("canvas"),k=j.getContext&&j.getContext("2d");for(i=Array("flag","emoji4"),c.supports={everything:!0,everythingExceptFlag:!0},h=0;h<i.length;h++)c.supports[i[h]]=d(i[h]),c.supports.everything=c.supports.everything&&c.supports[i[h]],"flag"!==i[h]&&(c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&c.supports[i[h]]);c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&!c.supports.flag,c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.everything||(g=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",g,!1),a.addEventListener("load",g,!1)):(a.attachEvent("onload",g),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),f=c.source||{},f.concatemoji?e(f.concatemoji):f.wpemoji&&f.twemoji&&(e(f.twemoji),e(f.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+<link rel='stylesheet' id='crayon-css'  href='/wp-content/plugins/crayon-syntax-highlighter/css/min/crayon.min.css?ver=_2.7.2_beta' type='text/css' media='all' />
+<link rel='stylesheet' id='crayon-theme-tomorrow-night-css'  href='/wp-content/plugins/crayon-syntax-highlighter/themes/tomorrow-night/tomorrow-night.css?ver=_2.7.2_beta' type='text/css' media='all' />
+<link rel='stylesheet' id='crayon-font-monaco-css'  href='/wp-content/plugins/crayon-syntax-highlighter/fonts/monaco.css?ver=_2.7.2_beta' type='text/css' media='all' />
+<link rel='stylesheet' id='wpt-twitter-feed-css'  href='/wp-content/plugins/wp-to-twitter/css/twitter-feed.css?ver=4.8.2' type='text/css' media='all' />
+<link rel='stylesheet' id='decode-icomoon-css'  href='/wp-content/themes/decode/assets/icomoon.css?ver=3.0.7' type='text/css' media='all' />
+<link rel='stylesheet' id='decode-style-css'  href='/wp-content/themes/decode/style.css?ver=3.0.7' type='text/css' media='all' />
+<link rel='stylesheet' id='decode-font-stylesheet-css'  href='//fonts.googleapis.com/css?family=Oxygen&#038;ver=4.8.2' type='text/css' media='all' />
+<script type='text/javascript' src='/wp-includes/js/jquery/jquery.js?ver=1.12.4'></script>
+<script type='text/javascript' src='/wp-includes/js/jquery/jquery-migrate.min.js?ver=1.4.1'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var CrayonSyntaxSettings = {"version":"_2.7.2_beta","is_admin":"0","ajaxurl":"https:\/\/oli.me.uk\/wp-admin\/admin-ajax.php","prefix":"crayon-","setting":"crayon-setting","selected":"crayon-setting-selected","changed":"crayon-setting-changed","special":"crayon-setting-special","orig_value":"data-orig-value","debug":""};
+var CrayonSyntaxStrings = {"copy":"Press %s to Copy, %s to Paste","minimize":"Click To Expand Code"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='/wp-content/plugins/crayon-syntax-highlighter/js/min/crayon.min.js?ver=_2.7.2_beta'></script>
+<link rel='https://api.w.org/' href='/wp-json/' />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="/wp-includes/wlwmanifest.xml" /> 
+<link rel='prev' title='My new prompt (oh-my-zsh)' href='/2015/08/03/my-new-prompt-oh-my-zsh/' />
+<link rel='next' title='Installing Arch Linux on a Dell XPS 13 (9350)' href='/2015/11/06/installing-arch-linux-on-a-dell-xps-13-9350/' />
+<meta name="generator" content="WordPress 4.8.2" />
+<link rel='shortlink' href='/?p=383' />
+<link rel="alternate" type="application/json+oembed" href="/wp-json/oembed/1.0/embed?url=https%3A%2F%2F%2F2015%2F09%2F09%2Fd3-within-react-the-right-way%2F" />
+<link rel="alternate" type="text/xml+oembed" href="/wp-json/oembed/1.0/embed?url=https%3A%2F%2F%2F2015%2F09%2F09%2Fd3-within-react-the-right-way%2F&#038;format=xml" />
+
+		<!-- Decode Custom Colors CSS -->
+
+		<style type="text/css">
+
+			body, .sidebar, .sidebar-top, .menu ul ul, .header-style-ghost .site { background-color: #E3E5E7; }body, button, input, select, textarea, .site-title a, .menu a, .entry-title, .search-entry, .search-entry .entry-title, .entry-title a, .format-link .entry-title h2 a, .read-more, .author-name a, .explore-page .widget h1, .decode-reply-tool-plugin .replylink, .decode-reply-tool-plugin .replytrigger { color: #444444; }.page-link { border-color: #444444; }.menu ul > .menu-item-has-children > a::after, .menu ul > .page_item_has_children > a::after { border-top-color: #444444; }.footer-menu ul > .menu-item-has-children > a::after, .footer-menu ul > .page_item_has_children > a::after { border-bottom-color: #444444; }.menu-icon, .close-icon, .social-icon-fill { fill: #444444; }a, .no-touch a:hover, button, input[type=button], input[type=reset], input[type=submit], .no-touch .site-title a:hover, .no-touch .menu a:hover, .menu ul li.open > a, .sidebar-menu a, .menu .current-menu-item > a, .menu .current_page_item > a, .no-touch .search-entry:hover, .no-touch .search-entry:hover .entry-title, .no-touch article .date a:hover, .no-touch .format-link .entry-title a:hover, .no-touch .comment-metadata a:hover, .no-touch .decode-reply-tool-plugin .replylink:hover { color: #009BCD; }.no-touch button:hover, .no-touch input[type=button]:hover, .no-touch input[type=reset]:hover, .no-touch input[type=submit]:hover, .no-touch input[type=text]:focus, .touch input[type=text]:focus, .no-touch input[type=email]:focus, .touch input[type=email]:focus, .no-touch input[type=password]:focus, .touch input[type=password]:focus, .no-touch input[type=search]:focus, .touch input[type=search]:focus, .no-touch input[type=tel]:focus, .touch input[type=tel]:focus, .no-touch input[type=url]:focus, .touch input[type=url]:focus, .no-touch textarea:focus, .touch textarea:focus, .no-touch .site-description a:hover, .no-touch .entry-content a:hover, a .page-link, .no-touch .categories a:hover, .no-touch .tags a:hover, .no-touch .comments-link a:hover, .no-touch .edit-link a:hover, .no-touch .author-site a:hover, .no-touch .theme-info a:hover, .no-touch .site-colophon a:hover, .site-header, .menu ul ul, .menu a:focus, .site-breadcrumbs, .page-title, .post blockquote, .page blockquote, .entry-footer, .entry-header .entry-meta, .search .entry-footer, .sidebar-top, .sidebar-style-constant .sidebar.left, .sidebar-style-constant .sidebar.right, .explore-page .widget h1 { border-color: #009BCD; }.no-touch .menu ul > .menu-item-has-children > a:hover::after, .no-touch .menu ul > .page_item_has_children > a:hover::after, .menu ul li.open > a::after, .sidebar-menu ul .menu-item-has-children > a::after, .sidebar-menu ul .page_item_has_children > a::after, .menu ul > .current_page_item.menu-item-has-children > a::after, .menu ul > .current_page_item.page_item_has_children > a::after { border-top-color: #009BCD; }.no-touch .footer-menu ul > .menu-item-has-children > a:hover::after, .no-touch .footer-menu ul > .page_item_has_children > a:hover::after, .footer-menu ul > li.open > a::after, .footer-menu ul > .current_page_item.menu-item-has-children > a::after, .footer-menu ul > .current_page_item.page_item_has_children > a::after { border-bottom-color: #009BCD; }.no-touch a:active, .no-touch button:focus, .touch button:focus, .no-touch button:active, .touch button:active, .no-touch input[type=button]:focus, .touch input[type=button]:focus, .no-touch input[type=button]:active, .touch input[type=button]:active, .no-touch input[type=reset]:focus, .touch input[type=reset]:focus, .no-touch input[type=reset]:active, .touch input[type=reset]:active, .no-touch input[type=submit]:focus, .touch input[type=submit]:focus, .no-touch input[type=submit]:active, .touch input[type=submit]:active, .no-touch .site-title a:active, .no-touch .menu a:active, .no-touch .sidebar-menu a:hover, .sidebar-menu ul li.open > a, .menu .current-menu-item > a:hover, .menu .current_page_item > a:hover, .sidebar-menu ul .current-menu-item > a, .sidebar-menu ul .current_page_item > a, .no-touch .sidebar-content a:hover, .no-touch .search-entry:active, .no-touch .search-entry:active .entry-title, .no-touch article .date a:active, .no-touch .format-link .entry-title a:active, .no-touch .comment-metadata a:active, .no-touch .site-description a:active, .decode-reply-tool-plugin .replylink:active, .no-touch .decode-reply-tool-plugin .replylink:active { color: #007EA6; }.no-touch button:focus, .touch button:focus, .no-touch button:active, .touch button:active, .no-touch input[type=button]:focus, .touch input[type=button]:focus, .no-touch input[type=button]:active, .touch input[type=button]:active, .no-touch input[type=reset]:focus, .touch input[type=reset]:focus, .no-touch input[type=reset]:active, .touch input[type=reset]:active, .no-touch input[type=submit]:focus, .touch input[type=submit]:focus, .no-touch input[type=submit]:active, .touch input[type=submit]:active, .no-touch .site-description a:active, .no-touch .entry-content a:active, a .page-link:active .no-touch .categories a:active, .no-touch .tags a:active, .no-touch .comments-link a:active, .no-touch .edit-link a:active, .no-touch .author-site a:active, .no-touch .theme-info a:active, .no-touch .site-colophon a:active { border-color: #007EA6; }.no-touch .menu ul > .menu-item-has-children > a:active::after, .no-touch .menu ul > .page_item_has_children > a:active::after, .no-touch .sidebar-menu ul .menu-item-has-children > a:hover::after, .no-touch .sidebar-menu ul .page_item_has_children > a:hover::after, .sidebar-menu ul li.open > a::after, .sidebar-menu ul .current_page_item.menu-item-has-children > a::after, .sidebar-menu ul .current_page_item.page_item_has_children > a::after { border-top-color: #007EA6; }.no-touch .footer-menu ul > .menu-item-has-children > a:active::after, .no-touch .footer-menu ul > .page_item_has_children > a:active::after { border-bottom-color: #007EA6; }.no-touch input[type=text]:hover, .no-touch input[type=email]:hover, .no-touch input[type=password]:hover, .no-touch input[type=search]:hover, .no-touch input[type=tel]:hover, .no-touch input[type=url]:hover, .no-touch textarea:hover, article .tags, article .categories, article .date, article .date a, .comment-metadata a, .search .page-header input[type=search] { color: #808080; }.no-touch input[type=text]:hover, .no-touch input[type=email]:hover, .no-touch input[type=password]:hover, .no-touch input[type=search]:hover, .no-touch input[type=tel]:hover, .no-touch input[type=url]:hover, .no-touch textarea:hover, .no-touch .search .page-header input[type=search]:hover { border-color: #808080; }.no-touch input[type=text]:focus, .touch input[type=text]:focus, .no-touch input[type=email]:focus, .touch input[type=email]:focus, .no-touch input[type=password]:focus, .touch input[type=password]:focus, .no-touch input[type=search]:focus, .touch input[type=search]:focus, .no-touch input[type=tel]:focus, .touch input[type=tel]:focus, .no-touch input[type=url]:focus, .touch input[type=url]:focus, .no-touch textarea:focus, .touch textarea:focus { color: #444444; }.no-touch input[type=text]:focus, .touch input[type=text]:focus, .no-touch input[type=email]:focus, .touch input[type=email]:focus, .no-touch input[type=password]:focus, .touch input[type=password]:focus, .no-touch input[type=search]:focus, .touch input[type=search]:focus, .no-touch input[type=tel]:focus, .touch input[type=tel]:focus, .no-touch input[type=url]:focus, .touch input[type=url]:focus, .no-touch textarea:focus, .touch textarea:focus, .no-touch .search .page-header input[type=search]:focus, .touch .search .page-header input[type=search]:focus { border-color: #009BCD; }
+			@media (min-width: 68.5em) {
+
+				.site-main {
+					max-width: none;
+				}
+
+			
+			}
+
+		</style>
+
+				<style type="text/css">.recentcomments a{display:inline !important;padding:0 !important;margin:0 !important;}</style>
+		<style type="text/css" id="custom-background-css">
+body.custom-background { background-color: #E3E5E7; }
+</style>
+</head>
+
+<body class="post-template-default single single-post postid-383 single-format-standard custom-background group-blog sidebar-style-closing sidebar-style-left">
+	
+<div id="page" class="hfeed site">
+	
+	<a class="skip-link screen-reader-text" href="#content">Skip to content</a>
+	
+				
+				<button id="sidebar-link" class="sidebar-link SidebarLink left" title="Show sidebar">
+				<svg width="100%" height="100%" viewbox="0 0 240 200" version="1.1" xmlns="http://www.w3.org/2000/svg">
+					<g class="menu-icon" fill-rule="evenodd">
+						<path d="M0,160 L0,200 L240,200 L240,160 L0,160 Z M0,160"></path>
+						<path d="M0,80 L0,120 L240,120 L240,80 L0,80 Z M0,80"></path>
+						<path d="M0,0 L0,40 L240,40 L240,0 L0,0 Z M0,0"></path>
+					</g>
+				</svg>
+			</button>
+					<header id="masthead" class="site-header" role="banner" style="background-position: center center; background-attachment: fixed; -webkit-background-size: cover; -moz-background-size: cover; -ms-background-size: cover; background-size: cover;">
+		
+				
+		<div class="site-branding">
+				
+											
+						
+				<h1 class="site-title">
+				<a href="/" title="Oliver Caldwell&#039;s blog" rel="home">Oliver Caldwell&#039;s blog</a>
+				</h1>
+						
+											<h2 class="site-description">On programming and text editing. Addicted to lisps.</h2>
+										
+		</div><!-- .site-branding -->
+		
+		
+<div class="contact-links">
+	<div class="contact-links-container">
+							<a class="contact-link TwitterLink" href="https://twitter.com/OliverCaldwell"  rel="me">
+				<svg width="200px" height="200px" viewbox="0 0 200 200" version="1.1" xmlns="http://www.w3.org/2000/svg">
+					<g fill-rule="evenodd">
+					<path class="social-icon-fill SocialIconFill" d="M100,0 C44.772,0 0,44.772 0,100 C0,155.228 44.772,200 100,200 C155.228,200 200,155.228 200,100 C200,44.772 155.228,0 100,0 Z M131.085844,49.1820697 C135.882815,50.1099098 141.754127,52.7769806 144.349825,55.2862809 L146.460943,57.2809493 L150.570486,56.2253903 C152.865669,55.6318732 156.377938,54.4335696 158.436466,53.5245117 C160.494994,52.6154537 162.373213,51.9430514 162.546009,52.1158475 C163.263489,52.8333271 159.112625,58.6745877 155.502689,61.9764964 L151.629801,65.5000349 L155.033134,65.0304802 C156.937648,64.7787989 160.247069,63.9786777 162.31311,63.268711 C164.551947,62.4986412 166.069548,62.2619857 166.069548,62.6827067 C166.069548,63.0696198 163.34613,66.0296927 160.081786,69.2564726 L154.21423,75.1240283 L153.744676,81.8142438 C152.294691,102.455869 144.781815,119.371108 130.852945,133.465262 C119.910442,144.53924 107.288811,151.270776 92.2330088,154.125669 C85.3925358,155.425396 72.9775093,155.85363 67.1099537,155.064778 C59.920132,154.099374 50.9873232,151.402252 43.6322182,147.905008 L37.0584523,144.734575 L43.9853234,144.26502 C52.2419734,143.746632 57.9404893,142.375532 64.529281,139.336574 C69.3976242,137.090224 75.832402,133.149721 75.3290393,132.646358 C75.1787818,132.496101 73.2855372,131.988982 71.1030469,131.590799 C63.2896566,130.159597 56.0021675,124.953174 52.3208586,117.973713 L50.5590893,114.57038 L55.9608467,114.217275 C61.3776298,113.879196 63.3309774,113.270653 61.0094989,112.571955 C53.9924733,110.46835 46.9341269,104.642115 43.7524242,98.3688646 C42.471479,95.840782 40.5819908,89.0153348 40.5819908,86.8666524 C40.5819908,86.7389335 41.2318546,87.0469614 41.990655,87.4526567 C43.4594221,88.2377522 52.1856268,90.1685611 52.5575141,89.8004302 C52.6777201,89.6802242 51.0436698,87.8658648 49.0339756,85.8110934 C47.0280379,83.756322 44.5675712,80.322938 43.5157687,78.1817685 C41.7878073,74.6544736 41.6413063,73.6402354 41.6375498,67.2655607 C41.6337934,61.852534 41.9230391,59.4709525 42.9297644,56.9353571 L44.221979,53.6484741 L46.9228576,56.6987015 C59.2477296,70.5186357 77.2523354,79.5265732 96.9285559,81.7015506 L100.684994,82.0546558 L100.452094,76.7731044 C100.189144,70.3383267 101.402473,65.7442034 104.678087,60.8082443 C109.681662,53.2578046 118.787267,48.5134238 127.445856,48.712515 C128.681724,48.7425665 129.880027,48.9491706 131.085844,49.1820697 Z" fill="#444444"></path>
+					</g>
+				</svg>
+			</a>
+		
+		
+		
+				
+				
+				
+				
+								
+				
+				
+				
+								
+				
+				
+				
+				
+				
+				
+				
+				
+				
+		
+				
+				
+				
+				
+				
+				
+				
+				
+				
+					<a class="contact-link YouTubeLink" href="https://www.youtube.com/channel/UCtIETpeWbOlyOdNrIyB8L9g?view_as=subscriber"  rel="me">
+				<svg width="200px" height="200px" viewbox="0 0 200 200" version="1.1" xmlns="http://www.w3.org/2000/svg">
+					<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+					<path class="social-icon-fill SocialIconFill" d="M100,0 C44.771524,1.5158245e-14 0,44.771524 0,100 C-1.5158245e-14,155.228476 44.771524,200 100,200 C155.228476,200 200,155.228476 200,100 C200,44.771524 155.228476,-2.2737368e-14 100,0 L100,0 L100,0 Z M64.087495,29.3759643 C64.6671855,29.3754756 65.3010639,29.3978516 65.916503,29.4484003 L68.9044863,29.6958898 L71.5544351,39.1729278 C73.0122561,44.3845135 74.406065,48.4466351 74.6510724,48.2032774 C74.8960701,47.9599273 76.1385883,43.6944673 77.4157115,38.7262394 L79.7396985,29.6958898 L83.4158234,29.460473 C86.1576327,29.2845405 87.0919484,29.5003378 87.0919484,30.3055591 C87.0919484,30.89942 85.1777248,37.6692944 82.8363358,45.3541296 L78.5746868,59.3282334 L78.5746868,70.2479542 L78.5746868,81.1676751 L74.789908,81.1676751 L71.0051291,81.1676751 L70.6791673,69.3666501 L70.3532055,57.5595887 L65.6871225,43.7484659 C62.356745,33.8893485 61.2990274,29.8307579 61.9808159,29.5691269 C62.3091227,29.4431463 63.1213461,29.3767795 64.087495,29.3759643 L64.087495,29.3759643 L64.087495,29.3759643 Z M114.182997,42.4687639 L117.665959,42.4687639 L121.148922,42.4687639 L121.148922,58.7185641 L121.148922,74.9744006 L122.965857,74.9744006 C126.957165,74.9744006 127.342196,73.4186558 127.342196,57.3060629 L127.342196,42.4687639 L130.825159,42.4687639 L134.308121,42.4687639 L134.308121,61.8152013 L134.308121,81.1676751 L130.825159,81.1676751 C127.85811,81.1676751 127.342196,80.9410606 127.342196,79.6223746 C127.342196,77.6629529 127.219517,77.6751048 123.780762,80.0086997 C120.336256,82.3462043 117.800694,82.4674215 115.728298,80.3950248 C114.268106,78.9348337 114.182997,77.8135193 114.182997,60.656226 L114.182997,42.4687639 L114.182997,42.4687639 Z M97.9754512,42.4748003 C99.9359275,42.480033 101.929332,42.9111255 103.408148,43.7846839 C107.347619,46.1117866 107.992935,48.7192126 107.989723,62.3222531 C107.987405,73.1235923 107.804963,74.887149 106.474604,77.0690071 C103.565972,81.8393264 97.4558227,83.2963709 92.6574446,80.3708795 C88.5936907,77.8932703 87.8645986,75.0767342 87.8645986,61.8031287 C87.8645986,49.1445991 88.3641266,47.1062203 92.2107561,44.080464 C93.5713932,43.0101851 95.7535776,42.4688702 97.9754512,42.4748003 L97.9754512,42.4748003 L97.9754512,42.4748003 Z M97.9271606,48.6680748 C97.4965761,48.6680748 97.0683753,48.8221567 96.5750227,49.1328722 C95.4099704,49.8666214 95.1849109,51.4917192 94.9935042,60.7407346 C94.7182959,74.0388931 94.9135407,74.9744006 97.9271606,74.9744006 C99.6609664,74.9744006 100.323748,74.5530222 100.649545,73.2359376 C100.886479,72.2780966 100.983218,66.6549781 100.860817,60.7407346 C100.66941,51.4917192 100.444351,49.8666214 99.2792985,49.1328722 C98.7859459,48.8221567 98.357745,48.6680748 97.9271606,48.6680748 L97.9271606,48.6680748 L97.9271606,48.6680748 Z M97.7098527,90.0169347 C118.932022,89.9681148 142.48865,90.8679066 146.688634,92.1598319 C150.495694,93.3309069 153.468667,95.5853631 154.93426,98.419506 C159.079705,106.435905 160.100745,140.397381 156.708941,157.454813 C155.845267,161.798272 152.528639,166.425616 148.958294,168.271916 C145.391881,170.11618 105.875468,171.941137 85.932973,171.181427 C69.5362245,170.556791 54.2104406,169.269832 51.9665445,168.332279 C48.2754012,166.790019 44.7075768,162.057706 43.7692085,157.454813 C42.4622339,151.043886 41.3327796,131.609939 41.8315466,124.128235 C43.2747703,102.479219 44.4587969,97.6767419 49.1717238,94.320838 C52.8606554,91.6940938 55.1106438,91.3914042 78.0736715,90.4032599 C83.8257704,90.1557375 90.6357956,90.0332087 97.7098527,90.0169347 L97.7098527,90.0169347 L97.7098527,90.0169347 Z M49.9383377,102.838099 L49.9383377,106.707387 L49.9383377,110.582711 L54.1939503,110.582711 L58.4555992,110.582711 L58.4555992,133.025785 L58.4555992,155.474896 L62.7112118,155.474896 L66.9668244,155.474896 L66.9668244,133.025785 L66.9668244,110.582711 L71.222437,110.582711 L75.4840859,110.582711 L75.4840859,106.707387 L75.4840859,102.838099 L62.7112118,102.838099 L49.9383377,102.838099 L49.9383377,102.838099 Z M102.569098,102.838099 L102.569098,129.156498 L102.569098,155.474896 L106.052061,155.474896 C109.001346,155.474896 109.535023,155.238744 109.535023,153.947705 C109.535023,152.501671 109.682275,152.52095 112.353989,154.33403 C115.897251,156.738556 118.154558,156.753549 120.913505,154.382321 L123.080547,152.511058 L123.297855,136.774346 C123.497983,122.134848 123.406982,120.85377 121.95779,118.514448 C119.997113,115.349468 115.882499,114.849077 112.112536,117.319255 L110.31371,118.496339 L110.31371,110.667219 L110.31371,102.838099 L106.444422,102.838099 L102.569098,102.838099 L102.569098,102.838099 Z M139.378638,115.840354 C137.143326,115.836951 134.972336,116.342372 133.613943,117.337364 C129.596398,120.280116 128.893533,123.034464 128.893533,135.736098 C128.893533,148.906921 129.607105,151.388826 134.308121,154.557374 C138.061774,157.087398 143.469875,156.624751 146.742961,153.488944 C149.242241,151.094481 150.869378,146.850945 150.443231,143.830816 C150.207124,142.157501 149.731659,141.901609 146.495471,141.693955 L142.819346,141.458538 L142.819346,144.500849 C142.819346,147.925486 141.445039,149.526347 138.829332,149.148823 C136.814197,148.857987 136.046457,146.790209 135.931894,141.37403 L135.853421,137.728086 L143.012509,137.504742 L150.171596,137.281398 L150.135378,130.315473 C150.094588,122.250195 148.854465,119.078892 144.938098,117.053656 C143.375637,116.245677 141.350973,115.843358 139.378638,115.840354 L139.378638,115.840354 L139.378638,115.840354 Z M89.4159354,115.91279 L89.4159354,131.051906 C89.4159354,145.306022 89.3189832,146.275899 87.816308,147.778576 C86.9387164,148.656167 85.6316433,149.262839 84.9128333,149.124677 C83.7431277,148.89985 83.5846765,147.145862 83.3977145,132.434225 L83.1924792,115.997299 L79.7698802,115.997299 C77.8877892,115.997299 76.1162046,116.374 75.8341931,116.830312 C75.5521815,117.286616 75.5756875,125.690103 75.88852,135.506717 C76.3966361,151.451481 76.6126015,153.506775 77.9046542,154.798827 C79.5485893,156.44277 81.7760665,156.648757 84.2428006,155.378315 C85.1726524,154.899409 86.7135931,153.793957 87.671436,152.921529 L89.4159354,151.333974 L89.4159354,153.404435 C89.4159354,155.341705 89.6391038,155.474896 92.8988977,155.474896 L96.3818601,155.474896 L96.544841,139.99171 C96.6348973,131.477566 96.7216331,122.681036 96.7380036,120.446074 L96.7681852,116.383624 L93.0920603,116.148207 L89.4159354,115.91279 L89.4159354,115.91279 Z M139.891726,122.263009 C140.409336,122.244369 140.800504,122.59833 141.606044,123.403876 C142.345574,124.143406 142.819346,125.967713 142.819346,128.05185 L142.819346,131.480485 L139.771,131.480485 C138.093296,131.480485 136.494391,131.118987 136.221638,130.677653 C135.318116,129.21572 136.716688,123.742594 138.195517,122.951151 C139.009109,122.515731 139.489141,122.277508 139.891726,122.263009 L139.891726,122.263009 L139.891726,122.263009 Z M113.35602,122.456172 C113.848071,122.467043 114.279594,122.727826 114.816812,123.26504 C115.766362,124.214598 116.117462,126.65264 116.356076,133.985562 C116.730203,145.482808 116.058325,148.796193 113.295657,149.124677 C112.219554,149.25262 111.009284,148.905679 110.603453,148.352027 C110.17989,147.774164 109.987528,142.312945 110.156765,135.530862 C110.42897,124.622239 110.575043,123.6531 112.021991,122.878715 C112.554867,122.593528 112.973315,122.447715 113.35602,122.456172 L113.35602,122.456172 L113.35602,122.456172 Z M113.35602,122.456172" fill="#444444"></path>
+					</g>
+				</svg>
+			</a>
+				
+				
+				
+				
+				
+				
+				
+				
+					<a class="contact-link StackOverflowLink" href="http://stackoverflow.com/users/455137"  rel="me">
+				<svg width="200px" height="200px" viewbox="0 0 200 200" version="1.1" xmlns="http://www.w3.org/2000/svg">
+					<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+					<path class="social-icon-fill SocialIconFill" d="M100,0 C44.771524,3.03201907e-14 0,44.771524 0,100 C0,155.228476 44.771524,200 100,200 C155.228476,200 200,155.228476 200,100 C200,44.771524 155.228476,-3.41060513e-14 100,0 Z M126.939121,113.085466 L126.939121,161.614991 L54.4418681,161.614991 L54.4418681,113.085466 L45,113.085466 L45,170.928284 L45.0942857,170.928284 C45.0942857,170.973259 47.8503297,170.973259 47.8503297,170.973259 L136.287912,170.973259 L136.287912,170.928284 C136.380989,170.928284 136.380989,168.15569 136.380989,168.15569 L136.380989,113.085466 L126.939121,113.085466 Z M131.403187,94.3446207 L100.258681,48.4260259 L110.013626,41.7370345 L141.154505,87.6592759 L131.403187,94.3446207 Z M123.484396,106.197129 L75.8737363,77.9594483 L81.872967,67.7369483 L129.481209,95.9734138 L123.484396,106.197129 Z M119.449451,121.014284 L66.0716484,106.586095 L69.1371429,95.1225517 L122.513736,109.551957 L119.449451,121.014284 Z M117.799451,136.859767 L62.7607692,131.764319 L63.8450549,119.942198 L118.882527,125.042509 L117.799451,136.859767 Z M143.268681,86.9372586 L133.815934,32.1782069 L145.446923,30.1482931 L154.902088,84.9085603 L143.268681,86.9372586 Z M117.554066,152.133957 L62.2784615,152.159483 L62.2736264,140.289957 L117.546813,140.262 L117.554066,152.133957 Z" fill="#444444"></path>
+					</g>
+				</svg>
+			</a>
+				
+				
+					<a class="contact-link GithubLink" href="http://github.com/Olical"  rel="me">
+				<svg width="200px" height="200px" viewbox="0 0 200 200" version="1.1" xmlns="http://www.w3.org/2000/svg">
+					<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+					<path class="social-icon-fill SocialIconFill" d="M0,100 C0,155.2286 44.7714,200 100,200 C155.2286,200 200,155.2286 200,100 C200,44.7714 155.2286,0 100,0 C44.7714,0 0,44.7714 0,100 Z M150.6562,25.4 C152.7698,28.626 153.9846,37.9372 153.1562,44.5938 L152.625,48.8562 L155.2062,51.9874 C160.3374,58.2082 163.155,65.7298 163.7186,74.725 C164.034,79.7584 163.3252,91.5746 162.4686,95.5688 C162.1878,96.8788 162.0424,98.0364 162.1498,98.1438 C162.2572,98.2512 166.8388,98.1216 172.331,97.8562 C178.1866,97.5734 183.088,97.5428 184.181,97.7812 C185.5178,98.0728 182.883,98.2622 174.8622,98.45 C168.6674,98.595 163.112,98.9354 162.4122,99.2124 C161.564,99.5484 161.0194,100.2144 160.7498,101.2436 C160.2702,103.0744 159.043,102.8318 172.0686,103.4686 C177.4508,103.7316 182.584,104.134 183.481,104.3624 C185.6578,104.9166 184.4476,104.941 180.456,104.4186 C178.6618,104.1838 173.3102,103.9562 168.5684,103.9186 L159.9496,103.8562 L158.362,106.575 C156.0142,110.5964 149.9218,116.4444 145.9182,118.5188 C141.0736,121.029 133.606,123.3814 127.037,124.4688 C123.8662,124.9936 120.9826,125.524 120.6308,125.6438 C120.1902,125.7938 120.6514,126.5576 122.1058,128.1126 C124.5016,130.674 125.7218,132.867 126.8246,136.5626 C127.4282,138.5848 127.6564,142.1844 127.887,153.6314 C128.1692,167.6364 128.1454,168.1478 127.287,168.4064 C124.4818,169.2516 119.346,170.5814 118.8808,170.5814 C118.4844,170.5814 118.2874,167.082 118.1496,157.6502 C117.9526,144.1822 117.7022,142.432 115.7496,140.8126 C115.0346,140.2196 114.9808,141.315 114.9808,155.8064 L114.9808,171.4376 L111.837,171.7814 C110.107,171.9716 107.8496,172.1466 106.8246,172.169 L104.9622,172.2128 L104.6684,163.8252 C104.5082,159.212 104.3504,151.712 104.3184,147.1628 L104.2622,138.894 L102.8684,138.894 L101.4684,138.894 L101.4684,155.669 L101.4684,172.444 L97.6246,172.369 C95.5102,172.328 93.0952,172.2098 92.2622,172.1066 L90.7498,171.919 L90.7498,155.8128 C90.7498,141.2492 90.6786,139.7714 90.0186,140.319 C87.8628,142.1082 87.7304,143.0656 87.5748,157.6628 L87.4248,171.544 L85.706,171.2316 C84.762,171.0588 82.6282,170.575 80.9622,170.1628 L77.9372,169.4128 L77.806,160.4004 L77.681,151.388 L75.3748,151.7068 C71.1312,152.2904 63.6152,152.0834 61.0248,151.313 C54.8256,149.4696 51.088,146.0926 47.831,139.3818 C45.0914,133.737 42.6232,130.4148 38.9622,127.4568 C35.1348,124.3644 34.4232,123.297 35.7246,122.6006 C36.2236,122.3336 37.7496,122.1218 39.1122,122.1256 C41.4146,122.132 45.6202,124.0678 48.212,126.4568 C49.3702,127.5244 51.2484,129.6986 52.387,131.2944 C57.1718,137.9996 62.2318,140.692 69.0246,140.1506 C72.9632,139.8368 77.6932,138.4634 78.1996,137.4882 C78.3978,137.1062 79.0304,135.5618 79.6058,134.057 C80.2762,132.3034 81.56,130.3448 83.1746,128.6008 C85.553,126.0318 85.6276,125.8664 84.6058,125.6632 C84.0104,125.5448 81.0126,125.0038 77.937,124.457 C66.5278,122.4286 58.1082,118.6336 51.7932,112.6694 C49.683,110.6764 47.272,107.974 46.4308,106.6632 L44.8996,104.2756 L34.8558,104.5632 C29.2726,104.7216 23.162,105.154 21.0996,105.5382 C17.7304,106.1658 16.5926,106.1826 17.1808,105.5944 C17.5474,105.2278 31.0384,103.96 37.7432,103.6632 C41.2674,103.5072 44.1494,103.181 44.1494,102.9382 C44.1494,102.6954 43.8384,101.891 43.4556,101.1506 C42.5108,99.3238 41.229,99.1882 27.2556,99.3694 C20.912,99.4518 15.7242,99.3752 15.7244,99.207 C15.7254,98.5884 25.0512,98.224 33.5932,98.507 C41.7982,98.7788 42.3604,98.7478 42.0682,97.9946 C41.8962,97.551 41.3,95.4044 40.7432,93.2258 C39.8556,89.7522 39.727,88.004 39.7244,79.0134 C39.7216,69.4458 39.7984,68.5452 40.8306,65.501 C42.279,61.2302 44.7806,56.4408 47.1994,53.326 L49.1432,50.826 L48.2308,46.976 C47.089,42.1816 47.2926,34.6312 48.7058,29.4948 C50.0216,24.7126 50.2068,24.5514 54.1558,24.8572 C59.2318,25.2504 65.6766,27.8206 73.7434,32.6634 L77.4746,34.901 L81.1996,34.001 C92.476,31.2752 108.7204,31.018 120.7496,33.376 L124.4184,34.0948 L128.2622,31.7386 C133.5286,28.509 138.6762,26.2346 143.1434,25.1636 C145.3898,24.624 146.9306,24.3292 148.0312,24.2876 C149.4462,24.234 150.1326,24.601 150.6562,25.4 Z M44.8113392,125.5 C43.8279276,125.5 43.5,125.686465 43.5,126.256901 C43.5,127.558949 44.7160805,128.004007 46.0532305,127.191897 C47.0542826,126.583882 46.2569319,125.5 44.8113392,125.5 L44.8113392,125.5 L44.8113392,125.5 Z M41.3302053,123.6 C40.4451349,123.6 40.15,123.786465 40.15,124.356901 C40.15,125.658949 41.2444724,126.104007 42.4479075,125.291897 C43.3488544,124.683882 42.6312387,123.6 41.3302053,123.6 L41.3302053,123.6 L41.3302053,123.6 Z M48.3,128.7376 C47.3198,128.7494 46.7682,129.372 47.1124,130.2688 C47.505,131.2918 49.9122,131.027 50.1186,129.9376 C50.2206,129.3996 49.8658,129.0394 49.0374,128.8314 C48.7708,128.7642 48.5262,128.7348 48.3,128.7376 L48.3,128.7376 L48.3,128.7376 Z M51.1688,132.8312 C49.4992,132.8312 48.8476,133.6996 49.925,134.4874 C50.986,135.2632 52.5374,134.8028 52.5374,133.7124 C52.5376,133.052 52.2002,132.8312 51.1688,132.8312 L51.1688,132.8312 L51.1688,132.8312 Z M53.95,136.175 C53.8814,136.175 53.8118,136.1778 53.7438,136.1874 C53.1452,136.273 52.7166,136.7296 52.625,137.375 C52.4988,138.263 52.6868,138.425 53.875,138.425 C54.6466,138.425 55.416,138.205 55.5812,137.9374 C56.016,137.234 54.9778,136.1766 53.95,136.175 L53.95,136.175 L53.95,136.175 Z M57.7124,139.4062 C56.6628,139.4298 56.0858,140.0874 56.4312,140.9874 C56.871,142.1332 59.2936,141.7424 59.2936,140.525 C59.2936,139.8996 58.9332,139.5422 58.1936,139.4374 C58.0258,139.4138 57.8624,139.403 57.7124,139.4062 L57.7124,139.4062 L57.7124,139.4062 Z M74.4376,140.2876 C73.9878,140.2876 73.363,140.6032 73.0438,140.9876 C72.3314,141.8458 73.1532,143.0876 74.4376,143.0876 C74.8874,143.0876 75.5184,142.772 75.8376,142.3876 C76.5498,141.5294 75.7218,140.2876 74.4376,140.2876 L74.4376,140.2876 L74.4376,140.2876 Z M68.7624,141.2438 C67.7892,141.3118 67.1762,142.1646 67.6312,143.35 C67.9936,144.294 69.7554,144.0466 70.4312,142.9562 C70.8276,142.3162 70.7836,142.0254 70.2436,141.6812 C69.718,141.3462 69.2048,141.213 68.7624,141.2438 L68.7624,141.2438 L68.7624,141.2438 Z M63.275,141.3188 C62.6408,141.3448 62.0504,141.7068 61.9312,142.3312 C61.6416,143.8496 63.6208,144.5664 64.6562,143.3188 C65.1198,142.7602 65.116,142.4766 64.6374,141.9 C64.2926,141.4844 63.7684,141.2986 63.275,141.3188 L63.275,141.3188 L63.275,141.3188 Z M63.275,141.3188" fill="#444444"></path>
+					</g>
+				</svg>
+			</a>
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+					
+				
+					<a class="contact-link TwitchLink" href="https://www.twitch.tv/olliemakesthings"  rel="me">
+				<svg width="200px" height="200px" viewbox="0 0 200 200" version="1.1" xmlns="http://www.w3.org/2000/svg">
+					<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+					<path class="social-icon-fill SocialIconFill" d="M100,0 C44.7714,0 0,44.7714 0,100 C0,155.2286 44.7714,200 100,200 C155.2286,200 200,155.2286 200,100 C200,44.7714 155.2286,0 100,0 Z M48.2515912,37 L40,58.9135 L40,146.557 L70.2417758,146.557 L70.2417758,163 L86.7525497,163 L103.246875,146.557 L127.995322,146.557 L161,113.70124 L161,37 L48.2515912,37 Z M59,48 L150,48 L150,108.350584 L130.692895,127.555548 L100.365482,127.555548 L83.8316372,144 L83.8316372,127.555548 L59,127.555548 L59,48 Z M90,103 L101,103 L101,70 L90,70 L90,103 Z M120,103 L131,103 L131,70 L120,70 L120,103 Z" fill="#444444"></path>
+					</g>
+				</svg>
+			</a>
+				
+		
+		
+		
+		
+		
+		
+		
+				
+					<a class="contact-link RSSLink" href="/feed/">
+				<svg width="200px" height="200px" viewbox="0 0 200 200" version="1.1" xmlns="http://www.w3.org/2000/svg">
+					<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+					<path class="social-icon-fill SocialIconFill" d="M100,0 C155.228476,-3.41060513e-14 200,44.771524 200,100 C200,155.228476 155.228476,200 100,200 C44.771524,200 0,155.228476 0,100 C0,44.771524 44.771524,3.03201907e-14 100,0 Z M40.0135555,79.4855784 L40.0135555,102.780614 C55.2214198,102.790103 69.6051125,108.763989 80.3694989,119.544636 C91.1311742,130.291394 97.0806631,144.696768 97.1050629,159.95749 L97.1131962,159.95749 L97.1131962,159.999512 L120.504488,159.999512 C120.485511,137.809245 111.465711,117.709228 96.8827535,103.115434 C82.2970845,88.5243505 62.2051899,79.4991339 40.0135555,79.4855784 Z M44.7525423,155.112773 L44.7471201,155.112773 L44.7525423,155.118195 L44.7525423,155.112773 C47.7008537,158.048883 51.7200459,159.849046 56.1947014,159.849046 C60.6747791,159.849046 64.7034602,158.054305 67.6531271,155.118195 L67.6639714,155.112773 C70.6082161,152.172597 72.4056694,148.168318 72.4165138,143.718064 C72.4056694,139.259678 70.6082161,135.255399 67.6531271,132.304378 L67.6585492,132.304378 L67.6531271,132.300311 L67.6531271,132.304378 C64.6993935,129.369624 60.6747791,127.55726 56.1947014,127.55726 C51.7214015,127.55726 47.7022092,129.365557 44.7525423,132.304378 L44.7525423,132.300311 C41.8110087,135.24591 40,139.259678 40,143.718064 C40,148.17374 41.8110087,152.173952 44.7525423,155.112773 Z M40.0555774,62.9029686 C93.5271714,62.9416349 136.994841,106.477281 137.030841,159.999512 L160,159.999512 C159.984,126.919781 146.538769,96.9493582 124.809601,75.2055351 C103.073766,53.4683787 73.1233263,40.0151548 40.0555774,40.0004883 Z M40.0555774,62.9029686" fill="#444444"></path>
+					</g>
+				</svg>
+			</a>
+				
+					<a class="contact-link EmailLink" href="mailto:%6f&#108;&#108;i&#101;&#099;%38&#055;&#064;%67m%61%69%6c%2eco&#109;">
+				<svg width="200px" height="200px" viewbox="0 0 200 200" version="1.1" xmlns="http://www.w3.org/2000/svg">
+					<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+					<path class="social-icon-fill SocialIconFill" d="M47.525,58.4312 C44.0017303,58.4312 40.8759923,60.0775002 38.8740909,62.6461034 L99.75,94.8175812 L163.968171,60.8797969 C162.084984,59.347607 159.678721,58.4312 157.05,58.4312 Z M36.8768341,66.781991 C36.6754591,67.614632 36.5688,68.4849911 36.5688,69.3812 L36.5688,129.6188 C36.5688,135.6864 41.4574,140.5688 47.525,140.5688 L157.05,140.5688 C163.1176,140.5688 168,135.6864 168,129.6188 L168,69.3812 C168,67.6380936 167.597054,65.9928022 166.878815,64.5329757 L99.7671275,100 L99.75,99.9564542 L99.7328725,100 Z M100,0 C155.2286,0 200,44.7714 200,100 C200,155.2286 155.2286,200 100,200 C44.7714,200 0,155.2286 0,100 C0,44.7714 44.7714,0 100,0 Z M173,61.2980665 L171.309648,57 Z M173,61.2980665" fill="#444444"></path>
+					</g>
+				</svg>
+			</a>
+				
+					</div>
+</div><!-- .contact-links -->
+				
+				
+	</header><!-- #masthead -->
+	
+			
+		
+	<div id="content" class="site-content">
+		
+<div id="primary" class="content-area">
+
+	<main id="main" class="site-main" role="main">
+
+	
+		
+
+
+
+
+
+		
+	<article id="post-383" class="post-383 post type-post status-publish format-standard hentry category-javascript category-react tag-d3 tag-dom tag-javascript-2 tag-react-2">
+
+		
+		
+
+		<header class="entry-header">
+
+			
+			<h1 class="entry-title">D3 within React the right way</h1>
+
+			
+		</header><!-- .entry-header -->
+
+		
+
+		<div class="entry-content">
+
+			<p>If you follow me on twitter (I’m <a href="https://twitter.com/OliverCaldwell">@OliverCaldwell</a>, if you don’t) you will have noticed that I’ve been tweeting about <a href="http://d3js.org/">D3</a> and <a href="http://facebook.github.io/react/">React</a> a lot recently. More specifically, how to use both together in a pleasant yet efficient way. After a few weeks of thought and a couple of potential solutions actually being built and used, I settled on what I think is the ideal way to use DOM mutating JavaScript (like D3) from within React.</p>
+<p>Many solutions involve stepping out of the React tree for that specific component, which <em>does</em> work, but leaves you with a little island of mutable DOM, festering away inside your tree. It just doesn’t feel quite right to me, my solution allows you to even use React developer tools with the SVG generated by D3.</p>
+<p>TL;DR (although I’d quite like it if you read the rest!): Use <a href="https://github.com/Olical/react-faux-dom">react-faux-dom</a> to seamlessly blend D3 and other libraries into your React component tree.</p>
+<h2>The problem</h2>
+<p>D3 (<strong>d</strong>ata <strong>d</strong>riven <strong>d</strong>ocuments), as you probably know, is a JavaScript library that helps you build visualisations or anything else for that matter. It’s actually very general purpose since you can render SVG or regular DOM elements with it.</p>
+<p>It works by mutating the DOM element provided to it, usually a root node you placed into your HTML. You call <code>.append('p')</code> and it inserts a <code>&lt;p&gt;&lt;/p&gt;</code> as a child of the root node you selected.</p>
+<p>React on the other hand has you build your application through one big call stack to various render methods. You create a tree of objects that represents your application and its state then React works out what DOM elements it should mutate, add or remove on your behalf. This process is called <em><a href="https://facebook.github.io/react/docs/reconciliation.html">reconciliation</a></em>.</p>
+<p>If you give an element React created to D3 and say “hey, D3, set the width to 100, thanks” it’ll happily oblige. Then React will notice and get pretty upset that you went behind its back and messed with its perfectly reconciled DOM. This isn’t great, as you can imagine.</p>
+<p>So, the way we usually get around these problems is to tell React that from this component and below, it shouldn’t interfere, we will manage the DOM below this component manually. That’s where things like <a href="https://www.npmjs.com/package/react-d3-wrap">react-d3-wrap</a> come in, they define a component you can inherit from that pulls your code out of the React tree and lets D3 do its thing, React skips happily past this part of the DOM.</p>
+<p>But what if we want to keep the React tree and use D3? What if we don’t want to have part of our DOM not managed by our benevolent DOM reconciling God?</p>
+<h2>First (deprecated) attempt: d3-react</h2>
+<p><a href="https://github.com/Olical/d3-react">d3-react</a> is essentially a plugin for D3 (injected into the D3 prototype) that gives you React methods within the D3 API. What this means is you need to use <code>.prop()</code> instead of <code>.attr()</code> and then you can call <code>.toReact()</code> when you’re done and return that result from your render function.</p>
+<p>You create a DOM node and pass it to D3 on each render. It mutates this detached DOM and then gets converted to React elements when you’re done.</p>
+<p>This has multiple problems, first and foremost: You can’t use the full D3 API or existing components! You have to use <code>.prop</code>, you can’t use <code>.classed</code> or <code>.style</code> for example. This is just unacceptable, any good solution needs to also work with existing components or with minimal tweaking, not a full rewrite.</p>
+<p>The other problem (or one of them, anyway) is that you’re building and mutating a full real DOM tree on every render and then throwing it away. This is pretty inefficient, the DOM isn’t exactly light weight, that’s why we’re using React in the first place! (well, one of the reasons)</p>
+<p>It works, you don’t need to opt out of the React render tree, but it’s not great. So what’s the next step after this?</p>
+<h2>We make our own DOM</h2>
+<p>Yeah. I thought it was a stupid idea when it first came to me, but the more I thought about it the more it made sense. A fake DOM that supported enough methods to work with D3, but no more. If it needs to work with more libraries in the future you just need to add the missing DOM methods, easy.</p>
+<p>And so, <a href="https://github.com/Olical/react-faux-dom">react-faux-dom</a> was born. A fake DOM with enough methods to trick D3, including a selector engine and partial support for <code>addEventListener</code> etc. (<code>addEventListener</code> sets the appropriate <code>prop</code> value, so if you add two, it will overwrite the first, I may improve this later)</p>
+<p>You can use the full D3 API (no special React methods), inspect it with React developer tools, have efficient D3 components without carefully placed <code>.enter()</code> / <code>.exit()</code> calls, use React animation techniques instead of D3s (good and bad, both approaches work well) as well as <em>render on the server side</em>. Yeah, buzzword time, this will allow you to have <strong>isomorphic charts</strong>.</p>
+<blockquote><p>drops mic</p></blockquote>
+<p>I copied <a href="http://bl.ocks.org/mbostock/3883245">one of mbostock’s charts</a> (the awesome creator of D3) and <a href="http://lab.oli.me.uk/d3-to-react-again/">rendered it through react-faux-dom</a> easily. Nothing needed to change, it just works. I’ve also converted a complex chart over to this at work from <code>react-d3-wrap</code>, it was pretty easy to do and now it’s far more efficient. That chart even has dynamic resizing and hover tooltip interaction!</p>
+<p>A side effect of migrating that chart over was that I could make use of <code>this.setState({...})</code> to re-render my chart upon mouse interaction or window resize. It’s now much cleaner and easier to follow in my opinion.</p>
+<p>The best thing I can compare this to is a lightweight and simple version of <a href="https://github.com/tmpvar/jsdom">jsdom</a> that targets React elements and only supports the minimum required DOM API to work with D3 (right now).</p>
+<p><a href="https://github.com/QubitProducts/d3-react-sparkline">d3-react-sparkline</a> is a small React component I built at work (I work at <a href="http://www.qubit.com/">Qubit</a>, it’s awesome here) originally using my first approach but migrated to faux DOM. It serves as a good example, it should be familiar to React users and D3 users alike. All concepts remain the same, <code>react-faux-dom</code> is just the glue in the middle.</p>
+<h2>Other implications</h2>
+<p>Firstly, <strong>ISOMORPHIC CHARTS!</strong> A concept I find so awesome I thought it was worth mentioning again, in bold all caps. No more “we’re just fetching the data for this chart, brb”, send that rendered SVG straight down to the browser and then have React pick up where it left off on the server with the data as it changes over time. Amazing!</p>
+<p>It’s not just charts though, I see a lot of function calls happening in amongst JSX to turn complex data into complex elements. Those elements don’t have to be bars in a chart, it could just be a <code>&lt;ul&gt;</code> with other nested <code>&lt;ul&gt;</code> tags inside. These function calls can be hard to follow when compared to D3’s declarative chaining syntax.</p>
+<p>Why not use D3 as your JSX? D3 is an excellent (if not the best) tool for turning data into DOM.</p><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+
+		<div id="crayon-59f32e636a249087624323" class="crayon-syntax crayon-theme-tomorrow-night crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important;">
+		
+			<div class="crayon-toolbar" data-settings=" show" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="Copy"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="Open Code In New Window"><div class="crayon-button-icon"></div></div><span class="crayon-language">JavaScript</span></div></div>
+			<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">
+function render() {
+  var list = ReactFauxDOM.createElement('ul')
+
+  d3.select(list)
+    .selectAll('li')
+    .data(this.props.data) // 1, 2, 3...
+    .enter()
+    .append('li')
+    .text(function (d) {
+      return d
+    })
+
+  return list.toReact()
+}</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tr class="crayon-row">
+				<td class="crayon-nums" data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-59f32e636a249087624323-1">1</div><div class="crayon-num" data-line="crayon-59f32e636a249087624323-2">2</div><div class="crayon-num" data-line="crayon-59f32e636a249087624323-3">3</div><div class="crayon-num" data-line="crayon-59f32e636a249087624323-4">4</div><div class="crayon-num" data-line="crayon-59f32e636a249087624323-5">5</div><div class="crayon-num" data-line="crayon-59f32e636a249087624323-6">6</div><div class="crayon-num" data-line="crayon-59f32e636a249087624323-7">7</div><div class="crayon-num" data-line="crayon-59f32e636a249087624323-8">8</div><div class="crayon-num" data-line="crayon-59f32e636a249087624323-9">9</div><div class="crayon-num" data-line="crayon-59f32e636a249087624323-10">10</div><div class="crayon-num" data-line="crayon-59f32e636a249087624323-11">11</div><div class="crayon-num" data-line="crayon-59f32e636a249087624323-12">12</div><div class="crayon-num" data-line="crayon-59f32e636a249087624323-13">13</div><div class="crayon-num" data-line="crayon-59f32e636a249087624323-14">14</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-59f32e636a249087624323-1"><span class="crayon-t">function</span><span class="crayon-h"> </span><span class="crayon-e">render</span><span class="crayon-sy">(</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-sy">{</span></div><div class="crayon-line" id="crayon-59f32e636a249087624323-2"><span class="crayon-h">&nbsp;&nbsp;</span><span class="crayon-t">var</span><span class="crayon-h"> </span><span class="crayon-v">list</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-v">ReactFauxDOM</span><span class="crayon-sy">.</span><span class="crayon-e">createElement</span><span class="crayon-sy">(</span><span class="crayon-s">'ul'</span><span class="crayon-sy">)</span></div><div class="crayon-line" id="crayon-59f32e636a249087624323-3">&nbsp;</div><div class="crayon-line" id="crayon-59f32e636a249087624323-4"><span class="crayon-h">&nbsp;&nbsp;</span><span class="crayon-v">d3</span><span class="crayon-sy">.</span><span class="crayon-e">select</span><span class="crayon-sy">(</span><span class="crayon-v">list</span><span class="crayon-sy">)</span></div><div class="crayon-line" id="crayon-59f32e636a249087624323-5"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">.</span><span class="crayon-e">selectAll</span><span class="crayon-sy">(</span><span class="crayon-s">'li'</span><span class="crayon-sy">)</span></div><div class="crayon-line" id="crayon-59f32e636a249087624323-6"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">.</span><span class="crayon-e">data</span><span class="crayon-sy">(</span><span class="crayon-r">this</span><span class="crayon-sy">.</span><span class="crayon-v">props</span><span class="crayon-sy">.</span><span class="crayon-v">data</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-c">// 1, 2, 3...</span></div><div class="crayon-line" id="crayon-59f32e636a249087624323-7"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">.</span><span class="crayon-e">enter</span><span class="crayon-sy">(</span><span class="crayon-sy">)</span></div><div class="crayon-line" id="crayon-59f32e636a249087624323-8"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">.</span><span class="crayon-e">append</span><span class="crayon-sy">(</span><span class="crayon-s">'li'</span><span class="crayon-sy">)</span></div><div class="crayon-line" id="crayon-59f32e636a249087624323-9"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">.</span><span class="crayon-e">text</span><span class="crayon-sy">(</span><span class="crayon-t">function</span><span class="crayon-h"> </span><span class="crayon-sy">(</span><span class="crayon-v">d</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-sy">{</span></div><div class="crayon-line" id="crayon-59f32e636a249087624323-10"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-st">return</span><span class="crayon-h"> </span><span class="crayon-i">d</span></div><div class="crayon-line" id="crayon-59f32e636a249087624323-11"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">}</span><span class="crayon-sy">)</span></div><div class="crayon-line" id="crayon-59f32e636a249087624323-12">&nbsp;</div><div class="crayon-line" id="crayon-59f32e636a249087624323-13"><span class="crayon-h">&nbsp;&nbsp;</span><span class="crayon-st">return</span><span class="crayon-h"> </span><span class="crayon-v">list</span><span class="crayon-sy">.</span><span class="crayon-e">toReact</span><span class="crayon-sy">(</span><span class="crayon-sy">)</span></div><div class="crayon-line" id="crayon-59f32e636a249087624323-14"><span class="crayon-sy">}</span></div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0020 seconds] -->
+<p>This results in a list containing each value passed through props, each with a unique key automatically assigned by index if you didn’t provide one. This automatic key assignment allows you to use existing D3 components without getting warnings from React, you can assign your own keys though if you feel it’ll optimise the reconciliation.</p>
+<p>We’re taking the D3 data driven mindset, but running it within the stateless simple world of React seamlessly, no DOM required.</p>
+<p>I’m using this in production right now, this is not just a little script knocked together in a day (although it was), it’s built to solve an existing problem in a nice way. Let me know if you find any any issues with it, raise a bug, even fix it if you can. It’s ready to use on real projects.</p>
+<p>I hope many of you find this post and project useful, I’ve tried to explain “why” and not just “what” it is. Please feel free to give me your feedback, I’m very interested in hearing what others working on similar problems think about this.</p>
+<p>Thanks for reading.</p>
+
+		</div>
+
+		
+
+		
+		
+
+		<footer class="entry-footer">
+
+			
+			
+
+			
+			
+
+			<div class="entry-meta">
+
+				<p class="tags">Tagged as: <a href="/tag/d3/" rel="tag">d3</a>, <a href="/tag/dom/" rel="tag">dom</a>, <a href="/tag/javascript-2/" rel="tag">javascript</a>, <a href="/tag/react-2/" rel="tag">react</a></p>
+
+				<p class="categories">Categorised in&#058; <a href="/category/javascript/" rel="category tag">JavaScript</a>, <a href="/category/javascript/react/" rel="category tag">React</a></p>
+
+				
+					<p class="date"><span class="posted-on"><a href="/2015/09/09/d3-within-react-the-right-way/" rel="bookmark"><i class="icon-calendar"></i><time class="entry-date published" datetime="2015-09-09T09:00:57+00:00">September 9, 2015</time><time class="updated screen-reader-text" datetime="2016-06-08T11:24:04+00:00">June 8, 2016</time></a></span><span class="byline"> <span class="author vcard"><a class="url fn n" href="/author/olical/"><i class="icon-user"></i>Oliver Caldwell</a></span></span><span clas="post-comments"><a href="/2015/09/09/d3-within-react-the-right-way/#comments"><i class="icon-comment"></i>37 Comments</a></span></p>
+
+				
+			</div>
+
+		</footer><!-- .entry-footer -->
+
+		
+
+		
+	</article><!-- #post-383 -->
+
+		
+
+
+
+		
+		
+
+	
+	
+	<nav class="navigation post-navigation" role="navigation">
+		<h2 class="screen-reader-text">Post navigation</h2>
+		<div class="nav-links"><div class="nav-previous"><a href="/2015/08/03/my-new-prompt-oh-my-zsh/" rel="prev">My new prompt (oh-my-zsh)</a></div><div class="nav-next"><a href="/2015/11/06/installing-arch-linux-on-a-dell-xps-13-9350/" rel="next">Installing Arch Linux on a Dell XPS 13 (9350)</a></div></div>
+	</nav>
+	
+<div id="disqus_thread">
+            <div id="dsq-content">
+
+
+            <ul id="dsq-comments">
+                    <li class="comment even thread-even depth-1" id="dsq-comment-163">
+        <div id="dsq-comment-header-163" class="dsq-comment-header">
+            <cite id="dsq-cite-163">
+                <span id="dsq-author-user-163">Thomas</span>
+            </cite>
+        </div>
+        <div id="dsq-comment-body-163" class="dsq-comment-body">
+            <div id="dsq-comment-message-163" class="dsq-comment-message"><p>Hi,</p>
+<p>nice work! What do you think about this approach:</p>
+<p><a href="https://github.com/esbullington/react-d3" rel="nofollow">https://github.com/esbullington/react-d3</a></p>
+</div>
+        </div>
+
+    <ul class="children">
+    <li class="comment odd alt depth-2" id="dsq-comment-164">
+        <div id="dsq-comment-header-164" class="dsq-comment-header">
+            <cite id="dsq-cite-164">
+                <a id="dsq-author-user-164" href="/" target="_blank" rel="nofollow">Oliver Caldwell</a>
+            </cite>
+        </div>
+        <div id="dsq-comment-body-164" class="dsq-comment-body">
+            <div id="dsq-comment-message-164" class="dsq-comment-message"><p>Thanks! I&#8217;ve looked at that a few times, if those charts fit your need, they&#8217;re great! I can&#8217;t use any existing chart systems because I&#8217;m building them to a very specific design.</p>
+<p>As far as the implementation goes, it&#8217;s nice, this is a good example <a href="https://github.com/esbullington/react-d3/blob/master/src/common/Voronoi.jsx#L37-L59" rel="nofollow">https://github.com/esbullington/react-d3/blob/master/src/common/Voronoi.jsx#L37-L59</a></p>
+<p>My only problem with it is that it&#8217;s very manual. It&#8217;s using D3 for the math (which it&#8217;s amazing at) and manually mapping that to React / JSX elements. It&#8217;s an equivalent approach.</p>
+<p>(bias warning!) I personally prefer my approach because it doesn&#8217;t break backwards compatibility with any existing D3 code. It&#8217;s a way to use existing D3 tooling but render it efficiently through React with the React ethos.</p>
+<p>So, I like it, but I prefer to use the D3 API to work with D3, then at the fringes of that API integrate it into the React workflow.</p>
+</div>
+        </div>
+
+    </li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+    <li class="comment even thread-odd thread-alt depth-1" id="dsq-comment-166">
+        <div id="dsq-comment-header-166" class="dsq-comment-header">
+            <cite id="dsq-cite-166">
+                <span id="dsq-author-user-166">Ricky Duckworth</span>
+            </cite>
+        </div>
+        <div id="dsq-comment-body-166" class="dsq-comment-body">
+            <div id="dsq-comment-message-166" class="dsq-comment-message"><p>Wish I&#8217;d had thought about the fake dom idea! Would&#8217;ve saved me so much time &#8211; great work.</p>
+</div>
+        </div>
+
+    <ul class="children">
+    <li class="comment odd alt depth-2" id="dsq-comment-168">
+        <div id="dsq-comment-header-168" class="dsq-comment-header">
+            <cite id="dsq-cite-168">
+                <a id="dsq-author-user-168" href="/" target="_blank" rel="nofollow">Oliver Caldwell</a>
+            </cite>
+        </div>
+        <div id="dsq-comment-body-168" class="dsq-comment-body">
+            <div id="dsq-comment-message-168" class="dsq-comment-message"><p>Thanks a lot. I hope you find it useful!</p>
+</div>
+        </div>
+
+    </li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+    <li class="comment even thread-even depth-1" id="dsq-comment-169">
+        <div id="dsq-comment-header-169" class="dsq-comment-header">
+            <cite id="dsq-cite-169">
+                <span id="dsq-author-user-169">Dinosäur Jay</span>
+            </cite>
+        </div>
+        <div id="dsq-comment-body-169" class="dsq-comment-body">
+            <div id="dsq-comment-message-169" class="dsq-comment-message"><p>thanks Oliver for the great work! But unfortunately, I could not manage to migrate my force directed graph to a faux dom version. Could you post a really basic force directed example such that I can track down the problem? Somehow, I cannot really set the &#8220;transform&#8221; attribute in the tick function. Thanks in advance!</p>
+</div>
+        </div>
+
+    <ul class="children">
+    <li class="comment odd alt depth-2" id="dsq-comment-170">
+        <div id="dsq-comment-header-170" class="dsq-comment-header">
+            <cite id="dsq-cite-170">
+                <a id="dsq-author-user-170" href="/" target="_blank" rel="nofollow">Oliver Caldwell</a>
+            </cite>
+        </div>
+        <div id="dsq-comment-body-170" class="dsq-comment-body">
+            <div id="dsq-comment-message-170" class="dsq-comment-message"><p>Yeah, that won&#8217;t work out of the box since D3 sets up all sorts of listeners and timers to mutate the DOM. Give me a few days (maybe over the weekend? It might take me a little while but I&#8217;ll get around to it) and I&#8217;ll see if I can get a nice example force directed graph working. Will probably require a little tweak to the library too.</p>
+<p>This work could lead on to allowing D3 to animate stuff instead of React too. I&#8217;ll get back to you. It wasn&#8217;t in scope when I initially built this, I just didn&#8217;t have a need for animations etc. I realise that others do though.</p>
+<p>Here&#8217;s an interesting issue on animations (not force, but still): <a href="https://github.com/Olical/react-faux-dom/issues/2" rel="nofollow">https://github.com/Olical/react-faux-dom/issues/2</a></p>
+</div>
+        </div>
+
+    <ul class="children">
+    <li class="comment even depth-3" id="dsq-comment-171">
+        <div id="dsq-comment-header-171" class="dsq-comment-header">
+            <cite id="dsq-cite-171">
+                <span id="dsq-author-user-171">Dinosäur Jay</span>
+            </cite>
+        </div>
+        <div id="dsq-comment-body-171" class="dsq-comment-body">
+            <div id="dsq-comment-message-171" class="dsq-comment-message"><p>ah, Good luck with that. I&#8217;m working on a rich graph visualization with a wide range of user interaction and it is really a pain to keep all the styles of the nodes in sync. An easy call to re-render would be awesome!</p>
+</div>
+        </div>
+
+    </li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+    <li class="comment odd alt thread-odd thread-alt depth-1" id="dsq-comment-172">
+        <div id="dsq-comment-header-172" class="dsq-comment-header">
+            <cite id="dsq-cite-172">
+                <span id="dsq-author-user-172">nascif</span>
+            </cite>
+        </div>
+        <div id="dsq-comment-body-172" class="dsq-comment-body">
+            <div id="dsq-comment-message-172" class="dsq-comment-message"><p>Great job! I always had the feeling that the D3/React integration efforts were a bit too hacky but this one just makes sense &#8211; use the best of both worlds.<br />
++1 for supporting transitions and animations, they are a huge part of what makes D3 so powerful.</p>
+</div>
+        </div>
+
+    </li><!-- #comment-## -->
+    <li class="comment even thread-even depth-1" id="dsq-comment-173">
+        <div id="dsq-comment-header-173" class="dsq-comment-header">
+            <cite id="dsq-cite-173">
+                <span id="dsq-author-user-173">Matt Fairbrass</span>
+            </cite>
+        </div>
+        <div id="dsq-comment-body-173" class="dsq-comment-body">
+            <div id="dsq-comment-message-173" class="dsq-comment-message"><p>Excellent work Oli, I really liked your end solution and the accompanying explanation of this blog post to go along with it. As noted by @dinosurjay:disqus it would be really good if you can add support for animations as this is a large use case and one of the primary reasons for using D3, so that we can create rich user experiences in data.</p>
+<p>Keep up the good work, I&#8217;ll be keeping an eye on the project for future use.</p>
+</div>
+        </div>
+
+    <ul class="children">
+    <li class="comment odd alt depth-2" id="dsq-comment-174">
+        <div id="dsq-comment-header-174" class="dsq-comment-header">
+            <cite id="dsq-cite-174">
+                <a id="dsq-author-user-174" href="/" target="_blank" rel="nofollow">Oliver Caldwell</a>
+            </cite>
+        </div>
+        <div id="dsq-comment-body-174" class="dsq-comment-body">
+            <div id="dsq-comment-message-174" class="dsq-comment-message"><p>Thanks a lot, Matt! Maybe Maybe it&#8217;ll come in handy for you guys some day. This post has been one of my most popular so far, I&#8217;m so glad it&#8217;s been well received. It&#8217;s certainly saved us some headaches here.</p>
+</div>
+        </div>
+
+    </li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+    <li class="comment even thread-odd thread-alt depth-1" id="dsq-comment-175">
+        <div id="dsq-comment-header-175" class="dsq-comment-header">
+            <cite id="dsq-cite-175">
+                <a id="dsq-author-user-175" href="http://kidwm.net/" target="_blank" rel="nofollow">WM</a>
+            </cite>
+        </div>
+        <div id="dsq-comment-body-175" class="dsq-comment-body">
+            <div id="dsq-comment-message-175" class="dsq-comment-message"><p>Hey, you should add this intro article link in the README.md of repo.</p>
+</div>
+        </div>
+
+    <ul class="children">
+    <li class="comment odd alt depth-2" id="dsq-comment-176">
+        <div id="dsq-comment-header-176" class="dsq-comment-header">
+            <cite id="dsq-cite-176">
+                <a id="dsq-author-user-176" href="/" target="_blank" rel="nofollow">Oliver Caldwell</a>
+            </cite>
+        </div>
+        <div id="dsq-comment-body-176" class="dsq-comment-body">
+            <div id="dsq-comment-message-176" class="dsq-comment-message"><p>Hey. It&#8217;s already in the repo description, but why not. Will add it at some point.</p>
+</div>
+        </div>
+
+    <ul class="children">
+    <li class="comment even depth-3" id="dsq-comment-177">
+        <div id="dsq-comment-header-177" class="dsq-comment-header">
+            <cite id="dsq-cite-177">
+                <a id="dsq-author-user-177" href="http://kidwm.net/" target="_blank" rel="nofollow">WM</a>
+            </cite>
+        </div>
+        <div id="dsq-comment-body-177" class="dsq-comment-body">
+            <div id="dsq-comment-message-177" class="dsq-comment-message"><p>Didn&#8217;t notice that. Thanks!</p>
+</div>
+        </div>
+
+    </li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+    <li class="comment odd alt thread-even depth-1" id="dsq-comment-207">
+        <div id="dsq-comment-header-207" class="dsq-comment-header">
+            <cite id="dsq-cite-207">
+                <span id="dsq-author-user-207">Edgar Pabon</span>
+            </cite>
+        </div>
+        <div id="dsq-comment-body-207" class="dsq-comment-body">
+            <div id="dsq-comment-message-207" class="dsq-comment-message"><p>I&#8217;m trying to get the faux dom to work with c3 but I haven&#8217;t had any luck getting it to render.  I&#8217;ve tried to create a fake node first and then bind the c3 chart to that node, and then render the final product in react.  The plain d3 works just fine.  Has anyone been successful in making this module work with c3??  If so, how?</p>
+</div>
+        </div>
+
+    </li><!-- #comment-## -->
+    <li class="comment even thread-odd thread-alt depth-1" id="dsq-comment-211">
+        <div id="dsq-comment-header-211" class="dsq-comment-header">
+            <cite id="dsq-cite-211">
+                <span id="dsq-author-user-211">Roger</span>
+            </cite>
+        </div>
+        <div id="dsq-comment-body-211" class="dsq-comment-body">
+            <div id="dsq-comment-message-211" class="dsq-comment-message"><p>finding a major problem.</p>
+<p>if I have an es6 react component, and I do:</p>
+<p>svgContainer.selectAll(&#8216;g.pos&#8217;).each( (d,i) =&gt; {<br />
+  console.debug(this);<br />
+debugger;<br />
+});</p>
+<p>when the debugger stops in chrome.. &#8220;this&#8221; is a &#8216;g&#8217; node.  (correct).<br />
+But console.debug(this) prints out the react component<br />
+(and this.attr(&#8216;etc&#8217;) fails because the React component doesn&#8217;t have an attr method).</p>
+<p>Huh?!?!?!</p>
+</div>
+        </div>
+
+    <ul class="children">
+    <li class="comment odd alt depth-2" id="dsq-comment-223">
+        <div id="dsq-comment-header-223" class="dsq-comment-header">
+            <cite id="dsq-cite-223">
+                <span id="dsq-author-user-223">spoj</span>
+            </cite>
+        </div>
+        <div id="dsq-comment-body-223" class="dsq-comment-body">
+            <div id="dsq-comment-message-223" class="dsq-comment-message"><p>Don&#8217;t use arrow functions in this case, since you don&#8217;t want to lexically bind <code>this</code> here.</p>
+</div>
+        </div>
+
+    <ul class="children">
+    <li class="comment even depth-3" id="dsq-comment-265">
+        <div id="dsq-comment-header-265" class="dsq-comment-header">
+            <cite id="dsq-cite-265">
+                <a id="dsq-author-user-265" href="/" target="_blank" rel="nofollow">Oliver Caldwell</a>
+            </cite>
+        </div>
+        <div id="dsq-comment-body-265" class="dsq-comment-body">
+            <div id="dsq-comment-message-265" class="dsq-comment-message"><p>Thanks for this. It&#8217;s definitely an arrow function thing, not a faux DOM thing 🙂</p>
+</div>
+        </div>
+
+    </li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+    <li class="comment odd alt thread-even depth-1" id="dsq-comment-216">
+        <div id="dsq-comment-header-216" class="dsq-comment-header">
+            <cite id="dsq-cite-216">
+                <span id="dsq-author-user-216">CalebEverett</span>
+            </cite>
+        </div>
+        <div id="dsq-comment-body-216" class="dsq-comment-body">
+            <div id="dsq-comment-message-216" class="dsq-comment-message"><p>Hi, thanks for creating this and writing it up. I used it to mock up an interactive bar chart and table.</p>
+<p><a href="http://si-app.com.s3-website-us-west-1.amazonaws.com/" rel="nofollow">http://si-app.com.s3-website-us-west-1.amazonaws.com/</a></p>
+<p>It is definitely hackish owing to my lack of programming experience, but functionally works. I&#8217;m loading in a 2,300 record csv file with 256 fields and then doing some aggregation to get the chart data. Then when you click on the bar, the records are filtered before being displayed in the table which seems to be slowing things down. The other thing that seems to be slowing things down is the tool tip which displays the bar value when you hover over it. Do you have any suggestions on how to speed things up? Thanks again.</p>
+<p><a href="https://github.com/CalebEverett/si-app/blob/master/src/views/HomeView.js" rel="nofollow">https://github.com/CalebEverett/si-app/blob/master/src/views/HomeView.js</a><br />
+<a href="https://github.com/CalebEverett/si-app/blob/master/src/components/Chart/Chart.js" rel="nofollow">https://github.com/CalebEverett/si-app/blob/master/src/components/Chart/Chart.js</a><br />
+<a href="https://github.com/CalebEverett/si-app/blob/master/src/components/Table/Table.js" rel="nofollow">https://github.com/CalebEverett/si-app/blob/master/src/components/Table/Table.js</a></p>
+</div>
+        </div>
+
+    <ul class="children">
+    <li class="comment even depth-2" id="dsq-comment-217">
+        <div id="dsq-comment-header-217" class="dsq-comment-header">
+            <cite id="dsq-cite-217">
+                <a id="dsq-author-user-217" href="/" target="_blank" rel="nofollow">Oliver Caldwell</a>
+            </cite>
+        </div>
+        <div id="dsq-comment-body-217" class="dsq-comment-body">
+            <div id="dsq-comment-message-217" class="dsq-comment-message"><p>Hey, I hope you&#8217;re finding it useful! Good to see React + Redux in use too 🙂</p>
+<p>At a first guess I&#8217;d say that you should separate some nodes out into other React components and add meaningful unique keys to elements to help React work out what to render. This is part of the reconciliation process, you can read all about it here <a href="https://facebook.github.io/react/docs/reconciliation.html" rel="nofollow">https://facebook.github.io/react/docs/reconciliation.html</a></p>
+<p>It all looks fine to me, you&#8217;ve just got to give React hints as to what has changed. That chart should render extremely quickly, so by breaking it up a little bit and adding keys you should see a boost.</p>
+<p>You can also use JavaScript profiling to work out where the CPU is being used <a href="https://developers.google.com/web/tools/chrome-devtools/profile/rendering-tools/js-execution?hl=en" rel="nofollow">https://developers.google.com/web/tools/chrome-devtools/profile/rendering-tools/js-execution?hl=en</a></p>
+<p>You may have some hot spots where you&#8217;re doing something expensive on every render. Just pay attention to your profiling and you should find whatever is slowing it down. There&#8217;s definitely some easy wins in there, react-faux-dom + D3 is definitely fast enough to render this quickly. It&#8217;s just normal React performance things you need to focus on.</p>
+<p>Best of luck, and feel free to ask if this hasn&#8217;t answered everything!</p>
+</div>
+        </div>
+
+    <ul class="children">
+    <li class="comment odd alt depth-3" id="dsq-comment-218">
+        <div id="dsq-comment-header-218" class="dsq-comment-header">
+            <cite id="dsq-cite-218">
+                <span id="dsq-author-user-218">CalebEverett</span>
+            </cite>
+        </div>
+        <div id="dsq-comment-body-218" class="dsq-comment-body">
+            <div id="dsq-comment-message-218" class="dsq-comment-message"><p>Awesome, I was thinking about how to separate things out so the whole chart didn&#8217;t have to rerender when only the tooltip is changing &#8211; .thanks so much! i&#8217;ll track those down and give them a try.</p>
+</div>
+        </div>
+
+    </li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+    <li class="comment even thread-odd thread-alt depth-1" id="dsq-comment-222">
+        <div id="dsq-comment-header-222" class="dsq-comment-header">
+            <cite id="dsq-cite-222">
+                <span id="dsq-author-user-222">tacomanator</span>
+            </cite>
+        </div>
+        <div id="dsq-comment-body-222" class="dsq-comment-body">
+            <div id="dsq-comment-message-222" class="dsq-comment-message"><p>I like the approach you&#8217;ve taken here, which works well in simple cases.</p>
+<p>I&#8217;m on the fence as to whether it will scale enough for my needs. I thought I would share my experience with others.</p>
+<p>The faux-dom approach does simplify managing the chart. I tested it on a relatively simple chart with two axes, two lines with about 30 points each, area fills, and a voronoi to display tooltips with point values of the lines on hover. I found the faux-dom solution to have noticeable lag between mouse movement and tooltip updates.</p>
+<p>To speed it up I tried moving as much work out of the render method as possible. I stored the scales, axes, line functions, area functions, and anything else that isn&#8217;t need in render, in the component state. These values are reset in <code>componentWillReceiveProps()</code> to allow the chart to prop updates. The only thing render does is construct the markup in the faux-dom with the d3 methods and convert it to React with <code>toReact()</code>.</p>
+<p>The lag didn&#8217;t improve much so I created two versions of the same chart, one with and one without react-faux-dom, and took a profile in Chrome while mousing the mouse around each chart. As can be seen in the profile picture (attached), considerably more work is being done by the react-faux-dom solution.</p>
+<p>The lag is small enough that non-discriminating creators may not care, but it&#8217;s noticeable to me. Also, as I said this is a relatively simple chart, so I worry about how react-faux-dom will do on future charts (or more importantly, how much time I might end up spending trying to make it perform).</p>
+<p>Anyway thanks for the alternative approach. I enjoyed exploring it and I hope that it continues to be developed.</p>
+</div>
+        </div>
+
+    <ul class="children">
+    <li class="comment odd alt depth-2" id="dsq-comment-266">
+        <div id="dsq-comment-header-266" class="dsq-comment-header">
+            <cite id="dsq-cite-266">
+                <a id="dsq-author-user-266" href="/" target="_blank" rel="nofollow">Oliver Caldwell</a>
+            </cite>
+        </div>
+        <div id="dsq-comment-body-266" class="dsq-comment-body">
+            <div id="dsq-comment-message-266" class="dsq-comment-message"><p>I&#8217;m very sorry for not replying! I didn&#8217;t notice the comment, disqus does seem to be a little subtle with it&#8217;s notifications sometimes. This is an excellent breakdown, thank you very much. I certainly agree that it&#8217;s slower, mainly because it spends more time in D3 / JS land than it does in the DOM. Whereas React expects you to spend little time rendering your UI and it&#8217;ll handle the presumed slow part, the DOM.</p>
+<p>You could cache parts of the chart that are expensive to build in the closure of the component / module then reuse them, or keep them as part of component local state. However what this really points towards is something that the faux DOM just isn&#8217;t very good at. If you want a large complex and fast chart, I think you should use regular D3 since it&#8217;s optimised for mutations.</p>
+<p>ReactFauxDOM is actually very light and should be pretty fast, there&#8217;s just a little recursion and looping going on. The D3 rendering should be the slow part. If you want D3 to be fast, you can&#8217;t throw away the built chart, you need to mutate it.</p>
+<p>So it comes down to the tradeoff. Efficiency of D3, which you may *need* to make it usable, or stateless immutable components that are easy to reason about. I think if it&#8217;s not a perceivable hit on performance, the latter is preferable.</p>
+</div>
+        </div>
+
+    </li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+    <li class="comment even thread-even depth-1" id="dsq-comment-243">
+        <div id="dsq-comment-header-243" class="dsq-comment-header">
+            <cite id="dsq-cite-243">
+                <span id="dsq-author-user-243">Abhisek Jana</span>
+            </cite>
+        </div>
+        <div id="dsq-comment-body-243" class="dsq-comment-body">
+            <div id="dsq-comment-message-243" class="dsq-comment-message"><p>Please find my implementation here</p>
+<p>Tutorial:</p>
+<p><a href="http://www.adeveloperdiary.com/d3-js/how-to-integrate-react-d3-the-right-way/" rel="nofollow">http://www.adeveloperdiary.com/d3-js/how-to-integrate-react-d3-the-right-way/</a></p>
+<p>Demo:</p>
+<p><a href="https://adeveloperdiary.github.io/react-d3-charts/01_Visitor_Dashboard/index.html" rel="nofollow">https://adeveloperdiary.github.io/react-d3-charts/01_Visitor_Dashboard/index.html</a></p>
+</div>
+        </div>
+
+    </li><!-- #comment-## -->
+    <li class="comment odd alt thread-odd thread-alt depth-1" id="dsq-comment-244">
+        <div id="dsq-comment-header-244" class="dsq-comment-header">
+            <cite id="dsq-cite-244">
+                <span id="dsq-author-user-244">Aditya</span>
+            </cite>
+        </div>
+        <div id="dsq-comment-body-244" class="dsq-comment-body">
+            <div id="dsq-comment-message-244" class="dsq-comment-message"><p>Hi , Great Article , It worked like a charm 🙂 . I am currently trying to make D3 Responsive in the React page. I tried couple of ways one was to control it in using Aspect Ratio and ViewBox but that ended up omitting some ticks and i was just not able to get it working . Second I tried calling  d3.select(window).on(&#8216;resize&#8217;, resize). But though it works great in a standalone D3 app. It&#8217;s not working inside React. My resize function is something like this: d3.select(window).on(&#8216;resize&#8217;, resize);</p>
+<p>       function  resize(){</p>
+<p>       var margin = { top: 30, right: 30, bottom: 40, left:50 };</p>
+<p>       var container = d3.select(&#8220;node&#8221;).node().parent;</p>
+<p>       var height = parseInt(d3.select(container).style(&#8220;height&#8221;)) &#8211; margin.top &#8211; margin.bottom;</p>
+<p>       var width = parseInt(d3.select(container).style(&#8220;width&#8221;)) &#8211; margin.left &#8211; margin.right;</p>
+<p>       //var width = window.innerWidth &#8211; (window.innerWidth*0.5);</p>
+<p>       console.log(width);</p>
+<p>       xScale.range([0, width]);</p>
+<p>       yScale.range([height, 0]);</p>
+<p>       lChart.select(&#8220;x axis&#8221;)</p>
+<p>       .attr(&#8220;transform&#8221;, &#8220;translate(0,&#8221; + height + &#8220;)&#8221;)</p>
+<p>       .call(hAxis);</p>
+<p>        lChart.select(&#8220;y axis&#8221;)</p>
+<p>      .call(vAxis);</p>
+<p>      lChart.selectAll(&#8216;.line&#8217;)</p>
+<p>      .attr(&#8220;d&#8221;, lineGen);</p>
+<p>      return node.toReact();</p>
+<p>     }</p>
+</div>
+        </div>
+
+    <ul class="children">
+    <li class="comment even depth-2" id="dsq-comment-245">
+        <div id="dsq-comment-header-245" class="dsq-comment-header">
+            <cite id="dsq-cite-245">
+                <a id="dsq-author-user-245" href="/" target="_blank" rel="nofollow">Oliver Caldwell</a>
+            </cite>
+        </div>
+        <div id="dsq-comment-body-245" class="dsq-comment-body">
+            <div id="dsq-comment-message-245" class="dsq-comment-message"><p>This is attempting to mutate the DOM, which doesn&#8217;t work in React. You need to setState or something upon resize, that should trigger React to re-render with the new information. You can&#8217;t just mutate within a function as you usually would with D3, you must use your props and component local state.</p>
+</div>
+        </div>
+
+    <ul class="children">
+    <li class="comment odd alt depth-3" id="dsq-comment-246">
+        <div id="dsq-comment-header-246" class="dsq-comment-header">
+            <cite id="dsq-cite-246">
+                <span id="dsq-author-user-246">aditya</span>
+            </cite>
+        </div>
+        <div id="dsq-comment-body-246" class="dsq-comment-body">
+            <div id="dsq-comment-message-246" class="dsq-comment-message"><p>Thanks for the reply ! I am quiet new to both D3 and React. Can you elaborate more on how to go about it .  I also tried using the solution inspired from this post (<a href="http://stackoverflow.com/questions/16265123/resize-svg-when-window-is-resized-in-d3-js" rel="nofollow">http://stackoverflow.com/questions/16265123/resize-svg-when-window-is-resized-in-d3-js</a>) using this it becomes responsive but the ticks get omitted.</p>
+</div>
+        </div>
+
+    <ul class="children">
+    <li class="comment even depth-4" id="dsq-comment-247">
+        <div id="dsq-comment-header-247" class="dsq-comment-header">
+            <cite id="dsq-cite-247">
+                <span id="dsq-author-user-247">aditya</span>
+            </cite>
+        </div>
+        <div id="dsq-comment-body-247" class="dsq-comment-body">
+            <div id="dsq-comment-message-247" class="dsq-comment-message"><p>Thanks was able to make it work using setState ! This link helped <a href="https://github.com/codesuki/react-d3-components/issues/9" rel="nofollow">https://github.com/codesuki/react-d3-components/issues/9</a></p>
+</div>
+        </div>
+
+    </li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+    <li class="comment odd alt thread-even depth-1" id="dsq-comment-248">
+        <div id="dsq-comment-header-248" class="dsq-comment-header">
+            <cite id="dsq-cite-248">
+                <span id="dsq-author-user-248">Abhisek Jana</span>
+            </cite>
+        </div>
+        <div id="dsq-comment-body-248" class="dsq-comment-body">
+            <div id="dsq-comment-message-248" class="dsq-comment-message"><p>Here is the the tutorial series to integrate React &amp; D3. Step by step instruction.</p>
+<p><a href="http://www.adeveloperdiary.com/react-js/create-reusable-charts-react-d3-part1/" rel="nofollow">http://www.adeveloperdiary.com/react-js/create-reusable-charts-react-d3-part1/</a></p>
+<p>Demo:</p>
+<p><a href="https://adeveloperdiary.github.io/react-d3-charts/02_Admin_Dashboard/part4/index.html" rel="nofollow">https://adeveloperdiary.github.io/react-d3-charts/02_Admin_Dashboard/part4/index.html</a></p>
+</div>
+        </div>
+
+    </li><!-- #comment-## -->
+    <li class="post pingback">
+        <p>Pingback: <a href='https://mikewilliamson.wordpress.com/2016/06/03/d3-and-react-3-ways/' rel='external nofollow' class='url'>D3 and React 3 ways | mike.williamson</a>()</p>
+    </li>
+    </li><!-- #comment-## -->
+    <li class="comment even thread-odd thread-alt depth-1" id="dsq-comment-257">
+        <div id="dsq-comment-header-257" class="dsq-comment-header">
+            <cite id="dsq-cite-257">
+                <span id="dsq-author-user-257">Alasdair Campbell</span>
+            </cite>
+        </div>
+        <div id="dsq-comment-body-257" class="dsq-comment-body">
+            <div id="dsq-comment-message-257" class="dsq-comment-message"><p>hi, thanks for this post.</p>
+<p>I see errors during sever side rendering in query-selector due to navigator.userAgent being undefined. How exactly is the isomorphic element of this approach supposed to work?</p>
+</div>
+        </div>
+
+    <ul class="children">
+    <li class="comment odd alt depth-2" id="dsq-comment-258">
+        <div id="dsq-comment-header-258" class="dsq-comment-header">
+            <cite id="dsq-cite-258">
+                <span id="dsq-author-user-258">Alasdair Campbell</span>
+            </cite>
+        </div>
+        <div id="dsq-comment-body-258" class="dsq-comment-body">
+            <div id="dsq-comment-message-258" class="dsq-comment-message"><p>Beg your pardon, was an issue with no default userAgent set in my build environment. Still learning here.</p>
+</div>
+        </div>
+
+    </li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+    <li class="comment even thread-even depth-1" id="dsq-comment-264">
+        <div id="dsq-comment-header-264" class="dsq-comment-header">
+            <cite id="dsq-cite-264">
+                <span id="dsq-author-user-264">Liran Brimer</span>
+            </cite>
+        </div>
+        <div id="dsq-comment-body-264" class="dsq-comment-body">
+            <div id="dsq-comment-message-264" class="dsq-comment-message"><p>whats the advantages of using this approach over Abhisek Jana&#8217;s approach? is it the ability to call &#8220;append&#8221;?<br />
+because he seem to overcome this with ReactDOM (see his tutorial below).</p>
+</div>
+        </div>
+
+    </li><!-- #comment-## -->
+    <li class="comment odd alt thread-odd thread-alt depth-1" id="dsq-comment-281">
+        <div id="dsq-comment-header-281" class="dsq-comment-header">
+            <cite id="dsq-cite-281">
+                <span id="dsq-author-user-281">Andrea Casaccia</span>
+            </cite>
+        </div>
+        <div id="dsq-comment-body-281" class="dsq-comment-body">
+            <div id="dsq-comment-message-281" class="dsq-comment-message"><p>Maybe I am missing something, but what&#8217;s the advantage of this on just creating the chart on <code>componentDidMount</code> and updating it with <code>componentWillReceiveProps</code>?</p>
+</div>
+        </div>
+
+    <ul class="children">
+    <li class="comment even depth-2" id="dsq-comment-288">
+        <div id="dsq-comment-header-288" class="dsq-comment-header">
+            <cite id="dsq-cite-288">
+                <span id="dsq-author-user-288">James Hurliman</span>
+            </cite>
+        </div>
+        <div id="dsq-comment-body-288" class="dsq-comment-body">
+            <div id="dsq-comment-message-288" class="dsq-comment-message"><p>I imagined I was the only one thinking this! Everyone seems to be totally ditching a large reason of using D3 (the data function) and just using the axes as helper functions, or making unnecessary abstractions so React will do all the rendering.</p>
+</div>
+        </div>
+
+    </li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+    <li class="comment odd alt thread-even depth-1" id="dsq-comment-285">
+        <div id="dsq-comment-header-285" class="dsq-comment-header">
+            <cite id="dsq-cite-285">
+                <span id="dsq-author-user-285">Ash1</span>
+            </cite>
+        </div>
+        <div id="dsq-comment-body-285" class="dsq-comment-body">
+            <div id="dsq-comment-message-285" class="dsq-comment-message"><p>Hi,  Thanks for the article.   I am currently trying to create a simple D3 tree with divs instead of circles in a React component, but I have not been able to find any actual working code example to start with.  I just want a root node in the middle and 6 children nodes connected to it surrounding the root node like a star.<br />
+Any ideas of where to find a sample React/D3 Tree with divs  ? &#8230; 🙂</p>
+</div>
+        </div>
+
+    </li><!-- #comment-## -->
+    <li class="comment even thread-odd thread-alt depth-1" id="dsq-comment-286">
+        <div id="dsq-comment-header-286" class="dsq-comment-header">
+            <cite id="dsq-cite-286">
+                <span id="dsq-author-user-286">Ash1</span>
+            </cite>
+        </div>
+        <div id="dsq-comment-body-286" class="dsq-comment-body">
+            <div id="dsq-comment-message-286" class="dsq-comment-message"><p>Hi Oliver, nice article.   I&#8217;m wondering where I can find actual code examples of simple React/D3 Tree examples using divs instead of circles ?  I just want a simple tree, root node in the middle (div) and 6 div nodes surrounding the root like a star.  I see a lot of &#8220;theory&#8221; about how it should be done, but no actual code examples (that compile and work).</p>
+</div>
+        </div>
+
+    </li><!-- #comment-## -->
+    <li class="comment odd alt thread-even depth-1" id="dsq-comment-290">
+        <div id="dsq-comment-header-290" class="dsq-comment-header">
+            <cite id="dsq-cite-290">
+                <span id="dsq-author-user-290">Adil Baaj</span>
+            </cite>
+        </div>
+        <div id="dsq-comment-body-290" class="dsq-comment-body">
+            <div id="dsq-comment-message-290" class="dsq-comment-message"><p>I wrote an article for beginners like me who try to use d3 with react based on react-faux-dom:<br />
+<a href="https://blog.sicara.com/a-starting-point-on-using-d3-with-react-869fdf3dfaf" rel="nofollow">https://blog.sicara.com/a-starting-point-on-using-d3-with-react-869fdf3dfaf</a></p>
+</div>
+        </div>
+
+    </li><!-- #comment-## -->
+            </ul>
+
+
+        </div>
+
+    </div>
+
+<script type="text/javascript">
+var disqus_url = 'https://oli.me.uk/2015/09/09/d3-within-react-the-right-way/';
+var disqus_identifier = '383 https://oli.me.uk/?p=383';
+var disqus_container_id = 'disqus_thread';
+var disqus_shortname = 'olimeuk';
+var disqus_title = "D3 within React the right way";
+var disqus_config_custom = window.disqus_config;
+var disqus_config = function () {
+    /*
+    All currently supported events:
+    onReady: fires when everything is ready,
+    onNewComment: fires when a new comment is posted,
+    onIdentify: fires when user is authenticated
+    */
+    
+    this.page.remote_auth_s3 = 'W10= c90980ae42f4c1c3616e0a82470fa5b8442e748b 1509109347';
+this.page.api_key = '70MxW9bZg5dsvR3wPdqZd1nBlrPrTvkym4oaTOXPFsWjG89cG8vYjgPVjDVjTfqz';
+this.sso = {
+          name: "Oliver Caldwell\'s blog",
+          button: "",
+          url: "https://oli.me.uk/wp-login.php",
+          logout: "https://oli.me.uk/wp-login.php?action=logout",
+          width: "800",
+          height: "700"
+    };
+    this.language = '';
+        this.callbacks.onReady.push(function () {
+
+        // sync comments in the background so we don't block the page
+        var script = document.createElement('script');
+        script.async = true;
+        script.src = '?cf_action=sync_comments&post_id=383';
+
+        var firstScript = document.getElementsByTagName('script')[0];
+        firstScript.parentNode.insertBefore(script, firstScript);
+    });
+    
+    if (disqus_config_custom) {
+        disqus_config_custom.call(this);
+    }
+};
+
+(function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+
+	
+	</main><!-- #main -->
+
+</div><!-- #primary -->
+
+
+	</div><!-- #content -->
+	
+	
+	<footer id="colophon" class="site-footer" role="contentinfo">
+	
+	
+		
+		<div class="theme-info">
+		<p><a href="https://www.machothemes.com/themes/decode/" rel="dofollow">Decode Theme</a> by <a href="https://www.machothemes.com/" rel="dofollow" title="Professional & Responsive WordPress Themes">Macho Themes</a></p>
+	</div><!-- .theme-info -->
+		
+	</footer><!-- #colophon -->
+	</div><!-- #page -->
+
+
+	
+<div id="sidebar" class="sidebar left">
+	<div id="sidebar-top" class="sidebar-top SidebarTop clearfix">
+		<button id="sidebar-close" class="sidebar-close SidebarClose" title="Hide sidebar">
+			<svg width="100%" height="100%" viewbox="0 0 200 200" version="1.1" xmlns="http://www.w3.org/2000/svg">
+			<path class="close-icon" d="M0,172.881356 L72.8813559,100 L1.0658141e-14,27.1186441 L27.1186441,-2.84217094e-14 L100,72.8813559 L172.881356,0 L200,27.1186441 L127.118644,100 L200,172.881356 L172.881356,200 L100,127.118644 L27.1186441,200 Z M0,172.881356" fill="#444444"></path>
+			</svg>
+		</button>
+	</div>
+	<div class="sidebar-content">
+
+			<nav id="sidebar-menu" class="menu vertical-menu sidebar-menu" role="navigation"><h2 class="menu-title">Navigation</h2><ul><li id="menu-item-86" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-86"><a href="/about-me/">About me</a></li>
+<li id="menu-item-381" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-381"><a href="http://lab.oli.me.uk/">Lab</a></li>
+</ul></nav><!-- #sidebar-menu -->	
+		<div class="widget-area" role="complementary">
+	
+				<aside id="search-4" class="widget widget_search"><h2 class="widgettitle">Search</h2>
+<form role="search" method="get" class="search-form" action="/">
+				<label>
+					<span class="screen-reader-text">Search for:</span>
+					<input type="search" class="search-field" placeholder="Search &hellip;" value="" name="s" />
+				</label>
+				<input type="submit" class="search-submit" value="Search" />
+			</form></aside>		<aside id="recent-posts-2" class="widget widget_recent_entries">		<h2 class="widgettitle">Recent Posts</h2>
+		<ul>
+					<li>
+				<a href="/2017/10/18/taming-clojure-spec-with-expound/">Taming clojure.spec with expound</a>
+						</li>
+					<li>
+				<a href="/2017/10/06/an-introduction-to-transcriptor/">An introduction to transcriptor</a>
+						</li>
+					<li>
+				<a href="/2017/04/05/updating-dependencies-without-changes-md/">Updating dependencies without CHANGES.md</a>
+						</li>
+					<li>
+				<a href="/2017/04/04/the-collatz-conjecture-visualised-in-clojure/">The Collatz conjecture, visualised in Clojure</a>
+						</li>
+					<li>
+				<a href="/2017/03/28/im-on-linode-now/">I&#8217;m on Linode now</a>
+						</li>
+				</ul>
+		</aside>		<aside id="recent-comments-2" class="widget widget_recent_comments"><h2 class="widgettitle">Recent Comments</h2>
+<ul id="recentcomments"><li class="recentcomments"><span class="comment-author-link"><a href='https://cangurses.wordpress.com/2017/05/22/matematikte-cozulemeyen-problemler-collazt-conjecture/' rel='external nofollow' class='url'>Matematikte Çözülemeyen Problemler &#8211; Collazt Conjecture | Can&#039;ın Yazdıkları</a></span> on <a href="/2017/04/04/the-collatz-conjecture-visualised-in-clojure/#comment-308">The Collatz conjecture, visualised in Clojure</a></li><li class="recentcomments"><span class="comment-author-link">Pierre Roudaut</span> on <a href="/2013/07/21/exporting-through-amd-commonjs-and-the-global-object/#comment-307">Exporting through AMD, CommonJS and the global object</a></li><li class="recentcomments"><span class="comment-author-link">meshugunner</span> on <a href="/2013/06/29/equipping-vim-for-javascript/#comment-306">Equipping Vim for JavaScript</a></li><li class="recentcomments"><span class="comment-author-link">Cameron M</span> on <a href="/2015/06/17/wrangling-javascript-with-vim/#comment-305">Wrangling JavaScript with Vim</a></li><li class="recentcomments"><span class="comment-author-link"><a href='/' rel='external nofollow' class='url'>Oliver Caldwell</a></span> on <a href="/2015/06/17/wrangling-javascript-with-vim/#comment-304">Wrangling JavaScript with Vim</a></li></ul></aside><aside id="tag_cloud-3" class="widget widget_tag_cloud"><h2 class="widgettitle">Tags</h2>
+<div class="tagcloud"><a href="/tag/7langs/" class="tag-cloud-link tag-link-67 tag-link-position-1" style="font-size: 10.863636363636pt;" aria-label="7langs (2 items)">7langs</a>
+<a href="/tag/algo/" class="tag-cloud-link tag-link-50 tag-link-position-2" style="font-size: 8pt;" aria-label="algo (1 item)">algo</a>
+<a href="/tag/algos/" class="tag-cloud-link tag-link-61 tag-link-position-3" style="font-size: 8pt;" aria-label="algos (1 item)">algos</a>
+<a href="/tag/angular/" class="tag-cloud-link tag-link-31 tag-link-position-4" style="font-size: 8pt;" aria-label="angular (1 item)">angular</a>
+<a href="/tag/async/" class="tag-cloud-link tag-link-54 tag-link-position-5" style="font-size: 10.863636363636pt;" aria-label="async (2 items)">async</a>
+<a href="/tag/bash/" class="tag-cloud-link tag-link-27 tag-link-position-6" style="font-size: 8pt;" aria-label="bash (1 item)">bash</a>
+<a href="/tag/beginner/" class="tag-cloud-link tag-link-59 tag-link-position-7" style="font-size: 8pt;" aria-label="beginner (1 item)">beginner</a>
+<a href="/tag/binary-search/" class="tag-cloud-link tag-link-49 tag-link-position-8" style="font-size: 8pt;" aria-label="binary-search (1 item)">binary-search</a>
+<a href="/tag/blasphemy/" class="tag-cloud-link tag-link-19 tag-link-position-9" style="font-size: 8pt;" aria-label="blasphemy (1 item)">blasphemy</a>
+<a href="/tag/brainfuck/" class="tag-cloud-link tag-link-46 tag-link-position-10" style="font-size: 14.363636363636pt;" aria-label="brainfuck (4 items)">brainfuck</a>
+<a href="/tag/clojure/" class="tag-cloud-link tag-link-35 tag-link-position-11" style="font-size: 19.136363636364pt;" aria-label="clojure (9 items)">clojure</a>
+<a href="/tag/clojurescript/" class="tag-cloud-link tag-link-32 tag-link-position-12" style="font-size: 14.363636363636pt;" aria-label="clojurescript (4 items)">clojurescript</a>
+<a href="/tag/coursera/" class="tag-cloud-link tag-link-43 tag-link-position-13" style="font-size: 8pt;" aria-label="coursera (1 item)">coursera</a>
+<a href="/tag/debugging/" class="tag-cloud-link tag-link-33 tag-link-position-14" style="font-size: 8pt;" aria-label="debugging (1 item)">debugging</a>
+<a href="/tag/dotfiles/" class="tag-cloud-link tag-link-24 tag-link-position-15" style="font-size: 12.772727272727pt;" aria-label="dotfiles (3 items)">dotfiles</a>
+<a href="/tag/easymotion/" class="tag-cloud-link tag-link-20 tag-link-position-16" style="font-size: 8pt;" aria-label="easymotion (1 item)">easymotion</a>
+<a href="/tag/editors/" class="tag-cloud-link tag-link-22 tag-link-position-17" style="font-size: 8pt;" aria-label="editors (1 item)">editors</a>
+<a href="/tag/elixir/" class="tag-cloud-link tag-link-45 tag-link-position-18" style="font-size: 8pt;" aria-label="elixir (1 item)">elixir</a>
+<a href="/tag/emacs-2/" class="tag-cloud-link tag-link-18 tag-link-position-19" style="font-size: 19.136363636364pt;" aria-label="emacs (9 items)">emacs</a>
+<a href="/tag/flux/" class="tag-cloud-link tag-link-39 tag-link-position-20" style="font-size: 8pt;" aria-label="flux (1 item)">flux</a>
+<a href="/tag/generative-testing/" class="tag-cloud-link tag-link-51 tag-link-position-21" style="font-size: 8pt;" aria-label="generative-testing (1 item)">generative-testing</a>
+<a href="/tag/git/" class="tag-cloud-link tag-link-11 tag-link-position-22" style="font-size: 14.363636363636pt;" aria-label="git (4 items)">git</a>
+<a href="/tag/github/" class="tag-cloud-link tag-link-92 tag-link-position-23" style="font-size: 10.863636363636pt;" aria-label="github (2 items)">github</a>
+<a href="/tag/haskell/" class="tag-cloud-link tag-link-44 tag-link-position-24" style="font-size: 8pt;" aria-label="haskell (1 item)">haskell</a>
+<a href="/tag/interpretor/" class="tag-cloud-link tag-link-57 tag-link-position-25" style="font-size: 8pt;" aria-label="interpretor (1 item)">interpretor</a>
+<a href="/tag/java/" class="tag-cloud-link tag-link-62 tag-link-position-26" style="font-size: 8pt;" aria-label="java (1 item)">java</a>
+<a href="/tag/javascript-2/" class="tag-cloud-link tag-link-14 tag-link-position-27" style="font-size: 20.409090909091pt;" aria-label="javascript (11 items)">javascript</a>
+<a href="/tag/khan/" class="tag-cloud-link tag-link-40 tag-link-position-28" style="font-size: 10.863636363636pt;" aria-label="khan (2 items)">khan</a>
+<a href="/tag/linux/" class="tag-cloud-link tag-link-80 tag-link-position-29" style="font-size: 10.863636363636pt;" aria-label="linux (2 items)">linux</a>
+<a href="/tag/lisp/" class="tag-cloud-link tag-link-21 tag-link-position-30" style="font-size: 17.545454545455pt;" aria-label="lisp (7 items)">lisp</a>
+<a href="/tag/lodash/" class="tag-cloud-link tag-link-48 tag-link-position-31" style="font-size: 8pt;" aria-label="lodash (1 item)">lodash</a>
+<a href="/tag/netrw/" class="tag-cloud-link tag-link-10 tag-link-position-32" style="font-size: 12.772727272727pt;" aria-label="netrw (3 items)">netrw</a>
+<a href="/tag/node/" class="tag-cloud-link tag-link-28 tag-link-position-33" style="font-size: 8pt;" aria-label="node (1 item)">node</a>
+<a href="/tag/npm/" class="tag-cloud-link tag-link-29 tag-link-position-34" style="font-size: 8pt;" aria-label="npm (1 item)">npm</a>
+<a href="/tag/package-el/" class="tag-cloud-link tag-link-23 tag-link-position-35" style="font-size: 10.863636363636pt;" aria-label="package.el (2 items)">package.el</a>
+<a href="/tag/performance/" class="tag-cloud-link tag-link-52 tag-link-position-36" style="font-size: 8pt;" aria-label="performance (1 item)">performance</a>
+<a href="/tag/plugin/" class="tag-cloud-link tag-link-42 tag-link-position-37" style="font-size: 8pt;" aria-label="plugin (1 item)">plugin</a>
+<a href="/tag/plugins/" class="tag-cloud-link tag-link-15 tag-link-position-38" style="font-size: 8pt;" aria-label="plugins (1 item)">plugins</a>
+<a href="/tag/react-2/" class="tag-cloud-link tag-link-37 tag-link-position-39" style="font-size: 12.772727272727pt;" aria-label="react (3 items)">react</a>
+<a href="/tag/reflux/" class="tag-cloud-link tag-link-38 tag-link-position-40" style="font-size: 8pt;" aria-label="reflux (1 item)">reflux</a>
+<a href="/tag/spacemacs/" class="tag-cloud-link tag-link-34 tag-link-position-41" style="font-size: 8pt;" aria-label="spacemacs (1 item)">spacemacs</a>
+<a href="/tag/stdin/" class="tag-cloud-link tag-link-55 tag-link-position-42" style="font-size: 8pt;" aria-label="stdin (1 item)">stdin</a>
+<a href="/tag/vim/" class="tag-cloud-link tag-link-9 tag-link-position-43" style="font-size: 22pt;" aria-label="vim (14 items)">vim</a>
+<a href="/tag/vim-expand/" class="tag-cloud-link tag-link-41 tag-link-position-44" style="font-size: 8pt;" aria-label="vim-expand (1 item)">vim-expand</a>
+<a href="/tag/vm/" class="tag-cloud-link tag-link-56 tag-link-position-45" style="font-size: 8pt;" aria-label="vm (1 item)">vm</a></div>
+</aside><aside id="wpt-latest-tweets-3" class="widget wpt-latest-tweets"><h2 class="widgettitle">My latest tweets</h2>
+<div class="wpt-header"><div class='wpt-follow-button'><a href='https://twitter.com/OliverCaldwell' class='twitter-follow-button wpt-right' data-width='30px' data-show-screen-name='false' data-size='large' data-show-count='false' data-lang='en'>Follow @OliverCaldwell</a></div>
+		<p>
+		<img src='https://pbs.twimg.com/profile_images/849274952696115200/kNzwhOes_normal.jpg' alt='' class='wpt-twitter-avatar wpt-left' />
+		<span class='wpt-twitter-name'>Oliver Caldwell</span><br />
+		<span class='wpt-twitter-id'><a href='https://twitter.com/OliverCaldwell'>@OliverCaldwell</a></span>
+		</p></div><ul>
+<li class="lang-en">Scratch that, it didn't work. Going to try and port my posts to markdown.<br /><span class='wpt-tweet-time'><a href="http://twitter.com/OliverCaldwell/status/923871359331131392">about 2 hours ago</a></span>  </li>
+<li class="lang-en">Instead of porting my old WP posts over, I'm snapshotting my entire WordPress and serving the static HTML on the same URLs.<br /><span class='wpt-tweet-time'><a href="http://twitter.com/OliverCaldwell/status/923859509772156928">about 3 hours ago</a></span>  </li>
+<li class="lang-en">I'm starting my blog anew with Cryogen so it can be on gh-pages with great Klipse integration. Interactive Lisp posts! :D<br /><span class='wpt-tweet-time'><a href="http://twitter.com/OliverCaldwell/status/923859248102232064">about 3 hours ago</a></span>  </li>
+<li class="lang-en">How much math is involved in Lisp In Small Pieces? Will I be as bewildered as I am attempting SICP?<br /><span class='wpt-tweet-time'><a href="http://twitter.com/OliverCaldwell/status/922751329851887617">about 3 days ago</a></span>  </li>
+<li class="lang-en">"I'm going to stop trying to make this CLJS virtual DOM work and just do some courses"
+
+*continues to try and make CLJS virtual DOM work*<br /><span class='wpt-tweet-time'><a href="http://twitter.com/OliverCaldwell/status/922567742925844480">about 4 days ago</a></span>  </li>
+</ul>
+</aside>				
+	</div><!-- .widget-area -->
+		
+	</div>
+</div><!-- #sidebar -->
+
+        <script type="text/javascript">
+        // <![CDATA[
+        var disqus_shortname = 'olimeuk';
+        (function () {
+            var nodes = document.getElementsByTagName('span');
+            for (var i = 0, url; i < nodes.length; i++) {
+                if (nodes[i].className.indexOf('dsq-postid') != -1 && nodes[i].parentNode.tagName == 'A') {
+                    nodes[i].parentNode.setAttribute('data-disqus-identifier', nodes[i].getAttribute('data-dsqidentifier'));
+                    url = nodes[i].parentNode.href.split('#', 1);
+                    if (url.length == 1) { url = url[0]; }
+                    else { url = url[1]; }
+                    nodes[i].parentNode.href = url + '#disqus_thread';
+                }
+            }
+            var s = document.createElement('script');
+            s.async = true;
+            s.type = 'text/javascript';
+            s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+        }());
+        // ]]>
+        </script>
+        <script type='text/javascript' src='/wp-content/themes/decode/scripts/decode.js?ver=3.0.9'></script>
+<script type='text/javascript' src='/wp-includes/js/comment-reply.min.js?ver=4.8.2'></script>
+<script type='text/javascript' src='/wp-includes/js/wp-embed.min.js?ver=4.8.2'></script>
+<script type='text/javascript' src='https://platform.twitter.com/widgets.js?ver=4.8.2'></script>
+
+</body>
+</html>

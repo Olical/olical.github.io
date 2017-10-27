@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	
+	>
+<channel>
+	<title>Comments on: Pure CSS toggle accordion</title>
+	<atom:link href="/2012/03/03/pure-css-toggle-accordion/feed/" rel="self" type="application/rss+xml" />
+	<link>/2012/03/03/pure-css-toggle-accordion/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Mon, 22 May 2017 19:57:20 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>By: avater</title>
+		<link>/2012/03/03/pure-css-toggle-accordion/#comment-69</link>
+		<dc:creator><![CDATA[avater]]></dc:creator>
+		<pubDate>Fri, 09 Aug 2013 15:29:00 +0000</pubDate>
+		<guid isPermaLink="false">/2012/03/03/pure-css-toggle-accordion#comment-69</guid>
+		<description><![CDATA[hmm how does that work...having problems opening the menus on ie9...]]></description>
+		<content:encoded><![CDATA[<p>hmm how does that work&#8230;having problems opening the menus on ie9&#8230;</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: lupil</title>
+		<link>/2012/03/03/pure-css-toggle-accordion/#comment-59</link>
+		<dc:creator><![CDATA[lupil]]></dc:creator>
+		<pubDate>Sun, 21 Jul 2013 00:00:00 +0000</pubDate>
+		<guid isPermaLink="false">/2012/03/03/pure-css-toggle-accordion#comment-59</guid>
+		<description><![CDATA[CSS ding dong tralala]]></description>
+		<content:encoded><![CDATA[<p>CSS ding dong tralala</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Bruce Velocity</title>
+		<link>/2012/03/03/pure-css-toggle-accordion/#comment-56</link>
+		<dc:creator><![CDATA[Bruce Velocity]]></dc:creator>
+		<pubDate>Thu, 04 Jul 2013 00:16:00 +0000</pubDate>
+		<guid isPermaLink="false">/2012/03/03/pure-css-toggle-accordion#comment-56</guid>
+		<description><![CDATA[It was great, until I tried using it in IE. Using an ordered list inside the content causes IE (9 specifically, but all the other crappy ones would probably be the same), to use the same number as the UL used for the titles.]]></description>
+		<content:encoded><![CDATA[<p>It was great, until I tried using it in IE. Using an ordered list inside the content causes IE (9 specifically, but all the other crappy ones would probably be the same), to use the same number as the UL used for the titles.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Oliver Caldwell</title>
+		<link>/2012/03/03/pure-css-toggle-accordion/#comment-44</link>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+		<pubDate>Sat, 23 Feb 2013 10:28:00 +0000</pubDate>
+		<guid isPermaLink="false">/2012/03/03/pure-css-toggle-accordion#comment-44</guid>
+		<description><![CDATA[You can do it, but you need a tiny bit of JavaScript. You could have your JavaScript add a class to an element called `hidden` or something like that. This will start to fade the element out or do what ever you want it to do. The JavaScript can then listen for the transition end event which it can set `display: none;` or add another class to completely hide it. I&#039;ve built you a little example of how I would do it. I hope this helps: http://jsfiddle.net/Wolfy87/cSXMZ/]]></description>
+		<content:encoded><![CDATA[<p>You can do it, but you need a tiny bit of JavaScript. You could have your JavaScript add a class to an element called <code>hidden</code> or something like that. This will start to fade the element out or do what ever you want it to do. The JavaScript can then listen for the transition end event which it can set <code>display: none;</code> or add another class to completely hide it. I&#8217;ve built you a little example of how I would do it. I hope this helps: <a href="http://jsfiddle.net/Wolfy87/cSXMZ/" rel="nofollow">http://jsfiddle.net/Wolfy87/cSXMZ/</a></p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Ruben Solvang</title>
+		<link>/2012/03/03/pure-css-toggle-accordion/#comment-43</link>
+		<dc:creator><![CDATA[Ruben Solvang]]></dc:creator>
+		<pubDate>Sat, 23 Feb 2013 00:23:00 +0000</pubDate>
+		<guid isPermaLink="false">/2012/03/03/pure-css-toggle-accordion#comment-43</guid>
+		<description><![CDATA[I have unsuccessfully tried to apply a CSS3 transition when the different content is shown / hidden. Do you know if this is possible at all?]]></description>
+		<content:encoded><![CDATA[<p>I have unsuccessfully tried to apply a CSS3 transition when the different content is shown / hidden. Do you know if this is possible at all?</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: KD</title>
+		<link>/2012/03/03/pure-css-toggle-accordion/#comment-41</link>
+		<dc:creator><![CDATA[KD]]></dc:creator>
+		<pubDate>Mon, 03 Dec 2012 18:09:00 +0000</pubDate>
+		<guid isPermaLink="false">/2012/03/03/pure-css-toggle-accordion#comment-41</guid>
+		<description><![CDATA[Love what this can do and it&#039;s perfect for my book excerpt options.  However, it just shows the radial and full content without the accordion effect.  I&#039;m new at this, so I know I&#039;m doing something wrong.  What do I need to do (copy/paste info) in order to have someone review? ]]></description>
+		<content:encoded><![CDATA[<p>Love what this can do and it&#8217;s perfect for my book excerpt options.  However, it just shows the radial and full content without the accordion effect.  I&#8217;m new at this, so I know I&#8217;m doing something wrong.  What do I need to do (copy/paste info) in order to have someone review? </p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Daivd Huosãr</title>
+		<link>/2012/03/03/pure-css-toggle-accordion/#comment-36</link>
+		<dc:creator><![CDATA[Daivd Huosãr]]></dc:creator>
+		<pubDate>Fri, 13 Jul 2012 15:06:00 +0000</pubDate>
+		<guid isPermaLink="false">/2012/03/03/pure-css-toggle-accordion#comment-36</guid>
+		<description><![CDATA[ah.. does not work in iOS - on closer inspection. Both safari and chrome.]]></description>
+		<content:encoded><![CDATA[<p>ah.. does not work in iOS &#8211; on closer inspection. Both safari and chrome.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Daivd Huosãr</title>
+		<link>/2012/03/03/pure-css-toggle-accordion/#comment-35</link>
+		<dc:creator><![CDATA[Daivd Huosãr]]></dc:creator>
+		<pubDate>Fri, 13 Jul 2012 09:29:00 +0000</pubDate>
+		<guid isPermaLink="false">/2012/03/03/pure-css-toggle-accordion#comment-35</guid>
+		<description><![CDATA[One possible accessibility issue you&#039;ll run into is that you cannot &#039;tab&#039; on to the radio buttons as they are hidden (and the label won&#039;t get picked up by tabbing either). 
+
+
+This seems like a great technique though overall. I would love to know if there is a way around the tabbing issue - as I&#039;m gearing up to integrate this method into my current toolkit.
+
+I also tried using checkboxes which work in much the same way except with the added function of being able to toggle all items open at the same time.]]></description>
+		<content:encoded><![CDATA[<p>One possible accessibility issue you&#8217;ll run into is that you cannot &#8216;tab&#8217; on to the radio buttons as they are hidden (and the label won&#8217;t get picked up by tabbing either). </p>
+<p>This seems like a great technique though overall. I would love to know if there is a way around the tabbing issue &#8211; as I&#8217;m gearing up to integrate this method into my current toolkit.</p>
+<p>I also tried using checkboxes which work in much the same way except with the added function of being able to toggle all items open at the same time.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Oliver Caldwell</title>
+		<link>/2012/03/03/pure-css-toggle-accordion/#comment-22</link>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+		<pubDate>Sat, 17 Mar 2012 18:45:00 +0000</pubDate>
+		<guid isPermaLink="false">/2012/03/03/pure-css-toggle-accordion#comment-22</guid>
+		<description><![CDATA[ True, it is not great in the IE department. But if you add &lt;a href=&#039;http://selectivizr.com/&#039; rel=&quot;nofollow&quot;&gt;Selectivizr&lt;/a&gt; in an IE conditional tag it will work perfectly.]]></description>
+		<content:encoded><![CDATA[<p> True, it is not great in the IE department. But if you add <a href='http://selectivizr.com/' rel="nofollow">Selectivizr</a> in an IE conditional tag it will work perfectly.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Tom</title>
+		<link>/2012/03/03/pure-css-toggle-accordion/#comment-21</link>
+		<dc:creator><![CDATA[Tom]]></dc:creator>
+		<pubDate>Sat, 17 Mar 2012 18:40:00 +0000</pubDate>
+		<guid isPermaLink="false">/2012/03/03/pure-css-toggle-accordion#comment-21</guid>
+		<description><![CDATA[Great work! Bummer it doesn&#039;t work in IE 9 (and possibly previous versions).]]></description>
+		<content:encoded><![CDATA[<p>Great work! Bummer it doesn&#8217;t work in IE 9 (and possibly previous versions).</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

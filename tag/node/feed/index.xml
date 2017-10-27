@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>node &#8211; Oliver Caldwell&#039;s blog</title>
+	<atom:link href="/tag/node/feed/" rel="self" type="application/rss+xml" />
+	<link>/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Wed, 18 Oct 2017 13:50:23 +0000</lastBuildDate>
+	<language>en-GB</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>If you&#8217;re using sudo with npm you&#8217;re doing it wrong</title>
+		<link>/2014/10/29/if-youre-using-sudo-with-npm-youre-doing-it-wrong/</link>
+		<comments>/2014/10/29/if-youre-using-sudo-with-npm-youre-doing-it-wrong/#respond</comments>
+		<pubDate>Wed, 29 Oct 2014 08:30:15 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[JavaScript]]></category>
+		<category><![CDATA[bash]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[node]]></category>
+		<category><![CDATA[npm]]></category>
+
+		<guid isPermaLink="false">/?p=210</guid>
+		<description><![CDATA[I see countless developers blindly firing off sudo npm install -g XYZ and it hurts. A lot. From then on, every time you update or execute global npm commands from within scripts or tools the whole thing will halt or die when it encounters permission related problems. One &#8220;solution&#8221; I&#8217;ve seen for this is to <a class="read-more" href="/2014/10/29/if-youre-using-sudo-with-npm-youre-doing-it-wrong/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>I see countless developers blindly firing off <em>sudo npm install -g XYZ</em> and it hurts. A lot. From then on, every time you update or execute global npm commands from within scripts or tools the whole thing will halt or die when it encounters permission related problems. One &#8220;solution&#8221; I&#8217;ve seen for this is to chmod<strong> /usr/local</strong>. You don&#8217;t own this directory though, you only own your home directory. Assume everything outside of that is shared by other users on the system. Ruby gems are installed to your home directory (or should be if it&#8217;s not the case already!) so why not node modules?</p>
+<p>This is an easy thing to fix, all you have to do is add a prefix attribute to your <em>~/.npmrc</em> which you can even do with this single line of bash.</p><pre class="crayon-plain-tag">echo "prefix = ~/npm" &gt;&gt; ~/.npmrc</pre><p>After this, all <em>npm install -g XYZ</em> commands (without sudo) will install to the npm directory within your home. The only other thing you have to do is add <em>$HOME/npm/bin</em> to your path, which is very easy to do. I won&#8217;t go into that here because it&#8217;s probably <a href="https://www.google.com/search?q=How+do+I+add+to+my+path+variable%3F&amp;ie=utf-8&amp;oe=utf-8&amp;aq=t&amp;rls=org.mozilla:en-US:official&amp;client=firefox-a&amp;channel=fflb">one of the most common questions ever asked in the history of humanity</a>.</p>
+<p>Don&#8217;t use sudo with programming package managers, configure them to store things in your home directory. It&#8217;ll save you your sanity at some point in the future.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2014/10/29/if-youre-using-sudo-with-npm-youre-doing-it-wrong/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

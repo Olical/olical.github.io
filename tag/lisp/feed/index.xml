@@ -1,0 +1,553 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>lisp &#8211; Oliver Caldwell&#039;s blog</title>
+	<atom:link href="/tag/lisp/feed/" rel="self" type="application/rss+xml" />
+	<link>/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Wed, 18 Oct 2017 13:50:23 +0000</lastBuildDate>
+	<language>en-GB</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>An introduction to ClojureScript</title>
+		<link>/2016/02/27/an-introduction-to-clojurescript/</link>
+		<comments>/2016/02/27/an-introduction-to-clojurescript/#comments</comments>
+		<pubDate>Sat, 27 Feb 2016 15:08:05 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Clojure]]></category>
+		<category><![CDATA[JavaScript]]></category>
+		<category><![CDATA[Lisp]]></category>
+		<category><![CDATA[clojure]]></category>
+		<category><![CDATA[clojurescript]]></category>
+		<category><![CDATA[lisp]]></category>
+
+		<guid isPermaLink="false">/?p=452</guid>
+		<description><![CDATA[In this post I&#8217;m going to attempt to explain where ClojureScript comes from as well as what it is and what it can do for you. I&#8217;m coming at this from the perspective of someone who writes a lot of JavaScript already, probably with React and Redux. Lisp ClojureScript is a very slight sub-set of <a class="read-more" href="/2016/02/27/an-introduction-to-clojurescript/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>In this post I&#8217;m going to attempt to explain where <a href="https://github.com/clojure/clojurescript">ClojureScript</a> comes from as well as what it is and what it can do for you. I&#8217;m coming at this from the perspective of someone who writes a lot of JavaScript already, probably with React and Redux.</p>
+<h2>Lisp</h2>
+<p>ClojureScript is a very slight sub-set of Clojure, the main difference being one compiles to JavaScript, the other to Java VM bytecode. On the JVM, Clojure has access to threads and other OS level niceties. ClojureScript as a language is very similar to it&#8217;s parent, but it lacks certain things that just aren&#8217;t possible in the browser.</p>
+<p>They are however, both a <a href="https://en.wikipedia.org/wiki/Lisp_%28programming_language%29">Lisp</a>, one of the most fascinating languages ever <em>discovered</em> (see <a href="https://www.quora.com/Do-aliens-have-LISP">do aliens have lisp?</a>). It&#8217;s not a perfect foundation, but it&#8217;s an extremely powerful and flexible one with a long and colourful history. Wikipedia will do a better job at listing that history than I can ever do, but here&#8217;s some key facts.</p>
+<ul>
+<li>It was first specified in <strong>1958</strong> (<a href="https://en.wikipedia.org/wiki/JavaScript">JavaScript</a> appeared in 1995, 37 years later)</li>
+<li>Originally designed for AI research</li>
+<li>Has a huge amount of dialects which share the core tenants, including <a href="https://github.com/clojure/clojurescript">ClojureScript</a>, <a href="http://clojure.org/">Clojure</a>, <a href="https://racket-lang.org/">Racket</a>, <a href="https://en.wikipedia.org/wiki/Scheme_%28programming_language%29">Scheme</a>, <a href="http://lfe.io/">Lisp Flavoured Erlang</a> and many more</li>
+<li>(it&#8217;s (lists (all the way (down))))</li>
+<li>It makes use of macros to define the language in the language, which I demonstrate in my post about <a href="/2014/12/15/a-javascript-clojure-mashup/">implementing a lisp in JavaScript</a></li>
+</ul>
+<p>This extremely exhaustive chart that shows the history of programming languages shows just how early Lisp turned up. It&#8217;s amazing to see what influenced what, click the image to enlarge it.</p>
+<p><a href="/wp-content/uploads/2016/02/history-of-languages.png" rel="attachment wp-att-454"><img class="aligncenter size-large wp-image-454" src="/wp-content/uploads/2016/02/history-of-languages-1024x631.png" alt="history-of-languages" width="792" height="488" srcset="/wp-content/uploads/2016/02/history-of-languages-1024x631.png 1024w, /wp-content/uploads/2016/02/history-of-languages-300x185.png 300w, /wp-content/uploads/2016/02/history-of-languages-768x474.png 768w" sizes="(max-width: 792px) 100vw, 792px" /></a>So it has been around for a very long time and has appeared in many flavours. We&#8217;re going to skip all of the other fascinating Lisps in the middle and jump all the way to Clojure, one of the newest and most popular in recent years.</p>
+<h2>Clojure</h2>
+<p><a href="https://en.wikipedia.org/wiki/Clojure">Clojure</a> is a Lisp dialect that encourages functional programming with immutable data structures. The data structures themselves are pretty amazing and can be found in JavaScript through <a href="https://facebook.github.io/immutable-js/">ImmutableJS</a>. Immutable data structures never change, they only allow you to create new versions of them with your changes applied, this prevents mutation, a source of pain in many systems. They don&#8217;t just copy the data to prevent mutation as some people appear to do in JavaScript, they use efficient algorithms to share as much data as possible to keep things immutable without sacrificing too much speed or efficiency. <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze">Object.freeze</a> is not persistent immutability, neither is cloning things every time. That&#8217;s slow and inefficient. Neither is using <a href="https://gist.github.com/sebmarkbage/005c81e6f2f5ddac443f">the spread operator</a>.</p>
+<p>It runs on the JVM by default, so you can use all the Java libraries out there without having to write Java (yay!). You can also run it on the <a href="https://en.wikipedia.org/wiki/Common_Language_Runtime">Common Language Runtime</a>, which is kind of like the JVM but for Windows, I&#8217;ve never looked into that though. There&#8217;s also support for Unity, VR and JavaScript (through ClojureScript). So it&#8217;s an extremely versatile language that can run almost anywhere with the same core functions and principals.</p>
+<p>One cool thing about Clojure is that the language is defined by the language. By that I mean, there&#8217;s a core interpreter (called a reader) as well as some core functions written outside of Clojure, but the rest is defined in <a href="https://github.com/clojure/clojure/blob/master/src/clj/clojure/core.clj">core.clj</a>, in Clojure. If there&#8217;s ever anything you don&#8217;t understand about the language, you can actually go and read the source code for that feature, like the <a href="https://github.com/clojure/clojure/blob/d5708425995e8c83157ad49007ec2f8f43d8eac8/src/clj/clojure/core.clj#L6087">while macro</a>.</p>
+<h2>Versatility</h2>
+<p>You may wonder what Clojure can actually do, the Wikipedia page just says is &#8220;general purpose&#8221;, but so is JavaScript and anything else you&#8217;ve probably ever used. Well, it&#8217;s more general than you&#8217;ll be used to, if you can name a paradigm that a language supports, Clojure probably has support for it too. Because of it&#8217;s generic macro based nature, you can define any other style within the language. Here&#8217;s a list of libraries that enable awesome paradigms from other languages within Clojure.</p>
+<ul>
+<li><a href="https://github.com/clojure/core.async">core.async</a> &#8211; Like <a href="https://golang.org/">Go</a>&#8216;s channels</li>
+<li><a href="http://typedclojure.org/">core.typed</a> &#8211; Gradual typing</li>
+<li><a href="https://github.com/clojure/core.match">core.match</a> &#8211; Pattern matching</li>
+<li><a href="https://github.com/clojure/core.logic">core.logic</a> &#8211; Logic programming (check out <a href="https://en.wikipedia.org/wiki/Prolog">Prolog</a>, it&#8217;s really cool!)</li>
+<li><a href="https://github.com/mikera/core.matrix">core.matrix</a> &#8211; Matrix and array programming</li>
+<li><a href="https://github.com/plumatic/schema">schema</a> &#8211; Declarative data validation</li>
+<li><a href="https://github.com/brandonbloom/factjor">factjor</a> &#8211; Stack programming</li>
+<li><a href="https://github.com/clojure/test.generative">test.generative</a> &#8211; Generative testing!</li>
+</ul>
+<p>My friend Ludwik at work described it well.</p>
+<blockquote><p>You learn this one thing and it can take you to ALL the places.</p></blockquote>
+<p>No kidding, you can do anything with it, it&#8217;s the most flexible language I&#8217;ve ever researched. To me, it&#8217;s a host unifier, you have every paradigm and every platform within the same beautiful language. This versatility means it&#8217;s being used all over the world in various industries to solve all sorts of interesting and hard problems, as <a href="http://blog.cognitect.com/blog/2016/1/28/state-of-clojure-2015-survey-results">the 2015 survey</a> shows. Ludwik actually uses it day to day at <a href="http://www.qubit.com/">Qubit</a> with his team.</p>
+<h2>Tooling</h2>
+<p>There&#8217;s excellent integration into many popular text editors and IDEs, including: Sublime, Atom, Vim, Emacs and <a href="http://lighttable.com/">LightTable</a> (actually written in ClojureScript). <a href="https://cursive-ide.com/">Cursive</a> is an IDE developed specifically for Clojure which seems pretty cool too, it&#8217;s based off of IntelliJ. I use Vim personally and have <a href="/2014/11/21/essential-vim-bundles-for-javascript-and-clojure/">written about it in the past</a>. All of the tooling hooks into a running REPL which allows you to look up source code, documentation and execute things directly from your editor.</p>
+<p>Editing Clojure is fun too, because you&#8217;re editing the actual AST so you can perform structural editing with things like <a href="http://danmidwood.com/content/2014/11/21/animated-paredit.html">Paredit</a> or <a href="https://shaunlebron.github.io/parinfer/">Parinfer</a>. Forget manually copying and pasting lines around, adjusting quotes and curly braces, you can edit the AST and always keep it correct with powerful tools.</p>
+<p>Now the coolest thing about everything I&#8217;ve mentioned above, it pretty much all works the same with ClojureScript and by extension, in the browser. Yes, you can have live editor integration into something running in your browser with first class language editing support across a plethora of editors. Support for multiple paradigms so you can choose the right tool for the job, wherever your code is running. ClojureScript can be automatically fired into your browser as you edit through the wonderful <a href="https://github.com/bhauman/lein-figwheel">figwheel</a>, this will make the hot module reloading you&#8217;ve seen in JavaScript look pretty basic.</p>
+<p>All of this magic is driven by a very small amount of tooling, no more learning the &#8220;npm + grunt / gulp / broccoli + browserify / webpack + react + redux + immutablejs + &#8230;.&#8221; silliness. All you need is <a href="http://leiningen.org/">Leiningen</a>. A simple &#8220;lein new project-name-here&#8221; will get you up and running.</p>
+<h2>ClojureScript</h2>
+<p>Let&#8217;s assume you&#8217;ve got leiningen installed and you want to create a &#8220;Hello, World!&#8221; application with <a href="https://reagent-project.github.io/">Reagent</a> (a minimalistic React wrapper for ClojureScript, there&#8217;s a few wrappers out there though, go explore!) and live reloading through figwheel.</p><pre class="crayon-plain-tag">lein new reagent hello-reagent
+cd hello-reagent
+lein figwheel
+
+# Now open http://localhost:3449/</pre><p>You now have a live reloading ClojureScript environment with routing and great React support. Arguably a better React than React since the immutable data structures are integrated seamlessly, those allow you to check for changes far faster than plain JavaScript.</p>
+<p>That&#8217;s all there is to it though, getting set up is extremely quick and easy. You then have a live environment to edit in any way you want, you are free to explore the language by moving and editing expression that will be sent to the browser when you write the file. The reloading keeps the state, so you can edit the page&#8217;s source while interacting with it.</p>
+<p>Once you get used to this live / REPL style of programming where you can explore ideas without restarting anything you won&#8217;t want to go back. I won&#8217;t be teaching you ClojureScript here, but I wanted to get you to a point where it&#8217;ll be easy to learn. Now you should go and play, have fun with the language and just try things out. It&#8217;ll look odd at first but lisp will seem normal to you surprisingly quickly. You&#8217;ll quickly feel that editing JavaScript feels clunky since moving things around requires constant adjustment of the syntax as well as regular reloads, even with HMR enabled within webpack, for example. The JavaScript tooling doesn&#8217;t feel like it fits together well, ClojureScript is the opposite.</p>
+<p>So go and learn, read books, build toy projects. Explore everything this cool language and ecosystem has to offer (just look how cool <a href="https://github.com/bhauman/devcards">devcards</a> are!). Even if you don&#8217;t end up using it in production I can promise that it&#8217;ll teach you things that will make you a better programmer. Even if you only learn about lisp and don&#8217;t use it, it&#8217;ll change how you solve problems.</p>
+<p>I hope this helped and that you have fun.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2016/02/27/an-introduction-to-clojurescript/feed/</wfw:commentRss>
+		<slash:comments>3</slash:comments>
+		</item>
+		<item>
+		<title>Working with multiple of lists in JavaScript</title>
+		<link>/2016/02/09/working-with-multiple-of-lists-in-javascript/</link>
+		<comments>/2016/02/09/working-with-multiple-of-lists-in-javascript/#comments</comments>
+		<pubDate>Tue, 09 Feb 2016 23:05:44 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Clojure]]></category>
+		<category><![CDATA[JavaScript]]></category>
+		<category><![CDATA[Lisp]]></category>
+		<category><![CDATA[Projects]]></category>
+		<category><![CDATA[clojure]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[lisp]]></category>
+		<category><![CDATA[lists]]></category>
+
+		<guid isPermaLink="false">/?p=434</guid>
+		<description><![CDATA[If you&#8217;ve ever had to iterate over multiple lists at the same time or map a filtered map of a map, you&#8217;ll understand that nesting all of those blocks and callbacks isn&#8217;t very easy to work with or understand. Luckily, there&#8217;s some cool techniques that make turning several arrays (or infinite sequences created by generators, <a class="read-more" href="/2016/02/09/working-with-multiple-of-lists-in-javascript/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>If you&#8217;ve ever had to iterate over multiple lists at the same time or map a filtered map of a map, you&#8217;ll understand that nesting all of those blocks and callbacks isn&#8217;t very easy to work with or understand.</p>
+<p>Luckily, there&#8217;s some cool techniques that make turning several arrays (or infinite sequences created by generators, for example) into a single array with a concise and powerful syntax. I&#8217;m going to take this rather large list of <a href="https://gist.github.com/Olical/fa1c29fdfa42b52604f5">my public gists</a> and turn it into a list of all file names with the type set to &#8220;JavaScript&#8221;. I&#8217;m using lodash for convenience.</p><pre class="crayon-plain-tag">_.map(_.filter(_.flatMap(gists, (gist) =&gt; {
+  return _.values(gist.files)
+}), (file) =&gt; {
+  return file.language === 'JavaScript'
+}), (file) =&gt; {
+  return file.filename
+})</pre><p>Which yields the following array.</p><pre class="crayon-plain-tag">[ 'lazyArray.js',
+  'thebutton.js',
+  'formatNumberWithCommas.js',
+  'x-example.js',
+  'what-we-do.js',
+  'compile.js',
+  'compile.spec.js',
+  'factory.js',
+  'harvest.js',
+  'main.js',
+  'e.js',
+  'example.js',
+  'EventEmitter.js',
+  'api.js',
+  'example.js',
+  'graphs.js',
+  'colours.js' ]</pre><p>You could extract parts of this into named variables or move it into other functions, but my point being, something fairly simple requires a lot of juggling. If you want to add any more maps or filters in the middle you have to constantly move arguments around. It&#8217;s not easy to change and adapt.</p>
+<p>We can however completely eliminate the need for this nesting by using something called list comprehension.</p>
+<h2>List comprehension</h2>
+<p>My favourite implementation of list comprehension can be found in my favourite language, <a href="https://clojuredocs.org/clojure.core/for">Clojure&#8217;s for</a>. You can also find them in many other languages such as Python and Scala, I&#8217;m just in love with <a href="https://xkcd.com/297/">all those parenthesis</a>.</p>
+<p>JavaScript even <em>had</em> one planned for ES6 although it was pulled from the specification, I&#8217;m not sure why. <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Array_comprehensions">Firefox had something like the ES6 one</a> implemented for a while, but that was non-standard at the time. If it&#8217;s any consolation, I didn&#8217;t like the syntax anyway.</p>
+<p>They allow you to produce a single list from one statement or call that accepts multiple lists alongside some parameters. You should, in theory, be able to reference between those lists and define intermediate values from those lists as they iterate through. You then have a function which is called with singular values from those lists, what it returns becomes your final list.</p>
+<p>I&#8217;ve built one for JavaScript that is a port of the Clojure implementation, I&#8217;ve tried to keep it as close to the original as possible. Including code-as-data based API and laziness all the way down. You can use plain old arrays or infinite generators, it will accept <em>any</em> <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Iteration_protocols">iterable</a>.</p>
+<h2>Introducing <a href="https://github.com/Olical/forc">forc</a> <a style="display: inline-block;" href="https://badge.fury.io/js/forc"><img src="https://badge.fury.io/js/forc.svg" alt="npm version" height="18" /></a></h2>
+<p>The name stems from &#8220;for comprehension&#8221; or maybe even &#8220;for Clojure&#8221;, but mainly because I obviously can&#8217;t use just &#8220;for&#8221; as a name. It allows you to do everything Clojure&#8217;s for does, but with JavaScript and any kind of iterable. It&#8217;s written with all sorts of ES6y things and I&#8217;d recommend using it with Babel, but it will work without them (I compile it at publish time). Pre-ES6 you won&#8217;t have any way to iterate the iterables it generates easily, so I wouldn&#8217;t recommend that.</p>
+<p>Here&#8217;s an example of infinite sequences from the README.</p><pre class="crayon-plain-tag">// An infinite generator of all natural numbers
+function * numbers () {
+  let n = 0
+
+  while (true) {
+    yield n++
+  }
+}
+
+forc([
+  'n', numbers(),
+  ':let', ['square', ({n}) =&gt; n * n],
+  ':while', ({square}) =&gt; square &lt; 100
+], ({square}) =&gt; square)
+
+// Results in only those whos square is &lt; 100
+// [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]</pre><p>The API will look strange to anyone that hasn&#8217;t used the Clojure version, but it&#8217;s extremely powerful. The declarative array based approach allowed me to do some cool rebinding of values as I walk through the instructions. I&#8217;ve seen others do this with long chains of method calls or evals instead, both of which don&#8217;t come close to Clojure&#8217;s elegance, in my opinion. This library accidentally adds a little lisp to JavaScript, <a href="https://github.com/Olical/clojs">again</a>. I can&#8217;t help it.</p>
+<p>Now let&#8217;s solve the initial problem with <a href="https://github.com/Olical/forc">forc</a>.</p><pre class="crayon-plain-tag">forc([
+  'gist', gists,
+  'file', ({gist}) =&gt; _.values(gist.files),
+  ':when', ({file}) =&gt; file.language === 'JavaScript'
+], ({file}) =&gt; file.filename)</pre><p>Pretty succinct, right? I mean, I think so. It&#8217;s a shame the &#8220;_.values&#8221; is required because &#8220;gist.files&#8221; is an object but that&#8217;s just the shape of the data. An object is not an iterable, maybe I could change the API in the future to automatically extract values from objects. This call produces a generator which contains the same contents as the initial call, you can expand it with &#8220;[&#8230;result]&#8221;.</p>
+<p>The cool thing about it being a generator is that it only calculates the values you pull through, this allows you to use infinite iterators, for example. You can even use a generator created by &#8220;forc&#8221; as an argument for &#8220;forc&#8221;, it sill won&#8217;t execute a thing until you pull the values through by resolving the iterator.</p>
+<p>Feel free to check out the README and tests to get a better idea of the capabilities. The Clojure documentation is also pretty good since I&#8217;ve copied the API.</p>
+<p>I hope you find this useful!</p>
+]]></content:encoded>
+			<wfw:commentRss>/2016/02/09/working-with-multiple-of-lists-in-javascript/feed/</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+		</item>
+		<item>
+		<title>Lazy arrays in JavaScript</title>
+		<link>/2015/05/31/lazy-arrays-in-javascript/</link>
+		<comments>/2015/05/31/lazy-arrays-in-javascript/#comments</comments>
+		<pubDate>Sun, 31 May 2015 11:28:23 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[JavaScript]]></category>
+		<category><![CDATA[Projects]]></category>
+		<category><![CDATA[arrays]]></category>
+		<category><![CDATA[clojure]]></category>
+		<category><![CDATA[lazy]]></category>
+		<category><![CDATA[lisp]]></category>
+		<category><![CDATA[seq]]></category>
+
+		<guid isPermaLink="false">/?p=343</guid>
+		<description><![CDATA[So I built a thing called lazy-array. It came off the back of a tiny gist and grew into something quite powerful (if I do say so myself). This project allows you to define lazy arrays in JavaScript, surprisingly enough, but what are they? Lazy arrays A lazy array is a sort of collection that <a class="read-more" href="/2015/05/31/lazy-arrays-in-javascript/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>So I built a thing called <a href="https://github.com/Wolfy87/lazy-array">lazy-array</a>. It came off the back of <a href="https://gist.github.com/Wolfy87/75b435fce2091f79155e">a tiny gist</a> and grew into something quite powerful (if I do say so myself). This project allows you to define lazy arrays in JavaScript, surprisingly enough, but what are they?</p>
+<h3>Lazy arrays</h3>
+<p>A lazy array is a sort of collection that doesn&#8217;t actually do or contain anything until it&#8217;s absolutely necessary. So a lazy <a href="http://clojure.org/sequences">sequence</a> in Clojure will do as little as possible until required. I&#8217;ve actually modelled my implementation on that of <a href="http://theatticlight.net/posts/Lazy-Sequences-in-Clojure/">Clojure&#8217;s lazy sequences</a>.</p>
+<p>This allows you to represent things that don&#8217;t exist yet or are infinite, such as the entire Fibonacci sequence. That&#8217;s a powerful concept that I want to explore a little within the JavaScript UI space.</p>
+<h3>This implementation</h3>
+<p>My implementation actually works fine with vanilla arrays as well as the lazy variety, so my library ends up being a set of array manipulation functions (like map and filter) that evaluate at the last possible moment and can consume infinite lazy arrays of all positive integers, for example.</p>
+<p>A map or filter over a value would not yield another value, they produce another lazy array and don&#8217;t actually execute anything at the time. They only resolve when you force them to using the <em>all</em> function or you request a specific item from the array (like the first or 10th). The results of a lazy array instance are also cached and used the next time it&#8217;s requested, just like Clojure, so that&#8217;s worth bearing in mind. I haven&#8217;t seen it cause issues, but it should in theory make repeated calls to things very fast.</p>
+<blockquote class="twitter-tweet" lang="en">
+<p dir="ltr" lang="en"><a href="https://twitter.com/OliverCaldwell">@OliverCaldwell</a> <a href="https://twitter.com/closuresaddict">@closuresaddict</a> I think you now which route I favour. Once you&#8217;ve amassed enough lipstick, it&#8217;s time to get rid of the pig.</p>
+<p>— MacroServices (@krisajenkins) <a href="https://twitter.com/krisajenkins/status/602045724164038657">May 23, 2015</a></p></blockquote>
+<p><script src="//platform.twitter.com/widgets.js" async="" charset="utf-8"></script></p>
+<p>Well said, <a href="https://twitter.com/krisajenkins">Kris</a>. This is more lipstick. I hope it&#8217;s good lipstick.</p>
+<h3>Fibonacci: The classic</h3>
+<p>Every time someone discusses laziness they create an example using the Fibonacci sequence, this is no exception. I&#8217;m going to port this little Clojure implementation from <a href="http://en.wikibooks.org/wiki/Clojure_Programming/Examples/Lazy_Fibonacci">a wiki</a> to lazy-array.</p><pre class="crayon-plain-tag">(defn fib [a b] (lazy-seq (cons a (fib b (+ a b)))))
+
+
+(take 5 (fib 1 1))
+
+;; Results in: (1 1 2 3 5)</pre><p>The Clojure implementation is very elegant, fitting for such a lovely language. When a lazy sequence is printed to the command line in Clojure it is automatically resolved, so they didn&#8217;t have to use <em>doall</em>, in the following JavaScript example I will use my equivalent to Clojure&#8217;s <em>doall</em>, <em>all</em>, just to illustrate how it would actually be expanded.</p><pre class="crayon-plain-tag">'use strict';
+
+var assert = require('assert');
+var larr = require('..');
+
+/**
+ * Creates a lazy array that generates the Fibonacci sequence. Requires you to
+ * pass in the initial numbers, probably 1 and 1.
+ *
+ * @param {Number} a
+ * @param {Number} b
+ * @return {LazyArray}
+ */
+function fib(a, b) {
+    return larr.create(function () {
+        return larr.cons(a, fib(b, a + b));
+    });
+}
+
+describe('fib', function () {
+    var f;
+
+    beforeEach(function () {
+        f = fib(1, 1);
+    });
+
+    it('should provide the 50th number in the sequence', function () {
+        // Actually at index 49 since nth is zero indexed.
+        var fib50 = 12586269025;
+        assert.strictEqual(larr.nth(f, 49), fib50);
+    });
+
+    it('should provide the 10th to the 20th', function () {
+        // Actually drop 9 and take 11 to get this result.
+        var fib10to20 = [
+            55,
+            89,
+            144,
+            233,
+            377,
+            610,
+            987,
+            1597,
+            2584,
+            4181,
+            6765
+        ];
+
+        var actual = larr.all(larr.take(11, larr.drop(9, f)));
+        assert.deepEqual(actual, fib10to20);
+    });
+});</pre><p>So that&#8217;s an actual test that I&#8217;ve just added to the project which showcases a lot of the functionality. The most interesting thing is the simplicity of the <em>fib</em> function which creates the lazy array. You may say &#8220;well a recursive solution would also be that succinct&#8221; <strong>but</strong>, a recursive solution would eventually blow up since JavaScript does not have <a href="http://en.wikipedia.org/wiki/Tail_call">tail call optimisation</a> (<a href="http://www.reddit.com/r/javascript/comments/162tth/javascript_es6_has_tail_call_optimization/">yet</a>). Thanks to a single tiny while loop inside one of my functions, lazy arrays can just keep going. So at the very least lazy-array allows you to do sort of tail call optimised recursion in JavaScript.</p>
+<h3>Applications within the UI</h3>
+<p>I don&#8217;t know about you, but I don&#8217;t get to write numerical sequences for a living (boo). We JavaScript frontend wranglers deal with events, networking and state all day long, so building this had me wondering if I could apply laziness to the UI domain. The more I thought about this concept and talked with colleagues about it I realised that I&#8217;m essentially heading towards <a href="http://en.wikipedia.org/wiki/Functional_reactive_programming">functional reactive programming</a>, with <a href="https://baconjs.github.io/">bacon.js</a> as a JavaScript example.</p>
+<p>I think it&#8217;s cool that I&#8217;m heading towards this same realm of reactivity pretty much by accident, it&#8217;s the natural progression once you&#8217;ve got the core functions down I feel. I don&#8217;t know how I could use lazy arrays to replace something such as bacon.js just yet, but we can still use laziness for more practical problems. Suppose we were building a calendar, we could model every day <em>ever</em> as part of an infinite lazy sequence. Then we can run that through a lazy map to convert those raw <em>new Date()</em> instances into pretty strings. Here&#8217;s another test file I added to the repository to illustrate this.</p><pre class="crayon-plain-tag">'use strict';
+
+var assert = require('assert');
+var larr = require('..');
+
+// Amount of milliseconds in a day.
+var DAY = 86400000;
+
+/**
+ * Creates an infinite lazy array of all possible times using a given start
+ * date and step timestamp. Providing a negative step will make it go
+ * backwards.
+ *
+ * @param {Date} now
+ * @param {Number} step
+ */
+function dates(now, step) {
+    return larr.create(function () {
+        var next = new Date(now.getTime() + step);
+        return larr.cons(now, dates(next, step));
+    });
+}
+
+describe('date', function () {
+    var start = new Date('1994 Jan 27');
+    var d;
+
+    beforeEach(function () {
+        d = dates(start, DAY);
+    });
+
+    it('should have the start date as the first value', function () {
+        assert.strictEqual(larr.first(d).getTime(), start.getTime());
+    });
+
+    it('should allow me to skip forward some days', function () {
+        var future = larr.nth(d, 3);
+        assert.strictEqual(future.getTime(), new Date('1994 Jan 30').getTime());
+    });
+
+    it('should allow me to map a sequence of dates to strings', function () {
+        function str(date) {
+            return date.toDateString();
+        }
+
+        var days = larr.all(larr.map(str, larr.take(3, d)));
+        var expected = [
+            'Thu Jan 27 1994',
+            'Fri Jan 28 1994',
+            'Sat Jan 29 1994'
+        ];
+
+        assert.deepEqual(days, expected);
+    });
+});</pre><p>As you can see, a simple function can produce some interesting and powerful results. We could quite easily generate an infinite lazy array of every Thursday for the next decade. We could filter out any date that falls on the 25th and then reduce their timestamps down to a value. I don&#8217;t know why you&#8217;d want to do that, but it illustrates the point, lazy arrays allow you to do some really difficult things very easily. You just have to know when to apply them to your problem.</p>
+<h3>A long way to go</h3>
+<p>These are only the fundamentals really, I could carry on until I had ported the entire <a href="http://clojure.org/sequences#toc5">Clojure seq library</a>, which I would actually be quite happy to do. I think this could provide a powerful tool for problems that are well suited to lazy solutions, you&#8217;d just have to implement a few functions that you&#8217;re used to having to hand with other more feature rich implementations.</p>
+<p>If this receives any interest I&#8217;d put some more time into it to flesh it out, but for now I think the basics are enough. It could also really do with some documentation, but comprehensive tests and abundant JSDoc comments will have to do for now. It wouldn&#8217;t be hard to generate API documentation from the comments and supply a bunch more examples in the readme. I&#8217;d love to hear what you think and what you could imagine using these techniques for.</p>
+<p>Just imagine if this supported transducers and other such wonders too.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2015/05/31/lazy-arrays-in-javascript/feed/</wfw:commentRss>
+		<slash:comments>3</slash:comments>
+		</item>
+		<item>
+		<title>Some thoughts on Io</title>
+		<link>/2015/05/02/some-thoughts-on-io/</link>
+		<comments>/2015/05/02/some-thoughts-on-io/#respond</comments>
+		<pubDate>Sat, 02 May 2015 10:56:27 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Langs]]></category>
+		<category><![CDATA[7langs]]></category>
+		<category><![CDATA[io]]></category>
+		<category><![CDATA[lisp]]></category>
+
+		<guid isPermaLink="false">/?p=324</guid>
+		<description><![CDATA[I&#8217;m talking about the language not input/output. This whole Io != I/O thing made Googling around for documentation and examples a whole lot harder too. This was the second language from the book which, on the whole, was a pleasant experience. My source code for the exercises can be found in my languages repository. The <a class="read-more" href="/2015/05/02/some-thoughts-on-io/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>I&#8217;m talking about <a href="http://iolanguage.org/">the language</a> not input/output. This whole Io != I/O thing made Googling around for documentation and examples a whole lot harder too. This was the second language from <a href="https://pragprog.com/book/btlang/seven-languages-in-seven-weeks">the book</a> which, on the whole, was a pleasant experience. My source code for the exercises can be found in <a href="https://github.com/Wolfy87/langs">my languages repository</a>.</p>
+<p>The book says it&#8217;s as close as you&#8217;ll get to an object oriented Lisp, which felt apt after working with it for a few days. It&#8217;s <a href="http://en.wikipedia.org/wiki/Homoiconicity">homoiconic</a> which is something I&#8217;ve begun really hunting for recently. I think it&#8217;s Clojure&#8217;s fault that I&#8217;m now hooked on the idea and revel in writing the AST directly in the languages data structures.</p>
+<h3>Things that were &#8220;meh&#8221;</h3>
+<p>It doesn&#8217;t feel as elegant as a Lisp though, the message passing gets in the way sometimes. I found myself struggling to do simple application of functions and manipulation of argument lists which would even be easy in JavaScript. It felt inconsistent in places and appears to have many undocumented / sparsely documented features that are great, but only if you can find them. I suppose I&#8217;m not really being fair by comparing and contrasting to Clojure though.</p>
+<p>Because I found the message passing stuff fiddly it meant <a href="https://github.com/Wolfy87/langs/blob/master/io/day3/xml.io">the XML builder exercise</a> ended up really messy. It doesn&#8217;t feel elegant at all, yet I can see an elegant solution if I were using Lisp and macros as opposed to redefining the <em>forward</em> function and hacking around with that for a while. The key point of the language, objects and prototypes, is the main thing I didn&#8217;t like. I just wanted to use plain data structures and lists as opposed to inheritance and types.</p>
+<p>It&#8217;s probably obvious by now: I don&#8217;t really like OOP. So a OO Lisp is a Lisp with one of the best things removed: Lists all the way down (with the odd hash-map thrown in).</p>
+<h3>Things that rocked</h3>
+<p>Auto loading of modules is a really nice feature. If you have <em>Something.io</em> in the same directory as your REPL or whatever, when you do <em>Something clone</em> it will automatically load the file for you. It&#8217;s a nice touch that leads to really clean code. No idea how it works if the file&#8217;s in another directory though. It&#8217;s probably explained in the guide or something, there must be a way to load a file by path. <em>doFile</em> would work but seems like an odd approach.</p>
+<p>It would definitely make a good embedded language, I think I&#8217;d rather use it over Lua since it&#8217;s close to a Lisp. It&#8217;s just a shame that the documentation and community are both really thin on the ground.</p>
+<p>I&#8217;m not sure if I&#8217;ll ever use it but it was a nice experience. A refreshing language that has changed my perspective some more, which is exactly what I was hoping to get out of this book. It did start out as a learning exercise, so it&#8217;s okay that it&#8217;s small.</p>
+<h3>Tangent: I want to build a little language now too</h3>
+<p>It&#8217;s pretty much inspired me to go off and design my own language and compiler. I&#8217;m thinking about a Lisp-like thing with significant whitespace and implicit lists. So you can add parenthesis where required, but most of them are added automatically based on new lines and indentation. The benefit of this is that you should be able to move a line and reindent without having to balance the parenthesis, so you don&#8217;t need paredit (even though it&#8217;s amazing). It&#8217;s the homonocity and AST writing of Lisp, but with a few less parenthesis. I think I could make it work, we&#8217;ll see.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2015/05/02/some-thoughts-on-io/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>A JavaScript / Clojure mashup</title>
+		<link>/2014/12/15/a-javascript-clojure-mashup/</link>
+		<comments>/2014/12/15/a-javascript-clojure-mashup/#comments</comments>
+		<pubDate>Mon, 15 Dec 2014 20:23:13 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Clojure]]></category>
+		<category><![CDATA[JavaScript]]></category>
+		<category><![CDATA[Lisp]]></category>
+		<category><![CDATA[clojure]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[lisp]]></category>
+		<category><![CDATA[lodash]]></category>
+
+		<guid isPermaLink="false">/?p=256</guid>
+		<description><![CDATA[I&#8217;m going to create a nightmare inducing monster and you&#8217;re going to enjoy it. Hear me out: Data as code in plain JavaScript without a pre-compilation step or new language to learn (even if Clojure is beautiful and takes all of 10 minutes to memorise the syntax). Of course we don&#8217;t have the distinction of <a class="read-more" href="/2014/12/15/a-javascript-clojure-mashup/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>I&#8217;m going to create a nightmare inducing monster and you&#8217;re going to enjoy it. Hear me out: Data as code in plain JavaScript without a pre-compilation step or new language to learn (even if Clojure is beautiful and takes all of 10 minutes to memorise the syntax). Of course we don&#8217;t have the distinction of vectors and lists, so arrays will have to do, but I think things like<strong> mother flipping macros</strong> would more than make up for it.</p>
+<p>Join me on an adventure into insanity, forget your current opinions about JavaScript and the web that number more than the amount of stars in the known universe. Forget even the performance implications, they&#8217;re a (sort of) irrelevant detail right now. Just indulge in the concepts with me, this post isn&#8217;t planned, it&#8217;s a learning exercise as much for you as it is for myself.</p>
+<p><a href="http://xkcd.com/297/"><img class="aligncenter" src="http://imgs.xkcd.com/comics/lisp_cycles.png" alt="I've just received word that the Emperor has dissolved the MIT computer science program permanently." width="640" height="211" /></a></p>
+<h2><strong>What I want to end up with</strong></h2>
+<p>So my goal is to execute the following (very simple) Clojure code in JavaScript, but without any kind of string parsing, for example. The only thing I&#8217;ll need to cheat on is swapping parentheses for square braces, adding commas (sorry!) and correcting names that are illegal in JavaScript. My end goal is to start implementing the language in the language, just like Clojure. This little experiment could be cultivated into a DSL within JavaScript.</p><pre class="crayon-plain-tag">(if (&gt; 10 20)
+  "Uh, well this is awkward."
+  (str "EVERYTHING IS FINE, MOVE ALONG " (reduce + [1 2 3])))</pre><p>We should get &#8220;EVERYTHING IS FINE, MOVE ALONG 6&#8221; back. Obviously this won&#8217;t be able to execute directly, even with the array syntax in place and the dependant functions defined, so the JavaScript version will include a function to interpret the data structure. This could potentially cache the result of walking the tree for far greater performance, but I don&#8217;t care right now. Performance smermormance.</p><pre class="crayon-plain-tag">[$if, [$mt, 10, 20],
+    "Uh, well this is awkward.",
+    [str, "EVERYTHING IS FINE, MOVE ALONG ", [reduce, $add, [1, 2, 3]]]]</pre><p>In time I could have this supporting things like defn and multiple arity functions, I have my plans, but for the sake of brevity I&#8217;ve just used this dumb piece of code. It&#8217;s the concept I want to play with right now, not the finished product that could take weeks of work and testing. And for no reason in particular, here&#8217;s the normal JavaScript ES5 syntax for this if it didn&#8217;t use the extra functions I had to invent.</p><pre class="crayon-plain-tag">(function () {
+    if (10 &gt; 20) {
+        return "Uh, well this is awkward.";
+    }
+    else {
+        return "EVERYTHING IS FINE, MOVE ALONG " + [1, 2, 3].reduce(function (a, b) {
+            return a + b;
+        });
+    }
+}());</pre><p>I wrapped it in an IIFE because the return statements would have made no sense otherwise. The array syntax should pass the values back implicitly, normal JavaScript is not so lucky.</p>
+<h2><strong>Science time</strong></h2>
+<p>Let&#8217;s start off small, this function will walk a tree of arrays and execute the first item with the rest of the items as it&#8217;s arguments. The function will first recurse to the bottom of the stack then begin evaluation inside out, just like Lisp.</p><pre class="crayon-plain-tag">function walk(tree) {
+    return tree[0].apply(null, tree.slice(1).map(function (n) {
+        return Array.isArray(n) ? walk(n) : n;
+    }));
+}
+
+// It works!
+function $mt(a, b) { return a &gt; b; }
+function $eq(a, b) { return a === b; }
+walk([$eq, false, [$mt, 10, 20]]); // true</pre><p>Oh, wait, now we&#8217;re 80% of the way there. Hah. The main thing we&#8217;re lacking is meta data on functions and lists (I refuse to call them arrays from here on in) being able to change their behaviour as the walker plods through the data structure. We need a way to &#8220;quote&#8221; and &#8220;unquote&#8221; lists for example to defer execution and allow the existence of macros. This essentially means that we should be able to make some lists exempt from execution, so they&#8217;re just lists. How do we unquote? Well, the top level function is already an unquote! Amazing! Yet terrifying!</p><pre class="crayon-plain-tag">function unquote(tree) {
+    if (tree.$quoted) {
+        var unquoted = tree.map(function (n) {
+            return Array.isArray(n) ? unquote(n) : n;
+        });
+        delete unquoted.$quoted;
+        return unquoted;
+    }
+    else {
+        return tree[0].apply(null, tree.slice(1).map(function (n) {
+            return Array.isArray(n) ? unquote(n) : n;
+        }));
+    }
+}
+
+function quote(tree) {
+    var quoted = tree.map(function (n) {
+        return Array.isArray(n) ? quote(n) : n;
+    });
+
+    quoted.$quoted = true;
+    return quoted;
+}
+
+// Again, it works!
+function $map(fn, n) { return n.map(fn); }
+function $inc(n) { return n + 1; }
+unquote([$map, $inc, quote([1, 2, 3])]); // [2, 3, 4]</pre><p>One thing to note here is that I&#8217;m getting a lot of code duplication, this is because I wrote this part at midnight and I&#8217;m just trying to make a point. If you want it pretty, ask for a full on repository. And now for the silly magic. The point where we pull the metaphorical rabbit out of the metaphorical fedora. <a href="http://gph.is/1a0ge2I">Macros. In. JavaScript</a> (I was going to embed the gif on the other end of that link but I thought it might be too distracting / awesome).</p><pre class="crayon-plain-tag">function unquote(tree) {
+    if (tree.$quoted) {
+        var unquoted = tree.map(function (n) {
+            return Array.isArray(n) ? unquote(n) : n;
+        });
+        delete unquoted.$quoted;
+        return unquoted;
+    }
+    else {
+        var fn = tree[0];
+        var args = tree.slice(1);
+
+        if (fn.$macro) {
+            return fn.apply(null, args);
+        }
+        else {
+            return fn.apply(null, args.map(function (n) {
+                return Array.isArray(n) ? unquote(n) : n;
+            }));
+        }
+    }
+}
+
+function quote(tree) {
+    var quoted = tree.map(function (n) {
+        return Array.isArray(n) ? quote(n) : n;
+    });
+
+    quoted.$quoted = true;
+    return quoted;
+}
+
+function macro(fn) {
+    var wrapped = function () {
+        var result = fn.apply(null, arguments);
+        return Array.isArray(result) ? unquote(result) : result;
+    };
+
+    wrapped.$macro = true;
+    return wrapped;
+}
+
+// So now we define the macro "postfixNotation" (as used in Clojure for the Brave and True).
+// http://www.braveclojure.com/writing-macros/#2__Anatomy_of_a_Macro
+// And it works beautifully.
+function $add(a, b) { return a + b; }
+var postfixNotation = macro(function (expr) {
+    var butLast = expr.slice(0, -1);
+    var last = expr.slice(-1);
+    return last.concat(butLast);
+});
+var res = unquote([postfixNotation, [5, 5, $add]]);</pre><p>Getting this working caused me to swear in surprise involuntarily. I just defined a macro in my own little meta language that runs off of a few small functions. And now, without further ado, the if macro.</p><pre class="crayon-plain-tag">function $eq(a, b) { return a === b; }
+var $if = macro(function (expr, t, f) {
+    return unquote(expr) ? t : f;
+});
+
+unquote([$if, [$eq, 5, 5], 'Yep!', 'Nope!']); // Yep!</pre><p>I don&#8217;t know about you, but I find this incredible even if it does look <strong>really</strong> weird, the fact that it&#8217;s so easy to implement too is ludicrous. And now to bring it all together and run it.</p><pre class="crayon-plain-tag">function $mt (a, b) {
+    return a &gt; b;
+}
+
+function $add (a, b) {
+    return a + b;
+}
+
+function str() {
+    return [].slice.call(arguments).join('');
+}
+
+function reduce(fn, list) {
+    return list.reduce(fn);
+}
+
+var $if = macro(function (expr, t, f) {
+    return unquote(expr) ? t : f;
+});
+
+unquote(
+    [$if, [$mt, 10, 20],
+        'Uh, well this is awkward.',
+        [str, 'EVERYTHING IS FINE, MOVE ALONG ', [reduce, $add, quote([1, 2, 3])]]]);
+
+// EVERYTHING IS FINE, MOVE ALONG 6</pre><p>It works! Had to quote that array and define all of the required functions, but it works! Only the required code path is executed too, which I find very cool for an array.</p>
+<h2><strong>Take it further?</strong></h2>
+<p>It could perform some kind of caching as it walked the tree so you had a compile and execution step to this process. That allows you to build certain code paths and probably make it faster. Maybe not, maybe it&#8217;s fast enough right now and the simplicity is a far greater advantage. I would lean towards the latter. I would like to add defun, multiple arity functions and other such sugar. This is all something I would do if I carried this idea further into a more complex project. Even if nobody will ever use it, myself included, I think it would be fun. A language within a language.</p>
+<p>I could produce a standard library and obviously flesh it out into an open source repository with tests, documentation and the <a href="http://unlicense.org/">unlicense</a>, as is my way. Or maybe this concept is pure silliness and it should go no further than this page. Either way, I hope it provides at least a little entertainment for those of you that tread the sad line between JavaScript and Clojure. Where the grass is truly greener on the other side, as well as being shaped like parentheses, but you can&#8217;t quite drag it kicking and screaming into your day job. Just yet, anyway.</p>
+<p>Here&#8217;s <a href="https://github.com/Wolfy87/clojs">the repository</a> for the code I developed during this post. Complete with late night commit messages!</p>
+<p>Really thinking about how to implement a macro or macro system and why it should be like that has made Clojure macros quite a bit easier to understand too. So at the very least, I got that out of this exercise. I would love to hear your thoughts, even if they&#8217;re simply internal screaming.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2014/12/15/a-javascript-clojure-mashup/feed/</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+		</item>
+		<item>
+		<title>A week (or so) with Emacs</title>
+		<link>/2014/09/28/a-week-or-so-with-emacs/</link>
+		<comments>/2014/09/28/a-week-or-so-with-emacs/#respond</comments>
+		<pubDate>Sun, 28 Sep 2014 15:32:52 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Emacs]]></category>
+		<category><![CDATA[JavaScript]]></category>
+		<category><![CDATA[editors]]></category>
+		<category><![CDATA[emacs]]></category>
+		<category><![CDATA[lisp]]></category>
+
+		<guid isPermaLink="false">/?p=191</guid>
+		<description><![CDATA[So I managed to use Emacs for one whole week of full-time JavaScript work, whilst only falling back to Vim for the odd tweak of JSON or configuration, I count that as a success. It&#8217;s shifted my opinion of it since I set up my package management and JavaScript tooling, you can find all of <a class="read-more" href="/2014/09/28/a-week-or-so-with-emacs/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>So I managed to use Emacs for one whole week of full-time JavaScript work, whilst only falling back to Vim for the odd tweak of JSON or configuration, I count that as a success. It&#8217;s shifted my opinion of it since I set up my package management and JavaScript tooling, you can find all of this within <a href="https://github.com/Wolfy87/dotfiles/blob/master/emacs/init.el">my dotfiles</a>. It&#8217;s become far easier since I started to learn about vanilla Emacs key-bindings, the reason being that when I lost Evil mode for some buffers I was left high and dry.</p>
+<p>The shift in mentality from my Vim workflow is interesting. I&#8217;ve moved away from tmux / tabs / splits and have begun leaning towards searching for buffers I want with <a href="https://github.com/emacs-helm/helm">helm</a> and opening highly coupled files (such as tests) in splits. I&#8217;m yet to really use the terminal buffer, it doesn&#8217;t feel as smooth as my terminal + tmux combination yet. I&#8217;m also yet to get some form of git gutter and unimpaired style bindings set up. I haven&#8217;t managed to use it to resolve git conflicts yet either, I refer to Vim for that still. Git gutter doesn&#8217;t appear to work with my relative line numbers, there must be a way around it.</p>
+<p><a href="/wp-content/uploads/2014/09/Screenshot-280914-162722.png"><img class="alignleft wp-image-192 size-full" title="" src="/wp-content/uploads/2014/09/Screenshot-280914-162722.png" alt="My Emacs setup" width="1920" height="1080" srcset="/wp-content/uploads/2014/09/Screenshot-280914-162722.png 1920w, /wp-content/uploads/2014/09/Screenshot-280914-162722-300x168.png 300w, /wp-content/uploads/2014/09/Screenshot-280914-162722-1024x576.png 1024w" sizes="(max-width: 1920px) 100vw, 1920px" /></a></p>
+<p>Now I&#8217;m going to start on my Clojure setup for use with <a href="http://www.braveclojure.com/">Brave Clojure</a>, we&#8217;ll see how that goes, I&#8217;d imagine rather well. Many thanks to those on twitter who convinced me to stick with it, I think it&#8217;s going to be great in the long run.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2014/09/28/a-week-or-so-with-emacs/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Emacs: A few hours after exposure</title>
+		<link>/2014/09/17/emacs-a-few-hours-after-exposure/</link>
+		<comments>/2014/09/17/emacs-a-few-hours-after-exposure/#respond</comments>
+		<pubDate>Wed, 17 Sep 2014 22:36:59 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Emacs]]></category>
+		<category><![CDATA[easymotion]]></category>
+		<category><![CDATA[emacs]]></category>
+		<category><![CDATA[lisp]]></category>
+		<category><![CDATA[vim]]></category>
+
+		<guid isPermaLink="false">/?p=188</guid>
+		<description><![CDATA[The symptoms are starting to show: fever, babbling, countless browser tabs and an insatiable urge to learn Lisp faster than it can be typed. After just one evening of playing with my configuration I have a system for me to define and load configuration files with ease as well as sync my plugin files from <a class="read-more" href="/2014/09/17/emacs-a-few-hours-after-exposure/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>The symptoms are starting to show: fever, babbling, countless browser tabs and an insatiable urge to learn Lisp faster than it can be typed. After just one evening of <a href="https://github.com/Wolfy87/dotfiles/tree/52b5819f9e9b63685a0546071db163a1da0ce551/emacs">playing with my configuration</a> I have a system for me to <a href="https://github.com/Wolfy87/dotfiles/blob/52b5819f9e9b63685a0546071db163a1da0ce551/emacs/init.el#L1-L2">define and load configuration</a> files with ease as well as sync my plugin files <a href="https://github.com/Wolfy87/dotfiles/blob/52b5819f9e9b63685a0546071db163a1da0ce551/emacs/libraries/packages.el#L7-L8">from a list</a>. I am considering have it run it&#8217;s sync and update cycle on every load though, I&#8217;ll have to see how that works out. At the very least I need to define an update function, which I think I need to do through the <em>interactive</em> function.</p>
+<p>My baseline setup includes evil mode, evil tabs (to bring me Vim tab functionality) and <a href="https://github.com/Wolfy87/dotfiles/blob/52b5819f9e9b63685a0546071db163a1da0ce551/emacs/libraries/tweaks.el">a stripped back UI</a>. This means no glaring logo when I open it up, it drops straight into a buffer with no strange menus or scroll bars loitering in my peripheral vision. I can already navigate around and edit to my hearts content, albeit in a very simplistic manner, all thanks to evil mode. I am however finding myself instinctively trying to invoke commands from my menagerie of wonderful <a href="https://github.com/Wolfy87/dotfiles/blob/52b5819f9e9b63685a0546071db163a1da0ce551/vim/bundles.vim">Vim plugins</a>, I assume I&#8217;ll have to ease that out of my muscle memory over time.</p>
+<p>My next step will be to hook in ace-jump in such a way that it behaves like like EasyMotion, I can&#8217;t actually work out how to bind things through evil yet, but it can&#8217;t be that hard. I use <em>&lt;space&gt;{motion}</em> for EasyMotion, so I should be able to set up a subset of that. Maybe it&#8217;s already been done and I&#8217;m reinventing the wheel, as usual.</p>
+<p>I&#8217;m essentially using a sparse Vim right now, it feels like I&#8217;m running on some fresh machine with <em>:set nocompatible</em> and <em>:syntax on</em> in <em>~/.vimrc</em>, strangely enough, I&#8217;m okay with this. I actually want to bring over as little Vim functionality as possible, obviously I want my modal editing and efficient navigation as well as familiar window management, but being forced to use the native solutions where possible seems like a good idea.</p>
+<p>For example, I was going to bind <em>:Explore</em> to a netrw equivalent (I assume there is one&#8230;), but I&#8217;ve since decided not to because I assume there&#8217;s some Emacs command that is better suited to the job. I want to keep my Vim powers for editing and Emacs for, well, everything else. I may well have to break this rule at some point to get <a href="https://github.com/tpope/vim-vinegar">vim-vinigar</a> functionality though, hitting the hyphen key to drop into a directory browser and then again to go up a level feels too good to leave behind.</p>
+<p>I think I&#8217;m doing okay so far.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2014/09/17/emacs-a-few-hours-after-exposure/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

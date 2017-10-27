@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	
+	>
+<channel>
+	<title>Comments on: Classless JavaScript</title>
+	<atom:link href="/2013/09/17/classless-javascript/feed/" rel="self" type="application/rss+xml" />
+	<link>/2013/09/17/classless-javascript/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Mon, 22 May 2017 19:57:20 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>By: pixelBender67</title>
+		<link>/2013/09/17/classless-javascript/#comment-86</link>
+		<dc:creator><![CDATA[pixelBender67]]></dc:creator>
+		<pubDate>Tue, 07 Jan 2014 02:45:00 +0000</pubDate>
+		<guid isPermaLink="false">/2013/09/17/classless-javascript#comment-86</guid>
+		<description><![CDATA[totally agree with you, why fight with the language when you don&#039;t need to. I&#039;m just lucky I never got `classically trained` so it&#039;s, I guess, easier for someone like me to understand prototypical inheritance as opposed to someone coming from a Java or C++ background.
+Love the write up and your blog in general, glad I found you!]]></description>
+		<content:encoded><![CDATA[<p>totally agree with you, why fight with the language when you don&#8217;t need to. I&#8217;m just lucky I never got <code>classically trained</code> so it&#8217;s, I guess, easier for someone like me to understand prototypical inheritance as opposed to someone coming from a Java or C++ background.<br />
+Love the write up and your blog in general, glad I found you!</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Oliver Caldwell</title>
+		<link>/2013/09/17/classless-javascript/#comment-73</link>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+		<pubDate>Fri, 20 Sep 2013 07:46:00 +0000</pubDate>
+		<guid isPermaLink="false">/2013/09/17/classless-javascript#comment-73</guid>
+		<description><![CDATA[That&#039;s very true, it should be easier to test. It&#039;s another trait it pulls from functional programming. You end up with lots of reusable modification methods that can all be tested independently.
+
+I&#039;m trying to find a way that doesn&#039;t fight the language. Imposing restrictions to make it behave like other languages can&#039;t be the best technique.]]></description>
+		<content:encoded><![CDATA[<p>That&#8217;s very true, it should be easier to test. It&#8217;s another trait it pulls from functional programming. You end up with lots of reusable modification methods that can all be tested independently.</p>
+<p>I&#8217;m trying to find a way that doesn&#8217;t fight the language. Imposing restrictions to make it behave like other languages can&#8217;t be the best technique.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: sebasporto</title>
+		<link>/2013/09/17/classless-javascript/#comment-72</link>
+		<dc:creator><![CDATA[sebasporto]]></dc:creator>
+		<pubDate>Fri, 20 Sep 2013 00:17:00 +0000</pubDate>
+		<guid isPermaLink="false">/2013/09/17/classless-javascript#comment-72</guid>
+		<description><![CDATA[Nice post, interesting approach with the object pooling, never thought of doing something like this instead of just relying on the garbage collection.
+
+
+I wish more people doing JS will think about objects in this way instead of &#039;classes&#039; (constructor functions). I also found that my code is easier to test by just using objects for everything rather than &#039;classes&#039;.]]></description>
+		<content:encoded><![CDATA[<p>Nice post, interesting approach with the object pooling, never thought of doing something like this instead of just relying on the garbage collection.</p>
+<p>I wish more people doing JS will think about objects in this way instead of &#8216;classes&#8217; (constructor functions). I also found that my code is easier to test by just using objects for everything rather than &#8216;classes&#8217;.</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

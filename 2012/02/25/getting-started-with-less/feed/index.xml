@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	
+	>
+<channel>
+	<title>Comments on: Getting started with LESS</title>
+	<atom:link href="/2012/02/25/getting-started-with-less/feed/" rel="self" type="application/rss+xml" />
+	<link>/2012/02/25/getting-started-with-less/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Mon, 22 May 2017 19:57:20 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>By: Oliver Caldwell</title>
+		<link>/2012/02/25/getting-started-with-less/#comment-89</link>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+		<pubDate>Thu, 16 Jan 2014 17:16:00 +0000</pubDate>
+		<guid isPermaLink="false">/2012/02/25/getting-started-with-less#comment-89</guid>
+		<description><![CDATA[Sure, what&#039;s the error you&#039;re getting?]]></description>
+		<content:encoded><![CDATA[<p>Sure, what&#8217;s the error you&#8217;re getting?</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Omar</title>
+		<link>/2012/02/25/getting-started-with-less/#comment-88</link>
+		<dc:creator><![CDATA[Omar]]></dc:creator>
+		<pubDate>Thu, 16 Jan 2014 14:58:00 +0000</pubDate>
+		<guid isPermaLink="false">/2012/02/25/getting-started-with-less#comment-88</guid>
+		<description><![CDATA[Can you help me I am trying to do the `sudo npm install less` but I am getting an error]]></description>
+		<content:encoded><![CDATA[<p>Can you help me I am trying to do the <code>sudo npm install less</code> but I am getting an error</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: stopsatgreen</title>
+		<link>/2012/02/25/getting-started-with-less/#comment-37</link>
+		<dc:creator><![CDATA[stopsatgreen]]></dc:creator>
+		<pubDate>Wed, 18 Jul 2012 13:51:00 +0000</pubDate>
+		<guid isPermaLink="false">/2012/02/25/getting-started-with-less#comment-37</guid>
+		<description><![CDATA[Thanks, this was really useful for me as I get to grips with Node &#038; Less. ]]></description>
+		<content:encoded><![CDATA[<p>Thanks, this was really useful for me as I get to grips with Node &amp; Less. </p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Web Development UK</title>
+		<link>/2012/02/25/getting-started-with-less/#comment-15</link>
+		<dc:creator><![CDATA[Web Development UK]]></dc:creator>
+		<pubDate>Wed, 14 Mar 2012 08:00:00 +0000</pubDate>
+		<guid isPermaLink="false">/2012/02/25/getting-started-with-less#comment-15</guid>
+		<description><![CDATA[Hi,
+Thanks for sharing us this very informative and well written blog post.I like this type of information because you always can learn some interesting new knowledge and at the same time revive the knowledge you already know I love every bit of it especially the points that you expressed. And I would love to come back in a regular basis so post more of the subject!!!
+ &lt;a href=&quot;http://www.webdevelopmentinlondon.co.uk/&quot; rel=&quot;nofollow&quot;&gt;Web Development UK &lt;/a&gt;
+David]]></description>
+		<content:encoded><![CDATA[<p>Hi,<br />
+Thanks for sharing us this very informative and well written blog post.I like this type of information because you always can learn some interesting new knowledge and at the same time revive the knowledge you already know I love every bit of it especially the points that you expressed. And I would love to come back in a regular basis so post more of the subject!!!<br />
+ <a href="http://www.webdevelopmentinlondon.co.uk/" rel="nofollow">Web Development UK </a><br />
+David</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

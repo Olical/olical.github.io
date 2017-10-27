@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>refactoring &#8211; Oliver Caldwell&#039;s blog</title>
+	<atom:link href="/tag/refactoring/feed/" rel="self" type="application/rss+xml" />
+	<link>/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Wed, 18 Oct 2017 13:50:23 +0000</lastBuildDate>
+	<language>en-GB</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>When projects rise from the grave</title>
+		<link>/2016/11/15/when-projects-rise-from-the-grave/</link>
+		<comments>/2016/11/15/when-projects-rise-from-the-grave/#respond</comments>
+		<pubDate>Tue, 15 Nov 2016 09:00:58 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[JavaScript]]></category>
+		<category><![CDATA[github]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[refactoring]]></category>
+		<category><![CDATA[tests]]></category>
+
+		<guid isPermaLink="false">/?p=471</guid>
+		<description><![CDATA[Halloween is supposed to be over, so why is my project coming back from the dead? Olical/Color is something I started in early 2011, I think I was still at my first job as a junior web developer tinkering with WordPress and custom PHP sites. I&#8217;m now on my 5th workplace doing something entirely different. I&#8217;m <a class="read-more" href="/2016/11/15/when-projects-rise-from-the-grave/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>Halloween is supposed to be over, so why is my project coming back from the dead?</p>
+<p><a href="https://github.com/Olical/Color">Olical/Color</a> is something I started in early 2011, I think I was still at my first job as a junior web developer tinkering with WordPress and custom PHP sites. I&#8217;m now on my 5th workplace doing something entirely different. I&#8217;m studying computer science and lisps in my free time instead of &#8220;how do I make this button red&#8221;, which isn&#8217;t to say it&#8217;s better, just different. I have moved on so far from these interests, they feel totally alien looking back.</p>
+<p>I was reminded by <a href="https://github.com/Olical/Color/pull/1">this small pull request</a> to fix a bug in my old untested project. It came up out of the blue and instantly had someone else respond, to my amazement. So what I thought I&#8217;d do is quickly go through the project with 5-6 more years of experience under my belt and share those feelings. Then I want to clean it up to the standards I have today. Maybe even just rewrite the damn thing within tests.</p>
+<h2>Distribution</h2>
+<p>No <em>package.json</em>, no instructions, good luck. Apparently I just wanted people to clone this into their repo or literally copy and paste the file into a directory.</p>
+<p>The minified source is actually commited in (which I see as a big <strong>no</strong> now) and it&#8217;s licensed under two different licences. I presume I was copying jQuery or whatever was hot at the time I guess. I&#8217;ve taken to just using <a href="http://unlicense.org/">The Unlicense</a> now and I&#8217;m a lot happier about it. I don&#8217;t know how I expected anyone to actually depend on this, maybe I didn&#8217;t, maybe I released it as a bit of fun just in case someone would find some of it useful.</p>
+<p>At least I was using <a href="https://developers.google.com/closure/compiler/">Closure Compiler</a>, that&#8217;s pretty cool. I mean, <a href="https://github.com/mishoo/UglifyJS">UglifyJS</a> is enough to get by really, especially at this size, but nice that I was aware of it. I don&#8217;t know why everything is a combination of slightly strange looking <em>Makefile</em> and JavaScript though, that&#8217;s a really weird build toolchain. I still use <em>make</em> to this day, but not in this way. I&#8217;ve just realised I commited the Closure Compiler JAR into the repository too.</p>
+<p><a href="/wp-content/uploads/2016/11/giphy.gif"><img class="aligncenter size-full wp-image-474" src="/wp-content/uploads/2016/11/giphy.gif" alt="Shame Cube" width="350" height="248" /></a></p>
+<h2>Code</h2>
+<p><a href="https://github.com/Olical/Color/blob/45a83fecda62c086e788895182e403a9c9b42807/color.js">Here&#8217;s the source</a>. Why did I feel the need to comment every damn thing? <em>The &#8220;No Shit Sherlock&#8221; award goes to&#8230;</em></p><pre class="crayon-plain-tag">// Initialisation
+var src = require('fs').readFileSync('color.js', 'utf8'),
+	sys = require('sys'),
+	jshint = require('./jshint').JSHINT,
+	i = null,
+	e = null;</pre><p></p><pre class="crayon-plain-tag">// Initialise any required variables
+var i = null,
+    split = [],
+    colors = this.names;</pre><p></p><pre class="crayon-plain-tag">// Return the joined version
+return '#' + color.join('');</pre><p></p><pre class="crayon-plain-tag">// Convert it to an array
+color = this.toArray(color);</pre><p></p><pre class="crayon-plain-tag">// Compare
+if(color[0] === colors[i][0] &amp;&amp; color[1] === colors[i][1] &amp;&amp; color[2] === colors[i][2]) {
+    // Found it, return the name
+    return i;
+}</pre><p>Let this be a warning to you: Don&#8217;t add useless comments, just write clearer code. Some part of me obviously thought I was doing the right thing here, that part of me was horribly wrong.</p>
+<p>The whole thing is pretty damn imperative, lots of loops, no functional stuff. Past me would have probably found the additions of <em>.map(&#8230;)</em> hard to read, current me finds all of these loops even harder. And if I&#8217;d just stored all those constant colours as hex strings I could have searched through with string comparisons, instead I compared every array element in each item of the list.</p>
+<p>Want to know the worst thing about this code though? That&#8217;s rhetorical, this is a blog post and I can&#8217;t hear your response so I&#8217;ll tell you regardless (if you happen to read further into this paragraph, that is): There Are <em>No</em> <strong>Tests</strong>.</p>
+<p>*curtain falls*</p>
+<h2>Fixing what ain&#8217;t broke</h2>
+<p>It&#8217;s fine, honestly, even though I look back and say &#8220;ew&#8221;, it works. Well, apart from that bug that <a href="https://github.com/pypmannetjies">pypmannetjies</a> kindly fixed for me. But that doesn&#8217;t mean it can&#8217;t be &#8220;better&#8221;. Here&#8217;s what I <em>want </em>to do, but I don&#8217;t <em>need</em> to do.</p>
+<ul>
+<li>Write a full test suite for the current code.</li>
+<li>Clean up the build / linting tooling, no more committed &#8220;binaries&#8221;.</li>
+<li>Refactor until it basically doesn&#8217;t resemble the original code.</li>
+<li>Actually have a way to depend on it (probably npm and <a href="https://unpkg.com/#/">unpkg</a>).</li>
+</ul>
+<p>I thought that&#8217;d be a bit much to write up because I&#8217;m lazy, so instead I spent an hour configuring <a href="https://obsproject.com/">OBS</a> on my laptop (totally easier than writing a little bit&#8230;) and recorded the whole thing (another hour). You can watch that <a href="https://youtu.be/dCRK7IHg4Bk">over here</a> or below. It&#8217;s the first time I&#8217;ve recorded myself actually working on something, I hope you like it. I actually want to do more of that in the future, maybe stream building something in Clojure so people that are unfamiliar with it can ask questions as I go.</p>
+<p><iframe width="560" height="315" src="https://www.youtube.com/embed/dCRK7IHg4Bk" frameborder="0" allowfullscreen="allowfullscreen" class="aligncenter"></iframe></p>
+<p>I actually put off the raw code refactor, mainly because now it&#8217;s tested I feel a lot better about it. If I rewrite it, I&#8217;ll end up with the same performance and functionality, but less time to play games and drink coffee. If I ever do refactor any of it now I can do it with confidence, which is great.</p>
+<p>So, go back and do this to one of your old projects, it&#8217;s refreshing to see how differently you do things now.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2016/11/15/when-projects-rise-from-the-grave/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

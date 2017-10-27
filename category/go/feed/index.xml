@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Go &#8211; Oliver Caldwell&#039;s blog</title>
+	<atom:link href="/category/go/feed/" rel="self" type="application/rss+xml" />
+	<link>/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Wed, 18 Oct 2017 13:50:23 +0000</lastBuildDate>
+	<language>en-GB</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>Getting Go Going</title>
+		<link>/2016/10/10/getting-go-going/</link>
+		<comments>/2016/10/10/getting-go-going/#respond</comments>
+		<pubDate>Mon, 10 Oct 2016 21:07:25 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Go]]></category>
+		<category><![CDATA[go]]></category>
+		<category><![CDATA[godep]]></category>
+
+		<guid isPermaLink="false">/?p=468</guid>
+		<description><![CDATA[I recently had to compile and run a go project, I found it thoroughly confusing initially and struggled to find a comprehensive guide on how to manage the repository in an idiomatic way. I&#8217;m going to show you how to get go projects up and running on your machine, I hope it&#8217;s the correct way, <a class="read-more" href="/2016/10/10/getting-go-going/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>I recently had to compile and run a <a href="https://golang.org/">go</a> project, I found it thoroughly confusing initially and struggled to find a comprehensive guide on how to manage the repository in an idiomatic way. I&#8217;m going to show you how to get go projects up and running on your machine, I hope it&#8217;s the correct way, correct me if I&#8217;m wrong!</p>
+<h2>Packages</h2>
+<p>You&#8217;re going to want to fetch two packages, ideally with your package manager of choice. That&#8217;s probably going to be pacman, apt-get or brew, for example. If you don&#8217;t use a package manager: do.</p>
+<ul>
+<li><a href="https://golang.org/">go</a></li>
+<li><a href="https://github.com/tools/godep">godep</a> (there&#8217;s loads of alternatives, but I&#8217;ve tried this and it works well)</li>
+</ul>
+<p>That&#8217;s all we&#8217;re going to need dependency-wise. Hopefully your project specifies it&#8217;s dependencies with a Godep file somewhere. If not, you may need to look up another dependency manager.</p>
+<h2>GOPATH</h2>
+<p>This is the thing that confused me, I thought it was just somewhere go will check for dependencies, like changing your path for .m2 or something, it&#8217;s not. It&#8217;s nothing of the sort.</p>
+<p>The GOPATH is essentially where you want to keep ALL of your go repositories, it&#8217;s more like an IDE project directory path. So go will store a few auxiliary directories in the path you specify as well as all of your go projects under the <em>src</em> directory. So if you have a project called <em>foo</em> in your GitHub user <em>bar</em> it will be stored in <em>$GOPATH/src/github.com/bar/foo</em>.</p>
+<p>I have a <em>~/repos</em> directory where I keep all my projects, so I created a sub-directory of that called <em>go</em> that now houses all of the go repositories. Feel free to adapt this to how you like to manage your repositories.</p>
+<p>You can use <em>go get github.com/bar/foo</em> to fetch something, or just copy the directory into the appropriate path. It should be self explanatory now that you understand the whole project directory idea (I hope).</p>
+<h2>Building and running</h2>
+<p>If your project has dependencies specified with godep, you can just run <em>godep restore</em> to fetch everything specified in the Godep file. I think there are ways built into go now too, although I&#8217;m not sure about those. This will populate your <em>$GOPATH/src/*</em> directories with your dependencies.</p>
+<p>You can now run <em>go build</em> which will compile your project into your current directory. If you are working on your <em>foo</em> project you should have a binary called <em>foo</em>, feel free to execute it! Unless it boots Skynet, in which case, don&#8217;t.</p>
+<p>I hope this helps those of you that are confused and just need to get the damn thing running.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2016/10/10/getting-go-going/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

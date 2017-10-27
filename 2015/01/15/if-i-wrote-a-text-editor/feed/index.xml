@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	
+	>
+<channel>
+	<title>Comments on: If I wrote a text editor</title>
+	<atom:link href="/2015/01/15/if-i-wrote-a-text-editor/feed/" rel="self" type="application/rss+xml" />
+	<link>/2015/01/15/if-i-wrote-a-text-editor/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Mon, 22 May 2017 19:57:20 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>By: Jorge Bucaran</title>
+		<link>/2015/01/15/if-i-wrote-a-text-editor/#comment-241</link>
+		<dc:creator><![CDATA[Jorge Bucaran]]></dc:creator>
+		<pubDate>Thu, 03 Mar 2016 06:11:00 +0000</pubDate>
+		<guid isPermaLink="false">/?p=292#comment-241</guid>
+		<description><![CDATA[I wrote this a year ago, and now I read it again and I kind of sound too pushy! I apologize for trying to cram my world view into your world canvas. I still prefer bindings, but I&#039;ve come to appreciate vim a lot more.]]></description>
+		<content:encoded><![CDATA[<p>I wrote this a year ago, and now I read it again and I kind of sound too pushy! I apologize for trying to cram my world view into your world canvas. I still prefer bindings, but I&#8217;ve come to appreciate vim a lot more.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Oliver Caldwell</title>
+		<link>/2015/01/15/if-i-wrote-a-text-editor/#comment-132</link>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+		<pubDate>Wed, 18 Feb 2015 10:02:00 +0000</pubDate>
+		<guid isPermaLink="false">/?p=292#comment-132</guid>
+		<description><![CDATA[I see what you mean, thank you for the insight. I&#039;ve certainly learnt a lot on my path through Vim over the last few years. I just can&#039;t envisage something with a lot of mappings *not* being modal in some way. Insert mode is only a single key away, it would be possible to start there and to drop into modes to perform expressive changes with minimal keystrokes.
+
+I should really spend a few months in emacs without the Evil / Vim modal bindings to see another long standing editor from another perspective.]]></description>
+		<content:encoded><![CDATA[<p>I see what you mean, thank you for the insight. I&#8217;ve certainly learnt a lot on my path through Vim over the last few years. I just can&#8217;t envisage something with a lot of mappings *not* being modal in some way. Insert mode is only a single key away, it would be possible to start there and to drop into modes to perform expressive changes with minimal keystrokes.</p>
+<p>I should really spend a few months in emacs without the Evil / Vim modal bindings to see another long standing editor from another perspective.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Jorge Bucaran</title>
+		<link>/2015/01/15/if-i-wrote-a-text-editor/#comment-131</link>
+		<dc:creator><![CDATA[Jorge Bucaran]]></dc:creator>
+		<pubDate>Wed, 18 Feb 2015 09:56:00 +0000</pubDate>
+		<guid isPermaLink="false">/?p=292#comment-131</guid>
+		<description><![CDATA[If you can start instantly, it means you can start focusing on what matters. I am not very convinced about that huge pay off either. Going up that steep curve will gain you a lot of insight and teach you many valuable things (good enough reason to dabble with editors if you are so inclined), but the editor is not the most important aspect of programming and I would rather create something that has the power we are looking, but without the learning curve.]]></description>
+		<content:encoded><![CDATA[<p>If you can start instantly, it means you can start focusing on what matters. I am not very convinced about that huge pay off either. Going up that steep curve will gain you a lot of insight and teach you many valuable things (good enough reason to dabble with editors if you are so inclined), but the editor is not the most important aspect of programming and I would rather create something that has the power we are looking, but without the learning curve.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Oliver Caldwell</title>
+		<link>/2015/01/15/if-i-wrote-a-text-editor/#comment-130</link>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+		<pubDate>Wed, 18 Feb 2015 09:50:00 +0000</pubDate>
+		<guid isPermaLink="false">/?p=292#comment-130</guid>
+		<description><![CDATA[I certainly wasn&#039;t born anywhere near the 60s, yet they feel like a natural way to edit things now. I think the main attraction for me is that I can make use of the entire keyboard with mnemonic bindings without resorting to holding down random modifier keys all of the time.
+
+One of the main things that puts me off emacs is the lack of modes being integrated at every level. Evil is okay, but doesn&#039;t change the historical bindings. Some of the &quot;C-x C-something then a number&quot; bindings go way over my head. Whereas gf, *g*o to *f*ile sits very well in my memory.
+
+I&#039;m also planning some sort of graph explorer for modes and bindings to help document how your own editor is set up. So I&#039;m going to have to respectfully disagree with your opinion, I don&#039;t expect any tool to be immediately usable. I&#039;d rather a very steep learning curve that just keeps going as opposed to a shallow one I can start with instantly. That&#039;s just my preference though.
+
+I guess I just like the mastery aspect, something that has a huge pay off after a lot of investment. I want something that is simple with regards to it&#039;s fundamental rules, but not in the sense that anyone can pick it up in minutes.]]></description>
+		<content:encoded><![CDATA[<p>I certainly wasn&#8217;t born anywhere near the 60s, yet they feel like a natural way to edit things now. I think the main attraction for me is that I can make use of the entire keyboard with mnemonic bindings without resorting to holding down random modifier keys all of the time.</p>
+<p>One of the main things that puts me off emacs is the lack of modes being integrated at every level. Evil is okay, but doesn&#8217;t change the historical bindings. Some of the &#8220;C-x C-something then a number&#8221; bindings go way over my head. Whereas gf, *g*o to *f*ile sits very well in my memory.</p>
+<p>I&#8217;m also planning some sort of graph explorer for modes and bindings to help document how your own editor is set up. So I&#8217;m going to have to respectfully disagree with your opinion, I don&#8217;t expect any tool to be immediately usable. I&#8217;d rather a very steep learning curve that just keeps going as opposed to a shallow one I can start with instantly. That&#8217;s just my preference though.</p>
+<p>I guess I just like the mastery aspect, something that has a huge pay off after a lot of investment. I want something that is simple with regards to it&#8217;s fundamental rules, but not in the sense that anyone can pick it up in minutes.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Jorge Bucaran</title>
+		<link>/2015/01/15/if-i-wrote-a-text-editor/#comment-129</link>
+		<dc:creator><![CDATA[Jorge Bucaran]]></dc:creator>
+		<pubDate>Wed, 18 Feb 2015 07:24:00 +0000</pubDate>
+		<guid isPermaLink="false">/?p=292#comment-129</guid>
+		<description><![CDATA[I mostly share your vision, but I would ditch modes. I understand you find modes useful, but to me the most important thing about software is discoverability and modes are hard to master unless you were born during the 60s. I liked the other features about &lt;b&gt;aneditor&lt;/b&gt; though.]]></description>
+		<content:encoded><![CDATA[<p>I mostly share your vision, but I would ditch modes. I understand you find modes useful, but to me the most important thing about software is discoverability and modes are hard to master unless you were born during the 60s. I liked the other features about <b>aneditor</b> though.</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

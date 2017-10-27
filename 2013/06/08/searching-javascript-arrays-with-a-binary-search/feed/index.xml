@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	
+	>
+<channel>
+	<title>Comments on: Searching JavaScript arrays with a binary search</title>
+	<atom:link href="/2013/06/08/searching-javascript-arrays-with-a-binary-search/feed/" rel="self" type="application/rss+xml" />
+	<link>/2013/06/08/searching-javascript-arrays-with-a-binary-search/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Mon, 22 May 2017 19:57:20 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>By: B.Max</title>
+		<link>/2013/06/08/searching-javascript-arrays-with-a-binary-search/#comment-292</link>
+		<dc:creator><![CDATA[B.Max]]></dc:creator>
+		<pubDate>Wed, 11 Jan 2017 13:51:00 +0000</pubDate>
+		<guid isPermaLink="false">/2013/06/08/searching-javascript-arrays-with-a-binary-search#comment-292</guid>
+		<description><![CDATA[Why are you using resultIndex when it&#039;s being completely useless in your code ?]]></description>
+		<content:encoded><![CDATA[<p>Why are you using resultIndex when it&#8217;s being completely useless in your code ?</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Amgad Fahmi</title>
+		<link>/2013/06/08/searching-javascript-arrays-with-a-binary-search/#comment-253</link>
+		<dc:creator><![CDATA[Amgad Fahmi]]></dc:creator>
+		<pubDate>Thu, 26 May 2016 19:14:00 +0000</pubDate>
+		<guid isPermaLink="false">/2013/06/08/searching-javascript-arrays-with-a-binary-search#comment-253</guid>
+		<description><![CDATA[I did implement the algorithm on github with a comparison between linear and binary. let me know what do you think http://bit.ly/jsbinarysearch]]></description>
+		<content:encoded><![CDATA[<p>I did implement the algorithm on github with a comparison between linear and binary. let me know what do you think <a href="http://bit.ly/jsbinarysearch" rel="nofollow">http://bit.ly/jsbinarysearch</a></p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Jacques de Hooge</title>
+		<link>/2013/06/08/searching-javascript-arrays-with-a-binary-search/#comment-242</link>
+		<dc:creator><![CDATA[Jacques de Hooge]]></dc:creator>
+		<pubDate>Wed, 09 Mar 2016 09:25:00 +0000</pubDate>
+		<guid isPermaLink="false">/2013/06/08/searching-javascript-arrays-with-a-binary-search#comment-242</guid>
+		<description><![CDATA[Thanks, I&#039;ll use this in www.transcrypt.org]]></description>
+		<content:encoded><![CDATA[<p>Thanks, I&#8217;ll use this in <a href="http://www.transcrypt.org/" rel="nofollow">http://www.transcrypt.org/</a></p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Oliver Caldwell</title>
+		<link>/2013/06/08/searching-javascript-arrays-with-a-binary-search/#comment-230</link>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+		<pubDate>Wed, 03 Feb 2016 12:07:00 +0000</pubDate>
+		<guid isPermaLink="false">/2013/06/08/searching-javascript-arrays-with-a-binary-search#comment-230</guid>
+		<description><![CDATA[I&#039;ve tried to explain it with code. I hope this helps :) https://jsfiddle.net/Olical/f2vssc22/
+
+Read up on call / apply for more information. https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/call]]></description>
+		<content:encoded><![CDATA[<p>I&#8217;ve tried to explain it with code. I hope this helps 🙂 <a href="https://jsfiddle.net/Olical/f2vssc22/" rel="nofollow">https://jsfiddle.net/Olical/f2vssc22/</a></p>
+<p>Read up on call / apply for more information. <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/call" rel="nofollow">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/call</a></p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: observerms</title>
+		<link>/2013/06/08/searching-javascript-arrays-with-a-binary-search/#comment-229</link>
+		<dc:creator><![CDATA[observerms]]></dc:creator>
+		<pubDate>Wed, 03 Feb 2016 11:49:00 +0000</pubDate>
+		<guid isPermaLink="false">/2013/06/08/searching-javascript-arrays-with-a-binary-search#comment-229</guid>
+		<description><![CDATA[I am learning JavaScript.  Your blog gives the best example I have found of using _while technique for a binary search.
+
+QUESTION:
+ where can I find an explanation of how   _this  works in Line 19:
+19                currentElement = this[currentIndex] ;
+
+Thanks from a beginner
+observerms]]></description>
+		<content:encoded><![CDATA[<p>I am learning JavaScript.  Your blog gives the best example I have found of using _while technique for a binary search.</p>
+<p>QUESTION:<br />
+ where can I find an explanation of how   _this  works in Line 19:<br />
+19                currentElement = this[currentIndex] ;</p>
+<p>Thanks from a beginner<br />
+observerms</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Pedro</title>
+		<link>/2013/06/08/searching-javascript-arrays-with-a-binary-search/#comment-226</link>
+		<dc:creator><![CDATA[Pedro]]></dc:creator>
+		<pubDate>Wed, 27 Jan 2016 14:58:00 +0000</pubDate>
+		<guid isPermaLink="false">/2013/06/08/searching-javascript-arrays-with-a-binary-search#comment-226</guid>
+		<description><![CDATA[function IndexOf(a,v,min,max,mid,f){
+  min=0,max=a.length,mid=(max+min)&#062;&#062;&#062;1;
+  while(f=(v!==a[mid]))
+    if(v&lt;a&gt;&#062;&#062;1)+1; 
+    else min=(mid=(max+min)&#062;&#062;&#062;1)-1;
+  return f ? -1: mid;
+}]]></description>
+		<content:encoded><![CDATA[<p>function IndexOf(a,v,min,max,mid,f){<br />
+  min=0,max=a.length,mid=(max+min)&gt;&gt;&gt;1;<br />
+  while(f=(v!==a[mid]))<br />
+    if(v<a>&gt;&gt;1)+1;<br />
+    else min=(mid=(max+min)&gt;&gt;&gt;1)-1;<br />
+  return f ? -1: mid;<br />
+}</a></p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Pedro</title>
+		<link>/2013/06/08/searching-javascript-arrays-with-a-binary-search/#comment-224</link>
+		<dc:creator><![CDATA[Pedro]]></dc:creator>
+		<pubDate>Wed, 27 Jan 2016 14:53:00 +0000</pubDate>
+		<guid isPermaLink="false">/2013/06/08/searching-javascript-arrays-with-a-binary-search#comment-224</guid>
+		<description><![CDATA[I&#039;ve made my own binary search method:
+
+function IndexOf(a,v,min,max,mid,f){
+    min=0,max=a.length,mid=(max+min)&#062;&#062;&#062;1;
+    while(f=(v!==a[mid]))
+        if(v&lt;a&gt;&#062;&#062;1)+1; 
+        else min=(mid=(max+min)&#062;&#062;&#062;1)-1;
+    return f ? -1: mid;
+}]]></description>
+		<content:encoded><![CDATA[<p>I&#8217;ve made my own binary search method:</p>
+<p>function IndexOf(a,v,min,max,mid,f){<br />
+    min=0,max=a.length,mid=(max+min)&gt;&gt;&gt;1;<br />
+    while(f=(v!==a[mid]))<br />
+        if(v<a>&gt;&gt;1)+1;<br />
+        else min=(mid=(max+min)&gt;&gt;&gt;1)-1;<br />
+    return f ? -1: mid;<br />
+}</a></p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Pedro</title>
+		<link>/2013/06/08/searching-javascript-arrays-with-a-binary-search/#comment-225</link>
+		<dc:creator><![CDATA[Pedro]]></dc:creator>
+		<pubDate>Wed, 27 Jan 2016 14:53:00 +0000</pubDate>
+		<guid isPermaLink="false">/2013/06/08/searching-javascript-arrays-with-a-binary-search#comment-225</guid>
+		<description><![CDATA[&lt;A&gt;P&lt;/a&gt;]]></description>
+		<content:encoded><![CDATA[<p><a>P</a></p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Salnikov Stanislav</title>
+		<link>/2013/06/08/searching-javascript-arrays-with-a-binary-search/#comment-203</link>
+		<dc:creator><![CDATA[Salnikov Stanislav]]></dc:creator>
+		<pubDate>Wed, 25 Nov 2015 08:10:00 +0000</pubDate>
+		<guid isPermaLink="false">/2013/06/08/searching-javascript-arrays-with-a-binary-search#comment-203</guid>
+		<description><![CDATA[Instead of x / 2 &#124; 0 you can use x &#062;&#062; 1]]></description>
+		<content:encoded><![CDATA[<p>Instead of x / 2 | 0 you can use x &gt;&gt; 1</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: wesman</title>
+		<link>/2013/06/08/searching-javascript-arrays-with-a-binary-search/#comment-179</link>
+		<dc:creator><![CDATA[wesman]]></dc:creator>
+		<pubDate>Fri, 25 Sep 2015 01:59:00 +0000</pubDate>
+		<guid isPermaLink="false">/2013/06/08/searching-javascript-arrays-with-a-binary-search#comment-179</guid>
+		<description><![CDATA[I think it actually depends on whether you&#039;re looking at the end, beginning, or middle of the set. I replaced ~currentIndex with...
+
+
+if (minIndex &#062; currentIndex) {
+    return ~minIndex;
+} else if(maxIndex &#062; currentIndex)  {
+    return ~maxIndex;
+}
+return ~currentIndex;
+
+This started working for me. Am I right?]]></description>
+		<content:encoded><![CDATA[<p>I think it actually depends on whether you&#8217;re looking at the end, beginning, or middle of the set. I replaced ~currentIndex with&#8230;</p>
+<p>if (minIndex &gt; currentIndex) {<br />
+    return ~minIndex;<br />
+} else if(maxIndex &gt; currentIndex)  {<br />
+    return ~maxIndex;<br />
+}<br />
+return ~currentIndex;</p>
+<p>This started working for me. Am I right?</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

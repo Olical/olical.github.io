@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>lists &#8211; Oliver Caldwell&#039;s blog</title>
+	<atom:link href="/tag/lists/feed/" rel="self" type="application/rss+xml" />
+	<link>/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Wed, 18 Oct 2017 13:50:23 +0000</lastBuildDate>
+	<language>en-GB</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>Working with multiple of lists in JavaScript</title>
+		<link>/2016/02/09/working-with-multiple-of-lists-in-javascript/</link>
+		<comments>/2016/02/09/working-with-multiple-of-lists-in-javascript/#comments</comments>
+		<pubDate>Tue, 09 Feb 2016 23:05:44 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Clojure]]></category>
+		<category><![CDATA[JavaScript]]></category>
+		<category><![CDATA[Lisp]]></category>
+		<category><![CDATA[Projects]]></category>
+		<category><![CDATA[clojure]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[lisp]]></category>
+		<category><![CDATA[lists]]></category>
+
+		<guid isPermaLink="false">/?p=434</guid>
+		<description><![CDATA[If you&#8217;ve ever had to iterate over multiple lists at the same time or map a filtered map of a map, you&#8217;ll understand that nesting all of those blocks and callbacks isn&#8217;t very easy to work with or understand. Luckily, there&#8217;s some cool techniques that make turning several arrays (or infinite sequences created by generators, <a class="read-more" href="/2016/02/09/working-with-multiple-of-lists-in-javascript/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>If you&#8217;ve ever had to iterate over multiple lists at the same time or map a filtered map of a map, you&#8217;ll understand that nesting all of those blocks and callbacks isn&#8217;t very easy to work with or understand.</p>
+<p>Luckily, there&#8217;s some cool techniques that make turning several arrays (or infinite sequences created by generators, for example) into a single array with a concise and powerful syntax. I&#8217;m going to take this rather large list of <a href="https://gist.github.com/Olical/fa1c29fdfa42b52604f5">my public gists</a> and turn it into a list of all file names with the type set to &#8220;JavaScript&#8221;. I&#8217;m using lodash for convenience.</p><pre class="crayon-plain-tag">_.map(_.filter(_.flatMap(gists, (gist) =&gt; {
+  return _.values(gist.files)
+}), (file) =&gt; {
+  return file.language === 'JavaScript'
+}), (file) =&gt; {
+  return file.filename
+})</pre><p>Which yields the following array.</p><pre class="crayon-plain-tag">[ 'lazyArray.js',
+  'thebutton.js',
+  'formatNumberWithCommas.js',
+  'x-example.js',
+  'what-we-do.js',
+  'compile.js',
+  'compile.spec.js',
+  'factory.js',
+  'harvest.js',
+  'main.js',
+  'e.js',
+  'example.js',
+  'EventEmitter.js',
+  'api.js',
+  'example.js',
+  'graphs.js',
+  'colours.js' ]</pre><p>You could extract parts of this into named variables or move it into other functions, but my point being, something fairly simple requires a lot of juggling. If you want to add any more maps or filters in the middle you have to constantly move arguments around. It&#8217;s not easy to change and adapt.</p>
+<p>We can however completely eliminate the need for this nesting by using something called list comprehension.</p>
+<h2>List comprehension</h2>
+<p>My favourite implementation of list comprehension can be found in my favourite language, <a href="https://clojuredocs.org/clojure.core/for">Clojure&#8217;s for</a>. You can also find them in many other languages such as Python and Scala, I&#8217;m just in love with <a href="https://xkcd.com/297/">all those parenthesis</a>.</p>
+<p>JavaScript even <em>had</em> one planned for ES6 although it was pulled from the specification, I&#8217;m not sure why. <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Array_comprehensions">Firefox had something like the ES6 one</a> implemented for a while, but that was non-standard at the time. If it&#8217;s any consolation, I didn&#8217;t like the syntax anyway.</p>
+<p>They allow you to produce a single list from one statement or call that accepts multiple lists alongside some parameters. You should, in theory, be able to reference between those lists and define intermediate values from those lists as they iterate through. You then have a function which is called with singular values from those lists, what it returns becomes your final list.</p>
+<p>I&#8217;ve built one for JavaScript that is a port of the Clojure implementation, I&#8217;ve tried to keep it as close to the original as possible. Including code-as-data based API and laziness all the way down. You can use plain old arrays or infinite generators, it will accept <em>any</em> <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Iteration_protocols">iterable</a>.</p>
+<h2>Introducing <a href="https://github.com/Olical/forc">forc</a> <a style="display: inline-block;" href="https://badge.fury.io/js/forc"><img src="https://badge.fury.io/js/forc.svg" alt="npm version" height="18" /></a></h2>
+<p>The name stems from &#8220;for comprehension&#8221; or maybe even &#8220;for Clojure&#8221;, but mainly because I obviously can&#8217;t use just &#8220;for&#8221; as a name. It allows you to do everything Clojure&#8217;s for does, but with JavaScript and any kind of iterable. It&#8217;s written with all sorts of ES6y things and I&#8217;d recommend using it with Babel, but it will work without them (I compile it at publish time). Pre-ES6 you won&#8217;t have any way to iterate the iterables it generates easily, so I wouldn&#8217;t recommend that.</p>
+<p>Here&#8217;s an example of infinite sequences from the README.</p><pre class="crayon-plain-tag">// An infinite generator of all natural numbers
+function * numbers () {
+  let n = 0
+
+  while (true) {
+    yield n++
+  }
+}
+
+forc([
+  'n', numbers(),
+  ':let', ['square', ({n}) =&gt; n * n],
+  ':while', ({square}) =&gt; square &lt; 100
+], ({square}) =&gt; square)
+
+// Results in only those whos square is &lt; 100
+// [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]</pre><p>The API will look strange to anyone that hasn&#8217;t used the Clojure version, but it&#8217;s extremely powerful. The declarative array based approach allowed me to do some cool rebinding of values as I walk through the instructions. I&#8217;ve seen others do this with long chains of method calls or evals instead, both of which don&#8217;t come close to Clojure&#8217;s elegance, in my opinion. This library accidentally adds a little lisp to JavaScript, <a href="https://github.com/Olical/clojs">again</a>. I can&#8217;t help it.</p>
+<p>Now let&#8217;s solve the initial problem with <a href="https://github.com/Olical/forc">forc</a>.</p><pre class="crayon-plain-tag">forc([
+  'gist', gists,
+  'file', ({gist}) =&gt; _.values(gist.files),
+  ':when', ({file}) =&gt; file.language === 'JavaScript'
+], ({file}) =&gt; file.filename)</pre><p>Pretty succinct, right? I mean, I think so. It&#8217;s a shame the &#8220;_.values&#8221; is required because &#8220;gist.files&#8221; is an object but that&#8217;s just the shape of the data. An object is not an iterable, maybe I could change the API in the future to automatically extract values from objects. This call produces a generator which contains the same contents as the initial call, you can expand it with &#8220;[&#8230;result]&#8221;.</p>
+<p>The cool thing about it being a generator is that it only calculates the values you pull through, this allows you to use infinite iterators, for example. You can even use a generator created by &#8220;forc&#8221; as an argument for &#8220;forc&#8221;, it sill won&#8217;t execute a thing until you pull the values through by resolving the iterator.</p>
+<p>Feel free to check out the README and tests to get a better idea of the capabilities. The Clojure documentation is also pretty good since I&#8217;ve copied the API.</p>
+<p>I hope you find this useful!</p>
+]]></content:encoded>
+			<wfw:commentRss>/2016/02/09/working-with-multiple-of-lists-in-javascript/feed/</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+		</item>
+	</channel>
+</rss>

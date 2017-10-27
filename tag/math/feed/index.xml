@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>math &#8211; Oliver Caldwell&#039;s blog</title>
+	<atom:link href="/tag/math/feed/" rel="self" type="application/rss+xml" />
+	<link>/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Wed, 18 Oct 2017 13:50:23 +0000</lastBuildDate>
+	<language>en-GB</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>The Collatz conjecture, visualised in Clojure</title>
+		<link>/2017/04/04/the-collatz-conjecture-visualised-in-clojure/</link>
+		<comments>/2017/04/04/the-collatz-conjecture-visualised-in-clojure/#comments</comments>
+		<pubDate>Tue, 04 Apr 2017 21:13:00 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Clojure]]></category>
+		<category><![CDATA[clojure]]></category>
+		<category><![CDATA[collatz]]></category>
+		<category><![CDATA[math]]></category>
+		<category><![CDATA[quil]]></category>
+
+		<guid isPermaLink="false">/?p=491</guid>
+		<description><![CDATA[Before I begin, watch the video that prompted me to do this in the first place. Okay, now you know what I&#8217;m talking about, the Collatz conjecture. It&#8217;s scarily simple, you take a number, if it&#8217;s even you halve it, if it&#8217;s odd you multiply it by three and add one. Repeat this and you <a class="read-more" href="/2017/04/04/the-collatz-conjecture-visualised-in-clojure/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p style="text-align: center;">Before I begin, watch <a href="https://www.youtube.com/watch?v=LqKpkdRRLZw">the video</a> that prompted me to do this in the first place.</p>
+<p style="text-align: center;"><iframe width="560" height="315" src="https://www.youtube.com/embed/LqKpkdRRLZw" frameborder="0" allowfullscreen="allowfullscreen"></iframe></p>
+<p>Okay, now you know what I&#8217;m talking about, the <a href="https://en.wikipedia.org/wiki/Collatz_conjecture">Collatz conjecture</a>. It&#8217;s scarily simple, you take a number, if it&#8217;s even you halve it, if it&#8217;s odd you multiply it by three and add one. Repeat this and you will end up at one, every time. Well, that&#8217;s the conjecture, maybe it doesn&#8217;t end up at one for some numbers, we just haven&#8217;t been able to prove it.</p>
+<p>The video shows a beautiful way of visualising this problem and I felt it was a nice thing to try and render with some code. If you&#8217;ve read any of my previous things or know me even a little, Clojure is not a surprising choice of tool, I love the language and think it is well suited to most, if not all, problems I face.</p>
+<p>I must warn you that I never reproduced the one from the video, just something that follows the same ideas and looks kind of similar from a distance. I honestly can&#8217;t work out what magic was used to get it to look that good, maybe some special rendering techniques that are just beyond me at the moment. Maybe you&#8217;ll be able to take my repository and perfect it!</p>
+<h2>Collatz in Clojure</h2>
+<p>Before I even attempt to render this, I&#8217;ll need some functions that generate the Collatz conjecture numbers. I will refer to these as a Collatz sequence or Collatz seqs. You can find the full code in <a href="https://github.com/Olical/collatz">Olical/collatz</a>, but I will be breaking it down here for you.</p><pre class="crayon-plain-tag">(defn number-gt-zero?
+  "Checks if n is a number that is greater than zero."
+  [n]
+  (and (number? n)
+       (&gt; n 0)))
+
+(defn next-collatz
+  "Returns the next step in the Collatz sequence."
+  [n]
+  {:pre [(number-gt-zero? n)]}
+  (cond
+    (even? n) (-&gt; n (/ 2))
+    (odd? n)  (-&gt; n (* 3) (inc))))
+
+(defn collatz
+  "Generate a lazy-seq of Collatz conjecture numbers starting at the given number."
+  [n]
+  {:pre [(number-gt-zero? n)]}
+  (lazy-seq
+   (cons n
+         (when (&gt; n 1)
+           (collatz (next-collatz n))))))</pre><p>This function provides a lazy sequence abstraction on top of the ideas the Collatz conjecture provides. It allows us to build more interesting things on top of the seq abstraction without worrying about memory or implementation details.</p><pre class="crayon-plain-tag">;; Get the first 10 numbers in the Collatz seq starting at 1000000.
+(take 10 (collatz 1000000))
+
+;; The first number in the seq will always be the argument you provided.
+;; The last will always be 1.
+
+(last (collatz 1000000))
+
+;; 1. We hope.</pre><p>The next logical step from here, in my opinion, is to create a <em>lazy-seq</em> of Collatz seqs. So if I ask for <em>(collatz-tree 10000)</em> I will get a seq of seqs. The first item is the same as <em>(collatz 10000)</em>, the second is <em>(collatz 9999)</em> and the third being <em>(collatz 9998)</em>. You get the idea. What we are left with is a seq abstraction which, if fully realised, would be pretty huge. Luckily, thanks to the magic of lazy sequences, almost nothing will actually be in memory at any one time.</p><pre class="crayon-plain-tag">(defn collatz-tree
+  "Generate a lazy-seq of lazy-seqs from the collatz function. Starts the seqs at (collatz n), counts down until (collatz 1)."
+  [n]
+  {:pre [(number-gt-zero? n)]}
+  (lazy-seq
+   (cons (collatz n)
+         (when (&gt; n 1)
+           (collatz-tree (dec n))))))</pre><p>We can walk this tree, or seq of seqs, to render the visualisation you saw in the video. Or something close to it I hope, I&#8217;m no expert with <a href="https://github.com/quil/quil">Quil</a>, but I&#8217;ll try my best.</p><pre class="crayon-plain-tag">(collatz-tree 4)
+
+;; Yields: ((4 2 1) (3 10 5 16 8 4 2 1) (2 1) (1))</pre><p>The commit at this point was <a href="https://github.com/Olical/collatz/commit/4a155ed3a80e177655cbe41ba38e783978f17cb7">4a155ed</a>. Feel free to take this abstraction and do what you want with it, copy and paste it into your project if that&#8217;s easiest.</p>
+<h2>Visualising the tree</h2>
+<p>Now for the pretty part. I hope. I&#8217;m starting with the default Quil setup the lein template provides you with, this includes the functional middleware which makes it a bit nicer to work with (although I found I wasn&#8217;t really using the state management very much at all). After a little bit of tinkering I ended up with this rough attempt.</p>
+<figure id="attachment_498" style="width: 804px" class="wp-caption aligncenter"><a href="/wp-content/uploads/2017/03/Screenshot_2017-03-31_17-13-04.png"><img class="size-full wp-image-498" src="/wp-content/uploads/2017/03/Screenshot_2017-03-31_17-13-04.png" alt="" width="804" height="802" srcset="/wp-content/uploads/2017/03/Screenshot_2017-03-31_17-13-04.png 804w, /wp-content/uploads/2017/03/Screenshot_2017-03-31_17-13-04-150x150.png 150w, /wp-content/uploads/2017/03/Screenshot_2017-03-31_17-13-04-300x300.png 300w, /wp-content/uploads/2017/03/Screenshot_2017-03-31_17-13-04-768x766.png 768w" sizes="(max-width: 804px) 100vw, 804px" /></a><figcaption class="wp-caption-text">An early render. Kinda ugly and slow to render. Commit was <a class="commit-tease-sha" href="https://github.com/Olical/collatz/commit/299f062b3166d20710cd25f7c74e6edcdddb47dc" data-pjax="">299f062</a>.</figcaption></figure>
+<p>Although if you squint, this sort of looks similar, I&#8217;m not very happy with it. For starters, my use of the Quil API is a bit questionable and it definitely doesn&#8217;t follow the same rules as the one in the video. My ideal goal is to basically mimic the original material including random colours. I really hope this doesn&#8217;t breach copyright or something, if so, I&#8217;m very sorry, send me an email.</p>
+<p>Here&#8217;s what I had after some more tinkering.</p>
+<figure id="attachment_503" style="width: 804px" class="wp-caption aligncenter"><a href="/wp-content/uploads/2017/03/Screenshot_2017-03-31_19-28-43.png"><img class="size-full wp-image-503" src="/wp-content/uploads/2017/03/Screenshot_2017-03-31_19-28-43.png" alt="" width="804" height="802" srcset="/wp-content/uploads/2017/03/Screenshot_2017-03-31_19-28-43.png 804w, /wp-content/uploads/2017/03/Screenshot_2017-03-31_19-28-43-150x150.png 150w, /wp-content/uploads/2017/03/Screenshot_2017-03-31_19-28-43-300x300.png 300w, /wp-content/uploads/2017/03/Screenshot_2017-03-31_19-28-43-768x766.png 768w" sizes="(max-width: 804px) 100vw, 804px" /></a><figcaption class="wp-caption-text">It&#8217;s still not right, but it looks better. Commit was <a class="commit-tease-sha" href="https://github.com/Olical/collatz/commit/8e5a42cb3e1a2838689821a7a0706f03bc6ab4d7" data-pjax="">8e5a42c</a>.</figcaption></figure>
+<blockquote><p>Although I&#8217;m generating the bordered lines with a sort of hack (one bigger black line with a smaller coloured line on top of it), it actually leads to this neat hand drawn effect. So, although it&#8217;s not right, I actually like the outcome. It feels more organic than hard, anti-aliased, machine cut edges. To me, anyway.</p></blockquote>
+<p>It definitely looks better now, but it&#8217;s still not true to the original. A huge problem with this is that I&#8217;m drawing back over lines so many times, I need to optimise the tree so I don&#8217;t repeat myself, this requires a different approach to rendering though, I need a sort of linked list I can follow so I know when I&#8217;m back to somewhere I&#8217;ve been before and can stop rendering that path.</p>
+<p>That&#8217;s going to mean forgoing a bit of laziness and building a big data structure that I can use as a lookup table, I think it&#8217;s worth it for the rendering optimisations. That should allow me to render the branches in different orders too instead of largest to smallest.</p>
+<h2>Epiphany time</h2>
+<p>Two things happened while developing this project and writing this post (I&#8217;ve been writing it as I developed it to capture every step, so it may seem a bit jumbled in places).</p>
+<p>First, I realised that the tree was upside down. The end of any Collatz seq is always one (we think?), if you remember my code from earlier, I iterate over these sequences and draw the segments of the branch one at a time. This means every branch <em>ends</em> with one, but it needs to <em>start</em> with one.</p>
+<p>The other thing that happened was one of the authors of <a href="http://www.bloomsbury.com/uk/visions-of-numberland-9781408888988/">the book</a> that inspired the video that inspired me, <a class="ProfileHeaderCard-nameLink u-textInheritColor js-nav" href="https://twitter.com/Gelada">Edmund Harriss</a>, replied to one of my tweets with a couple of tips I&#8217;ll probably need after I fix the whole upside down problem.</p>
+<div align="center">
+<blockquote class="twitter-tweet" data-lang="en">
+<p dir="ltr" lang="en"><a href="https://twitter.com/OliverCaldwell">@OliverCaldwell</a> The key is balancing the left and right rotation so you go in a straight line if not growing.</p>
+<p>— Edmund Harriss (@Gelada) <a href="https://twitter.com/Gelada/status/848020385459318784">April 1, 2017</a></p></blockquote>
+<p><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script></p>
+<blockquote class="twitter-tweet" data-lang="en">
+<p dir="ltr" lang="en"><a href="https://twitter.com/OliverCaldwell">@OliverCaldwell</a> of course, it is fun to play with. The branches represent either a growth (x2) or a shrink (-1 and /3) the rotations can reflect that.</p>
+<p>— Edmund Harriss (@Gelada) <a href="https://twitter.com/Gelada/status/848158534546206721">April 1, 2017</a></p></blockquote>
+<p><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script></p>
+</div>
+<p style="text-align: center;">Just as a reminder, this is what I want it to look like.</p>
+<figure id="attachment_507" style="width: 792px" class="wp-caption aligncenter"><a href="/wp-content/uploads/2017/04/C8FvTBiW0AAFGpG.jpg"><img class="size-large wp-image-507" src="/wp-content/uploads/2017/04/C8FvTBiW0AAFGpG-809x1024.jpg" alt="" width="792" height="1002" srcset="/wp-content/uploads/2017/04/C8FvTBiW0AAFGpG-809x1024.jpg 809w, /wp-content/uploads/2017/04/C8FvTBiW0AAFGpG-237x300.jpg 237w, /wp-content/uploads/2017/04/C8FvTBiW0AAFGpG-768x972.jpg 768w, /wp-content/uploads/2017/04/C8FvTBiW0AAFGpG.jpg 900w" sizes="(max-width: 792px) 100vw, 792px" /></a><figcaption class="wp-caption-text">The original from the video, saved from <a href="https://twitter.com/numberphile/status/847080594723000320">this tweet</a>.</figcaption></figure>
+<h2>Flipping the tree</h2>
+<p>So I want to get it looking semi-accurate before I try to optimise, maybe the optimisations won&#8217;t actually be required it it&#8217;s &#8220;good enough&#8221;. I&#8217;m going to flip the tree by reversing the Collatz sequences that comprise my &#8220;Collatz tree&#8221; sequence.</p>
+<p>Sadly, even after flipping the tree over and playing around with more parameters, I just couldn&#8217;t match the awesome original design. I guess this is a testament to how good the original authors are at creating visualisations from math alone! Here&#8217;s a few things I ended up with to wrap up my stumbling in the dark.</p>
+<figure id="attachment_512" style="width: 804px" class="wp-caption aligncenter"><a href="/wp-content/uploads/2017/04/Screenshot_2017-04-01_12-22-38.png"><img class="size-full wp-image-512" src="/wp-content/uploads/2017/04/Screenshot_2017-04-01_12-22-38.png" alt="" width="804" height="802" srcset="/wp-content/uploads/2017/04/Screenshot_2017-04-01_12-22-38.png 804w, /wp-content/uploads/2017/04/Screenshot_2017-04-01_12-22-38-150x150.png 150w, /wp-content/uploads/2017/04/Screenshot_2017-04-01_12-22-38-300x300.png 300w, /wp-content/uploads/2017/04/Screenshot_2017-04-01_12-22-38-768x766.png 768w" sizes="(max-width: 804px) 100vw, 804px" /></a><figcaption class="wp-caption-text">It&#8217;s still wrong, but looks kinda nice. Commit was <a class="commit-tease-sha" href="https://github.com/Olical/collatz/commit/185a3ffd7539a74afe17aa587796330f40410c1b" data-pjax="">185a3ff</a>.</figcaption></figure>
+<figure id="attachment_521" style="width: 804px" class="wp-caption aligncenter"><a href="/wp-content/uploads/2017/04/Screenshot_2017-04-04_21-42-51.png"><img class="size-full wp-image-521" src="/wp-content/uploads/2017/04/Screenshot_2017-04-04_21-42-51.png" alt="" width="804" height="802" srcset="/wp-content/uploads/2017/04/Screenshot_2017-04-04_21-42-51.png 804w, /wp-content/uploads/2017/04/Screenshot_2017-04-04_21-42-51-150x150.png 150w, /wp-content/uploads/2017/04/Screenshot_2017-04-04_21-42-51-300x300.png 300w, /wp-content/uploads/2017/04/Screenshot_2017-04-04_21-42-51-768x766.png 768w" sizes="(max-width: 804px) 100vw, 804px" /></a><figcaption class="wp-caption-text">More curve, but not what I want. At <a class="commit-tease-sha" href="https://github.com/Olical/collatz/commit/e9dad2662d5ecf54698625f93b570d3169e4284c" data-pjax="">e9dad26</a>.</figcaption></figure>
+<figure id="attachment_522" style="width: 804px" class="wp-caption aligncenter"><a href="/wp-content/uploads/2017/04/Screenshot_2017-04-04_21-46-43.png"><img class="size-full wp-image-522" src="/wp-content/uploads/2017/04/Screenshot_2017-04-04_21-46-43.png" alt="" width="804" height="802" srcset="/wp-content/uploads/2017/04/Screenshot_2017-04-04_21-46-43.png 804w, /wp-content/uploads/2017/04/Screenshot_2017-04-04_21-46-43-150x150.png 150w, /wp-content/uploads/2017/04/Screenshot_2017-04-04_21-46-43-300x300.png 300w, /wp-content/uploads/2017/04/Screenshot_2017-04-04_21-46-43-768x766.png 768w" sizes="(max-width: 804px) 100vw, 804px" /></a><figcaption class="wp-caption-text">Thinner lines to illustrate just how many I&#8217;m actually rendering here. Could be a tad more efficient. Game programmers, avert your eyes. At <a class="commit-tease-sha" href="https://github.com/Olical/collatz/commit/2cc37b18405d03d4a0e53212bf5f4518949c0ad7" data-pjax="">2cc37b1</a>.</figcaption></figure>
+<figure id="attachment_523" style="width: 804px" class="wp-caption aligncenter"><a href="/wp-content/uploads/2017/04/Screenshot_2017-04-04_21-52-49.png"><img class="size-full wp-image-523" src="/wp-content/uploads/2017/04/Screenshot_2017-04-04_21-52-49.png" alt="" width="804" height="802" srcset="/wp-content/uploads/2017/04/Screenshot_2017-04-04_21-52-49.png 804w, /wp-content/uploads/2017/04/Screenshot_2017-04-04_21-52-49-150x150.png 150w, /wp-content/uploads/2017/04/Screenshot_2017-04-04_21-52-49-300x300.png 300w, /wp-content/uploads/2017/04/Screenshot_2017-04-04_21-52-49-768x766.png 768w" sizes="(max-width: 804px) 100vw, 804px" /></a><figcaption class="wp-caption-text">The spindly version with prime numbers highlighted in green. Pretty neat. At <a class="commit-tease-sha" href="https://github.com/Olical/collatz/commit/ba6700f0cad800ca4cbfa80c21e1d662781368cc" data-pjax="">ba6700f</a>.</figcaption></figure>
+<p>From the thinner versions you can quite clearly see the need for deduplication, if you just draw <em>everything</em> over the top of each other, not only is it slow, but it also looks messy. I definitely needed to prepare my data a little better, but this post that was supposed to be a small little experiment was beginning to drag on by then.</p>
+<h2>Close but no cigar</h2>
+<p>I&#8217;m disappointed that I couldn&#8217;t get it quite right, although I think I probably could if I just put more time into it. Sadly, visualisations aren&#8217;t really my forte or main interest. I&#8217;m more of a &#8220;programming languages, data structures and text editors&#8221; kind of programmer. It&#8217;s a little bit niche, okay.</p>
+<p>I may revisit this some day and attempt to deduplicate that tree since I think there&#8217;s value there in performance and style. Until then feel free to rip the repository to pieces, <a href="https://github.com/Olical/collatz">Olical/collatz</a>, if you didn&#8217;t spot it earlier. I&#8217;ll post the visualisation code below too, just so you don&#8217;t need to go elsewhere to see how badly I messed up, I&#8217;m sure this is obvious to <em>someone</em> out there in the wide and wonderful world.</p>
+<p>I hope you found this slightly interesting, and at the very least it has passed on the inspiration I had to do something far better than I produced.</p><pre class="crayon-plain-tag">(ns collatz.visualisation
+  (:require [quil.core :as q]
+            [quil.middleware :as m]
+            [collatz.core :as c])
+  (:gen-class))
+
+(defn reversed-indexed
+  "Returns the lazy sequence but each item is now a vector pair. The first value
+  is the index, the second is the original value from the seq. The sequence is
+  also reversed."
+  [items]
+  (map-indexed (fn [n v] [n v]) (reverse items)))
+
+(defn gen-tree
+  "Generates a full Collatz tree by building the lazy-seqs and reversing them all."
+  [n]
+  (-&gt;&gt; n c/collatz-tree (map reversed-indexed) reversed-indexed))
+
+(def size {:x 800 :y 800})
+(def tree (gen-tree 10000))
+(def part-size 8)
+
+(defn render-branch
+  "Render a single Collatz branch."
+  [[bn branch]]
+  (q/push-matrix)
+  (doseq [[pn part] branch]
+    (q/stroke 0)
+    (q/stroke-weight 15)
+    (q/line 0 0 0 part-size)
+
+    (q/stroke (+ 155 (mod bn 100)) 100 100)
+    (q/stroke-weight 13)
+    (q/line 0 (if (= pn 0) 0 -3) 0 part-size)
+
+    (q/translate 0 part-size)
+    (q/rotate (q/radians (if (even? part) 4 -4))))
+  (q/pop-matrix))
+
+(defn setup
+  "Set up the context and state."
+  []
+  (q/frame-rate 25)
+  {:tree tree
+   :render? false})
+
+(defn update-state
+  "Perform modifications to the state for the next render."
+  [state]
+  {:tree tree
+   :render? (:should-render? state)})
+
+(defn draw-state
+  "Render the current state."
+  [state]
+  (when (:render? state)
+    (q/background 255 255 255)
+    (q/translate 200 (-&gt; size :y (- 20)))
+    (q/rotate (q/radians 110))
+    (doseq [branch (:tree state)]
+      (render-branch branch))))
+
+(defn key-pressed
+  "Handle a key press event."
+  [state event]
+  (case (:key-code event)
+    10 (assoc state :should-render? true)
+    state))
+
+(defn -main
+  "Initialise the sketch."
+  []
+  (q/sketch
+   :title "Collatz in Clojure"
+   :size (map size [:x :y])
+   :setup #'setup
+   :update #'update-state
+   :draw #'draw-state
+   :features []
+   :middleware [m/fun-mode]
+   :key-pressed key-pressed))</pre><p></p>
+]]></content:encoded>
+			<wfw:commentRss>/2017/04/04/the-collatz-conjecture-visualised-in-clojure/feed/</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+		</item>
+	</channel>
+</rss>

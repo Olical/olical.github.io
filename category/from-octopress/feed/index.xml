@@ -1,0 +1,900 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>From Octopress &#8211; Oliver Caldwell&#039;s blog</title>
+	<atom:link href="/category/from-octopress/feed/" rel="self" type="application/rss+xml" />
+	<link>/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Wed, 18 Oct 2017 13:50:23 +0000</lastBuildDate>
+	<language>en-GB</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>Installing Vimdeck on Arch</title>
+		<link>/2014/04/26/installing-vimdeck-on-arch/</link>
+		<comments>/2014/04/26/installing-vimdeck-on-arch/#respond</comments>
+		<pubDate>Sat, 26 Apr 2014 13:07:06 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[From Octopress]]></category>
+
+		<guid isPermaLink="false">/2014/04/26/installing-vimdeck-on-arch</guid>
+		<description><![CDATA[I’m going to be talking at Vim London again on Tuesday, so I thought I’d knock a quick presentation together. I was planning on using Vimdeck but it turns out it freaks out on Arch based Linux distributions, such as Manjaro (probably some other Linux distributions too). When executing gem install vimdeck it tries to <a class="read-more" href="/2014/04/26/installing-vimdeck-on-arch/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>I’m going to be talking at <a href="http://www.meetup.com/Vim-London/events/174682642/">Vim London</a> again on Tuesday, so I thought I’d knock a quick presentation together. I was planning on using <a href="https://github.com/tybenz/vimdeck">Vimdeck</a> but it turns out it freaks out on Arch based Linux distributions, such as Manjaro (probably some other Linux distributions too).</p>
+<p>When executing <code>gem install vimdeck</code> it tries to install <a href="https://github.com/rmagick/rmagick">RMagick</a> which fails on my machine due to <a href="http://www.imagemagick.org/">ImageMagick</a> being installed with HDRI enabled, whatever the hell that is. Apparently the Arch team enabled it a few months back.</p>
+<p>The solution? Clone the <a href="https://github.com/rmagick/rmagick">RMagick</a> repository and execute the following.</p><pre class="crayon-plain-tag">gem build rmagick.gemspec
+gem install rmagick-{VERSION}.gem</pre><p>Where <code>{VERSION}</code> is the version of the gem you just built. This will vary from the time when this post was written so I won’t bother putting the version I had in there. Now you have a fixed version of the gem install you can execute <code>gem install vimdeck</code> and it will install perfectly. If not, congratulations, you’ve discovered a new issue!</p>
+<p>Now to write my presentation…</p>
+]]></content:encoded>
+			<wfw:commentRss>/2014/04/26/installing-vimdeck-on-arch/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Always remain a beginner</title>
+		<link>/2014/03/18/always-remain-a-beginner/</link>
+		<comments>/2014/03/18/always-remain-a-beginner/#respond</comments>
+		<pubDate>Tue, 18 Mar 2014 21:47:00 +0000</pubDate>
+		<dc:creator><![CDATA[]]></dc:creator>
+				<category><![CDATA[From Octopress]]></category>
+
+		<guid isPermaLink="false">/2014/03/18/always-remain-a-beginner</guid>
+		<description><![CDATA[I’ve been programming for about five years, almost entirely in JavaScript, three of which being professional. I’m an absolute beginner and I always will be. This is a good thing. Why remain a beginner? Because a beginner will never stop learning. A beginner must continually progress or they will stall in their learning, stalling brings <a class="read-more" href="/2014/03/18/always-remain-a-beginner/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>I’ve been programming for about five years, almost entirely in JavaScript, three of which being professional. I’m an absolute beginner and I always will be. This is a <em>good</em> thing.</p>
+<h2>Why remain a beginner?</h2>
+<p>Because a beginner will never stop learning. A beginner must continually progress or they will stall in their learning, stalling brings with it unhappiness and resentment towards your current situation.</p>
+<p>Beginners actively seek knowledge and cast away presumptions, even if they think they know all there is to know about a given technology.</p>
+<p><!-- more --></p>
+<h2>They listen</h2>
+<p>It’s not just the desire to learn from books or blogs however, a beginner will also appreciate the knowledge of friends and colleagues; they <em>will</em> listen when someone says something of interest directly to them.</p>
+<p>This is out of respect as much as a thirst for knowledge, it shows that you appreciate their input and accept that you could easily be very wrong in your assumptions. The only fair assumption is that they know more than you until <em>proven otherwise</em>. (See: <a href="https://www.youtube.com/watch?v=wg4trPZFUwc">Assumption is the mother of all fuck-ups</a>)</p>
+<h2>Growing causes happiness</h2>
+<p>Growth makes people happy, as mentioned in <a href="http://www.gretchenrubin.com/books/the-happiness-project/about-the-book/">The Happiness Project</a>, an excellent book (that I heard of through <a href="http://www.raptitude.com/">raptitude</a>) that I’m still working my way through. A beginner will be happy while they learn, so never stop learning. Never slip into an elitist attitude, you do not <em>know</em> anything completely, you should listen to those who speak with conviction.</p>
+<p>Never stop learning and growing. This will bring you joy and respect among your peers. This works for me especially so due to my passion for acquiring new knowledge.</p>
+<p>If you realise that you’ve stopped growing for even a single day, <strong>do something about it</strong>.</p>
+<h2>There is always something to learn</h2>
+<p>Regardless of what you may think, you still have much to learn. Never, not even for one second, should you slip into the mentality in which you think you know something wholly and completely.</p>
+<p>At this point, you cease listening to reason and instead dictate your opinions as fact, which can be easy to do in the heat of a conversation. This is extremely counter-productive.</p>
+<h2>There’s a fine line</h2>
+<p>And you must tread it carefully. Sometimes an assertion of your opinion is required to sway some individuals, but most of the time a two way conversation will be far more useful.</p>
+<p>Discuss, don’t tell. But what’re you listening to me for? What do I know? I’m but a beginner.</p>
+<p>This can also be construed as paradoxical.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2014/03/18/always-remain-a-beginner/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Test private methods</title>
+		<link>/2013/12/13/test-private-methods/</link>
+		<comments>/2013/12/13/test-private-methods/#respond</comments>
+		<pubDate>Fri, 13 Dec 2013 20:08:00 +0000</pubDate>
+		<dc:creator><![CDATA[]]></dc:creator>
+				<category><![CDATA[From Octopress]]></category>
+
+		<guid isPermaLink="false">/2013/12/13/test-private-methods</guid>
+		<description><![CDATA[If you’ve barely passed the title and you’re already seething with violent rage: This post is for you. Like medicine that smells of battery acid, this’ll taste bad and potentially kill you but you’ll feel better for it in a few days. Let it settle in for a bit, mull it over. Herein lies my <a class="read-more" href="/2013/12/13/test-private-methods/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>If you’ve barely passed the title and you’re already seething with violent rage: This post is for you. Like medicine that smells of battery acid, this’ll taste bad and potentially kill you but you’ll feel better for it in a few days. Let it settle in for a bit, mull it over.</p>
+<p>Herein lies my argument <strong>for</strong> testing private methods within JavaScript (and potentially any other language that doesn’t have <em>real</em> privates, I’m looking at you, Python).</p>
+<p><!-- more --></p>
+<h2>Other languages</h2>
+<p>In a language with real privates, such as C++, you can not physically test your private methods. Either you make them so simple that they do not need testing, make them public or extract them into another class.</p>
+<p>These approaches are not always valid or possible in the <em>Real World<sup>TM</sup></em>, so the methods in question can sometimes go untested (may the lords of TDD have mercy upon you).</p>
+<p>Not testing a private because it doesn’t make sense to expose it in other ways is ridiculous. Especially in a language where you can actually access it programmatically.</p>
+<h2>Testing <em>every</em> method</h2>
+<p>I’m a firm believer in TDD and I personally think writing even one test for your method before writing the implementation helps you to think from a consumer’s perspective. This consumer usually ends up being <em>you</em>.</p>
+<p>You may write a test for a boolean returning private that a public method depends on. Half way through writing it you could realise it’s bat guano insane and there are far better solutions. TDD ends up being JIT planning (I’m coining that).</p>
+<p>So testing every method allows you to: Get far more coverage (even for trivial methods), imagine how your function will be used before you write it and force you to only write testable functions. What happens when your untestable private gets made public and needs tests? A mess, that’s what.</p>
+<h2>Tests are friends</h2>
+<p>Literally. You should treat your test file for a class as if it were a friend class. Friend classes have access to the other class&#8217; protected and private values. You can still keep the idea of privates when one class is talking to another, but the test file is a best bro 4 lyfe. It can check out its class&#8217; privates any time it wants to.</p>
+<p>This way, you can still change private methods on a whim without breaking other classes, you just need to update your tests <em>first</em>. <strong>This is how it should be.</strong></p>
+<h2>The result?</h2>
+<p>Potentially: 100% test coverage. Most likely: Easily testable and well thought out methods. This leads to a generally cleaner codebase that doesn’t have a plethora of private methods that were taped onto the side and not tested “because private”.</p>
+<p>There will still be some that insist on holding onto the public only view, to them I say: Not all languages were created equal. JavaScript doesn’t have privates, just roll with it and use it to your advantage. Turn that looseness into even more tests.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2013/12/13/test-private-methods/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Graph from scratch</title>
+		<link>/2013/12/05/graph-from-scratch/</link>
+		<comments>/2013/12/05/graph-from-scratch/#comments</comments>
+		<pubDate>Thu, 05 Dec 2013 23:55:00 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[From Octopress]]></category>
+
+		<guid isPermaLink="false">/2013/12/05/graph-from-scratch</guid>
+		<description><![CDATA[James mentioned the other day that he was drinking tea “at a rate of 0.75 OC”, OC being the base speed at which I myself consume a mug of that wonderful brown liquid. A little flurry of tweets ensued which resulted in me kind of accepting a joke/challenge using a meme. This post is mainly <a class="read-more" href="/2013/12/05/graph-from-scratch/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p><a href="https://twitter.com/jamesfublo">James</a> mentioned the other day that he was drinking tea “at a rate of 0.75 OC”, OC being the base speed at which I myself consume a mug of that wonderful brown liquid. A little <a href="http://www.exquisitetweets.com/tweets?eids=EjQYN9DC57.EjRXe1BtqC.ElgZl6JxF6.ElhqBY5I1Q.Elhyot1C20.ElhGxGBZoi">flurry of tweets</a> ensued which resulted in me kind of accepting a joke/challenge using a meme.</p>
+<p>This post is mainly about plotting a graph with nothing but JavaScript and a canvas element, but it also gives me a chance to finally document my tea drinking habits for the world to gaze upon in wonder.</p>
+<p><!-- more --></p>
+<h2>Aim</h2>
+<p>I’m going to build a simple plotted graph using JavaScript and a canvas element but without any external dependencies. I’ll try to walk you through each step of the way too, so you can pick and choose which parts of this code you’d like to use in your possibly unrelated canvas project.</p>
+<p>This will be self contained within a neat little class, so you’ll easily be able to pull it out and modify it to your hearts content.</p>
+<h2>Setup</h2>
+<p>First I’m going to setup a couple of empty classes. I’m going to have a <code>LineGraph</code> class which inherits (using <a href="/2013/06/01/prototypical-inheritance-done-right/">prototypical inheritance</a>) from <code>Graph</code>. The base class will contain anything a generic graph would, such as containing data points and rendering.</p>
+<p>It will be up to the individual implementations, a <code>LineGraph</code> in this case, to turn those data points into something visual.</p><pre class="crayon-plain-tag">/**
+ * Base graph class, handles containment of data points and the overarching
+ * interface of all graph classes.
+ *
+ * @class
+ */
+function Graph() {
+}
+
+/**
+ * Line graph, used for plotting a value over time.
+ *
+ * @class
+ * @augments Graph
+ */
+function LineGraph() {
+  Graph.apply(this, arguments);
+}
+
+LineGraph.prototype = Object.create(Graph.prototype);</pre><p></p>
+<h2>Storing the data</h2>
+<p>The base <code>Graph</code> class needs to take a set of data and store it for later use by it’s child classes. This data could be an array (line graphs) or an object containing simple numbers (pie chart).</p>
+<p>We’ll do this by adding a <code>setDataSource</code> method which is called from the constructor.</p><pre class="crayon-plain-tag">/**
+ * Base graph class, handles containment of data points and the overarching
+ * interface of all graph classes.
+ *
+ * @class
+ * @param {*} [initialDataSource]
+ */
+function Graph(initialDataSource) {
+  this.setDataSource(initialDataSource);
+}
+
+/**
+ * Updates the current data source. The values contained within are used to
+ * render the actual graph.
+ *
+ * @param {*} dataSource
+ */
+Graph.prototype.setDataSource = function (dataSource) {
+  this._dataSource = dataSource;
+};</pre><p></p>
+<h2>Creating the canvas</h2>
+<p>We’ll leave it to the base class to create and prepare the canvas element. It will create the element at a specified size and then store it’s context.</p><pre class="crayon-plain-tag">/**
+ * Base graph class, handles containment of data points and the overarching
+ * interface of all graph classes.
+ *
+ * @class
+ * @param {Number} width
+ * @param {Number} height
+ * @param {*} [initialDataSource]
+ */
+function Graph(width, height, initialDataSource) {
+  this.setDataSource(initialDataSource);
+  this.initialiseCanvas(width, height);
+}
+
+/**
+ * Initialises the canvas element and stores it's context object. It will also
+ * set the initial width and height.
+ *
+ * @param {Number} width
+ * @param {Number} height
+ */
+Graph.prototype.initialiseCanvas = function (width, height) {
+  this._canvas = document.createElement('canvas');
+  this._context = this._canvas.getContext('2d');
+  this.setSize(width, height);
+};
+
+/**
+ * Updates the current size of the graph.
+ *
+ * @param {Number} width
+ * @param {Number} height
+ */
+Graph.prototype.setSize = function (width, height) {
+  this._canvas.width = this._width = width;
+  this._canvas.height = this._height = height;
+};</pre><p>We’ll also add a way to fetch the canvas element for later. This will be used to inject the element into the DOM where you see fit.</p><pre class="crayon-plain-tag">/**
+ * Fetches the actual canvas DOM node. This can be used to place the canvas
+ * within your page.
+ *
+ * @return {HTMLElement}
+ */
+Graph.prototype.getCanvasElement = function () {
+  return this._canvas;
+};</pre><p>You’ll now be able to create the canvas and inject it into your page with something like this.</p><pre class="crayon-plain-tag">var g = new Graph(300, 200);
+var canvas = g.getCanvasElement();
+document.body.appendChild(canvas);</pre><p></p>
+<h2>Setting up the data</h2>
+<p>This isn’t very well defined, it’s kind of up to how the specific graph child class wishes to implement it. Here’s how I’m going to implement the data structure for the <code>LineGraph</code> class.</p><pre class="crayon-plain-tag">var teaGraph = new LineGraph(300, 200, {
+  consumptionSpeed: {
+      colour: '#FF0000',
+      values: [
+          0, 0, 0, 0, 0,
+          0, 0, 0, 0.1, 0.3,
+          0.8, 1, 3, 8, 16, 32
+      ]
+  },
+  temperature: {
+      color: '#0000FF',
+      values: [
+          80, 80, 80, 80, 80,
+          79, 78, 76, 72, 60,
+          55, 54, 40, 10, 0, 0
+      ]
+  }
+});</pre><p>This allows us to name our plotted lines if we ever wanted to, colour them and specify the actual values they should display. I think the <code>LineGraph</code> class should be able to work with that.</p>
+<h2>Calculating the bounds</h2>
+<p>When the data source is set we’re going to want to pre-calculate the maximum amount of positions across the X and Y axis. We will use this count to divide the graph up into the right amount of columns and rows to represent every data point.</p>
+<p>This will involve creating a few new functions and adding a call to one of them within <code>setDataSource</code>. But because these bound values are only really relevant to line graphs, we need to do this in the <code>LineGraph</code> class, not <code>Graph</code>.</p><pre class="crayon-plain-tag">/**
+ * Updates the current data source. The values contained within are used to
+ * render the actual graph.
+ *
+ * This will also calculate the bounds for line graph. Overrides the original
+ * Graph#setDataSource method.
+ *
+ * @param {Object} dataSource
+ */
+LineGraph.prototype.setDataSource = function (dataSource) {
+    Graph.prototype.setDataSource.call(this, dataSource);
+    this._values = this.getDataSourceItemValues();
+    this.calculateDataSourceBounds();
+};
+
+/**
+ * Flattens all of the value arrays into one single array. This is much easier
+ * to iterate over.
+ *
+ * @return {Number[][]}
+ */
+LineGraph.prototype.getDataSourceItemValues = function () {
+    var dataSource = this._dataSource;
+    var values = [];
+    var key;
+
+    for (key in dataSource) {
+        if (dataSource.hasOwnProperty(key)) {
+            values.push(dataSource[key].values);
+        }
+    }
+
+    return values;
+};
+
+/**
+ * Calculates the upper X and Y axis bounds for the current data source.
+ */
+LineGraph.prototype.calculateDataSourceBounds = function () {
+    this._bounds = {
+        x: this.getLargestDataSourceItemLength(),
+        y: this.getLargestDataSourceItemValue()
+    };
+};
+
+/**
+ * Fetches the length of the largest (or longest) data source item. This is the
+ * one with the most values within it's values array.
+ *
+ * @return {Number}
+ */
+LineGraph.prototype.getLargestDataSourceItemLength = function () {
+    var values = this._values;
+    var length = values.length;
+    var max = 0;
+    var currentLength;
+    var i;
+
+    for (i = 0; i &lt; length; i++) {
+        currentLength = values[i].length;
+
+        if (currentLength &gt; max) {
+            max = currentLength;
+        }
+    }
+
+    return max;
+};
+
+/**
+ * Fetches the largest value out of all the data source items.
+ *
+ * @return {Number}
+ */
+LineGraph.prototype.getLargestDataSourceItemValue = function () {
+    var values = this._values;
+    var length = values.length;
+    var max = 0;
+    var currentItem;
+    var i;
+
+    for (i = 0; i &lt; length; i++) {
+        currentItem = Math.max.apply(Math, values[i]);
+
+        if (currentItem  &gt; max) {
+            max = currentItem;
+        }
+    }
+
+    return max;
+};</pre><p>All that block above is doing is calculating the upper bounds for the X and Y axis. It’s very easy to understand because everything is split into it’s own documented function that really doesn’t do that much. I could have probably squashed it down into a quarter of that size, but then you’d never understand it.</p>
+<p>Keeping everything in small, well named and focussed functions keeps things testable and above all: clean. Now that our data is prepared, we can move onto rendering our data.</p>
+<h2>Rendering the graph</h2>
+<p>The first step is to add an initial render method to the base <code>Graph</code> class. This will call all of the appropriate methods to clean and then render the canvas.</p><pre class="crayon-plain-tag">/**
+ * Renders the current data source onto the canvas.
+ */
+Graph.prototype.renderGraph = function () {
+  this.clearCanvasElement();
+  this.drawDataSourceOntoCanvasElement();
+};
+
+/**
+ * Clears the current canvas state.
+ */
+Graph.prototype.clearCanvasElement = function () {
+  this._context.clearRect(0, 0, this._width, this._height);
+};
+
+/**
+ * Draws the current data source onto the canvas.
+ *
+ * @abstract
+ */
+Graph.prototype.drawDataSourceOntoCanvasElement = function () {};</pre><p><code>drawDataSourceOntoCanvasElement</code> is a noop method that <code>LineGraph</code> will override to plot it’s points and lines onto the canvas. By the time it’s called the canvas will be completely clean and ready for drawing.</p>
+<p>Now for the final step(s); drawing the points and lines onto the canvas.</p><pre class="crayon-plain-tag">/**
+ * Draws the current data source onto the canvas.
+ */
+LineGraph.prototype.drawDataSourceOntoCanvasElement = function () {
+    var dataSource = this._dataSource;
+    var currentItem;
+    var key;
+
+    for (key in dataSource) {
+        if (dataSource.hasOwnProperty(key)) {
+            currentItem = dataSource[key];
+            this.plotValuesOntoCanvasElement(currentItem);
+        }
+    }
+};
+
+/**
+ * Plots the given data source item onto the canvas.
+ *
+ * @param {Object} item
+ */
+LineGraph.prototype.plotValuesOntoCanvasElement = function (item) {
+    var context = this._context;
+    var points = item.values;
+    var length = points.length;
+    var currentPosition;
+    var previousPosition;
+    var i;
+
+    var radius = 2;
+    var startAngle = 0;
+    var endAngle = Math.PI * 2;
+
+    context.save();
+    context.fillStyle = context.strokeStyle = item.colour;
+    context.lineWidth = 2;
+
+    for (i = 0; i &lt; length; i++) {
+        previousPosition = currentPosition;
+        currentPosition = this.calculatePositionForValue(i, points[i]);
+
+        context.beginPath();
+        context.arc(currentPosition.x, currentPosition.y, radius, startAngle, endAngle, false);
+        context.fill();
+
+        if (previousPosition) {
+            context.moveTo(previousPosition.x, previousPosition.y);
+            context.lineTo(currentPosition.x, currentPosition.y);
+            context.stroke();
+        }
+    }
+
+    context.restore();
+};
+
+/**
+ * Calculates the X and Y position for a given column and value (row). Returns
+ * the result within an object containing an x and y pixel value.
+ *
+ * @param {Number} column
+ * @param {Number} value
+ * @return {Object}
+ */
+LineGraph.prototype.calculatePositionForValue = function (column, value) {
+    return {
+        x: this._width / this._bounds.x * column,
+        y: this._height - (this._height / this._bounds.y * value)
+    };
+};</pre><p>That’s it. That last block renders each line onto the canvas taking up all available space using it’s selected colour. Each line is marked with dots along it’s path with a line joining each point.</p>
+<h2>Wrapping it all up (<em>FINALLY!</em>)</h2>
+<p>The code above will leave you with two classes that can be used to set up and plot a graph onto a canvas. It is built in such a way that other graph types could descend from the base class to inherit some default functionality (a pie or bar chart for example).</p>
+<p>You can pick up the full source and a small example usage in <a href="https://gist.github.com/Wolfy87/7816213">this gist</a>. You can also play with <a href="http://jsfiddle.net/Wolfy87/yTg9t/2/">an interactive version on jsFiddle</a>, which I’ve also embedded below.</p>
+<p><iframe width="100%" height="300" src="http://jsfiddle.net/Wolfy87/yTg9t/2/embedded/" allowfullscreen="allowfullscreen" frameborder="0"></iframe></p>
+<p>Feel free to leave your thoughts and opinions below, they’re appreciated. I hope you’ve found this useful!</p>
+]]></content:encoded>
+			<wfw:commentRss>/2013/12/05/graph-from-scratch/feed/</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+		</item>
+		<item>
+		<title>Grabbing elements from the DOM</title>
+		<link>/2013/09/25/grabbing-elements-from-the-dom/</link>
+		<comments>/2013/09/25/grabbing-elements-from-the-dom/#respond</comments>
+		<pubDate>Wed, 25 Sep 2013 20:31:00 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[From Octopress]]></category>
+
+		<guid isPermaLink="false">/2013/09/25/grabbing-elements-from-the-dom</guid>
+		<description><![CDATA[If, like me, you actually quite enjoy working with the vanilla DOM implementations, you may wonder how you’re actually supposed to find the elements in the first place. I’ve been using quite a nice technique for a while now that allows you to have hyphenated names in your HTML, but keep camel case in your <a class="read-more" href="/2013/09/25/grabbing-elements-from-the-dom/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>If, like me, you actually quite enjoy working with the vanilla DOM implementations, you may wonder how you’re actually supposed to find the elements in the first place. I’ve been using quite a nice technique for a while now that allows you to have hyphenated names in your HTML, but keep camel case in your JavaScript even though you’re searching for the elements en masse.</p>
+<p><!-- more --></p>
+<h2>What the end result looks like</h2>
+<p>When invoking my little snippet, you will use something like this.</p><pre class="crayon-plain-tag">var elements = getElements([
+    'login-form',
+    'signup-form',
+    'search-form',
+    'unleash-hell',
+    'but-i-am-le-tired',
+    'well-have-a-nap-then-fire-the-missiles'
+]);</pre><p>Which will leave you with a neatly formatted object for you to work with. Nice <code>id</code>s, nice JavaScript. It’s a win-win.</p><pre class="crayon-plain-tag">elements.loginForm.addEventListener('submit', login);
+elements.signupForm.addEventListener('submit', signup);</pre><p>As you can see, it’s magically converted the names to camel case to stop our eyes from witnessing any hyphenated JavaScript atrocities.</p>
+<h2>Camelification</h2>
+<p>The first part of my little snippet is a function that converts a hyphenated string to camel case. This will be used within the function that goes off to find all of the elements.</p><pre class="crayon-plain-tag">function hyphensToCamelCase(hyphenated) {
+    return hyphenated.replace(/-(\w)/ig, function (match, hump) {
+        return hump.toUpperCase();
+    });
+}</pre><p>All this will do is convert our names.</p>
+<ul>
+<li><code>hello-world</code> becomes <code>helloWorld</code></li>
+<li><code>login-form</code> becomes <code>loginForm</code></li>
+<li><code>but-i-am-le-tired</code> becomes <code>butIAmLeTired</code></li>
+</ul>
+<p>Pretty slick, right?</p>
+<h2>Fetching the elements</h2>
+<p>And now for the actual function. It will simply iterate over an array of IDs and insert them into an object with camel case names instead of hyphenated.</p><pre class="crayon-plain-tag">function getElements(ids) {
+    var i;
+    var length = ids.length;
+    var elements = {};
+
+    for (i = 0; i &lt; length; i++) {
+        elements[hyphensToCamelCase(ids[i])] = document.getElementById(ids[i]);
+    }
+
+    return elements;
+}</pre><p>That’s all there is to it. You can now fetch your elements easily using nice HTML naming conventions, then access them from within your JavaScript under a namespace with camel case names. <strong>Bonus:</strong> Here’s <a href="http://jsfiddle.net/Wolfy87/JFZQZ/">a live copy on JSFiddle</a> for you to play around with.</p>
+<p><iframe width="100%" height="300" src="http://jsfiddle.net/Wolfy87/JFZQZ/embedded/" allowfullscreen="allowfullscreen" frameborder="0"></iframe></p>
+]]></content:encoded>
+			<wfw:commentRss>/2013/09/25/grabbing-elements-from-the-dom/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Do things that scare you</title>
+		<link>/2013/09/24/do-things-that-scare-you/</link>
+		<comments>/2013/09/24/do-things-that-scare-you/#respond</comments>
+		<pubDate>Tue, 24 Sep 2013 19:28:00 +0000</pubDate>
+		<dc:creator><![CDATA[]]></dc:creator>
+				<category><![CDATA[From Octopress]]></category>
+
+		<guid isPermaLink="false">/2013/09/24/do-things-that-scare-you</guid>
+		<description><![CDATA[No, I’m not advocating base jumping while defusing a bomb, that’s a different kind of scared. I’m talking about things like learning Haskell or tackling TDD for the first time. Things that you can’t or won’t use right now. Things that make you go “eh?”. I’ve only started looking for things that I don’t like <a class="read-more" href="/2013/09/24/do-things-that-scare-you/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>No, I’m not advocating base jumping while defusing a bomb, that’s a different kind of scared. I’m talking about things like learning Haskell or tackling TDD for the first time. Things that you can’t or won’t use right now. <em>Things that make you go “eh?”</em>.</p>
+<p>I’ve only started looking for things that I don’t like the sound of since I became worried about stalling as a programmer. I had this horrible looming feeling that I was good with JavaScript and the web, but not too much else.</p>
+<p><!-- more --></p>
+<p>I began hunting around and asking questions as to how I can become a better <strong>programmer</strong>, not a better web developer. I see the two as slightly separate things; a web developer needs to write code, but they also need to understand tying together <em>many</em> different systems and reusing as much code as possible.</p>
+<p>A good programmer however, in my opinion, should be good in almost every domain. Be it web, game or any other form of development. They are not a jack of all traits and master of none, they should simply be able to learn and adapt incredibly quickly. They don’t panic when they have to implement a sorting algorithm, they read up on it and write it without having someone on StackOverflow do it for them.</p>
+<h2>One example</h2>
+<p>A response I received while asking about becoming a better programmer was to write a Gray code implementation in C. First thought: Wat. But after a bit of research, I realised it really wasn’t that bad and I could definitely do it. This small task taught me so much and reinforced my confidence as a programmer.</p>
+<p>It also lead me to write a linked list implementation, still in C, simply to practice juggling pointers and structs. I’d never have considered it before, it seemed too complex, <em>until</em> I actually tried it.</p>
+<p>I had almost no knowledge of C before attempting to write that application. I just dived right in, learning about memory and CMake along the way. It felt amazing to be learning something completely alien with fairly minimal effort.</p>
+<p>Go out there and find something you don’t understand <em>yet</em>. Why not run through the first 20 <a href="https://projecteuler.net/">Project Euler</a> problems, write a simple language or learn some assembly.</p>
+<h2>Never stop learning</h2>
+<p>It’s one thing I try to focus on in my life: I need to be learning or progressing at all times. If not, what am I doing? Progressing through time? So I’m always looking for new things inside and outside of programming that completely baffle me at first.</p>
+<p>To me, there is no greater joy than when a new idea finally clicks. Go and learn something, right now.</p>
+<p>I’ve also decided to learn German.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2013/09/24/do-things-that-scare-you/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Classless JavaScript &#8211; Continued</title>
+		<link>/2013/09/22/classless-javascript-continued/</link>
+		<comments>/2013/09/22/classless-javascript-continued/#comments</comments>
+		<pubDate>Sun, 22 Sep 2013 18:57:00 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[From Octopress]]></category>
+
+		<guid isPermaLink="false">/2013/09/22/classless-javascript-continued</guid>
+		<description><![CDATA[This is a follow on from my previous post, Classless JavaScript. You might want to read, or at least skim, that first. I’ve been having a think about all this classless JavaScript stuff, which is basically normal JavaScript without traditional constructors, and I’ve come up with a few ideas to refine it. The first of <a class="read-more" href="/2013/09/22/classless-javascript-continued/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p><em>This is a follow on from my previous post, <a href="/2013/09/17/classless-javascript/">Classless JavaScript</a>. You might want to read, or at least skim, that first.</em></p>
+<p>I’ve been having a think about all this classless JavaScript stuff, which is basically normal JavaScript without traditional constructors, and I’ve come up with a few ideas to refine it. The first of which being <strong>DRY</strong> (Don’t Repeat Yourself). I’m going to show you the things I thought of and a few working examples of this strange technique.</p>
+<p><!-- more --></p>
+<h2>DRY</h2>
+<p>I realised that I was creating and destroying a lot of objects in the same way, so I thought the first thing to do would be to add a base object that all others can extend by default. This object simply creates a new object where required and will wipe an object, preparing it for a pool, if you wish to destroy it.</p><pre class="crayon-plain-tag">var base = {
+    create: function (self) {
+        return self || {};
+    },
+    destroy: function (self) {
+        var key;
+
+        for (key in self) {
+            if (self.hasOwnProperty(key)) {
+                delete self[key];
+            }
+        }
+
+        return self;
+    }
+};</pre><p>Pretty short and simple. By using this base object on all of your other objects you get creation and destruction by default. If you want to override <code>create</code> to define things or replace <code>destroy</code> with a method that deletes keys by name, rather than a loop, then you’re free to do so. Here’s how you put this object to use.</p><pre class="crayon-plain-tag">var model = Object.create(base);</pre><p>That’s it. The model object is still empty but it now holds the base object within it’s prototype chain, ready for you to override or add to.</p>
+<h2>Inheritance</h2>
+<p>There isn’t any, well, in a way. All objects can be used in any function you want, you just have to make sure they have the right values pre-defined, so you just have to make sure you call the correct create methods.</p>
+<p>For instance, say we wanted to add <code>events</code> support to our <code>model</code> code, you’d just need something like this.</p><pre class="crayon-plain-tag">var model = Object.create(base);
+
+model.create = function (self) {
+    self = events.create(self);
+    self.modelData = {};
+    return self;
+};
+
+model.set = function (self, key, value) {
+    // ...
+};
+
+var user = model.create();
+events.addListener(user, 'change', function () {
+    console.log('There was a change!');
+});
+model.set(user, 'name', 'Oliver');</pre><p>Now our model can have <code>model</code> methods or <code>events</code> methods such as <code>events.addListener</code> called on it interchangeably. This can be used with as many other types as you like!</p>
+<h2>Calling methods internally</h2>
+<p>Amazingly, the <code>this</code> object still works, so feel free to use that to reference internal methods.</p><pre class="crayon-plain-tag">model.set = function (self, key, value) {
+    self.modelData[key] = value;
+    events.emitEvent(self, 'change');
+    this.save(self);
+};
+
+model.save = function (self) {
+    // Maybe write to a server here.
+};</pre><p>I found that quite surprising in my experimentation, but it’s pretty cool all the same.</p>
+<p><a href="/2013/09/22/classless-javascript-continued/#comment-1060281114">As Andrew pointed out</a>, this is not to be confused with <code>self</code>. The <code>this</code> value simply allows you to call functions stored within the <code>model</code> object, not within the data object that gets assigned to <code>self</code>. I have since corrected my above example that used <code>this.modelData</code>, this is obviously undefined and should be <code>self.modelData</code>.</p>
+<h2>A full example</h2>
+<p>I also thought it would be worth putting together a full example of this technique. I’ve built an, albeit minimalistic, MVC system with this and it works excellently. It feels like it was easier to write too, but that might just be a placebo. Everything slotted together perfectly, I didn’t have to worry about inheritance or prototypes, it just worked.</p>
+<p><iframe width="100%" height="300" src="http://jsfiddle.net/Wolfy87/Q4yFf/embedded/" allowfullscreen="allowfullscreen" frameborder="0"></iframe></p>
+]]></content:encoded>
+			<wfw:commentRss>/2013/09/22/classless-javascript-continued/feed/</wfw:commentRss>
+		<slash:comments>2</slash:comments>
+		</item>
+		<item>
+		<title>Classless JavaScript</title>
+		<link>/2013/09/17/classless-javascript/</link>
+		<comments>/2013/09/17/classless-javascript/#comments</comments>
+		<pubDate>Tue, 17 Sep 2013 20:40:00 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[From Octopress]]></category>
+
+		<guid isPermaLink="false">/2013/09/17/classless-javascript</guid>
+		<description><![CDATA[As JavaScript developers, or even web developers as a whole, we seem terrified by the thought of direct usage. No technique or idea seems to be considered “legit” until it has been abstracted by several layers of syntactic sugar and, potentially useless, fluff. One of the common abstractions is the addition of “classes” to JavaScript; <a class="read-more" href="/2013/09/17/classless-javascript/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>As JavaScript developers, or even web developers as a whole, we seem terrified by the thought of direct usage. No technique or idea seems to be considered “legit” until it has been abstracted by several layers of syntactic sugar and, potentially useless, fluff.</p>
+<p>One of the common abstractions is the addition of “classes” to JavaScript; prototypical inheritance isn’t good enough for us lot by the looks of things. We seem to crave the features of other languages when our language of choice isn’t really built for them, it’s built in a different way and probably shouldn’t have classical inheritance principals forced down its VM / throat.</p>
+<p>So what if we worked with JavaScript in a more natural way? First, what would <em>be</em> more natural? Personally I believe that, like the underlying language, everything should revolve around objects; we create and manipulate these malleable entities instead of trying to lock things down and restrict our data.</p>
+<p>This idea lends its self exceptionally well to functional programming and the actual VM, which no longer needs to mess with prototype chains or any other form of inheritance for that matter. It’s as raw as JavaScript usage can get, it’s kind of like C structs (although nothing like them at the same time) and I think it’s pretty elegant.</p>
+<p><!-- more --></p>
+<h2>An example</h2>
+<p>I wouldn’t be surprised if that rather oversized introduction still left you at a loss; what do I actually mean by focussing on objects? This.</p><pre class="crayon-plain-tag">var nameList = {
+    create: function (self) {
+        self.names = [];
+        self.characters = 0;
+        return self;
+    },
+    add: function (self, name) {
+        self.names.push(name);
+        self.characters += name.length;
+    }
+};
+
+var users = nameList.create({});
+
+nameList.add(users, 'Oliver');
+nameList.add(users, 'Sam');
+nameList.add(users, 'Reece');
+nameList.add(users, 'Robin');
+
+console.log(users.characters); // 19</pre><p>I have not used <code>new</code>, yet I have achieved the same functionality as <code>new</code> + <code>function</code> + <code>prototype</code>. I have an incredibly simple object with some namespaced methods that can be used to manipulate it. These methods can be altered using functional programming techniques such as partial application to provide even more powerful and expressive code.</p>
+<h2>Why? Other than minimalism?</h2>
+<p>Well you may have noticed that I pass an empty object to the <code>create</code> function, this is because you can actually pull that new object from anywhere you want, say, an object pool. You don’t have to ask the browser to create new objects and garbage collect them at odd intervals, you can control it yourself, to a point.</p>
+<p>This should lighten up the load your application puts on the browser (if you’re a heavy <del>ab</del>user of objects) by making it create and free less objects overall. All you need to do is make sure your create function doesn’t leave anything uninitialised. You can reuse a <code>nameList</code> object in a completely different piece of code, you just need to make sure <code>create</code> is thorough.</p><pre class="crayon-plain-tag">var pool = [];
+
+var nameList = {
+    create: function (self) {
+        self.names = [];
+        self.characters = 0;
+        return self;
+    },
+    add: function (self, name) {
+        self.names.push(name);
+        self.characters += name.length;
+    }
+};
+
+var car = {
+    create: function (self) {
+        self.fuel = 100;
+        return self;
+    },
+    drive: function (self) {
+        self.fuel -= 5;
+        return self.fuel &gt; 0;
+    }
+};
+
+// The pool is empty, so it will create a new object.
+var users = nameList.create(pool.pop() || {});
+nameList.add(users, 'Oliver');
+nameList.add(users, 'Sam');
+// ...
+// And now we're done with our name list.
+pool.push(users);
+
+// Reuse the SAME object.
+var polo = car.create(pool.pop() || {});
+while (car.drive(polo)) {
+    console.log(polo.fuel);
+}
+console.log('Out of fuel!');</pre><p>Here I am creating a name list, adding some values and then dropping that object into a pool when I’m done. Then I’m requesting that object back out of the pool and reusing it as a car. This is a very simple example though, so much could have gone on in between those two creation calls that you don’t even know what object you’re reusing, but it doesn’t matter.</p>
+<p>You could even have a <code>destroy</code> function for each namespace that wipes the object’s values, eliminating the potential for memory leaks. This could easily be part of a pooling tool though, one that makes sure the objects you get out are all sanitised in the same way.</p>
+<h2>Improving the pool</h2>
+<p>If you don’t want to write a <code>destroy</code> method for each namespace then, as I mentioned above, you could have your pool code manage it for you. This means your objects will be sanitised as they are added to the pool, removing the risk of memory leaks.</p><pre class="crayon-plain-tag">var pool = {
+    create: function (self) {
+        self.objects = [];
+        return self;
+    },
+    add: function (self, obj) {
+        var key;
+
+        for (key in obj) {
+            if (obj.hasOwnProperty(key)) {
+                delete obj[key];
+            }
+        }
+
+        self.objects.push(obj);
+    },
+    get: function (self) {
+        return self.objects.pop() || {};
+    }
+};
+
+// Accidental pun inbound!
+var carPool = pool.create({});
+
+var original = {
+    foo: true,
+    bar: false
+};
+
+console.log(JSON.stringify(original)); // "{"foo":true,"bar":false}"
+
+pool.add(carPool, original);
+var output = pool.get(carPool);
+
+console.log(original === output); // true
+console.log(JSON.stringify(output)); // "{}"</pre><p>The pool namespace allows you to create a pool object. When you add to this pool the object is emptied to prevent memory leaks. When you fetch from it, it will either return an object from the pool or a new object when required. As you can see, the object I get back out is still <em>the same object</em> according to the browser, it just happens to be empty now.</p>
+<h2>When to use this</h2>
+<p>Unless you really like this style, as I do, you may be wondering why you would bother using this. What do you actually gain from this apart from a style that leans towards composition and functional programming? Well, you get speed in certain circumstances.</p>
+<p>I created a test on <a href="http://jsperf.com/classes-vs-simple-objects">jsPerf</a> to highlight the difference pooling makes here. Using this style and creating a new object every time is actually slower than using <code>new</code> to create instances from the prototype, but using it in conjunction with a pool in object heavy code yields a rather large difference between instantiating classes and creating from a pool.</p>
+<p>So you can use it wherever you want if you like the style, but it’s definitely a good idea to consider something like this in object heavy and performance critical code such as game engines. It may even yield a visible difference on much more limited platforms such as mobile devices, TVs and consoles.</p>
+<h2>Update: Inheritance</h2>
+<p>I was giving this technique some more thought today and I realised that having some form of inheritance would make it even more flexible. It turns out that it’s incredibly easy to achieve. Personally, I’d say it’s easier than other prototypical inheritance techniques used on constructor based classes.</p><pre class="crayon-plain-tag">var shouter = {
+    create: function (self, message) {
+        self.message = message;
+        return self;
+    },
+    shout: function (self) {
+        console.log(self.message);
+    }
+};
+
+var loudShouter = Object.create(shouter);
+loudShouter.shout = function (self) {
+    shouter.shout(self);
+    console.log('(It was pretty damn loud)');
+};
+
+var s = loudShouter.create({}, "Hello, World!");
+loudShouter.shout(s);</pre><p>So here I am creating a base object in the same style as my previous examples, then I am creating a new object that uses the first as its prototype. I can then override methods as I see fit within the second object. You can also make use of underscore/lodash (or any other code that provides a function to mix objects into each other) to have elegant mixin functionality.</p><pre class="crayon-plain-tag">var shouter = {
+    create: function (self, message) {
+        self.message = message;
+        return self;
+    },
+    shout: function (self) {
+        console.log(self.message);
+    }
+};
+
+var someMixin = {
+    countCharacters: function (self) {
+        console.log('Characters in message: ' + self.message.length);
+    }
+};
+
+var loudShouter = Object.create(shouter);
+_.extend(loudShouter, someMixin);
+_.extend(loudShouter, {
+    shout: function (self) {
+        shouter.shout(self);
+        console.log('(It was pretty damn loud)');
+    }
+});
+
+var s = loudShouter.create({}, "Hello, World!");
+loudShouter.shout(s);
+loudShouter.countCharacters(s);</pre><p>And if you don’t want to create, potentially complex, trees of inheritance, why not use composition instead. This technique lends its self to it rather well.</p><pre class="crayon-plain-tag">var view = {
+    create: function (self, template) {
+        self.template = _.template(template);
+        return self;
+    },
+    render: function (self, values) {
+        return self.template(values);
+    }
+};
+
+var button = {
+    create: function (self, action) {
+        self.action = action;
+        self.clicked = false;
+        self.view = view.create({}, 'Button clicked? &lt;%- clicked %&gt;');
+        return self;
+    },
+    click: function (self) {
+        self.clicked = true;
+    },
+    render: function (self) {
+        return view.render(self.view, {
+            clicked: self.clicked
+        });
+    }
+};
+
+var myButton = button.create({});
+console.log(button.render(myButton)); // "Button clicked? false"
+button.click(myButton);
+console.log(button.render(myButton)); // "Button clicked? true"</pre><p>I’ve created a button that delegates it’s rendering to a view stored within the object. To me, that looks pretty damn nice.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2013/09/17/classless-javascript/feed/</wfw:commentRss>
+		<slash:comments>3</slash:comments>
+		</item>
+		<item>
+		<title>Handling concurrency and asynchronous JavaScript</title>
+		<link>/2013/09/11/handling-concurrency-and-asynchronous-javascript/</link>
+		<comments>/2013/09/11/handling-concurrency-and-asynchronous-javascript/#comments</comments>
+		<pubDate>Wed, 11 Sep 2013 20:42:00 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[From Octopress]]></category>
+
+		<guid isPermaLink="false">/2013/09/11/handling-concurrency-and-asynchronous-javascript</guid>
+		<description><![CDATA[If you’ve worked with JavaScript in a browser, or indeed on the server, for any length of time you’ve probably had to deal with asynchronous spaghetti. This kind of spaghetti is not delicious in any way, shape or form. You end up with multiple boolean variables and function calls constantly checking if all of those <a class="read-more" href="/2013/09/11/handling-concurrency-and-asynchronous-javascript/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>If you’ve worked with JavaScript in a browser, or indeed on the server, for any length of time you’ve probably had to deal with asynchronous spaghetti. This kind of spaghetti is not delicious in any way, shape or form.</p>
+<p>You end up with multiple boolean variables and function calls constantly checking if all of those AJAX requests have finished; it is far from ideal. I’m going to show you how to break the problem down and come out of the other side with your sanity still intact.</p>
+<p><!-- more --></p>
+<h2>An example</h2>
+<p>The first step in explaining this involves creating a problem, here’s the scenario: You’re running a site like <a href="https://gist.github.com/">gist.github.com</a> and you need to fetch some meta data for a list of gists from the server. This is going to involve you making multiple requests and then doing something when they’re all finished, you’ll probably want a loading spinner overlay or something while it fetches them as well.</p>
+<p>The way to do this in an elegant way is to have something execute a set of functions or requests that can each tell the central component when they have finished. I’m going to create a very simple class called <code>Batch</code> that will do just that.</p><pre class="crayon-plain-tag">/**
+ * Executes a list of functions that call back when they are finished.
+ *
+ * @class
+ * @param {Array} functions Target methods to execute when requested.
+ * @param {Function} completionHandler Executed when all target functions are finished.
+ */
+function Batch(functions, completionHandler) {
+    this._functions = functions;
+    this._completionHandler = completionHandler;
+}</pre><p>This is just an empty class that will take an array of functions that it will execute later. It also takes a <code>completionHandler</code> function argument; it is executed when all of the functions are completely finished.</p>
+<h2>Starting the requests</h2>
+<p>Now we need a method that will execute all of our provided functions.</p><pre class="crayon-plain-tag">/**
+ * Executes the functions passed to the constructor.
+ */
+Batch.prototype.execute = function execute() {
+    var i;
+    var functions = this._functions;
+    var length = this._remaining = functions.length;
+    this._results = [];
+
+    for (i = 0; i &lt; length; i += 1) {
+        functions[i](this);
+    }
+};</pre><p>When called, this will store the amount of remaining functions left to finish executing (<code>this._remaining</code>) and then begin the execution of each and every one of them. Each function will be passed the current instance of <code>Batch</code>, the functions will then have to call a method on that instance to signify that they are done.</p>
+<p>The <code>this._results</code> array will be used to hand the results of each function back to the completion handler when everything is finished.</p>
+<h2>Letting Batch know we’re done</h2>
+<p>Each function that is executed is going to need to signify that it is done somehow. We will do this by adding a third method to the <code>Batch</code> class which knocks one off of the <code>this._remaining</code> counter and executes the completion handler if we’re done. We’ll also allow this function to store a result in the <code>this._results</code> array.</p><pre class="crayon-plain-tag">/**
+ * Signifies that another function has finished executing. Can be provided with
+ * a value to store in the results array which is passed to the completion
+ * handler.
+ *
+ * All functions in the batch must call this when done.
+ *
+ * @param {*} [result] Optional value to store and pass back to the completion handler when done.
+ */
+Batch.prototype.done = function done(result) {
+    this._remaining -= 1;
+
+    if (typeof result !== 'undefined') {
+        this._results.push(result);
+    }
+
+    if (this._remaining === 0) {
+        this._completionHandler(this._results);
+    }
+};</pre><p>Now our asynchronous functions can let the class know when they’re done, we can also store resulting values to be passed along to the completion handler. In our case, this will probably be gist meta data object or a chunk of JSON. This call would probably be made from the <code>oncomplete</code> event of our chosen AJAX library.</p>
+<h2>Putting it into use</h2>
+<p>Now we need to construct our array of functions, execute them as a batch and use their results. You’d need to do a little bit more work to add error handling and potential timeouts, but this should get you more than started.</p>
+<p><em>I’m using an imaginary AJAX library and this could be written in much more efficient ways.</em></p><pre class="crayon-plain-tag">// The URLs we want to fetch, probably returned by an API or something.
+var urls = [
+    '/api/gists/1000',
+    '/api/gists/1001',
+    '/api/gists/1002',
+    '/api/gists/1003',
+    '/api/gists/1004',
+    // ...
+    '/api/gists/1337',
+    // etc...
+];
+
+var i;
+var length = urls.length;
+var batchFunctions = [];
+
+// Create our functions to be executed by the batch class.
+for (i = 0; i &lt; length; i += 1) {
+    batchFunctions.push(function (batch) {
+        AJAXLib.get(urls[i], function (response) {
+            batch.done(response);
+        });
+    });
+}
+
+var gistBatch = new Batch(batchFunctions, function (results) {
+    // Here we have an array of responses that we can render to the page.
+    // It's only executed once all of the requests have called "batch.done(...)".
+});
+
+gistBatch.execute(); // Away we go!</pre><p>As you can see, I’ve used a simple class to solve a potentially complicated problem. Hopefully this will save you an hour or ten in the future.</p>
+<p>As always, I’d gladly turn this into a fully fledged package if there was enough interest.</p>
+<h2>Obligatory JSFiddle example</h2>
+<p><iframe width="100%" height="300" src="http://jsfiddle.net/Wolfy87/kHAYN/embedded/" allowfullscreen="allowfullscreen" frameborder="0"></iframe></p>
+]]></content:encoded>
+			<wfw:commentRss>/2013/09/11/handling-concurrency-and-asynchronous-javascript/feed/</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+		</item>
+		<item>
+		<title>Building for browsers in a terminal</title>
+		<link>/2013/08/08/building-for-browsers-in-a-terminal/</link>
+		<comments>/2013/08/08/building-for-browsers-in-a-terminal/#respond</comments>
+		<pubDate>Thu, 08 Aug 2013 11:41:00 +0000</pubDate>
+		<dc:creator><![CDATA[]]></dc:creator>
+				<category><![CDATA[From Octopress]]></category>
+
+		<guid isPermaLink="false">/2013/08/08/building-for-browsers-in-a-terminal</guid>
+		<description><![CDATA[My entire web development work flow takes place within my terminal; obviously I need a browser too, but other than that I have no GUI tools floating around. I’m going to show you what tools I use and how I use them. Take from this what you will. A quick overview I make use of <a class="read-more" href="/2013/08/08/building-for-browsers-in-a-terminal/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>My entire web development work flow takes place within my terminal; obviously I need a browser too, but other than that I have no GUI tools floating around. I’m going to show you what tools I use and how I use them. Take from this what you will.</p>
+<p><!-- more --></p>
+<h2>A quick overview</h2>
+<p>I make use of <a href="http://tmux.sourceforge.net/">tmux</a> for multitasking, <a href="http://www.vim.org/">Vim</a> for any editing with <a href="https://github.com/Wolfy87/vim-config">my extensive configuration</a>, <a href="http://git-scm.com/">git</a>, <a href="https://github.com/ggreer/the_silver_searcher">ag</a> (also known as “The Silver Searcher”) as a grep replacement, <a href="http://docs.python.org/3.0/library/http.server.html">Python</a> for simple HTTP servers, <a href="http://nodejs.org/">node</a> and a few linters including <a href="http://www.jshint.com/">JSHint</a>, <a href="https://github.com/stubbornella/csslint">CSSLint</a> and <a href="https://github.com/zaach/jsonlint">JSONLint</a>. These linters are completely integrated into Vim with <a href="https://github.com/scrooloose/syntastic">Syntastic</a>, so I don’t need to worry about running them.</p>
+<p>I also use the general Unix tools a lot which include <code>less</code>, <code>grep</code>, <code>curl</code> and <code>ssh</code>. Never underestimate the base tools that come with your OS; if you’re on Linux or Mac that is. I personally prefer a clean <a href="https://www.archlinux.org/">Arch</a> Linux install with <a href="http://www.xfce.org/">XFCE</a> as a desktop environment. Combine that with my SSD wielding laptop and you have yourself some insane speeds to help you get your work done.</p>
+<h2>Tying things together</h2>
+<p>All of those tools would have no edge over GUIs if they all ran separately and could not be linked together easily. That’s why I have multiple bundles within my <a href="https://github.com/Wolfy87/vim-config">Vim configuration</a> that allow me to interface with programs such as ag (<a href="https://github.com/rking/ag.vim">ag.vim</a>) and git (<a href="https://github.com/tpope/vim-fugitive">vim-fugitive</a>). I don’t have to worry about running my linters either, <a href="https://github.com/scrooloose/syntastic">Syntastic</a> does that for me and shows me where the problems reside.</p>
+<h2>Multitasking</h2>
+<p>So I can do 80% of my work comfortably without leaving Vim by tying other programs into it via bundles. For the last 20% which are easier to do outside of Vim, such as manipulating large portions of the file system, I can send my Vim to the background with <code><c-z></code> and bring it back by running <code>fg</code> when I’m done.</p>
+<p>I can also use tmux for a huge amount of flexibility by splitting (<code><leader><%></code> or <code><leader><"></code>) or by creating a new window with <code><leader><c></code>. I have remapped my leader key to <code><c-Space></code> too, just to make it easier to hit.</p>
+<h2>Why?</h2>
+<p>It may be because I have been working like this for a while now, but this kind of thing feels so natural now. If I work inside my terminal 100% of the time I know that any tool I use will work in a similar way. I can search any output and pipe it around however I like. I can tie things into my editor with minimal effort and I can fix things when they go wrong (which is very, very rare).</p>
+<p>After working with and getting used to Unix terminal style tooling for long enough you stop thinking about the interface; it no longer gets in the way, it just works. There doesn’t seem to be a learning curve for anything I start using now either because the interfaces are so very similar.</p>
+<p>This way of working seems ridiculous and backwards to some people; it’s not worse, it’s just different. <em>I</em> love it.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2013/08/08/building-for-browsers-in-a-terminal/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

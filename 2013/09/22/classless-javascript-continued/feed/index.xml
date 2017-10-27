@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	
+	>
+<channel>
+	<title>Comments on: Classless JavaScript &#8211; Continued</title>
+	<atom:link href="/2013/09/22/classless-javascript-continued/feed/" rel="self" type="application/rss+xml" />
+	<link>/2013/09/22/classless-javascript-continued/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Mon, 22 May 2017 19:57:20 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>By: Oliver Caldwell</title>
+		<link>/2013/09/22/classless-javascript-continued/#comment-76</link>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+		<pubDate>Thu, 26 Sep 2013 21:42:00 +0000</pubDate>
+		<guid isPermaLink="false">/2013/09/22/classless-javascript-continued#comment-76</guid>
+		<description><![CDATA[Doh, my bad. I&#039;ll correct that now, but yes, it allows you to access methods, not values within the object you&#039;re passing around. Thanks a lot!
+
+Edit: That should be fixed now.]]></description>
+		<content:encoded><![CDATA[<p>Doh, my bad. I&#8217;ll correct that now, but yes, it allows you to access methods, not values within the object you&#8217;re passing around. Thanks a lot!</p>
+<p>Edit: That should be fixed now.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Andrew Petersen</title>
+		<link>/2013/09/22/classless-javascript-continued/#comment-75</link>
+		<dc:creator><![CDATA[Andrew Petersen]]></dc:creator>
+		<pubDate>Thu, 26 Sep 2013 20:02:00 +0000</pubDate>
+		<guid isPermaLink="false">/2013/09/22/classless-javascript-continued#comment-75</guid>
+		<description><![CDATA[`this` within `model.set` refers to the calling context, which in this case would be the `model` object, not `self`. This means that `this.modelData` would be undefined in that example, and would not work. Even if it were defined, somehow, it would still be a shared `modelData` instance to all models.
+
+So you might want to rephrase that section, and be explicit that `this` refers to `model` (and thus `this.save` would still work).]]></description>
+		<content:encoded><![CDATA[<p><code>this</code> within <code>model.set</code> refers to the calling context, which in this case would be the <code>model</code> object, not <code>self</code>. This means that <code>this.modelData</code> would be undefined in that example, and would not work. Even if it were defined, somehow, it would still be a shared <code>modelData</code> instance to all models.</p>
+<p>So you might want to rephrase that section, and be explicit that <code>this</code> refers to <code>model</code> (and thus <code>this.save</code> would still work).</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

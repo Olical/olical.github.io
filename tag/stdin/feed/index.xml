@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>stdin &#8211; Oliver Caldwell&#039;s blog</title>
+	<atom:link href="/tag/stdin/feed/" rel="self" type="application/rss+xml" />
+	<link>/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Wed, 18 Oct 2017 13:50:23 +0000</lastBuildDate>
+	<language>en-GB</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>Brainfuck VM in JavaScript</title>
+		<link>/2015/01/05/brainfuck-vm-in-javascript/</link>
+		<comments>/2015/01/05/brainfuck-vm-in-javascript/#comments</comments>
+		<pubDate>Mon, 05 Jan 2015 09:00:11 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Brainfuck]]></category>
+		<category><![CDATA[JavaScript]]></category>
+		<category><![CDATA[async]]></category>
+		<category><![CDATA[brainfuck]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[stdin]]></category>
+
+		<guid isPermaLink="false">/?p=280</guid>
+		<description><![CDATA[Welcome to 2015, I hope you had a good break! Some people may now be taking on resolutions for the year, be that to lose weight or to socialise more. I&#8217;ve opted to learn even more than usual, so that means more coursera courses and toy projects in various languages. This is where my brainfuck <a class="read-more" href="/2015/01/05/brainfuck-vm-in-javascript/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>Welcome to 2015, I hope you had a good break! Some people may now be taking on resolutions for the year, be that to lose weight or to socialise more. I&#8217;ve opted to <a title="My 2015 Bucket Set" href="/2014/12/13/my-2015-bucket-set/">learn even more than usual</a>, so that means <a href="https://www.coursera.org/course/algs4partI">more coursera courses</a> and toy projects in various languages. This is where <a href="https://github.com/Wolfy87/brainfucks">my brainfuck virtual machines</a> come in. I&#8217;ll be writing them in every language I find interesting, starting with my trusty (see: sarcasm) friend, JavaScript.</p>
+<p>This took me far longer than I wished it would and actually involved pretty much starting again at one point. Everything was fairly easy to implement up until the point where I had to synchronously read one character off of stdin. After hours of research, this proved to be nigh on impossible so I had to settle for some awkward callback based hell with two implementations because of an edge case. This is easy in C yet hard in JavaScript. What?</p>
+<p>Besides that, the actual tokenise, parse and execute phases went fairly well. You can find the full code inside my <a href="https://github.com/Wolfy87/brainfucks/tree/master/implementations/javascript">JavaScript implementation directory</a>. I opted to turn the source file into a clean array first then to run through that array of tokens mapping them to an object of command functions. Fairly simple and extensible, I feel. I also performed all of the loop operator matching up front during the parsing, so I didn&#8217;t have to go hunting for <em>]</em> or <em>[</em> during the execution of the program.</p>
+<p>I relied on <a href="https://github.com/caolan/async">async</a> to take some of the pain out of iterating through asynchronous steps. The only reason the steps were asynchronous was because the one stdin reading command required it. If it wasn&#8217;t for node being really awkward on that front, this would have been far simpler.</p>
+<p>Expect a Clojure implementation soon.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2015/01/05/brainfuck-vm-in-javascript/feed/</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+		</item>
+	</channel>
+</rss>

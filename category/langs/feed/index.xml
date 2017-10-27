@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Langs &#8211; Oliver Caldwell&#039;s blog</title>
+	<atom:link href="/category/langs/feed/" rel="self" type="application/rss+xml" />
+	<link>/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Wed, 18 Oct 2017 13:50:23 +0000</lastBuildDate>
+	<language>en-GB</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>Some thoughts on Prolog</title>
+		<link>/2015/05/03/some-thoughts-on-prolog/</link>
+		<comments>/2015/05/03/some-thoughts-on-prolog/#respond</comments>
+		<pubDate>Sun, 03 May 2015 10:00:21 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Langs]]></category>
+		<category><![CDATA[logic]]></category>
+		<category><![CDATA[prolog]]></category>
+
+		<guid isPermaLink="false">/?p=328</guid>
+		<description><![CDATA[I usually write some notes as I read and work then pad those notes out into a full post after I&#8217;m done with the chapter. This time I&#8217;m just going to publish it as is (pretty much). Initial thoughts Very concise. Beautiful, after you spend hours getting it working. Reminds me of my experience with <a class="read-more" href="/2015/05/03/some-thoughts-on-prolog/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>I usually write some notes as I read and work then pad those notes out into a full post after I&#8217;m done with the chapter. This time I&#8217;m just going to publish it as is (pretty much).</p>
+<h3>Initial thoughts</h3>
+<p>Very concise. Beautiful, after you spend hours getting it working. Reminds me of my experience with Haskell (which isn&#8217;t much).</p>
+<p>Obviously not something you&#8217;d want to use for every problem, but as the anecdote in the book illustrates, it&#8217;s great for working out schedules for example.</p>
+<p>I could see myself defining a recipe with it and then getting the optimal way to cook it with how long I think it&#8217;ll take me to perform each step.</p>
+<h3>The exercises</h3>
+<p>Found it difficult to get a solution that worked but was also tail recursive. Also struggled with working out why I would call my function and Prolog kept giving me the same result until I hit enter. So semi-colon would continually yield 10 for example (which was correct) but wouldn&#8217;t just execute and return the single value.</p>
+<p>Reminded me of wiring chips together in <a href="http://en.wikipedia.org/wiki/Hardware_description_language">HDL</a> for the <a href="https://www.coursera.org/course/nand2tetris1">nand2tetris</a> course at some points.</p>
+<p>I realised after I&#8217;d written my own <em>min_list</em> implementation that all it wanted me to do was use <em>min_list</em>. Oops. Could have saved some time there.</p>
+<p>The sudoku and 8 queens solvers on day 3 are beautiful. It feels I&#8217;m comparing a normal TDD tool to <a href="https://hackage.haskell.org/package/QuickCheck">quickcheck</a>. The former has you defining every step whilst the latter has you set the rules and it&#8217;ll figure out the rest.</p>
+<h3>Closing thoughts</h3>
+<p>Sure this &#8220;program is just rules&#8221; idea only applies well to certain problems (sudoku and testing for example) but that doesn&#8217;t mean we should ignore these tools because they&#8217;re not completely general. I could see myself falling back to Prolog (or a logic library in my host language at least) for relevant problems in the future. There&#8217;s a time and a place basically, I&#8217;m just glad I know to look out for those opportunities now.</p>
+<p>I think <a href="http://minikanren.org/">miniKanren</a> (which I&#8217;ll be looking at soon) may spur me on to get logic programming into my day to day work for the right kinds of problems. I&#8217;d certainly prefer that to the JavaScript &#8220;model&#8221; monstrosities that we so frequently rely on as JavaScript developers. I was surprised to find that core.logic (from Clojure) is based on miniKanren, so that&#8217;s looking more and more interesting.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2015/05/03/some-thoughts-on-prolog/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Some thoughts on Io</title>
+		<link>/2015/05/02/some-thoughts-on-io/</link>
+		<comments>/2015/05/02/some-thoughts-on-io/#respond</comments>
+		<pubDate>Sat, 02 May 2015 10:56:27 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Langs]]></category>
+		<category><![CDATA[7langs]]></category>
+		<category><![CDATA[io]]></category>
+		<category><![CDATA[lisp]]></category>
+
+		<guid isPermaLink="false">/?p=324</guid>
+		<description><![CDATA[I&#8217;m talking about the language not input/output. This whole Io != I/O thing made Googling around for documentation and examples a whole lot harder too. This was the second language from the book which, on the whole, was a pleasant experience. My source code for the exercises can be found in my languages repository. The <a class="read-more" href="/2015/05/02/some-thoughts-on-io/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>I&#8217;m talking about <a href="http://iolanguage.org/">the language</a> not input/output. This whole Io != I/O thing made Googling around for documentation and examples a whole lot harder too. This was the second language from <a href="https://pragprog.com/book/btlang/seven-languages-in-seven-weeks">the book</a> which, on the whole, was a pleasant experience. My source code for the exercises can be found in <a href="https://github.com/Wolfy87/langs">my languages repository</a>.</p>
+<p>The book says it&#8217;s as close as you&#8217;ll get to an object oriented Lisp, which felt apt after working with it for a few days. It&#8217;s <a href="http://en.wikipedia.org/wiki/Homoiconicity">homoiconic</a> which is something I&#8217;ve begun really hunting for recently. I think it&#8217;s Clojure&#8217;s fault that I&#8217;m now hooked on the idea and revel in writing the AST directly in the languages data structures.</p>
+<h3>Things that were &#8220;meh&#8221;</h3>
+<p>It doesn&#8217;t feel as elegant as a Lisp though, the message passing gets in the way sometimes. I found myself struggling to do simple application of functions and manipulation of argument lists which would even be easy in JavaScript. It felt inconsistent in places and appears to have many undocumented / sparsely documented features that are great, but only if you can find them. I suppose I&#8217;m not really being fair by comparing and contrasting to Clojure though.</p>
+<p>Because I found the message passing stuff fiddly it meant <a href="https://github.com/Wolfy87/langs/blob/master/io/day3/xml.io">the XML builder exercise</a> ended up really messy. It doesn&#8217;t feel elegant at all, yet I can see an elegant solution if I were using Lisp and macros as opposed to redefining the <em>forward</em> function and hacking around with that for a while. The key point of the language, objects and prototypes, is the main thing I didn&#8217;t like. I just wanted to use plain data structures and lists as opposed to inheritance and types.</p>
+<p>It&#8217;s probably obvious by now: I don&#8217;t really like OOP. So a OO Lisp is a Lisp with one of the best things removed: Lists all the way down (with the odd hash-map thrown in).</p>
+<h3>Things that rocked</h3>
+<p>Auto loading of modules is a really nice feature. If you have <em>Something.io</em> in the same directory as your REPL or whatever, when you do <em>Something clone</em> it will automatically load the file for you. It&#8217;s a nice touch that leads to really clean code. No idea how it works if the file&#8217;s in another directory though. It&#8217;s probably explained in the guide or something, there must be a way to load a file by path. <em>doFile</em> would work but seems like an odd approach.</p>
+<p>It would definitely make a good embedded language, I think I&#8217;d rather use it over Lua since it&#8217;s close to a Lisp. It&#8217;s just a shame that the documentation and community are both really thin on the ground.</p>
+<p>I&#8217;m not sure if I&#8217;ll ever use it but it was a nice experience. A refreshing language that has changed my perspective some more, which is exactly what I was hoping to get out of this book. It did start out as a learning exercise, so it&#8217;s okay that it&#8217;s small.</p>
+<h3>Tangent: I want to build a little language now too</h3>
+<p>It&#8217;s pretty much inspired me to go off and design my own language and compiler. I&#8217;m thinking about a Lisp-like thing with significant whitespace and implicit lists. So you can add parenthesis where required, but most of them are added automatically based on new lines and indentation. The benefit of this is that you should be able to move a line and reindent without having to balance the parenthesis, so you don&#8217;t need paredit (even though it&#8217;s amazing). It&#8217;s the homonocity and AST writing of Lisp, but with a few less parenthesis. I think I could make it work, we&#8217;ll see.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2015/05/02/some-thoughts-on-io/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Some thoughts on Ruby</title>
+		<link>/2015/04/13/some-thoughts-on-ruby/</link>
+		<comments>/2015/04/13/some-thoughts-on-ruby/#comments</comments>
+		<pubDate>Mon, 13 Apr 2015 20:44:09 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Langs]]></category>
+		<category><![CDATA[Ruby]]></category>
+		<category><![CDATA[7langs]]></category>
+
+		<guid isPermaLink="false">/?p=318</guid>
+		<description><![CDATA[You may have noticed that I recently started working my way through Seven Languages in Seven Weeks (which will be shortly followed by Seven More Languages in Seven Weeks). I almost definitely won&#8217;t finish in that time frame with Coursera deadlines looming ever closer, but it&#8217;s worth a shot. I finished the first chapter this <a class="read-more" href="/2015/04/13/some-thoughts-on-ruby/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>You may have noticed that I recently started working my way through <a href="https://pragprog.com/book/btlang/seven-languages-in-seven-weeks">Seven Languages in Seven Weeks</a> (which will be shortly followed by <a href="https://pragprog.com/book/7lang/seven-more-languages-in-seven-weeks">Seven More Languages in Seven Weeks</a>). I almost definitely won&#8217;t finish in that time frame with Coursera deadlines looming ever closer, but it&#8217;s worth a shot. I finished the first chapter this evening, which happens to be on Ruby. I thought I&#8217;d write up my thoughts on it after this first dive into a language I&#8217;ve been meaning to get my head around.</p>
+<p>All of my work for these books can be found within my <a href="https://github.com/Wolfy87/langs">langs</a> repository. So check out the Ruby directory for some more context with regards to what I was asked to do during the little exercises.</p>
+<h2>My thoughts?</h2>
+<p>I <em>like</em> it. I do <strong>not</strong> <em>love</em> it. This is for quite a few reasons, most of which wouldn&#8217;t annoy most other programmers but I&#8217;ll try to list them all here.</p>
+<h3>Sugar</h3>
+<p>There&#8217;s just so much of it, every sentence of the chapter introduced some new magical syntax that did something miraculous yet non-obvious. The meta programming just felt downright clunky when compared to the king of macros, [INSERT ANY LISP HERE]. I know that&#8217;s not really a fair fight, but if you&#8217;re going to let the user add to the language let it be in a beautiful and seamless way.</p>
+<h3>A dozen paths</h3>
+<p>There seems to be an overwhelming amount of ways to do one thing so I felt a little lost when looking for a canonical solution. Sure, this happens to a certain extent in any language, but with Ruby fundamental things like parentheses are optional some of the time. That <em>really</em> threw me.</p>
+<p>Blocks going after the last argument, or maybe there is no arguments list, inferring a single hash argument if you pass <em>foo(:bar =&gt; :baz)</em>, it just became a bit much. The syntax soup is particularly off putting for me, others may be absolutely fine with that.</p>
+<p>I think I&#8217;ve been spoiled by falling in love with simplicity and simple languages. I&#8217;m looking at you, Clojure, you beautiful enigma I yearn to work with.</p>
+<h3>SURPRISE!</h3>
+<p>I felt like the book shouted this at every paragraph and expected me to be happy about it. &#8220;Look at all these shiny features, you can make things happen without having to explicitly execute it! Isn&#8217;t that wonderful!?&#8221;</p>
+<p>No.</p>
+<p>It is not.</p>
+<p>Ruby is putty, you (and every other developer that touches that code base) can mould it into any shape you wish. That lack of rigidity makes me question what it would be like in a large project. I mean million lines of code and upwards project. If I go to do something on a string and someone monkey patched a function with a conflicting name a year ago I wouldn&#8217;t be very happy.</p>
+<p>I just spent a lot of time going &#8220;wat?&#8221; which put me off a little.</p>
+<hr />
+<h2>Right tool for the job</h2>
+<div>I&#8217;m bashing on a fairly good language for things that make it good. I know. It is a great tool for scripting things and just generally getting something done very quickly. I&#8217;d definitely select it over JavaScript / node.js for any scripts or small web services, but that&#8217;s not a hard choice. If JavaScript wasn&#8217;t currently omnipotent I&#8217;d drop it, burn it and erase it from my memory in a heart beat. Then I&#8217;d go use something elegant, well rounded and functional. But that&#8217;s not going to happen for a very long time. <em>Sigh.</em></div>
+<p>I&#8217;m sceptical of Ruby for what I see day to day at work, it wouldn&#8217;t fit there. I think that&#8217;s where my &#8220;ew, no structure&#8221; response comes from. That kind of softness would cause chaos in my current environment, I think. Unless you have a bunch of <em>very</em> experienced and disciplined Ruby developers that won&#8217;t set up a gun to shoot someone else in the foot a year down the line.</p>
+<p>I sure hope this doesn&#8217;t anger anyone. Also, the next chapter is on Io, so that should be fun. Really looking forward to Elm and Haskell too.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2015/04/13/some-thoughts-on-ruby/feed/</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+		</item>
+	</channel>
+</rss>

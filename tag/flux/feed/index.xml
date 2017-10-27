@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>flux &#8211; Oliver Caldwell&#039;s blog</title>
+	<atom:link href="/tag/flux/feed/" rel="self" type="application/rss+xml" />
+	<link>/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Wed, 18 Oct 2017 13:50:23 +0000</lastBuildDate>
+	<language>en-GB</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>My thoughts on React, Flux and Reflux</title>
+		<link>/2014/12/06/my-thoughts-on-react-flux-and-reflux/</link>
+		<comments>/2014/12/06/my-thoughts-on-react-flux-and-reflux/#comments</comments>
+		<pubDate>Sat, 06 Dec 2014 16:31:46 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[JavaScript]]></category>
+		<category><![CDATA[React]]></category>
+		<category><![CDATA[flux]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[react]]></category>
+		<category><![CDATA[reflux]]></category>
+
+		<guid isPermaLink="false">/?p=237</guid>
+		<description><![CDATA[I could have used &#8220;My reaction to React, Flux and Reflux&#8221; in this title, but I thought it&#8217;d seem unprofessional, so I moved it down to the first point of this post. Because my blog is not an incredibly professional place. I spent a week of evenings and most of a weekend building an application <a class="read-more" href="/2014/12/06/my-thoughts-on-react-flux-and-reflux/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>I could have used &#8220;My reaction to React, Flux and Reflux&#8221; in this title, but I thought it&#8217;d seem unprofessional, so I moved it down to the first point of this post. Because my blog is not an incredibly professional place.</p>
+<p>I spent a week of evenings and most of a weekend building an application much like a nested todo list with <a href="http://facebook.github.io/react/">React</a> and <a href="https://github.com/spoike/refluxjs/">Reflux</a>. I&#8217;ve gone from zero to slightly more than zero knowledge in that time and it&#8217;s been an interesting experience, I want to share how I approached the problem from a high level, show some examples and finally point out all of the glaringly obvious things I&#8217;ve missed but will use next time.</p>
+<p>I&#8217;d also like to mention <a href="http://dev.hubspot.com/blog/moving-backbone-to-flux-react">this tangential video</a> that explains what Flux and React solve perfectly, it also talks about things such as optimistic fulfilment within the UI. A concept in which you respond to user input immediately, even if you have to ask the server, and then roll back the state by popping some snapshots off of a stack if a promise fails. This sort of thing would be a monumental challenge in any other world, but it&#8217;s feasible with React and Flux.</p>
+<h2>My structure</h2>
+<p>Since I was using Reflux, I tried to follow the general architecture of the <a href="https://github.com/spoike/refluxjs-todo">reflux-todo</a> example. I really like Reflux&#8217;s approach to the Flux architecture, it kicks out the useless string passing in the dispatcher and binds things together through concrete function calls and references. I sincerely hope the project gains traction and continues to grow in this direction. I&#8217;d really like to see some immutable data structure integration too.</p>
+<ul>
+<li>build/
+<ul>
+<li>index.html</li>
+<li>style.css</li>
+<li>{main.js is generated here by gulp + browserify}</li>
+</ul>
+</li>
+<li>src/
+<ul>
+<li>actions/
+<ul>
+<li>listActions.js</li>
+</ul>
+</li>
+<li>components/ (which I think are referred to as elements now)
+<ul>
+<li>App.js</li>
+<li>Dashboard.js</li>
+<li>ListItem.js</li>
+<li>ListItemAttribute.js (these are the<a href="http://inception.davepedu.com/"> sub-list items in a list item</a>)</li>
+<li>Manifest.js</li>
+</ul>
+</li>
+<li>stores/
+<ul>
+<li>listStore.js</li>
+</ul>
+</li>
+<li>utils/
+<ul>
+<li>compile.js (my custom array -&gt; React DOM factory)</li>
+<li>persistence.js (tiny layer on top of localStorage)</li>
+</ul>
+</li>
+<li>main.js (kicks everything off and configures <a href="https://github.com/rackt/react-router">react-router</a>, which is <em>amazing</em> by the way)</li>
+</ul>
+</li>
+<li>test/ (mirrors the src structure and files, but didn&#8217;t test components)</li>
+</ul>
+<p>You may be shocked by that last line, I didn&#8217;t test my components. This is mostly because I ran out of time and realised all too late that I should have been using <a href="http://facebook.github.io/jest/">Jest</a> all along. I tested everything else, especially my store, using <a href="http://mochajs.org/">Mocha</a> and <a href="https://github.com/shouldjs/should.js">Should</a>. I just found it difficult to test my components directly this way without it being boilerplate filled and generally yucky. Luckily, my components didn&#8217;t really hold any state whatsoever, so it wasn&#8217;t too bad. Testing the store was the most important part.</p>
+<p>As you can tell from the general lack of files, it was a pretty small project and didn&#8217;t require many actions. The thing that caused this to take a week of evenings and a lot of the weekend was not reading the manual and diving straight in. I&#8217;d highly recommend reading all of the documentation before starting something with React, Flux or Reflux. Because of Reflux&#8217;s awesomeness, my actions file simply contained this.</p><pre class="crayon-plain-tag">var Reflux = require('reflux');
+
+/**
+ * These are used to construct the actions. Actions are used within Reflux by the components to tell the stores what to do.
+ *
+ * @type {String[]}
+ */
+var requiredActions = [
+    'addItem',
+    'updateItem',
+    'removeItem',
+    'addItemAttribute',
+    'updateItemAttribute',
+    'removeItemAttribute',
+    'clear'
+];
+
+var listActions = Reflux.createActions(requiredActions);
+
+module.exports = listActions;</pre><p>Then I plug it into my store with one line, which is pretty damn incredible.</p><pre class="crayon-plain-tag">// ...
+var listStore = Reflux.createStore({
+    listenables: listActions,
+    // ...</pre><p>I also ended up with a couple of utility files that made localStorage access even easier and a way to compile an array structure to React DOM, which I now realise was pretty pointless. I don&#8217;t want to use JSX right now, but I could have just used the <em>React.DOM</em> API and had basically the same experience as my array DSL. It was fun to build though, I guess I was just yearning for something Lisp / Clojure like.</p><pre class="crayon-plain-tag">/**
+ * An API into localStorage that won't explode if it isn't available (like in node.js).
+ *
+ * Will also serialise and parse with JSON.
+ *
+ * @type {Object}
+ */
+var persistence = {
+    write: function (key, value) {
+        if (typeof localStorage === 'object') {
+            localStorage.setItem(key, JSON.stringify(value));
+        }
+    },
+    read: function (key) {
+        if (typeof localStorage === 'object') {
+            return JSON.parse(localStorage.getItem(key));
+        }
+    }
+};
+
+module.exports = persistence;</pre><p></p><pre class="crayon-plain-tag">var React = require('react');
+var _ = require('lodash');
+
+/**
+ * Compiles an array into a React DOM structure recursively. All segments of the node array are optional.
+ *
+ * The array segments can be in any order apart from the node type, that always needs to be first.
+ *
+ * Actually works really well, I'd quite like to open source this with CSS selector parsing in the nodeName.
+ *
+ * @param {*[]} node Comprised of a string DOM node name, params object and string content or child node(s). The nodes can be more arrays or compiled React elements.
+ * @return {Object} A react DOM tree built from your data structure recursively.
+ */
+function compile(node) {
+    if (_.isArray(node)) {
+        var nodeName = _.first(node);
+        var findProp = _.partial(_.find, _.rest(node));
+        var props = _.mapValues({
+            attrs: _.isPlainObject,
+            children: _.isArray,
+            compiled: React.isValidElement,
+            text: _.isString
+        }, findProp);
+
+        var child = props.text || props.compiled || _.map(props.children, compile);
+
+        return React.createElement(nodeName, props.attrs, child);
+    }
+    else {
+        return node;
+    }
+}
+
+module.exports = compile;</pre><p>So that should give you a rough idea as to what I was playing with. I may well open up the repository to public ridicule in the coming months. Now onto the things I wish I&#8217;d known about before.</p>
+<h2>Things I would have done differently</h2>
+<figure style="width: 624px" class="wp-caption alignnone"><img class="" title="" src="http://img3.wikia.nocookie.net/__cb20101028071113/southpark/images/d/d8/Coon2Hindsight10.png" alt="Captain Hindsight" width="624" height="352" /><figcaption class="wp-caption-text">Captain Hindsight turned up once I was done</figcaption></figure>
+<ol>
+<li><a href="http://facebook.github.io/react/docs/reusable-components.html#prop-validation">propTypes</a> &#8211; YOU CAN ADD TYPE ANNOTATIONS?!</li>
+<li><a href="http://facebook.github.io/react/docs/reusable-components.html#default-prop-values">defaultProps</a> &#8211; Great for optional configuration.</li>
+<li><a href="http://facebook.github.io/react/docs/more-about-refs.html">ref</a> &#8211; A property to allow deep linking into component hierarchy.</li>
+<li><a href="http://facebook.github.io/react/docs/top-level-api.html#react.children">this.props.children</a> &#8211; Essentially transclude from Angular land but with some really cool helper utilities.</li>
+<li><a href="http://facebook.github.io/react/docs/transferring-props.html">transferPropsTo</a> &#8211; Something I see in Angular all too much made easy. Although hopefully you won&#8217;t get into the situation where you have that many props. That smells of SRP violation.</li>
+<li>I should have been using the component life cycle hooks <strong>way</strong> more. They&#8217;re great and there&#8217;s probably one for your exact need, you just have to select carefully. It does remind me of building WordPress plugins and themes though&#8230;</li>
+</ol>
+<p>I hope others can learn from my mishaps! Basically, <a href="http://en.wikipedia.org/wiki/RTFM">RTFM</a> before you go out into the big not so bad world of sane UI development.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2014/12/06/my-thoughts-on-react-flux-and-reflux/feed/</wfw:commentRss>
+		<slash:comments>5</slash:comments>
+		</item>
+	</channel>
+</rss>

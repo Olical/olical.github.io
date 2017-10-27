@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	
+	>
+<channel>
+	<title>Comments on: Wrangling JavaScript with Vim</title>
+	<atom:link href="/2015/06/17/wrangling-javascript-with-vim/feed/" rel="self" type="application/rss+xml" />
+	<link>/2015/06/17/wrangling-javascript-with-vim/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Mon, 22 May 2017 19:57:20 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>By: Cameron M</title>
+		<link>/2015/06/17/wrangling-javascript-with-vim/#comment-305</link>
+		<dc:creator><![CDATA[Cameron M]]></dc:creator>
+		<pubDate>Tue, 28 Mar 2017 15:30:00 +0000</pubDate>
+		<guid isPermaLink="false">/?p=362#comment-305</guid>
+		<description><![CDATA[Oh no problem! I just went ahead and installed neovim. Ran your .sh script with sh and the path. No errors, but Is there a good way to check that everything is working correctly? I see syntax highlighting now on files...]]></description>
+		<content:encoded><![CDATA[<p>Oh no problem! I just went ahead and installed neovim. Ran your .sh script with sh and the path. No errors, but Is there a good way to check that everything is working correctly? I see syntax highlighting now on files&#8230;</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Oliver Caldwell</title>
+		<link>/2015/06/17/wrangling-javascript-with-vim/#comment-304</link>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+		<pubDate>Tue, 28 Mar 2017 15:03:00 +0000</pubDate>
+		<guid isPermaLink="false">/?p=362#comment-304</guid>
+		<description><![CDATA[This latest version of sync.sh relies on neovim https://github.com/Olical/dotfiles/blob/master/neovim/.config/nvim/sync.sh#L11-L12
+
+If you want to use regular Vim you&#039;ll have to go back a few commits (could be a lot...) to the time where it was still based on normal Vim. I think the package manager and autocompletion I use also rely on neovim features. So they&#039;re not compatible I&#039;m afraid.]]></description>
+		<content:encoded><![CDATA[<p>This latest version of sync.sh relies on neovim <a href="https://github.com/Olical/dotfiles/blob/master/neovim/.config/nvim/sync.sh#L11-L12" rel="nofollow">https://github.com/Olical/dotfiles/blob/master/neovim/.config/nvim/sync.sh#L11-L12</a></p>
+<p>If you want to use regular Vim you&#8217;ll have to go back a few commits (could be a lot&#8230;) to the time where it was still based on normal Vim. I think the package manager and autocompletion I use also rely on neovim features. So they&#8217;re not compatible I&#8217;m afraid.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Cameron M</title>
+		<link>/2015/06/17/wrangling-javascript-with-vim/#comment-303</link>
+		<dc:creator><![CDATA[Cameron M]]></dc:creator>
+		<pubDate>Tue, 28 Mar 2017 14:57:00 +0000</pubDate>
+		<guid isPermaLink="false">/?p=362#comment-303</guid>
+		<description><![CDATA[@OliverCaldwell:disqus sorry to bother again, but I&#039;ve still been having issues. Could it be because I&#039;m on a Mac and not Arch? I figured it&#039;d work out since it&#039;s all unix-based... but maybe not. I&#039;m trying to just do regular vim first, but when I run sh /path/to/sync.sh my terminal just flashes red for a second and returns to the prompt. when I vim into a js file I still just get regular vim, no coloring etc. Any thoughts?]]></description>
+		<content:encoded><![CDATA[<p>@OliverCaldwell:disqus sorry to bother again, but I&#8217;ve still been having issues. Could it be because I&#8217;m on a Mac and not Arch? I figured it&#8217;d work out since it&#8217;s all unix-based&#8230; but maybe not. I&#8217;m trying to just do regular vim first, but when I run sh /path/to/sync.sh my terminal just flashes red for a second and returns to the prompt. when I vim into a js file I still just get regular vim, no coloring etc. Any thoughts?</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Cameron M</title>
+		<link>/2015/06/17/wrangling-javascript-with-vim/#comment-302</link>
+		<dc:creator><![CDATA[Cameron M]]></dc:creator>
+		<pubDate>Mon, 27 Mar 2017 18:30:00 +0000</pubDate>
+		<guid isPermaLink="false">/?p=362#comment-302</guid>
+		<description><![CDATA[Oliver, that&#039;s an excellent response, thank you! I think I&#039;ll go ahead and play around with both and see how I like them. Much obliged for the instructions with the sync script so I can set that up!]]></description>
+		<content:encoded><![CDATA[<p>Oliver, that&#8217;s an excellent response, thank you! I think I&#8217;ll go ahead and play around with both and see how I like them. Much obliged for the instructions with the sync script so I can set that up!</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Oliver Caldwell</title>
+		<link>/2015/06/17/wrangling-javascript-with-vim/#comment-301</link>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+		<pubDate>Mon, 27 Mar 2017 15:52:00 +0000</pubDate>
+		<guid isPermaLink="false">/?p=362#comment-301</guid>
+		<description><![CDATA[Well, that&#039;s a matter of taste. I use neovim because I kind of like where the project is going, although I spend most of my day in http://spacemacs.org/ now, which again, is just taste. It&#039;s got good tooling for lisp and it behaves like Vim, so I&#039;m happy with it.
+
+Vim 8 and neovim both offer great things and I think both are good, maybe go across what Vim 8 added and what neovim offers, decide if it&#039;s worth the hassle of switching things.
+
+The makefile is mainly for my Arch Linux stuff, the only thing you actually need to run from there is the sync script (./neovim/.config/nvim/sync.sh for neovim, but basically the same for normal vim). So all you need to do is copy that directory in (or use stow to symlink it) and run sync.sh.
+
+If you want to run neovim you can run it alongside vim, why not try it and go back to vim if you have issues. They&#039;re almost the same to the end user, but some newer plugins only work in one or the other since both add really neat new APIs for doing things like autocompletion without locking the program up.]]></description>
+		<content:encoded><![CDATA[<p>Well, that&#8217;s a matter of taste. I use neovim because I kind of like where the project is going, although I spend most of my day in <a href="http://spacemacs.org/" rel="nofollow">http://spacemacs.org/</a> now, which again, is just taste. It&#8217;s got good tooling for lisp and it behaves like Vim, so I&#8217;m happy with it.</p>
+<p>Vim 8 and neovim both offer great things and I think both are good, maybe go across what Vim 8 added and what neovim offers, decide if it&#8217;s worth the hassle of switching things.</p>
+<p>The makefile is mainly for my Arch Linux stuff, the only thing you actually need to run from there is the sync script (./neovim/.config/nvim/sync.sh for neovim, but basically the same for normal vim). So all you need to do is copy that directory in (or use stow to symlink it) and run sync.sh.</p>
+<p>If you want to run neovim you can run it alongside vim, why not try it and go back to vim if you have issues. They&#8217;re almost the same to the end user, but some newer plugins only work in one or the other since both add really neat new APIs for doing things like autocompletion without locking the program up.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Cameron M</title>
+		<link>/2015/06/17/wrangling-javascript-with-vim/#comment-300</link>
+		<dc:creator><![CDATA[Cameron M]]></dc:creator>
+		<pubDate>Mon, 27 Mar 2017 15:41:00 +0000</pubDate>
+		<guid isPermaLink="false">/?p=362#comment-300</guid>
+		<description><![CDATA[Hey, thanks for the response! Before I go ahead and run that, I noticed in the newest version of your dotfiles, vim is gone and you&#039;re using neovim instead. I&#039;m trying to stay cutting-edge, so if I take that dotfiles folder, removed everything but neovim, Makefile, and packages.txt, and then removed all lines from packages.txt except the neovim and python ones. If I ran the Makefile, would that work?]]></description>
+		<content:encoded><![CDATA[<p>Hey, thanks for the response! Before I go ahead and run that, I noticed in the newest version of your dotfiles, vim is gone and you&#8217;re using neovim instead. I&#8217;m trying to stay cutting-edge, so if I take that dotfiles folder, removed everything but neovim, Makefile, and packages.txt, and then removed all lines from packages.txt except the neovim and python ones. If I ran the Makefile, would that work?</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Oliver Caldwell</title>
+		<link>/2015/06/17/wrangling-javascript-with-vim/#comment-299</link>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+		<pubDate>Mon, 27 Mar 2017 15:32:00 +0000</pubDate>
+		<guid isPermaLink="false">/?p=362#comment-299</guid>
+		<description><![CDATA[Hey there, that&#039;s actually something I keep in my home folder. I&#039;m sorry, I thought I made it optional so it wouldn&#039;t throw if it didn&#039;t exist, apparently not.
+
+touch ~/.vimrc_local should do the trick I think. It&#039;s just a file where you can store machine specific tweaks since I use the same config on multiple laptops.]]></description>
+		<content:encoded><![CDATA[<p>Hey there, that&#8217;s actually something I keep in my home folder. I&#8217;m sorry, I thought I made it optional so it wouldn&#8217;t throw if it didn&#8217;t exist, apparently not.</p>
+<p>touch ~/.vimrc_local should do the trick I think. It&#8217;s just a file where you can store machine specific tweaks since I use the same config on multiple laptops.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Oliver Caldwell</title>
+		<link>/2015/06/17/wrangling-javascript-with-vim/#comment-298</link>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+		<pubDate>Mon, 27 Mar 2017 15:31:00 +0000</pubDate>
+		<guid isPermaLink="false">/?p=362#comment-298</guid>
+		<description><![CDATA[Oh neat, I&#039;m using neovim now (when I do use Vim) but most of the time I&#039;m in http://spacemacs.org/
+
+I write a lot more lisp/FP now so it suits me pretty well.]]></description>
+		<content:encoded><![CDATA[<p>Oh neat, I&#8217;m using neovim now (when I do use Vim) but most of the time I&#8217;m in <a href="http://spacemacs.org/" rel="nofollow">http://spacemacs.org/</a></p>
+<p>I write a lot more lisp/FP now so it suits me pretty well.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Oliver Caldwell</title>
+		<link>/2015/06/17/wrangling-javascript-with-vim/#comment-297</link>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+		<pubDate>Mon, 27 Mar 2017 15:30:00 +0000</pubDate>
+		<guid isPermaLink="false">/?p=362#comment-297</guid>
+		<description><![CDATA[foo.sh and foo.js would then be potential candidates is all. May be a problem for some but not others, if * works for you, go for it! :)]]></description>
+		<content:encoded><![CDATA[<p>foo.sh and foo.js would then be potential candidates is all. May be a problem for some but not others, if * works for you, go for it! 🙂</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Oliver Caldwell</title>
+		<link>/2015/06/17/wrangling-javascript-with-vim/#comment-296</link>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+		<pubDate>Mon, 27 Mar 2017 15:29:00 +0000</pubDate>
+		<guid isPermaLink="false">/?p=362#comment-296</guid>
+		<description><![CDATA[Yup, just personal taste. I&#039;ve been writing it for years now but I don&#039;t like it. Personally I think it&#039;s poorly designed and way too easy to footgun in comparison to other languages I study, but it&#039;s just personal preference. Kind of a running theme on this blog and my twitter though.
+
+https://en.wiktionary.org/wiki/footgun]]></description>
+		<content:encoded><![CDATA[<p>Yup, just personal taste. I&#8217;ve been writing it for years now but I don&#8217;t like it. Personally I think it&#8217;s poorly designed and way too easy to footgun in comparison to other languages I study, but it&#8217;s just personal preference. Kind of a running theme on this blog and my twitter though.</p>
+<p><a href="https://en.wiktionary.org/wiki/footgun" rel="nofollow">https://en.wiktionary.org/wiki/footgun</a></p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

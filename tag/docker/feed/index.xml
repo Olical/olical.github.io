@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>docker &#8211; Oliver Caldwell&#039;s blog</title>
+	<atom:link href="/tag/docker/feed/" rel="self" type="application/rss+xml" />
+	<link>/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Wed, 18 Oct 2017 13:50:23 +0000</lastBuildDate>
+	<language>en-GB</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>Things I learned about Docker the hard way</title>
+		<link>/2015/05/07/things-i-learned-about-docker-the-hard-way/</link>
+		<comments>/2015/05/07/things-i-learned-about-docker-the-hard-way/#respond</comments>
+		<pubDate>Thu, 07 May 2015 12:11:34 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Uncategorised]]></category>
+		<category><![CDATA[docker]]></category>
+
+		<guid isPermaLink="false">/?p=337</guid>
+		<description><![CDATA[This list was just ripped from a Google Keep item I wrote late last night, just wanted to share. A process per container is noble but hard for existing projects. Use one container if you have multiple components with a startup order / dependency. Write a script to manage the processes. When you build a <a class="read-more" href="/2015/05/07/things-i-learned-about-docker-the-hard-way/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>This list was just ripped from a Google Keep item I wrote late last night, just wanted to share.</p>
+<ul>
+<li>A process per container is noble but hard for existing projects.</li>
+<li>Use one container if you have multiple components with a startup order / dependency.</li>
+<li>Write a script to manage the processes.</li>
+<li>When you build a directory with a Dockerfile it will push the entire content of that directory into tmp.</li>
+<li>I tried it with a big thing, overflowed tmp and tried to fill up my root partition.</li>
+<li>Have a context directory which is almost empty, that&#8217;s where you put your Dockerfile and anything you need to ADD.</li>
+<li>Docker compose link doesn&#8217;t wire the exposed ports together on the same localhost / interface. It gives you a host in /etc/hosts that you must point to by name. I wasted days thinking two containers could somehow mesh their ports together.</li>
+<li>This means you have to be able to configure the addresses of every link between components, sometimes that&#8217;s awkward.</li>
+<li>Save time and hair, use one container with a process management script. Keep the Dockerfile in it&#8217;s own small directory.</li>
+<li>Use volumes through docker compose for things like your npm cache. It works wonders. I have a data directory where I mount all volumes. Including the entire root directory.</li>
+<li>A process inside the container may just refuse connections and give you &#8220;reset by peer&#8221; errors. This is because it&#8217;s bound to localhost, bind it to 0.0.0.0. I&#8217;ve only seen it happen with some processes for some reason though. Others are okay with localhost.</li>
+</ul>
+]]></content:encoded>
+			<wfw:commentRss>/2015/05/07/things-i-learned-about-docker-the-hard-way/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

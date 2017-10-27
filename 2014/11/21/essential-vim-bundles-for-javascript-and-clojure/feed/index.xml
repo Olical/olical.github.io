@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	
+	>
+<channel>
+	<title>Comments on: Essential Vim bundles for JavaScript and Clojure</title>
+	<atom:link href="/2014/11/21/essential-vim-bundles-for-javascript-and-clojure/feed/" rel="self" type="application/rss+xml" />
+	<link>/2014/11/21/essential-vim-bundles-for-javascript-and-clojure/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Mon, 22 May 2017 19:57:20 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>By: Wrangling JavaScript with Vim &#124; Oliver Caldwell&#039;s blog</title>
+		<link>/2014/11/21/essential-vim-bundles-for-javascript-and-clojure/#comment-219</link>
+		<dc:creator><![CDATA[Wrangling JavaScript with Vim &#124; Oliver Caldwell&#039;s blog]]></dc:creator>
+		<pubDate>Thu, 21 Jan 2016 11:21:20 +0000</pubDate>
+		<guid isPermaLink="false">/?p=231#comment-219</guid>
+		<description><![CDATA[[&#8230;] created a few posts on here about writing JavaScript with Vim, this is because it&#8217;s what I do all day (and night) [&#8230;]]]></description>
+		<content:encoded><![CDATA[<p>[&#8230;] created a few posts on here about writing JavaScript with Vim, this is because it&#8217;s what I do all day (and night) [&#8230;]</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Oliver Caldwell</title>
+		<link>/2014/11/21/essential-vim-bundles-for-javascript-and-clojure/#comment-111</link>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+		<pubDate>Thu, 27 Nov 2014 16:35:00 +0000</pubDate>
+		<guid isPermaLink="false">/?p=231#comment-111</guid>
+		<description><![CDATA[Oh I see what you mean, luckily it&#039;s actively maintained so these sorts of things should be fixed soon. I thought you meant it didn&#039;t indent at all, I&#039;ve noticed the array + object issues for a while but just ignored it. If you fix the first occurrence manually, each other object is correct.]]></description>
+		<content:encoded><![CDATA[<p>Oh I see what you mean, luckily it&#8217;s actively maintained so these sorts of things should be fixed soon. I thought you meant it didn&#8217;t indent at all, I&#8217;ve noticed the array + object issues for a while but just ignored it. If you fix the first occurrence manually, each other object is correct.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Oliver Weiler</title>
+		<link>/2014/11/21/essential-vim-bundles-for-javascript-and-clojure/#comment-110</link>
+		<dc:creator><![CDATA[Oliver Weiler]]></dc:creator>
+		<pubDate>Thu, 27 Nov 2014 16:32:00 +0000</pubDate>
+		<guid isPermaLink="false">/?p=231#comment-110</guid>
+		<description><![CDATA[Here you can find my .vimrc: https://github.com/helpermethod/vagrant-node-dev/blob/master/.vimrc
+
+I&#039;ve removed the vim-javascript plugin because the indentation broke and the colors where way off. Looking at the plugins issues, this seems to be a known problem:
+
+https://github.com/pangloss/vim-javascript/issues/212
+https://github.com/pangloss/vim-javascript/issues/193]]></description>
+		<content:encoded><![CDATA[<p>Here you can find my .vimrc: <a href="https://github.com/helpermethod/vagrant-node-dev/blob/master/.vimrc" rel="nofollow">https://github.com/helpermethod/vagrant-node-dev/blob/master/.vimrc</a></p>
+<p>I&#8217;ve removed the vim-javascript plugin because the indentation broke and the colors where way off. Looking at the plugins issues, this seems to be a known problem:</p>
+<p><a href="https://github.com/pangloss/vim-javascript/issues/212" rel="nofollow">https://github.com/pangloss/vim-javascript/issues/212</a><br />
+<a href="https://github.com/pangloss/vim-javascript/issues/193" rel="nofollow">https://github.com/pangloss/vim-javascript/issues/193</a></p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Oliver Caldwell</title>
+		<link>/2014/11/21/essential-vim-bundles-for-javascript-and-clojure/#comment-109</link>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+		<pubDate>Thu, 27 Nov 2014 08:36:00 +0000</pubDate>
+		<guid isPermaLink="false">/?p=231#comment-109</guid>
+		<description><![CDATA[Strange, how&#039;re you loading it? Do you have any other configuration or plugins that could conflict with it? I&#039;ll take a look if you have your config uploaded somewhere.]]></description>
+		<content:encoded><![CDATA[<p>Strange, how&#8217;re you loading it? Do you have any other configuration or plugins that could conflict with it? I&#8217;ll take a look if you have your config uploaded somewhere.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Oliver Weiler</title>
+		<link>/2014/11/21/essential-vim-bundles-for-javascript-and-clojure/#comment-108</link>
+		<dc:creator><![CDATA[Oliver Weiler]]></dc:creator>
+		<pubDate>Thu, 27 Nov 2014 08:22:00 +0000</pubDate>
+		<guid isPermaLink="false">/?p=231#comment-108</guid>
+		<description><![CDATA[I&#039;ve recently tried vim-javascript and it seems the indentation is broken.]]></description>
+		<content:encoded><![CDATA[<p>I&#8217;ve recently tried vim-javascript and it seems the indentation is broken.</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

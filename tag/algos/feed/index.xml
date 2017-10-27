@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>algos &#8211; Oliver Caldwell&#039;s blog</title>
+	<atom:link href="/tag/algos/feed/" rel="self" type="application/rss+xml" />
+	<link>/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Wed, 18 Oct 2017 13:50:23 +0000</lastBuildDate>
+	<language>en-GB</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>A quick reflection on Algorithms</title>
+		<link>/2015/03/01/a-quick-reflection-on-algorithms/</link>
+		<comments>/2015/03/01/a-quick-reflection-on-algorithms/#respond</comments>
+		<pubDate>Sun, 01 Mar 2015 14:33:53 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Coursera]]></category>
+		<category><![CDATA[algos]]></category>
+		<category><![CDATA[java]]></category>
+
+		<guid isPermaLink="false">/?p=303</guid>
+		<description><![CDATA[It may not be completely over just yet, but I&#8217;ve gone as far as I can in Algorithms, Part I from Princeton on Coursera. It was an interesting course that ultimately defeated me in some areas, but taught me quite a lot along the way. I&#8217;ve given up on the very last part though since <a class="read-more" href="/2015/03/01/a-quick-reflection-on-algorithms/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>It may not be completely over just yet, but I&#8217;ve gone as far as I can in <a href="https://www.coursera.org/course/algs4partI">Algorithms, Part I</a> from Princeton on Coursera. It was an interesting course that ultimately defeated me in some areas, but taught me quite a lot along the way. I&#8217;ve given up on the very last part though since the difficulty has ramped up above what I want to burn my free time on and I have quite a few open-source-ish things I&#8217;d much rather be pursuing. I&#8217;d highly recommend it if you have some of these qualities:</p>
+<ul>
+<li>Already have an understanding of compsci or complexity. Possibly already finished a prior course.</li>
+<li>A good understanding of mathematics and algebra, at least at A-Level or beyond. (I really struggled on that front since I only studied math at GCSE)</li>
+<li>A little bit of Java experience may help, but you can get along just fine, the language isn&#8217;t the focus.</li>
+<li>Quite a lot of free time that you&#8217;re willing to burn on extra work every week. I found it to be upwards of 10 hours which destroyed my evenings and weekend.</li>
+<li>You don&#8217;t mind structured and relentless education for ~6 weeks.</li>
+</ul>
+<p>On the last point, I do mind it. A lot. Hence why I&#8217;m excited about being able to clean up my Linux install, swap to Emacs and work my way through the two &#8220;7 languages in 7 weeks&#8221; books at my own pace with no deadlines. Which means I can intermingle all that work with some Red Orchestra 2, EVE or Homeworld without being consumed from within with guilt.</p>
+<p>On the whole it was very interesting. I&#8217;ve published <a href="https://github.com/Wolfy87/algos">my (incomplete) work</a> on GitHub if you&#8217;re interested but I implore you not to copy it. It will probably hinder your grade rather than improve it. Now I get to play with text editors and languages again!</p>
+]]></content:encoded>
+			<wfw:commentRss>/2015/03/01/a-quick-reflection-on-algorithms/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

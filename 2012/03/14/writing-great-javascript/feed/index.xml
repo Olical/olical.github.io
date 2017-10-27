@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	
+	>
+<channel>
+	<title>Comments on: Writing great JavaScript</title>
+	<atom:link href="/2012/03/14/writing-great-javascript/feed/" rel="self" type="application/rss+xml" />
+	<link>/2012/03/14/writing-great-javascript/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Mon, 22 May 2017 19:57:20 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>By: Dustin Bradley</title>
+		<link>/2012/03/14/writing-great-javascript/#comment-42</link>
+		<dc:creator><![CDATA[Dustin Bradley]]></dc:creator>
+		<pubDate>Sun, 30 Dec 2012 16:01:00 +0000</pubDate>
+		<guid isPermaLink="false">/2012/03/14/writing-great-javascript#comment-42</guid>
+		<description><![CDATA[Such kind of posts are really helpful to improve our work, coding is not an easy thing when it comes to web development, a little mistake can ruin the whole project and sometimes you keep up all the night to find that.]]></description>
+		<content:encoded><![CDATA[<p>Such kind of posts are really helpful to improve our work, coding is not an easy thing when it comes to web development, a little mistake can ruin the whole project and sometimes you keep up all the night to find that.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: AldenWeaver</title>
+		<link>/2012/03/14/writing-great-javascript/#comment-40</link>
+		<dc:creator><![CDATA[AldenWeaver]]></dc:creator>
+		<pubDate>Sat, 01 Dec 2012 06:44:00 +0000</pubDate>
+		<guid isPermaLink="false">/2012/03/14/writing-great-javascript#comment-40</guid>
+		<description><![CDATA[would it be possible to translate your site into spanish because we have
+ difficulties of speaking to english, and and there is few pictures on 
+your site i’d really like to learn even more of that which you are 
+writting. ]]></description>
+		<content:encoded><![CDATA[<p>would it be possible to translate your site into spanish because we have<br />
+ difficulties of speaking to english, and and there is few pictures on<br />
+your site i’d really like to learn even more of that which you are<br />
+writting. </p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Baytech Web Design</title>
+		<link>/2012/03/14/writing-great-javascript/#comment-38</link>
+		<dc:creator><![CDATA[Baytech Web Design]]></dc:creator>
+		<pubDate>Fri, 27 Jul 2012 07:41:00 +0000</pubDate>
+		<guid isPermaLink="false">/2012/03/14/writing-great-javascript#comment-38</guid>
+		<description><![CDATA[Well Great post i l ike it very much..and very helpful for my design project]]></description>
+		<content:encoded><![CDATA[<p>Well Great post i l ike it very much..and very helpful for my design project</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Web Development</title>
+		<link>/2012/03/14/writing-great-javascript/#comment-34</link>
+		<dc:creator><![CDATA[Web Development]]></dc:creator>
+		<pubDate>Fri, 30 Mar 2012 12:26:00 +0000</pubDate>
+		<guid isPermaLink="false">/2012/03/14/writing-great-javascript#comment-34</guid>
+		<description><![CDATA[Good informative sharing thanks 
+ ]]></description>
+		<content:encoded><![CDATA[<p>Good informative sharing thanks<br />
+ </p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Back Office Support</title>
+		<link>/2012/03/14/writing-great-javascript/#comment-33</link>
+		<dc:creator><![CDATA[Back Office Support]]></dc:creator>
+		<pubDate>Fri, 30 Mar 2012 06:54:00 +0000</pubDate>
+		<guid isPermaLink="false">/2012/03/14/writing-great-javascript#comment-33</guid>
+		<description><![CDATA[It&#039;s a nice and great blog. I&#039;m happy to read this, the article are also very knowledgeable.
+thanks for sharing. ]]></description>
+		<content:encoded><![CDATA[<p>It&#8217;s a nice and great blog. I&#8217;m happy to read this, the article are also very knowledgeable.<br />
+thanks for sharing. </p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Lee Wei Yeong</title>
+		<link>/2012/03/14/writing-great-javascript/#comment-32</link>
+		<dc:creator><![CDATA[Lee Wei Yeong]]></dc:creator>
+		<pubDate>Mon, 26 Mar 2012 13:13:00 +0000</pubDate>
+		<guid isPermaLink="false">/2012/03/14/writing-great-javascript#comment-32</guid>
+		<description><![CDATA[np]]></description>
+		<content:encoded><![CDATA[<p>np</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Kevin Ball</title>
+		<link>/2012/03/14/writing-great-javascript/#comment-31</link>
+		<dc:creator><![CDATA[Kevin Ball]]></dc:creator>
+		<pubDate>Sun, 25 Mar 2012 16:39:00 +0000</pubDate>
+		<guid isPermaLink="false">/2012/03/14/writing-great-javascript#comment-31</guid>
+		<description><![CDATA[Using jslint is a great suggestion.  I recommend also integrating it with your IDE/text editor (for example in vim using jslint.vim), so you can see the suggestions and bug fixes inline as you&#039;re coding.  Coding JS has gotten so much easier for me since I pulled this in. ]]></description>
+		<content:encoded><![CDATA[<p>Using jslint is a great suggestion.  I recommend also integrating it with your IDE/text editor (for example in vim using jslint.vim), so you can see the suggestions and bug fixes inline as you&#8217;re coding.  Coding JS has gotten so much easier for me since I pulled this in. </p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: AlexGemmell</title>
+		<link>/2012/03/14/writing-great-javascript/#comment-30</link>
+		<dc:creator><![CDATA[AlexGemmell]]></dc:creator>
+		<pubDate>Sat, 24 Mar 2012 17:55:00 +0000</pubDate>
+		<guid isPermaLink="false">/2012/03/14/writing-great-javascript#comment-30</guid>
+		<description><![CDATA[That does indeed help, many thanks!  I&#039;ve got a ton of follow-up questions, but I think I&#039;ll save you the headache and buy Javascript: The Good Parts for my Kindle!]]></description>
+		<content:encoded><![CDATA[<p>That does indeed help, many thanks!  I&#8217;ve got a ton of follow-up questions, but I think I&#8217;ll save you the headache and buy Javascript: The Good Parts for my Kindle!</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Oliver Caldwell</title>
+		<link>/2012/03/14/writing-great-javascript/#comment-29</link>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+		<pubDate>Sat, 24 Mar 2012 17:47:00 +0000</pubDate>
+		<guid isPermaLink="false">/2012/03/14/writing-great-javascript#comment-29</guid>
+		<description><![CDATA[ Interesting question. Basically without using prototype it will not work. When you create an instance of a class, x = new MyClass() for instance, the prototype of that function is copied into a new object, so the result of the &quot;new&quot; call is almost a copy of the prototype object.
+
+If you do not use the prototype object then when you run x = new MyClass() x will not contain any of the functions. This is best explained in a fiddle though: http://jsfiddle.net/Wolfy87/SS3s6/
+
+Hope this helps! :D]]></description>
+		<content:encoded><![CDATA[<p> Interesting question. Basically without using prototype it will not work. When you create an instance of a class, x = new MyClass() for instance, the prototype of that function is copied into a new object, so the result of the &#8220;new&#8221; call is almost a copy of the prototype object.</p>
+<p>If you do not use the prototype object then when you run x = new MyClass() x will not contain any of the functions. This is best explained in a fiddle though: <a href="http://jsfiddle.net/Wolfy87/SS3s6/" rel="nofollow">http://jsfiddle.net/Wolfy87/SS3s6/</a></p>
+<p>Hope this helps! 😀</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: AlexGemmell</title>
+		<link>/2012/03/14/writing-great-javascript/#comment-28</link>
+		<dc:creator><![CDATA[AlexGemmell]]></dc:creator>
+		<pubDate>Sat, 24 Mar 2012 16:57:00 +0000</pubDate>
+		<guid isPermaLink="false">/2012/03/14/writing-great-javascript#comment-28</guid>
+		<description><![CDATA[Quick question, why add your function via prototype rather than directly to the class?
+
+
+
+
+
+
+
+
+Why:SomeClass.prototype.foo = function() { // code... };
+Instead of:SomeClass.foo = function() { // code... };Forgive my basic understanding of prototype.  I&#039;m sure there&#039;s a good reason!Or is this question out of the scope of this article?  :)]]></description>
+		<content:encoded><![CDATA[<p>Quick question, why add your function via prototype rather than directly to the class?</p>
+<p>Why:SomeClass.prototype.foo = function() { // code&#8230; };<br />
+Instead of:SomeClass.foo = function() { // code&#8230; };Forgive my basic understanding of prototype.  I&#8217;m sure there&#8217;s a good reason!Or is this question out of the scope of this article?  🙂</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

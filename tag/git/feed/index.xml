@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>git &#8211; Oliver Caldwell&#039;s blog</title>
+	<atom:link href="/tag/git/feed/" rel="self" type="application/rss+xml" />
+	<link>/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Wed, 18 Oct 2017 13:50:23 +0000</lastBuildDate>
+	<language>en-GB</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>Making package.el behave like Vundle</title>
+		<link>/2014/10/20/making-package-el-behave-like-vundle/</link>
+		<comments>/2014/10/20/making-package-el-behave-like-vundle/#respond</comments>
+		<pubDate>Mon, 20 Oct 2014 21:10:27 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Emacs]]></category>
+		<category><![CDATA[Emacs Lisp]]></category>
+		<category><![CDATA[Lisp]]></category>
+		<category><![CDATA[Text Editors]]></category>
+		<category><![CDATA[Vim]]></category>
+		<category><![CDATA[dotfiles]]></category>
+		<category><![CDATA[emacs]]></category>
+		<category><![CDATA[git]]></category>
+		<category><![CDATA[package.el]]></category>
+		<category><![CDATA[vim]]></category>
+
+		<guid isPermaLink="false">/?p=198</guid>
+		<description><![CDATA[I love Vundle, it allows me to specify a list of packages within my dotfiles repository that is kept up to date and in sync with every other machine I use Vim on. The key point with this is that I can remove a package from all machines by simply deleting the line from my <a class="read-more" href="/2014/10/20/making-package-el-behave-like-vundle/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>I love <a href="https://github.com/gmarik/Vundle.vim">Vundle</a>, it allows me to specify a list of packages within my <a href="https://github.com/Wolfy87/dotfiles">dotfiles repository</a> that is kept up to date and in sync with every other machine I use Vim on. The key point with this is that I can remove a package from all machines by simply deleting the line from my configuration.</p><pre class="crayon-plain-tag">" Load Vundle. Manages all of the bundles.
+filetype off
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+" So Vundle can update itself.
+Plugin 'gmarik/Vundle.vim'
+
+" Colour scheme.
+Plugin 'jonathanfilip/vim-lucius'
+
+" Plugins without settings.
+Plugin 'PeterRincker/vim-argumentative'
+Plugin 'Wolfy87/vim-enmasse'
+Plugin 'helino/vim-json'
+
+
+" I have a lot, so I'll skip a few...
+
+
+Plugin 'myusuf3/numbers.vim'
+  nnoremap &lt;leader&gt;l :NumbersToggle&lt;CR&gt;
+
+" Enable some syntax settings that had to be disabled for Vundle.
+call vundle#end()
+filetype plugin indent on</pre><p>Package management through <em>~/.*rc</em> files is the Shih Tzu. Sadly, <a href="http://wikemacs.org/wiki/Package.el">package.el</a> doesn&#8217;t seem to do this and expects me to use some silly text based menu as well as remembering to keep every single one of my packages in sync. If I remove it from one, I need to remove it from the rest by hand. <strong>NO.</strong></p>
+<p>I&#8217;m not having any of that.</p>
+<h2>Installing missing packages</h2>
+<p>This one&#8217;s easy enough to solve and many people have many solutions. I have a function, <a href="https://github.com/Wolfy87/dotfiles/blob/88926d0f8ad581f4a4953d6fdea40d812638b17d/emacs/init.el#L97-L103"><em>dotfiles-sync</em></a>, which will get the latest package lists from <a href="http://melpa.milkbox.net/">MELPA</a> (and a few others) and installs all packages I currently don&#8217;t have locally. Simple enough and very effective, even if it does require a few reboots to get them all installed, still trying to work that one out.</p><pre class="crayon-plain-tag">;; Main package list to fetch from melpa.
+(defvar dotfiles-packages
+  '(evil
+    evil-args
+    evil-nerd-commenter
+    ;; WAY MORE PACKAGES...
+    ))
+
+;; Package manager configuration.
+(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
+                         ("marmalade" . "http://marmalade-repo.org/packages/")
+                         ("melpa" . "http://melpa.milkbox.net/packages/")))
+(package-initialize)
+
+(defun dotfiles-sync ()
+  "Install packages."
+  (interactive)
+  (package-refresh-contents)
+  (dolist (p dotfiles-packages)
+    (when (not (package-installed-p p))
+      (package-install p))))
+
+;; A macro from milkbox.net to make load hooks easier.
+(defmacro after (mode &amp;rest body)
+  "`eval-after-load' MODE evaluate BODY."
+  (declare (indent defun))
+  `(eval-after-load ,mode
+     '(progn ,@body)))
+
+;; Individual package configuration.
+(defvar evil-want-C-u-scroll t)
+(after `evil-autoloads
+  (evil-mode t))
+
+(after `evil-args-autoloads
+  ;; Bind evil-args text objects.
+  (define-key evil-inner-text-objects-map "a" 'evil-inner-arg)
+  (define-key evil-outer-text-objects-map "a" 'evil-outer-arg)
+
+  ;; Bind evil-forward/backward-args.
+  (define-key evil-normal-state-map "L" 'evil-forward-arg)
+  (define-key evil-normal-state-map "H" 'evil-backward-arg)
+  (define-key evil-motion-state-map "L" 'evil-forward-arg)
+  (define-key evil-motion-state-map "H" 'evil-backward-arg)
+
+  ;; Bind evil-jump-out-args.
+  (define-key evil-normal-state-map "K" 'evil-jump-out-args))
+
+(after `evil-nerd-commenter-autoloads
+  (evilnc-default-hotkeys))
+
+;; WAY MORE PACKAGE CONFIGURATION</pre><p>So here I have a list of packages, a function to fetch them and a macro that I use to wait until each package is loaded before I configure them. To update my packages I have to go into the text based menu, mark out of date packages for upgrade and then execute it all (<em>M-x list-packages RET U x</em>). Despite this being cumbersome and annoying, this appears to be the only way right now.</p>
+<h2>The other problem, pruning</h2>
+<p>So I can install and update fairly easily, albeit not perfectly, but I&#8217;m still lacking the ability to prune old packages that I no longer have listed in my <em>init.el</em> file. My only main requirement for this process is that it executes as part of my synchronisation. Luckily the problem frustrated me enough to construct a solution, now my Emacs package management isn&#8217;t that far behind that of Vim / Vundle&#8217;s, but it still doesn&#8217;t feel quite a smooth. I&#8217;ll take what I can get.</p><pre class="crayon-plain-tag">;; Package pruning tools.
+(defun flatten (mylist)
+  "Flatten MYLIST, taken from http://rosettacode.org/wiki/Flatten_a_list#Emacs_Lisp for sanity."
+  (cond
+   ((null mylist) nil)
+   ((atom mylist) (list mylist))
+   (t
+    (append (flatten (car mylist)) (flatten (cdr mylist))))))
+
+(defun filter (predicate subject)
+  "Use PREDICATE to filter SUBJECT and return the result."
+  (delq nil
+        (mapcar (lambda (x) (and (funcall predicate x) x)) subject)))
+
+(defun get-package-name (package)
+  "Fetch the symbol name of a PACKAGE."
+  (car package))
+
+(defun get-package-version (package)
+  "Return the version string for PACKAGE."
+  (package-version-join (aref (cdr package) 0)))
+
+(defun get-package-dependencies (package)
+  "Fetch the symbol list of PACKAGE dependencies."
+  (mapcar 'car (elt (cdr package) 1)))
+
+(defun get-packages-dependency-tree (packages)
+  "Recursively fetch all dependencies for PACKAGES and return a tree of lists."
+  (mapcar (lambda (package)
+            (list (get-package-name package)
+                  (get-packages-dependency-tree (get-package-dependencies package))))
+          (get-packages-as-alist packages)))
+
+(defun get-packages-as-alist (packages)
+  "Return the list of PACKAGES symbols as an alist, containing version and dependency information."
+  (filter (lambda (n) (car (member (car n) packages))) package-alist))
+
+(defun get-all-current-dependencies (packages)
+  "Return all packages found in PACKAGES with their dependencies recursively."
+  (delq nil (delete-dups (flatten (get-packages-dependency-tree packages)))))
+
+(defun get-all-obsolete-packages (packages)
+  "Return all packages in an alist which are not contained in PACKAGES."
+  (filter (lambda (n) (not (member (car n) (get-all-current-dependencies packages)))) package-alist))
+
+(defun prune-installed-packages (packages)
+  "Delete all packages not listed or depended on by anything in PACKAGES."
+  (mapc (lambda (n)
+          (package-delete
+           (symbol-name (get-package-name n))
+           (get-package-version n)))
+        (get-all-obsolete-packages packages)))</pre><p>I then amended my <a href="https://github.com/Wolfy87/dotfiles/blob/d24591ebd7b3a36f629fb5a4ebd921c72f2b5b91/emacs/init.el#L104-L111"><em>dotfiles-sync</em></a> function to prune my old packages by adding one line. Fantastic.</p><pre class="crayon-plain-tag">(defun dotfiles-sync ()
+  "Install packages."
+  (interactive)
+  (prune-installed-packages dotfiles-packages) ;; &lt;-- THIS ONE :D
+  (package-refresh-contents)
+  (dolist (p dotfiles-packages)
+    (when (not (package-installed-p p))
+      (package-install p))))</pre><p>I hope others will find this useful, I sure feel safer in the knowledge that packages I no longer list in my repository will be removed on my next synchronisation. You can just rip my code from this post, but I suppose I could turn it into a package if there was any real interest in it.</p>
+<p>Edit: I created a <a href="https://www.reddit.com/r/emacs/comments/2jtojf/packageel_didnt_prune_my_unused_packages_so_i/">post</a> on the Emacs subreddit in which syl20bnr ran with the idea and made it far better. The concept can now be found within <a href="https://github.com/syl20bnr/spacemacs/blob/c517424032a9f43e1365d9f157dc246b38debda1/core/contribsys.el#L245-L270">the spacemacs repository</a> and it looks great!</p>
+]]></content:encoded>
+			<wfw:commentRss>/2014/10/20/making-package-el-behave-like-vundle/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Building vim-netrw-signs: Into the VimL</title>
+		<link>/2014/09/03/building-vim-netrw-signs-into-the-viml/</link>
+		<comments>/2014/09/03/building-vim-netrw-signs-into-the-viml/#respond</comments>
+		<pubDate>Wed, 03 Sep 2014 18:00:00 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Projects]]></category>
+		<category><![CDATA[git]]></category>
+		<category><![CDATA[netrw]]></category>
+		<category><![CDATA[vim]]></category>
+
+		<guid isPermaLink="false">/?p=172</guid>
+		<description><![CDATA[In this post I&#8217;m going to aim for an MVP that may not be the most usable but can serve as a proof of concept. This version will only run when you call a command and have minimal configuration. Polishing of the plugin will come after in the form of help pages, configuration and automatic <a class="read-more" href="/2014/09/03/building-vim-netrw-signs-into-the-viml/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>In this post I&#8217;m going to aim for an MVP that may not be the most usable but can serve as a proof of concept. This version will only run when you call a command and have minimal configuration. Polishing of the plugin will come after in the form of help pages, configuration and automatic execution.</p>
+<p>The very first step involves creating the main plugin file which is loaded from the runtime path and defines commands, automatic as well as normal. These commands will point to a namespaced file which will be loaded on demand, this is all contained within the <code>autoload</code> directory.</p>
+<h3>The initial files</h3>
+<p>First <code>plugin/netrw_signs.vim</code>, which points to an autoload function.</p><pre class="crayon-plain-tag">command! NetrwSigns :call netrw_signs#SignBuffer()</pre><p>Then we can create the &#8220;Hello, World!&#8221; function on the other end of this command in <code>autoload/netrw_signs.vim</code>.</p><pre class="crayon-plain-tag">function! netrw_signs#SignBuffer()
+  echo "Hello, World!"
+endfunction</pre><p>After adding the project directory to my runtime path (<code>set rtp+=$HOME/.../vim-netrw-signs</code> in <code>~/.vimrc</code>) I can open Vim and execute <code>:NetrwSigns</code> to run my new function. This prints &#8220;Hello, World!&#8221; to the bottom of my screen. Obviously the plugin still lacks a fair bit of functionality.</p>
+<p>I will also add a way to fetch the version number, as I did with vim-enmasse.</p><pre class="crayon-plain-tag">" plugin/netrw_signs.vim
+command! NetrwSignsVersion :echo netrw_signs#GetVersion()
+
+" autoload/netrw_signs.vim
+function! netrw_signs#GetVersion()
+  return "1.0.0"
+endfunction</pre><p>Next, we must build an implementation behind the <code>SignBuffer</code> function, so that involves building the entire thing. No big deal. But first, let&#8217;s test this stupidly simple version function in <code>tests/version.vader</code>.</p><pre class="crayon-plain-tag">Before (set up regular expression):
+  let versionRegExp = '\v\d+.\d+.\d+'
+
+Execute (can print the version number with the command):
+  redir =&amp;gt; messages
+  NetrwSignsVersion
+  redir END
+
+  let result = get(split(messages, "\n"), -1, "")
+
+  Assert result =~# versionRegExp
+
+Execute (can get the version number with the function):
+  Assert netrw_signs#GetVersion() =~# versionRegExp</pre><p>I also had to add my project folder to my runtime path to get this to work in <code>test.sh</code>.</p><pre class="crayon-plain-tag">vim -Nu &amp;lt;(cat &amp;lt;&amp;lt; EOF
+filetype off
+set rtp+=$vader
+set rtp+=. &amp;lt;-- This thing.
+filetype plugin indent on
+EOF) +Vader tests/*.vader</pre><p></p>
+<h3>High level testing</h3>
+<p>I&#8217;m going to use my tests to define how the plugin will actually work. Some may say that I&#8217;m driving my development with tests. These will be high level but provide me with all the checks I need to make sure my basic configuration is actually producing the desired results and signs. One of the best things about writing the tests up front is that my configuration will be thought out in a way that makes sense from the users perspective, I&#8217;ll then work back from there.</p>
+<p>Here&#8217;s my preliminary configuration I&#8217;ll be using in my root high level tests. Below it is my thought process in pseudo-English.</p><pre class="crayon-plain-tag">let g:netrw_signs_checks={
+  \'contains-hyphen': 'ContainsHyphen',
+  \'contains-upper-case': 'ContainsUpperCase'
+\}
+let g:netrw_signs_styles={
+  \'error': 'text=&amp;gt;&amp;gt; texthl=ErrorMsg'
+  \'warning': 'text=&amp;gt;&amp;gt; texthl=WarningMsg'
+\}
+let g:netrw_signs_bindings={
+  \'contains-hyphen': 'error',
+  \'contains-upper-case': 'warning'
+\}</pre><p></p><pre class="crayon-plain-tag">Let the check contains-hyphen use the function ContainsHyphen.
+Let the check contains-upper-case use the function ContainsUpperCase.
+
+Let the error sign have these arguments passed to it's definition within Vim.
+Let the warning sign have these arguments passed to it's definition within Vim.
+
+Let the contains-hyphen check show the error sign if it returns true.
+Let the contains-upper-case check show the warning sign if it returns true.</pre><p>As far as I can tell so far, this is all the logic I will need to configure the plugin. This should allow the user more than enough power, it will even allow you to hook into git, which is my end goal. The one thing I&#8217;m not so sure about right now is how I&#8217;ll execute the functions by name reliably. It should &#8220;just work&#8221;, but I may encounter some problems with that later on. I also need to work out the format for the check functions return values.</p>
+<p>My current thinking is for each check function to either get called once with each line of the netrw buffer or, alternatively, to pass an array of all lines to the function. The function would then run a map over that array and return an array of booleans. The one line approach allows for simple functions and the heavy lifting on my end (probably involving maps), the other approach involves heavier check functions but the chance for optimisations if you had to call <code>git status</code> for every line, for example.</p>
+<p>With those implementation details in mind, I&#8217;ll write my first tests against this configuration.</p>
+<h3>Uh oh&#8230;</h3>
+<p>It is at this point that I realised how much work will actually be involved to get a working and tested MVP that didn&#8217;t die when it encountered tiny changes in netrw configuration. I don&#8217;t have time for this sort of return on investment, so I&#8217;m shelving this little project to learn about Clojure and algorithms using this stack of books I&#8217;ve accumulated. I&#8217;m obviously going to push everything I&#8217;ve got so far alongside these few posts, and I may even come back to it one day. Until then, sorry vim-netrw-signs, you&#8217;re dead to me.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2014/09/03/building-vim-netrw-signs-into-the-viml/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Building vim-netrw-signs: Tooling</title>
+		<link>/2014/09/01/building-vim-netrw-signs-tooling/</link>
+		<comments>/2014/09/01/building-vim-netrw-signs-tooling/#respond</comments>
+		<pubDate>Mon, 01 Sep 2014 08:00:30 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Projects]]></category>
+		<category><![CDATA[git]]></category>
+		<category><![CDATA[netrw]]></category>
+		<category><![CDATA[vim]]></category>
+
+		<guid isPermaLink="false">/?p=168</guid>
+		<description><![CDATA[In my last post I focused on getting the repository and main files up and running, here I&#8217;ll briefly touch on the satellite tooling I&#8217;m going to hook into to make the development a bit easier. Oh, also, I&#8217;m writing this from a cruise ship somewhere around Gibraltar. Travis So I created my .travis.yml file <a class="read-more" href="/2014/09/01/building-vim-netrw-signs-tooling/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>In my last post I focused on <a title="Building vim-netrw-signs: Introduction" href="/2014/08/11/building-vim-netrw-signs-introduction/">getting the repository and main files up and running</a>, here I&#8217;ll briefly touch on the satellite tooling I&#8217;m going to hook into to make the development a bit easier. Oh, also, I&#8217;m writing this from a cruise ship somewhere around Gibraltar.</p>
+<h3>Travis</h3>
+<p>So I created my <code>.travis.yml</code> file last time which gives me all the configuration I need to activate continuous integration testing. Because I went onto the <a href="https://travis-ci.org/">Travis</a> website and activated the repository, every time I or any other push it will run the test suite.</p>
+<p>So this will allow me to check my code on another environment, which is always fun and games when it comes to Vim, but also have pull requests pre-vetted for me. All PRs will be built and have their results displayed within the actual PR page. The Travis integration actually goes both ways.</p>
+<h3>Waffle</h3>
+<p>This is a tool from the guys behind <a href="https://www.rallydev.com/">Rally</a>, which is basically enterprise task management. <a href="https://waffle.io/">Waffle</a> is the free and open source oriented version which allows me to control my GitHub issues as to do lists on a sort of Kanban board. I&#8217;ve already used their automated PR generator that asks to add the &#8220;ready&#8221; task count to my readme. This will allow anyone viewing the GitHub repository to see what tasks are researched, locked down and ready to be worked on by anyone and everyone.</p>
+<h3>Tools in summary</h3>
+<p>So I have Travis executing tests on my remote GitHub repository using Vader and Waffle hooking into the GitHub issues system to provide task boards and organisation. Now I can plan out tasks, drag them around their various states and tag them then build them.</p>
+<p>I&#8217;ll probably open long running tasks (this should be most feature branches) up as pull requests so that I get diff, comment and CI tooling all on one page. This gives other developers the chance to see my thought processes and comments as I go about building a feature. It should also show how many times I forget to push without running the test suite.</p>
+<h3>Next up</h3>
+<p>Diving into the VimL and actually building this beast. I&#8217;ll keep popping up for air and writing little bits about the development, but it&#8217;s going to be fairly high level on the whole with a lot of links to commits. This is because it would take about five years to complete if I talked about every line I wrote.</p>
+<p>So the next post will be massive and code heavy but should show the actual construction of a Vim plugin, not just the tooling and extra services.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2014/09/01/building-vim-netrw-signs-tooling/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Building vim-netrw-signs: Introduction</title>
+		<link>/2014/08/11/building-vim-netrw-signs-introduction/</link>
+		<comments>/2014/08/11/building-vim-netrw-signs-introduction/#respond</comments>
+		<pubDate>Mon, 11 Aug 2014 21:30:27 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Projects]]></category>
+		<category><![CDATA[git]]></category>
+		<category><![CDATA[netrw]]></category>
+		<category><![CDATA[vim]]></category>
+
+		<guid isPermaLink="false">/?p=99</guid>
+		<description><![CDATA[I thought of another Vim plugin idea a while back at Vim London, which happens to be my second of such ideas, the first being vim-enmasse. My plan is to build this plugin over the coming weeks (probably months, ideally not years) and take you along for the ride with these brief posts. From git <a class="read-more" href="/2014/08/11/building-vim-netrw-signs-introduction/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>I thought of another Vim plugin idea a while back at <a href="http://www.meetup.com/Vim-London/">Vim London</a>, which happens to be my second of such ideas, the first being <a href="https://github.com/Wolfy87/vim-enmasse">vim-enmasse</a>. My plan is to build this plugin over the coming weeks (probably months, ideally not years) and take you along for the ride with these brief posts. From <code>git init</code> to <code>git tag v1.0.0</code>. To begin with, here&#8217;s <a href="https://github.com/Wolfy87/vim-netrw-signs">the repository</a> and the <a href="232121235a31ee282d363ae331050f40f8dbdc38">initial commit</a>. As with all of my open source code now, it&#8217;s &#8220;licensed&#8221; under <a href="http://unlicense.org/">The Unlicence</a>.</p>
+<p>This plugin is much like <a href="https://github.com/mhinz/vim-signify">vim-signify</a> or <a href="https://github.com/scrooloose/syntastic">syntastic</a> but for netrw, Vim&#8217;s built in file browser. This is inspired by the way that some super-massive IDEs will show parts of your folder structure that have been touched according to git. I want to create something that could hook into linters or version control systems to warn you about things when you drop into netrw from time to time. This becomes an easy thing to do and a frequent occurrence if you have something like <a href="https://github.com/tpope/vim-vinegar">vim-vinegar</a> installed.</p>
+<p>So this will be quite generic with, probably, only git integrated to begin with. It will simply allow small composable modules to decide which files or folders should have signs attached to them. First thing&#8217;s first (after creating the repository)&#8230;</p>
+<h3>Setting up the tests</h3>
+<p>Yes, tests first. I used <a href="https://github.com/junegunn/vader.vim">vader.vim</a> on vim-enmasse and I&#8217;ll be doing the same here, but this time from the very beginning. It can be integrated in such a way that you can run tests from your local command line and <a href="https://travis-ci.org/">Travis CI</a>, as I&#8217;ll be doing soon enough. I&#8217;ll start off by defining a script to initialise dependencies and run my test suite, which is stolen from <a href="https://github.com/Wolfy87/vim-enmasse/blob/835ec0bd794183514865943188990669511d546b/test/run">vim-enmasse&#8217;s</a> (mostly).</p><pre class="crayon-plain-tag">#!/usr/bin/env bash
+
+vader=.vader
+
+if [[ ! -d $vader ]]; then
+	git clone https://github.com/junegunn/vader.vim.git $vader
+else
+	cd $vader
+	git pull
+	cd ..
+fi
+
+vim -Nu &lt;(cat &lt;&lt; EOF
+filetype off
+set rtp+=$vader
+filetype plugin indent on
+EOF) +Vader tests/*.vader</pre><p>And then I dropped in the Travis config, just because it&#8217;s that easy.</p><pre class="crayon-plain-tag">language: vim
+
+before_script: |
+  git clone https://github.com/junegunn/vader.vim.git
+
+script: |
+  vim -Nu &lt;(cat &lt;&lt; VIMRC
+  filetype off
+  set rtp+=vader.vim
+  set rtp+=.
+  set rtp+=after
+  filetype plugin indent on
+  VIMRC) -c 'Vader! tests/*.vader' &gt; /dev/null</pre><p>So I have two scripts, one Travis will use to execute quickly on some headless machine, and another I will repeatedly run locally (probably within a tmux split). The first script will check if I have vader cloned yet and will go and fetch it if not. When it executes it will run the tests in a minimal Vim environment and then report the results through the quickfix list of the minimal Vim window. I may change this to just dump it&#8217;s output like the Travis version, I haven&#8217;t decided yet.</p>
+<p>So now all I have to do is add a <code>*.vader</code> file to <code>tests/</code> and either or my two execution methods should run them in identical environments. I have to be careful to not let my highly customised Vim configuration leak through to my testing environment.</p>
+<h3>Next</h3>
+<p>I&#8217;ll be adding my first hunk of source code, even if it&#8217;s a bit of autoload magic as well as a rudimentary test to check the Travis integration. Here&#8217;s <a href="https://github.com/Wolfy87/vim-netrw-signs/commit/14e769dd281bffb6c7a77c30e6d33d2c65b47423">tonight&#8217;s last commit</a>. Baby steps are the way forwards.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2014/08/11/building-vim-netrw-signs-introduction/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

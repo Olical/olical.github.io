@@ -1,0 +1,793 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Clojure &#8211; Oliver Caldwell&#039;s blog</title>
+	<atom:link href="/category/lisp-2/clojure-lisp-2/feed/" rel="self" type="application/rss+xml" />
+	<link>/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Wed, 18 Oct 2017 13:50:23 +0000</lastBuildDate>
+	<language>en-GB</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>An introduction to transcriptor</title>
+		<link>/2017/10/06/an-introduction-to-transcriptor/</link>
+		<comments>/2017/10/06/an-introduction-to-transcriptor/#respond</comments>
+		<pubDate>Fri, 06 Oct 2017 13:46:57 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Clojure]]></category>
+		<category><![CDATA[clojure]]></category>
+		<category><![CDATA[repl]]></category>
+		<category><![CDATA[testing]]></category>
+		<category><![CDATA[transcriptor]]></category>
+
+		<guid isPermaLink="false">/?p=581</guid>
+		<description><![CDATA[Transcriptor is a new Clojure tool released by Stuard Halloway (who literally writes books on Clojure) that approaches testing from a different angle. I only noticed it after he tweeted the following and I asked for him to elaborate. Luckily enough, he did! status: replacing gratuitous test framework goo with information-rich #clojure ex-info — stuarthalloway <a class="read-more" href="/2017/10/06/an-introduction-to-transcriptor/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p><a href="https://github.com/cognitect-labs/transcriptor">Transcriptor</a> is a new <a href="https://clojure.org/">Clojure</a> tool released by <a href="https://twitter.com/stuarthalloway">Stuard Halloway</a> (who literally writes books on Clojure) that approaches testing from a different angle. I only noticed it after he tweeted the following and I asked for him to elaborate. Luckily enough, he did!</p>
+<blockquote class="twitter-tweet" data-lang="en">
+<p dir="ltr" lang="en">status: replacing gratuitous test framework goo with information-rich <a href="https://twitter.com/hashtag/clojure?src=hash&amp;ref_src=twsrc%5Etfw">#clojure</a> ex-info</p>
+<p>— stuarthalloway (@stuarthalloway) <a href="https://twitter.com/stuarthalloway/status/915902870737833984?ref_src=twsrc%5Etfw">October 5, 2017</a></p></blockquote>
+<p><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script></p>
+<p>It allows you to take a REPL interaction and solidify it within a standalone file, this file can be executed later like a normal test suite. Unlike a test suite, you can check the value of any given line in that file against a <a href="https://clojure.org/about/spec">Clojure spec</a>, allowing you to interleave statements and specs.</p>
+<p>I think this is a fantastic idea that will work great for some people but probably not everyone. The world is very hung up on TDD and code coverage, so some may shun this without a second thought. Here&#8217;s how Stuart outlines the problem in the README (very well put, may I add!):</p>
+<blockquote><p>Testing frameworks often introduce their own abstractions for e.g. evaluation order, data validation, reporting, scope, code reuse, state, and lifecycle. In my experience, these abstractions are <em>always</em> needlessly different from (and inferior to) related abstractions provided by the language itself.</p>
+<p>Adapting an already-working REPL interaction to satisfy such testing abstractions is a waste of time, and it throws away the intermediate REPL results that are valuable in diagnosing a problem.</p>
+<p><u>So transcriptor aims to do <em>less</em>, and impose the bare minimum of cognitive load needed to convert a REPL interaction into a test.</u> The entire API is four functions:</p>
+<ul>
+<li><code>xr/run</code> runs a REPL script and produces a transcript</li>
+<li><code>check!</code> validates the last returned value against a Clojure spec</li>
+<li><code>xr/on-exit</code> lets you register cleanup code to run after <code>xr/run</code> completes</li>
+<li><code>xr/repl-files</code> finds the <code>.repl</code> files in a directory tree</li>
+</ul>
+</blockquote>
+<p>The underline is my addition. I&#8217;ve recently come to admire software that solves a specific problem and nothing more with as little code as possible.</p>
+<h2>Usage</h2>
+<p>Thinking about the possibilities is all well and good, but I&#8217;m going to show you a simple concrete usage, something I felt the README lacked (which is fine, it&#8217;s new!). I&#8217;m going to write a dice roller using the REPL to check the code as I go along. I&#8217;ll move these checks out into <em>.repl</em> files, when I&#8217;m done I should have a working dice roller with an example based test suite all thanks to transcriptor.</p>
+<p>I&#8217;m going into this knowing almost nothing about the problem and tooling involved, so I <a href="https://www.youtube.com/watch?v=w8RdTodkxDo">recorded</a> myself (and <a href="https://www.twitch.tv/olliemakesthings">streamed</a>) as I learned about and built this solution.</p>
+<p><iframe width="560" height="315" src="https://www.youtube.com/embed/w8RdTodkxDo" frameborder="0" allowfullscreen="allowfullscreen"></iframe></p>
+<p>As you can see, there wasn&#8217;t much to it, you can find the repository for this video at <a href="https://github.com/Olical/clj-dice-roller">Olical/clj-dice-roller</a>. First I needed to add the following dependencies to my <em>project.clj:</em></p><pre class="crayon-plain-tag">:dependencies [[org.clojure/clojure "1.9.0-beta1"]
+               [org.clojure/spec.alpha "0.1.123"]
+               [com.cognitect/transcriptor "0.1.5"]]</pre><p>Then I wrote my actual dice rolling namespace like this:</p><pre class="crayon-plain-tag">(ns dice-roller.core)
+
+(defn roll
+  "Rolls some dice, like (roll 3 6) would be three d6."
+  [amount die]
+  (vec (map #(inc (rand-int %)) (filter pos? (repeat amount die)))))</pre><p>I included a bunch of calls under my function to check various aspects, which is easier to convey in the video. I was experimenting with different inputs to see what may cause errors and what I should do when someone gives me bad inputs like negative numbers.</p><pre class="crayon-plain-tag">(roll 0 6) ;; []
+(roll 1 6) ;; [3]
+(roll 3 6) ;; [1 3 6]
+(roll 1 0) ;; Error? Empty?
+(roll -1 6) ;; Error?
+(roll 3 -1) ;; Default to 0????</pre><p>I eventually settled on always returning a vector but not rolling invalid dice, as you can see from the finished function above. I then moved these checks into a <em>.repl</em> file with some spec checks.</p><pre class="crayon-plain-tag">(require '[cognitect.transcriptor :as xr]
+         '[clojure.spec.alpha :as s]
+         '[dice-roller.core :as dice])
+
+(s/def ::d6 (s/and int? #(&lt; 0 % 7)))
+
+(dice/roll 0 6)
+(xr/check! (s/and vector? empty?))
+
+(dice/roll 1 6)
+(xr/check! (s/tuple ::d6))
+
+(dice/roll 3 6)
+(xr/check! (s/tuple ::d6 ::d6 ::d6))
+
+(dice/roll 1 0)
+(xr/check! (s/and vector? empty?))
+
+(dice/roll -1 6)
+(xr/check! (s/and vector? empty?))
+
+(dice/roll 3 -1)
+(xr/check! (s/and vector? empty?))</pre><p>I could run the <em>.repl</em> file with <em>xr/run</em> but I created a file called <em>repls/repl_runner.clj</em> that could run all of my projects REPL files in one go.</p><pre class="crayon-plain-tag">(ns repl-runner
+  (:require [cognitect.transcriptor :as xr]))
+
+(defn -main []
+  (doseq [repl-file (xr/repl-files "./repls")]
+    (xr/run repl-file)))</pre><p>I then added an alias to my <em>project.clj</em> so I could run <em>lein repl</em><em>s</em> to execute the scripts.</p><pre class="crayon-plain-tag">:profiles {:dev {:source-paths ["src" "repls"]}}
+:aliases {"repls" ["run" "-m" "repl-runner"]}</pre><p>You could run <em>lein repls</em> (or maybe <em>lein transcriptions</em> is a better name?) within your CI setup, either instead of or alongside your normal test suite. Here&#8217;s an example output from that command.</p><pre class="crayon-plain-tag">(comment {:transcript "./repls/rolls.repl", :namespace cognitect.transcriptor.t_1})
+(require
+ '[cognitect.transcriptor :as xr]
+ '[clojure.spec.alpha :as s]
+ '[dice-roller.core :as dice])
+=&gt; nil
+
+(s/def
+ :cognitect.transcriptor.t_1/d6
+ (s/and int? (fn* [p1__240#] (&lt; 0 p1__240# 7))))
+=&gt; :cognitect.transcriptor.t_1/d6
+
+(dice/roll 0 6)
+=&gt; []
+
+(xr/check! (s/and vector? empty?))
+=&gt; nil
+
+(dice/roll 1 6)
+=&gt; [1]
+
+(xr/check! (s/tuple :cognitect.transcriptor.t_1/d6))
+=&gt; nil
+
+(dice/roll 3 6)
+=&gt; [2 6 6]
+
+(xr/check!
+ (s/tuple
+  :cognitect.transcriptor.t_1/d6
+  :cognitect.transcriptor.t_1/d6
+  :cognitect.transcriptor.t_1/d6))
+=&gt; nil
+
+(dice/roll 1 0)
+=&gt; []
+
+(xr/check! (s/and vector? empty?))
+=&gt; nil
+
+(dice/roll -1 6)
+=&gt; []
+
+(xr/check! (s/and vector? empty?))
+=&gt; nil
+
+(dice/roll 3 -1)
+=&gt; []
+
+(xr/check! (s/and vector? empty?))
+=&gt; nil</pre><p>And, finally, here&#8217;s what happens if I start returning seqs instead of vectors.</p><pre class="crayon-plain-tag">(comment {:transcript "./repls/rolls.repl", :namespace cognitect.transcriptor.t_1})
+(require
+ '[cognitect.transcriptor :as xr]
+ '[clojure.spec.alpha :as s]
+ '[dice-roller.core :as dice])
+=&gt; nil
+
+(s/def
+ :cognitect.transcriptor.t_1/d6
+ (s/and int? (fn* [p1__240#] (&lt; 0 p1__240# 7))))
+=&gt; :cognitect.transcriptor.t_1/d6
+
+(dice/roll 0 6)
+=&gt; ()
+
+(xr/check! (s/and vector? empty?))
+
+Exception in thread "main" clojure.lang.ExceptionInfo: Transcript assertion failed! val: () fails predicate: vector?
+:clojure.spec.alpha/spec  #object[clojure.spec.alpha$and_spec_impl$reify__875 0x765f05af "clojure.spec.alpha$and_spec_impl$reify__875@765f05af"]
+:clojure.spec.alpha/value  ()
+ #:clojure.spec.alpha{:problems [{:path [], :pred clojure.core/vector?, :val (), :via [], :in []}], :spec #object[clojure.spec.alpha$and_spec_impl$reify__875 0x765f05af "clojure.spec.alpha$and_spec_impl$reify__875@765f05af"], :value ()}, compiling:(/tmp/form-init165212537261342855.clj:1:72)
+	at clojure.lang.Compiler.load(Compiler.java:7526)
+	at clojure.lang.Compiler.loadFile(Compiler.java:7452)
+	at clojure.main$load_script.invokeStatic(main.clj:278)
+	at clojure.main$init_opt.invokeStatic(main.clj:280)
+	at clojure.main$init_opt.invoke(main.clj:280)
+	at clojure.main$initialize.invokeStatic(main.clj:311)
+	at clojure.main$null_opt.invokeStatic(main.clj:345)
+	at clojure.main$null_opt.invoke(main.clj:342)
+	at clojure.main$main.invokeStatic(main.clj:424)
+	at clojure.main$main.doInvoke(main.clj:387)
+	at clojure.lang.RestFn.applyTo(RestFn.java:137)
+	at clojure.lang.Var.applyTo(Var.java:702)
+	at clojure.main.main(main.java:37)
+Caused by: clojure.lang.ExceptionInfo: Transcript assertion failed! val: () fails predicate: vector?
+:clojure.spec.alpha/spec  #object[clojure.spec.alpha$and_spec_impl$reify__875 0x765f05af "clojure.spec.alpha$and_spec_impl$reify__875@765f05af"]
+:clojure.spec.alpha/value  ()
+ {:clojure.spec.alpha/problems [{:path [], :pred clojure.core/vector?, :val (), :via [], :in []}], :clojure.spec.alpha/spec #object[clojure.spec.alpha$and_spec_impl$reify__875 0x765f05af "clojure.spec.alpha$and_spec_impl$reify__875@765f05af"], :clojure.spec.alpha/value ()}
+	at clojure.core$ex_info.invokeStatic(core.clj:4744)
+	at clojure.core$ex_info.invoke(core.clj:4744)
+	at cognitect.transcriptor.t_1$eval245.invokeStatic(./repls/rolls.repl:8)
+	at cognitect.transcriptor.t_1$eval245.invoke(./repls/rolls.repl:8)
+	at clojure.lang.Compiler.eval(Compiler.java:7062)
+	at clojure.lang.Compiler.eval(Compiler.java:7025)
+	at clojure.core$eval.invokeStatic(core.clj:3211)
+	at clojure.core$eval.invoke(core.clj:3207)
+	at cognitect.transcriptor$repl$read_eval_print__189$fn__192.invoke(transcriptor.clj:58)
+	at cognitect.transcriptor$repl$read_eval_print__189.invoke(transcriptor.clj:58)
+	at cognitect.transcriptor$repl.invokeStatic(transcriptor.clj:67)
+	at cognitect.transcriptor$repl.invoke(transcriptor.clj:35)
+	at cognitect.transcriptor$repl_on.invokeStatic(transcriptor.clj:78)
+	at cognitect.transcriptor$repl_on.invoke(transcriptor.clj:74)
+	at cognitect.transcriptor$run.invokeStatic(transcriptor.clj:90)
+	at cognitect.transcriptor$run.invoke(transcriptor.clj:82)
+	at repl_runner$_main.invokeStatic(repl_runner.clj:6)
+	at repl_runner$_main.invoke(repl_runner.clj:4)
+	at clojure.lang.Var.invoke(Var.java:377)
+	at user$eval149.invokeStatic(form-init165212537261342855.clj:1)
+	at user$eval149.invoke(form-init165212537261342855.clj:1)
+	at clojure.lang.Compiler.eval(Compiler.java:7062)
+	at clojure.lang.Compiler.eval(Compiler.java:7052)
+	at clojure.lang.Compiler.load(Compiler.java:7514)
+	... 12 more</pre><p>It&#8217;s a wall of text, but a useful one!</p>
+<h2>Thoughts</h2>
+<p>All in all, I really like the approach. It&#8217;s easy to use and should be usable with any problem, you&#8217;ll just have to be wary of setup and teardown in stateful applications. I&#8217;m not sure on the best practice way of using it, but I think this is a good basic start, a canonical lein plugin would be pretty neat though.</p>
+<p>It would be nice to combine this with one of the projects that aims to make spec output more human friendly too, maybe the lein plugin could do that for you automatically.</p>
+<p>I feel like the REPL files are simple enough that you could throw them away and start again easily if you wanted to change the thing you&#8217;re testing a lot. Something I feel strict TDD severely impairs. When I have deeply nested TDD code over hundreds of lines, a tiny change to the source will break everything. TDD taken to the extreme makes your project become allergic to change, obviously too much of anything is harmful though.</p>
+<p>I&#8217;d recommend that you give this a whirl on one of your own projects and see what you get. You may find it suits you perfectly.</p>
+<p>Thank you very much, Stuart, for releasing this into the world. It&#8217;s pretty cool.</p>
+<h2>Edit</h2>
+<p>I went ahead and created <a href="https://github.com/Olical/lein-transcriptor">lein-transcriptor</a>, the dice roller repository used in this post has been updated to use that instead.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2017/10/06/an-introduction-to-transcriptor/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>The Collatz conjecture, visualised in Clojure</title>
+		<link>/2017/04/04/the-collatz-conjecture-visualised-in-clojure/</link>
+		<comments>/2017/04/04/the-collatz-conjecture-visualised-in-clojure/#comments</comments>
+		<pubDate>Tue, 04 Apr 2017 21:13:00 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Clojure]]></category>
+		<category><![CDATA[clojure]]></category>
+		<category><![CDATA[collatz]]></category>
+		<category><![CDATA[math]]></category>
+		<category><![CDATA[quil]]></category>
+
+		<guid isPermaLink="false">/?p=491</guid>
+		<description><![CDATA[Before I begin, watch the video that prompted me to do this in the first place. Okay, now you know what I&#8217;m talking about, the Collatz conjecture. It&#8217;s scarily simple, you take a number, if it&#8217;s even you halve it, if it&#8217;s odd you multiply it by three and add one. Repeat this and you <a class="read-more" href="/2017/04/04/the-collatz-conjecture-visualised-in-clojure/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p style="text-align: center;">Before I begin, watch <a href="https://www.youtube.com/watch?v=LqKpkdRRLZw">the video</a> that prompted me to do this in the first place.</p>
+<p style="text-align: center;"><iframe width="560" height="315" src="https://www.youtube.com/embed/LqKpkdRRLZw" frameborder="0" allowfullscreen="allowfullscreen"></iframe></p>
+<p>Okay, now you know what I&#8217;m talking about, the <a href="https://en.wikipedia.org/wiki/Collatz_conjecture">Collatz conjecture</a>. It&#8217;s scarily simple, you take a number, if it&#8217;s even you halve it, if it&#8217;s odd you multiply it by three and add one. Repeat this and you will end up at one, every time. Well, that&#8217;s the conjecture, maybe it doesn&#8217;t end up at one for some numbers, we just haven&#8217;t been able to prove it.</p>
+<p>The video shows a beautiful way of visualising this problem and I felt it was a nice thing to try and render with some code. If you&#8217;ve read any of my previous things or know me even a little, Clojure is not a surprising choice of tool, I love the language and think it is well suited to most, if not all, problems I face.</p>
+<p>I must warn you that I never reproduced the one from the video, just something that follows the same ideas and looks kind of similar from a distance. I honestly can&#8217;t work out what magic was used to get it to look that good, maybe some special rendering techniques that are just beyond me at the moment. Maybe you&#8217;ll be able to take my repository and perfect it!</p>
+<h2>Collatz in Clojure</h2>
+<p>Before I even attempt to render this, I&#8217;ll need some functions that generate the Collatz conjecture numbers. I will refer to these as a Collatz sequence or Collatz seqs. You can find the full code in <a href="https://github.com/Olical/collatz">Olical/collatz</a>, but I will be breaking it down here for you.</p><pre class="crayon-plain-tag">(defn number-gt-zero?
+  "Checks if n is a number that is greater than zero."
+  [n]
+  (and (number? n)
+       (&gt; n 0)))
+
+(defn next-collatz
+  "Returns the next step in the Collatz sequence."
+  [n]
+  {:pre [(number-gt-zero? n)]}
+  (cond
+    (even? n) (-&gt; n (/ 2))
+    (odd? n)  (-&gt; n (* 3) (inc))))
+
+(defn collatz
+  "Generate a lazy-seq of Collatz conjecture numbers starting at the given number."
+  [n]
+  {:pre [(number-gt-zero? n)]}
+  (lazy-seq
+   (cons n
+         (when (&gt; n 1)
+           (collatz (next-collatz n))))))</pre><p>This function provides a lazy sequence abstraction on top of the ideas the Collatz conjecture provides. It allows us to build more interesting things on top of the seq abstraction without worrying about memory or implementation details.</p><pre class="crayon-plain-tag">;; Get the first 10 numbers in the Collatz seq starting at 1000000.
+(take 10 (collatz 1000000))
+
+;; The first number in the seq will always be the argument you provided.
+;; The last will always be 1.
+
+(last (collatz 1000000))
+
+;; 1. We hope.</pre><p>The next logical step from here, in my opinion, is to create a <em>lazy-seq</em> of Collatz seqs. So if I ask for <em>(collatz-tree 10000)</em> I will get a seq of seqs. The first item is the same as <em>(collatz 10000)</em>, the second is <em>(collatz 9999)</em> and the third being <em>(collatz 9998)</em>. You get the idea. What we are left with is a seq abstraction which, if fully realised, would be pretty huge. Luckily, thanks to the magic of lazy sequences, almost nothing will actually be in memory at any one time.</p><pre class="crayon-plain-tag">(defn collatz-tree
+  "Generate a lazy-seq of lazy-seqs from the collatz function. Starts the seqs at (collatz n), counts down until (collatz 1)."
+  [n]
+  {:pre [(number-gt-zero? n)]}
+  (lazy-seq
+   (cons (collatz n)
+         (when (&gt; n 1)
+           (collatz-tree (dec n))))))</pre><p>We can walk this tree, or seq of seqs, to render the visualisation you saw in the video. Or something close to it I hope, I&#8217;m no expert with <a href="https://github.com/quil/quil">Quil</a>, but I&#8217;ll try my best.</p><pre class="crayon-plain-tag">(collatz-tree 4)
+
+;; Yields: ((4 2 1) (3 10 5 16 8 4 2 1) (2 1) (1))</pre><p>The commit at this point was <a href="https://github.com/Olical/collatz/commit/4a155ed3a80e177655cbe41ba38e783978f17cb7">4a155ed</a>. Feel free to take this abstraction and do what you want with it, copy and paste it into your project if that&#8217;s easiest.</p>
+<h2>Visualising the tree</h2>
+<p>Now for the pretty part. I hope. I&#8217;m starting with the default Quil setup the lein template provides you with, this includes the functional middleware which makes it a bit nicer to work with (although I found I wasn&#8217;t really using the state management very much at all). After a little bit of tinkering I ended up with this rough attempt.</p>
+<figure id="attachment_498" style="width: 804px" class="wp-caption aligncenter"><a href="/wp-content/uploads/2017/03/Screenshot_2017-03-31_17-13-04.png"><img class="size-full wp-image-498" src="/wp-content/uploads/2017/03/Screenshot_2017-03-31_17-13-04.png" alt="" width="804" height="802" srcset="/wp-content/uploads/2017/03/Screenshot_2017-03-31_17-13-04.png 804w, /wp-content/uploads/2017/03/Screenshot_2017-03-31_17-13-04-150x150.png 150w, /wp-content/uploads/2017/03/Screenshot_2017-03-31_17-13-04-300x300.png 300w, /wp-content/uploads/2017/03/Screenshot_2017-03-31_17-13-04-768x766.png 768w" sizes="(max-width: 804px) 100vw, 804px" /></a><figcaption class="wp-caption-text">An early render. Kinda ugly and slow to render. Commit was <a class="commit-tease-sha" href="https://github.com/Olical/collatz/commit/299f062b3166d20710cd25f7c74e6edcdddb47dc" data-pjax="">299f062</a>.</figcaption></figure>
+<p>Although if you squint, this sort of looks similar, I&#8217;m not very happy with it. For starters, my use of the Quil API is a bit questionable and it definitely doesn&#8217;t follow the same rules as the one in the video. My ideal goal is to basically mimic the original material including random colours. I really hope this doesn&#8217;t breach copyright or something, if so, I&#8217;m very sorry, send me an email.</p>
+<p>Here&#8217;s what I had after some more tinkering.</p>
+<figure id="attachment_503" style="width: 804px" class="wp-caption aligncenter"><a href="/wp-content/uploads/2017/03/Screenshot_2017-03-31_19-28-43.png"><img class="size-full wp-image-503" src="/wp-content/uploads/2017/03/Screenshot_2017-03-31_19-28-43.png" alt="" width="804" height="802" srcset="/wp-content/uploads/2017/03/Screenshot_2017-03-31_19-28-43.png 804w, /wp-content/uploads/2017/03/Screenshot_2017-03-31_19-28-43-150x150.png 150w, /wp-content/uploads/2017/03/Screenshot_2017-03-31_19-28-43-300x300.png 300w, /wp-content/uploads/2017/03/Screenshot_2017-03-31_19-28-43-768x766.png 768w" sizes="(max-width: 804px) 100vw, 804px" /></a><figcaption class="wp-caption-text">It&#8217;s still not right, but it looks better. Commit was <a class="commit-tease-sha" href="https://github.com/Olical/collatz/commit/8e5a42cb3e1a2838689821a7a0706f03bc6ab4d7" data-pjax="">8e5a42c</a>.</figcaption></figure>
+<blockquote><p>Although I&#8217;m generating the bordered lines with a sort of hack (one bigger black line with a smaller coloured line on top of it), it actually leads to this neat hand drawn effect. So, although it&#8217;s not right, I actually like the outcome. It feels more organic than hard, anti-aliased, machine cut edges. To me, anyway.</p></blockquote>
+<p>It definitely looks better now, but it&#8217;s still not true to the original. A huge problem with this is that I&#8217;m drawing back over lines so many times, I need to optimise the tree so I don&#8217;t repeat myself, this requires a different approach to rendering though, I need a sort of linked list I can follow so I know when I&#8217;m back to somewhere I&#8217;ve been before and can stop rendering that path.</p>
+<p>That&#8217;s going to mean forgoing a bit of laziness and building a big data structure that I can use as a lookup table, I think it&#8217;s worth it for the rendering optimisations. That should allow me to render the branches in different orders too instead of largest to smallest.</p>
+<h2>Epiphany time</h2>
+<p>Two things happened while developing this project and writing this post (I&#8217;ve been writing it as I developed it to capture every step, so it may seem a bit jumbled in places).</p>
+<p>First, I realised that the tree was upside down. The end of any Collatz seq is always one (we think?), if you remember my code from earlier, I iterate over these sequences and draw the segments of the branch one at a time. This means every branch <em>ends</em> with one, but it needs to <em>start</em> with one.</p>
+<p>The other thing that happened was one of the authors of <a href="http://www.bloomsbury.com/uk/visions-of-numberland-9781408888988/">the book</a> that inspired the video that inspired me, <a class="ProfileHeaderCard-nameLink u-textInheritColor js-nav" href="https://twitter.com/Gelada">Edmund Harriss</a>, replied to one of my tweets with a couple of tips I&#8217;ll probably need after I fix the whole upside down problem.</p>
+<div align="center">
+<blockquote class="twitter-tweet" data-lang="en">
+<p dir="ltr" lang="en"><a href="https://twitter.com/OliverCaldwell">@OliverCaldwell</a> The key is balancing the left and right rotation so you go in a straight line if not growing.</p>
+<p>— Edmund Harriss (@Gelada) <a href="https://twitter.com/Gelada/status/848020385459318784">April 1, 2017</a></p></blockquote>
+<p><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script></p>
+<blockquote class="twitter-tweet" data-lang="en">
+<p dir="ltr" lang="en"><a href="https://twitter.com/OliverCaldwell">@OliverCaldwell</a> of course, it is fun to play with. The branches represent either a growth (x2) or a shrink (-1 and /3) the rotations can reflect that.</p>
+<p>— Edmund Harriss (@Gelada) <a href="https://twitter.com/Gelada/status/848158534546206721">April 1, 2017</a></p></blockquote>
+<p><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script></p>
+</div>
+<p style="text-align: center;">Just as a reminder, this is what I want it to look like.</p>
+<figure id="attachment_507" style="width: 792px" class="wp-caption aligncenter"><a href="/wp-content/uploads/2017/04/C8FvTBiW0AAFGpG.jpg"><img class="size-large wp-image-507" src="/wp-content/uploads/2017/04/C8FvTBiW0AAFGpG-809x1024.jpg" alt="" width="792" height="1002" srcset="/wp-content/uploads/2017/04/C8FvTBiW0AAFGpG-809x1024.jpg 809w, /wp-content/uploads/2017/04/C8FvTBiW0AAFGpG-237x300.jpg 237w, /wp-content/uploads/2017/04/C8FvTBiW0AAFGpG-768x972.jpg 768w, /wp-content/uploads/2017/04/C8FvTBiW0AAFGpG.jpg 900w" sizes="(max-width: 792px) 100vw, 792px" /></a><figcaption class="wp-caption-text">The original from the video, saved from <a href="https://twitter.com/numberphile/status/847080594723000320">this tweet</a>.</figcaption></figure>
+<h2>Flipping the tree</h2>
+<p>So I want to get it looking semi-accurate before I try to optimise, maybe the optimisations won&#8217;t actually be required it it&#8217;s &#8220;good enough&#8221;. I&#8217;m going to flip the tree by reversing the Collatz sequences that comprise my &#8220;Collatz tree&#8221; sequence.</p>
+<p>Sadly, even after flipping the tree over and playing around with more parameters, I just couldn&#8217;t match the awesome original design. I guess this is a testament to how good the original authors are at creating visualisations from math alone! Here&#8217;s a few things I ended up with to wrap up my stumbling in the dark.</p>
+<figure id="attachment_512" style="width: 804px" class="wp-caption aligncenter"><a href="/wp-content/uploads/2017/04/Screenshot_2017-04-01_12-22-38.png"><img class="size-full wp-image-512" src="/wp-content/uploads/2017/04/Screenshot_2017-04-01_12-22-38.png" alt="" width="804" height="802" srcset="/wp-content/uploads/2017/04/Screenshot_2017-04-01_12-22-38.png 804w, /wp-content/uploads/2017/04/Screenshot_2017-04-01_12-22-38-150x150.png 150w, /wp-content/uploads/2017/04/Screenshot_2017-04-01_12-22-38-300x300.png 300w, /wp-content/uploads/2017/04/Screenshot_2017-04-01_12-22-38-768x766.png 768w" sizes="(max-width: 804px) 100vw, 804px" /></a><figcaption class="wp-caption-text">It&#8217;s still wrong, but looks kinda nice. Commit was <a class="commit-tease-sha" href="https://github.com/Olical/collatz/commit/185a3ffd7539a74afe17aa587796330f40410c1b" data-pjax="">185a3ff</a>.</figcaption></figure>
+<figure id="attachment_521" style="width: 804px" class="wp-caption aligncenter"><a href="/wp-content/uploads/2017/04/Screenshot_2017-04-04_21-42-51.png"><img class="size-full wp-image-521" src="/wp-content/uploads/2017/04/Screenshot_2017-04-04_21-42-51.png" alt="" width="804" height="802" srcset="/wp-content/uploads/2017/04/Screenshot_2017-04-04_21-42-51.png 804w, /wp-content/uploads/2017/04/Screenshot_2017-04-04_21-42-51-150x150.png 150w, /wp-content/uploads/2017/04/Screenshot_2017-04-04_21-42-51-300x300.png 300w, /wp-content/uploads/2017/04/Screenshot_2017-04-04_21-42-51-768x766.png 768w" sizes="(max-width: 804px) 100vw, 804px" /></a><figcaption class="wp-caption-text">More curve, but not what I want. At <a class="commit-tease-sha" href="https://github.com/Olical/collatz/commit/e9dad2662d5ecf54698625f93b570d3169e4284c" data-pjax="">e9dad26</a>.</figcaption></figure>
+<figure id="attachment_522" style="width: 804px" class="wp-caption aligncenter"><a href="/wp-content/uploads/2017/04/Screenshot_2017-04-04_21-46-43.png"><img class="size-full wp-image-522" src="/wp-content/uploads/2017/04/Screenshot_2017-04-04_21-46-43.png" alt="" width="804" height="802" srcset="/wp-content/uploads/2017/04/Screenshot_2017-04-04_21-46-43.png 804w, /wp-content/uploads/2017/04/Screenshot_2017-04-04_21-46-43-150x150.png 150w, /wp-content/uploads/2017/04/Screenshot_2017-04-04_21-46-43-300x300.png 300w, /wp-content/uploads/2017/04/Screenshot_2017-04-04_21-46-43-768x766.png 768w" sizes="(max-width: 804px) 100vw, 804px" /></a><figcaption class="wp-caption-text">Thinner lines to illustrate just how many I&#8217;m actually rendering here. Could be a tad more efficient. Game programmers, avert your eyes. At <a class="commit-tease-sha" href="https://github.com/Olical/collatz/commit/2cc37b18405d03d4a0e53212bf5f4518949c0ad7" data-pjax="">2cc37b1</a>.</figcaption></figure>
+<figure id="attachment_523" style="width: 804px" class="wp-caption aligncenter"><a href="/wp-content/uploads/2017/04/Screenshot_2017-04-04_21-52-49.png"><img class="size-full wp-image-523" src="/wp-content/uploads/2017/04/Screenshot_2017-04-04_21-52-49.png" alt="" width="804" height="802" srcset="/wp-content/uploads/2017/04/Screenshot_2017-04-04_21-52-49.png 804w, /wp-content/uploads/2017/04/Screenshot_2017-04-04_21-52-49-150x150.png 150w, /wp-content/uploads/2017/04/Screenshot_2017-04-04_21-52-49-300x300.png 300w, /wp-content/uploads/2017/04/Screenshot_2017-04-04_21-52-49-768x766.png 768w" sizes="(max-width: 804px) 100vw, 804px" /></a><figcaption class="wp-caption-text">The spindly version with prime numbers highlighted in green. Pretty neat. At <a class="commit-tease-sha" href="https://github.com/Olical/collatz/commit/ba6700f0cad800ca4cbfa80c21e1d662781368cc" data-pjax="">ba6700f</a>.</figcaption></figure>
+<p>From the thinner versions you can quite clearly see the need for deduplication, if you just draw <em>everything</em> over the top of each other, not only is it slow, but it also looks messy. I definitely needed to prepare my data a little better, but this post that was supposed to be a small little experiment was beginning to drag on by then.</p>
+<h2>Close but no cigar</h2>
+<p>I&#8217;m disappointed that I couldn&#8217;t get it quite right, although I think I probably could if I just put more time into it. Sadly, visualisations aren&#8217;t really my forte or main interest. I&#8217;m more of a &#8220;programming languages, data structures and text editors&#8221; kind of programmer. It&#8217;s a little bit niche, okay.</p>
+<p>I may revisit this some day and attempt to deduplicate that tree since I think there&#8217;s value there in performance and style. Until then feel free to rip the repository to pieces, <a href="https://github.com/Olical/collatz">Olical/collatz</a>, if you didn&#8217;t spot it earlier. I&#8217;ll post the visualisation code below too, just so you don&#8217;t need to go elsewhere to see how badly I messed up, I&#8217;m sure this is obvious to <em>someone</em> out there in the wide and wonderful world.</p>
+<p>I hope you found this slightly interesting, and at the very least it has passed on the inspiration I had to do something far better than I produced.</p><pre class="crayon-plain-tag">(ns collatz.visualisation
+  (:require [quil.core :as q]
+            [quil.middleware :as m]
+            [collatz.core :as c])
+  (:gen-class))
+
+(defn reversed-indexed
+  "Returns the lazy sequence but each item is now a vector pair. The first value
+  is the index, the second is the original value from the seq. The sequence is
+  also reversed."
+  [items]
+  (map-indexed (fn [n v] [n v]) (reverse items)))
+
+(defn gen-tree
+  "Generates a full Collatz tree by building the lazy-seqs and reversing them all."
+  [n]
+  (-&gt;&gt; n c/collatz-tree (map reversed-indexed) reversed-indexed))
+
+(def size {:x 800 :y 800})
+(def tree (gen-tree 10000))
+(def part-size 8)
+
+(defn render-branch
+  "Render a single Collatz branch."
+  [[bn branch]]
+  (q/push-matrix)
+  (doseq [[pn part] branch]
+    (q/stroke 0)
+    (q/stroke-weight 15)
+    (q/line 0 0 0 part-size)
+
+    (q/stroke (+ 155 (mod bn 100)) 100 100)
+    (q/stroke-weight 13)
+    (q/line 0 (if (= pn 0) 0 -3) 0 part-size)
+
+    (q/translate 0 part-size)
+    (q/rotate (q/radians (if (even? part) 4 -4))))
+  (q/pop-matrix))
+
+(defn setup
+  "Set up the context and state."
+  []
+  (q/frame-rate 25)
+  {:tree tree
+   :render? false})
+
+(defn update-state
+  "Perform modifications to the state for the next render."
+  [state]
+  {:tree tree
+   :render? (:should-render? state)})
+
+(defn draw-state
+  "Render the current state."
+  [state]
+  (when (:render? state)
+    (q/background 255 255 255)
+    (q/translate 200 (-&gt; size :y (- 20)))
+    (q/rotate (q/radians 110))
+    (doseq [branch (:tree state)]
+      (render-branch branch))))
+
+(defn key-pressed
+  "Handle a key press event."
+  [state event]
+  (case (:key-code event)
+    10 (assoc state :should-render? true)
+    state))
+
+(defn -main
+  "Initialise the sketch."
+  []
+  (q/sketch
+   :title "Collatz in Clojure"
+   :size (map size [:x :y])
+   :setup #'setup
+   :update #'update-state
+   :draw #'draw-state
+   :features []
+   :middleware [m/fun-mode]
+   :key-pressed key-pressed))</pre><p></p>
+]]></content:encoded>
+			<wfw:commentRss>/2017/04/04/the-collatz-conjecture-visualised-in-clojure/feed/</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+		</item>
+		<item>
+		<title>An introduction to ClojureScript</title>
+		<link>/2016/02/27/an-introduction-to-clojurescript/</link>
+		<comments>/2016/02/27/an-introduction-to-clojurescript/#comments</comments>
+		<pubDate>Sat, 27 Feb 2016 15:08:05 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Clojure]]></category>
+		<category><![CDATA[JavaScript]]></category>
+		<category><![CDATA[Lisp]]></category>
+		<category><![CDATA[clojure]]></category>
+		<category><![CDATA[clojurescript]]></category>
+		<category><![CDATA[lisp]]></category>
+
+		<guid isPermaLink="false">/?p=452</guid>
+		<description><![CDATA[In this post I&#8217;m going to attempt to explain where ClojureScript comes from as well as what it is and what it can do for you. I&#8217;m coming at this from the perspective of someone who writes a lot of JavaScript already, probably with React and Redux. Lisp ClojureScript is a very slight sub-set of <a class="read-more" href="/2016/02/27/an-introduction-to-clojurescript/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>In this post I&#8217;m going to attempt to explain where <a href="https://github.com/clojure/clojurescript">ClojureScript</a> comes from as well as what it is and what it can do for you. I&#8217;m coming at this from the perspective of someone who writes a lot of JavaScript already, probably with React and Redux.</p>
+<h2>Lisp</h2>
+<p>ClojureScript is a very slight sub-set of Clojure, the main difference being one compiles to JavaScript, the other to Java VM bytecode. On the JVM, Clojure has access to threads and other OS level niceties. ClojureScript as a language is very similar to it&#8217;s parent, but it lacks certain things that just aren&#8217;t possible in the browser.</p>
+<p>They are however, both a <a href="https://en.wikipedia.org/wiki/Lisp_%28programming_language%29">Lisp</a>, one of the most fascinating languages ever <em>discovered</em> (see <a href="https://www.quora.com/Do-aliens-have-LISP">do aliens have lisp?</a>). It&#8217;s not a perfect foundation, but it&#8217;s an extremely powerful and flexible one with a long and colourful history. Wikipedia will do a better job at listing that history than I can ever do, but here&#8217;s some key facts.</p>
+<ul>
+<li>It was first specified in <strong>1958</strong> (<a href="https://en.wikipedia.org/wiki/JavaScript">JavaScript</a> appeared in 1995, 37 years later)</li>
+<li>Originally designed for AI research</li>
+<li>Has a huge amount of dialects which share the core tenants, including <a href="https://github.com/clojure/clojurescript">ClojureScript</a>, <a href="http://clojure.org/">Clojure</a>, <a href="https://racket-lang.org/">Racket</a>, <a href="https://en.wikipedia.org/wiki/Scheme_%28programming_language%29">Scheme</a>, <a href="http://lfe.io/">Lisp Flavoured Erlang</a> and many more</li>
+<li>(it&#8217;s (lists (all the way (down))))</li>
+<li>It makes use of macros to define the language in the language, which I demonstrate in my post about <a href="/2014/12/15/a-javascript-clojure-mashup/">implementing a lisp in JavaScript</a></li>
+</ul>
+<p>This extremely exhaustive chart that shows the history of programming languages shows just how early Lisp turned up. It&#8217;s amazing to see what influenced what, click the image to enlarge it.</p>
+<p><a href="/wp-content/uploads/2016/02/history-of-languages.png" rel="attachment wp-att-454"><img class="aligncenter size-large wp-image-454" src="/wp-content/uploads/2016/02/history-of-languages-1024x631.png" alt="history-of-languages" width="792" height="488" srcset="/wp-content/uploads/2016/02/history-of-languages-1024x631.png 1024w, /wp-content/uploads/2016/02/history-of-languages-300x185.png 300w, /wp-content/uploads/2016/02/history-of-languages-768x474.png 768w" sizes="(max-width: 792px) 100vw, 792px" /></a>So it has been around for a very long time and has appeared in many flavours. We&#8217;re going to skip all of the other fascinating Lisps in the middle and jump all the way to Clojure, one of the newest and most popular in recent years.</p>
+<h2>Clojure</h2>
+<p><a href="https://en.wikipedia.org/wiki/Clojure">Clojure</a> is a Lisp dialect that encourages functional programming with immutable data structures. The data structures themselves are pretty amazing and can be found in JavaScript through <a href="https://facebook.github.io/immutable-js/">ImmutableJS</a>. Immutable data structures never change, they only allow you to create new versions of them with your changes applied, this prevents mutation, a source of pain in many systems. They don&#8217;t just copy the data to prevent mutation as some people appear to do in JavaScript, they use efficient algorithms to share as much data as possible to keep things immutable without sacrificing too much speed or efficiency. <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze">Object.freeze</a> is not persistent immutability, neither is cloning things every time. That&#8217;s slow and inefficient. Neither is using <a href="https://gist.github.com/sebmarkbage/005c81e6f2f5ddac443f">the spread operator</a>.</p>
+<p>It runs on the JVM by default, so you can use all the Java libraries out there without having to write Java (yay!). You can also run it on the <a href="https://en.wikipedia.org/wiki/Common_Language_Runtime">Common Language Runtime</a>, which is kind of like the JVM but for Windows, I&#8217;ve never looked into that though. There&#8217;s also support for Unity, VR and JavaScript (through ClojureScript). So it&#8217;s an extremely versatile language that can run almost anywhere with the same core functions and principals.</p>
+<p>One cool thing about Clojure is that the language is defined by the language. By that I mean, there&#8217;s a core interpreter (called a reader) as well as some core functions written outside of Clojure, but the rest is defined in <a href="https://github.com/clojure/clojure/blob/master/src/clj/clojure/core.clj">core.clj</a>, in Clojure. If there&#8217;s ever anything you don&#8217;t understand about the language, you can actually go and read the source code for that feature, like the <a href="https://github.com/clojure/clojure/blob/d5708425995e8c83157ad49007ec2f8f43d8eac8/src/clj/clojure/core.clj#L6087">while macro</a>.</p>
+<h2>Versatility</h2>
+<p>You may wonder what Clojure can actually do, the Wikipedia page just says is &#8220;general purpose&#8221;, but so is JavaScript and anything else you&#8217;ve probably ever used. Well, it&#8217;s more general than you&#8217;ll be used to, if you can name a paradigm that a language supports, Clojure probably has support for it too. Because of it&#8217;s generic macro based nature, you can define any other style within the language. Here&#8217;s a list of libraries that enable awesome paradigms from other languages within Clojure.</p>
+<ul>
+<li><a href="https://github.com/clojure/core.async">core.async</a> &#8211; Like <a href="https://golang.org/">Go</a>&#8216;s channels</li>
+<li><a href="http://typedclojure.org/">core.typed</a> &#8211; Gradual typing</li>
+<li><a href="https://github.com/clojure/core.match">core.match</a> &#8211; Pattern matching</li>
+<li><a href="https://github.com/clojure/core.logic">core.logic</a> &#8211; Logic programming (check out <a href="https://en.wikipedia.org/wiki/Prolog">Prolog</a>, it&#8217;s really cool!)</li>
+<li><a href="https://github.com/mikera/core.matrix">core.matrix</a> &#8211; Matrix and array programming</li>
+<li><a href="https://github.com/plumatic/schema">schema</a> &#8211; Declarative data validation</li>
+<li><a href="https://github.com/brandonbloom/factjor">factjor</a> &#8211; Stack programming</li>
+<li><a href="https://github.com/clojure/test.generative">test.generative</a> &#8211; Generative testing!</li>
+</ul>
+<p>My friend Ludwik at work described it well.</p>
+<blockquote><p>You learn this one thing and it can take you to ALL the places.</p></blockquote>
+<p>No kidding, you can do anything with it, it&#8217;s the most flexible language I&#8217;ve ever researched. To me, it&#8217;s a host unifier, you have every paradigm and every platform within the same beautiful language. This versatility means it&#8217;s being used all over the world in various industries to solve all sorts of interesting and hard problems, as <a href="http://blog.cognitect.com/blog/2016/1/28/state-of-clojure-2015-survey-results">the 2015 survey</a> shows. Ludwik actually uses it day to day at <a href="http://www.qubit.com/">Qubit</a> with his team.</p>
+<h2>Tooling</h2>
+<p>There&#8217;s excellent integration into many popular text editors and IDEs, including: Sublime, Atom, Vim, Emacs and <a href="http://lighttable.com/">LightTable</a> (actually written in ClojureScript). <a href="https://cursive-ide.com/">Cursive</a> is an IDE developed specifically for Clojure which seems pretty cool too, it&#8217;s based off of IntelliJ. I use Vim personally and have <a href="/2014/11/21/essential-vim-bundles-for-javascript-and-clojure/">written about it in the past</a>. All of the tooling hooks into a running REPL which allows you to look up source code, documentation and execute things directly from your editor.</p>
+<p>Editing Clojure is fun too, because you&#8217;re editing the actual AST so you can perform structural editing with things like <a href="http://danmidwood.com/content/2014/11/21/animated-paredit.html">Paredit</a> or <a href="https://shaunlebron.github.io/parinfer/">Parinfer</a>. Forget manually copying and pasting lines around, adjusting quotes and curly braces, you can edit the AST and always keep it correct with powerful tools.</p>
+<p>Now the coolest thing about everything I&#8217;ve mentioned above, it pretty much all works the same with ClojureScript and by extension, in the browser. Yes, you can have live editor integration into something running in your browser with first class language editing support across a plethora of editors. Support for multiple paradigms so you can choose the right tool for the job, wherever your code is running. ClojureScript can be automatically fired into your browser as you edit through the wonderful <a href="https://github.com/bhauman/lein-figwheel">figwheel</a>, this will make the hot module reloading you&#8217;ve seen in JavaScript look pretty basic.</p>
+<p>All of this magic is driven by a very small amount of tooling, no more learning the &#8220;npm + grunt / gulp / broccoli + browserify / webpack + react + redux + immutablejs + &#8230;.&#8221; silliness. All you need is <a href="http://leiningen.org/">Leiningen</a>. A simple &#8220;lein new project-name-here&#8221; will get you up and running.</p>
+<h2>ClojureScript</h2>
+<p>Let&#8217;s assume you&#8217;ve got leiningen installed and you want to create a &#8220;Hello, World!&#8221; application with <a href="https://reagent-project.github.io/">Reagent</a> (a minimalistic React wrapper for ClojureScript, there&#8217;s a few wrappers out there though, go explore!) and live reloading through figwheel.</p><pre class="crayon-plain-tag">lein new reagent hello-reagent
+cd hello-reagent
+lein figwheel
+
+# Now open http://localhost:3449/</pre><p>You now have a live reloading ClojureScript environment with routing and great React support. Arguably a better React than React since the immutable data structures are integrated seamlessly, those allow you to check for changes far faster than plain JavaScript.</p>
+<p>That&#8217;s all there is to it though, getting set up is extremely quick and easy. You then have a live environment to edit in any way you want, you are free to explore the language by moving and editing expression that will be sent to the browser when you write the file. The reloading keeps the state, so you can edit the page&#8217;s source while interacting with it.</p>
+<p>Once you get used to this live / REPL style of programming where you can explore ideas without restarting anything you won&#8217;t want to go back. I won&#8217;t be teaching you ClojureScript here, but I wanted to get you to a point where it&#8217;ll be easy to learn. Now you should go and play, have fun with the language and just try things out. It&#8217;ll look odd at first but lisp will seem normal to you surprisingly quickly. You&#8217;ll quickly feel that editing JavaScript feels clunky since moving things around requires constant adjustment of the syntax as well as regular reloads, even with HMR enabled within webpack, for example. The JavaScript tooling doesn&#8217;t feel like it fits together well, ClojureScript is the opposite.</p>
+<p>So go and learn, read books, build toy projects. Explore everything this cool language and ecosystem has to offer (just look how cool <a href="https://github.com/bhauman/devcards">devcards</a> are!). Even if you don&#8217;t end up using it in production I can promise that it&#8217;ll teach you things that will make you a better programmer. Even if you only learn about lisp and don&#8217;t use it, it&#8217;ll change how you solve problems.</p>
+<p>I hope this helped and that you have fun.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2016/02/27/an-introduction-to-clojurescript/feed/</wfw:commentRss>
+		<slash:comments>3</slash:comments>
+		</item>
+		<item>
+		<title>Working with multiple of lists in JavaScript</title>
+		<link>/2016/02/09/working-with-multiple-of-lists-in-javascript/</link>
+		<comments>/2016/02/09/working-with-multiple-of-lists-in-javascript/#comments</comments>
+		<pubDate>Tue, 09 Feb 2016 23:05:44 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Clojure]]></category>
+		<category><![CDATA[JavaScript]]></category>
+		<category><![CDATA[Lisp]]></category>
+		<category><![CDATA[Projects]]></category>
+		<category><![CDATA[clojure]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[lisp]]></category>
+		<category><![CDATA[lists]]></category>
+
+		<guid isPermaLink="false">/?p=434</guid>
+		<description><![CDATA[If you&#8217;ve ever had to iterate over multiple lists at the same time or map a filtered map of a map, you&#8217;ll understand that nesting all of those blocks and callbacks isn&#8217;t very easy to work with or understand. Luckily, there&#8217;s some cool techniques that make turning several arrays (or infinite sequences created by generators, <a class="read-more" href="/2016/02/09/working-with-multiple-of-lists-in-javascript/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>If you&#8217;ve ever had to iterate over multiple lists at the same time or map a filtered map of a map, you&#8217;ll understand that nesting all of those blocks and callbacks isn&#8217;t very easy to work with or understand.</p>
+<p>Luckily, there&#8217;s some cool techniques that make turning several arrays (or infinite sequences created by generators, for example) into a single array with a concise and powerful syntax. I&#8217;m going to take this rather large list of <a href="https://gist.github.com/Olical/fa1c29fdfa42b52604f5">my public gists</a> and turn it into a list of all file names with the type set to &#8220;JavaScript&#8221;. I&#8217;m using lodash for convenience.</p><pre class="crayon-plain-tag">_.map(_.filter(_.flatMap(gists, (gist) =&gt; {
+  return _.values(gist.files)
+}), (file) =&gt; {
+  return file.language === 'JavaScript'
+}), (file) =&gt; {
+  return file.filename
+})</pre><p>Which yields the following array.</p><pre class="crayon-plain-tag">[ 'lazyArray.js',
+  'thebutton.js',
+  'formatNumberWithCommas.js',
+  'x-example.js',
+  'what-we-do.js',
+  'compile.js',
+  'compile.spec.js',
+  'factory.js',
+  'harvest.js',
+  'main.js',
+  'e.js',
+  'example.js',
+  'EventEmitter.js',
+  'api.js',
+  'example.js',
+  'graphs.js',
+  'colours.js' ]</pre><p>You could extract parts of this into named variables or move it into other functions, but my point being, something fairly simple requires a lot of juggling. If you want to add any more maps or filters in the middle you have to constantly move arguments around. It&#8217;s not easy to change and adapt.</p>
+<p>We can however completely eliminate the need for this nesting by using something called list comprehension.</p>
+<h2>List comprehension</h2>
+<p>My favourite implementation of list comprehension can be found in my favourite language, <a href="https://clojuredocs.org/clojure.core/for">Clojure&#8217;s for</a>. You can also find them in many other languages such as Python and Scala, I&#8217;m just in love with <a href="https://xkcd.com/297/">all those parenthesis</a>.</p>
+<p>JavaScript even <em>had</em> one planned for ES6 although it was pulled from the specification, I&#8217;m not sure why. <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Array_comprehensions">Firefox had something like the ES6 one</a> implemented for a while, but that was non-standard at the time. If it&#8217;s any consolation, I didn&#8217;t like the syntax anyway.</p>
+<p>They allow you to produce a single list from one statement or call that accepts multiple lists alongside some parameters. You should, in theory, be able to reference between those lists and define intermediate values from those lists as they iterate through. You then have a function which is called with singular values from those lists, what it returns becomes your final list.</p>
+<p>I&#8217;ve built one for JavaScript that is a port of the Clojure implementation, I&#8217;ve tried to keep it as close to the original as possible. Including code-as-data based API and laziness all the way down. You can use plain old arrays or infinite generators, it will accept <em>any</em> <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Iteration_protocols">iterable</a>.</p>
+<h2>Introducing <a href="https://github.com/Olical/forc">forc</a> <a style="display: inline-block;" href="https://badge.fury.io/js/forc"><img src="https://badge.fury.io/js/forc.svg" alt="npm version" height="18" /></a></h2>
+<p>The name stems from &#8220;for comprehension&#8221; or maybe even &#8220;for Clojure&#8221;, but mainly because I obviously can&#8217;t use just &#8220;for&#8221; as a name. It allows you to do everything Clojure&#8217;s for does, but with JavaScript and any kind of iterable. It&#8217;s written with all sorts of ES6y things and I&#8217;d recommend using it with Babel, but it will work without them (I compile it at publish time). Pre-ES6 you won&#8217;t have any way to iterate the iterables it generates easily, so I wouldn&#8217;t recommend that.</p>
+<p>Here&#8217;s an example of infinite sequences from the README.</p><pre class="crayon-plain-tag">// An infinite generator of all natural numbers
+function * numbers () {
+  let n = 0
+
+  while (true) {
+    yield n++
+  }
+}
+
+forc([
+  'n', numbers(),
+  ':let', ['square', ({n}) =&gt; n * n],
+  ':while', ({square}) =&gt; square &lt; 100
+], ({square}) =&gt; square)
+
+// Results in only those whos square is &lt; 100
+// [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]</pre><p>The API will look strange to anyone that hasn&#8217;t used the Clojure version, but it&#8217;s extremely powerful. The declarative array based approach allowed me to do some cool rebinding of values as I walk through the instructions. I&#8217;ve seen others do this with long chains of method calls or evals instead, both of which don&#8217;t come close to Clojure&#8217;s elegance, in my opinion. This library accidentally adds a little lisp to JavaScript, <a href="https://github.com/Olical/clojs">again</a>. I can&#8217;t help it.</p>
+<p>Now let&#8217;s solve the initial problem with <a href="https://github.com/Olical/forc">forc</a>.</p><pre class="crayon-plain-tag">forc([
+  'gist', gists,
+  'file', ({gist}) =&gt; _.values(gist.files),
+  ':when', ({file}) =&gt; file.language === 'JavaScript'
+], ({file}) =&gt; file.filename)</pre><p>Pretty succinct, right? I mean, I think so. It&#8217;s a shame the &#8220;_.values&#8221; is required because &#8220;gist.files&#8221; is an object but that&#8217;s just the shape of the data. An object is not an iterable, maybe I could change the API in the future to automatically extract values from objects. This call produces a generator which contains the same contents as the initial call, you can expand it with &#8220;[&#8230;result]&#8221;.</p>
+<p>The cool thing about it being a generator is that it only calculates the values you pull through, this allows you to use infinite iterators, for example. You can even use a generator created by &#8220;forc&#8221; as an argument for &#8220;forc&#8221;, it sill won&#8217;t execute a thing until you pull the values through by resolving the iterator.</p>
+<p>Feel free to check out the README and tests to get a better idea of the capabilities. The Clojure documentation is also pretty good since I&#8217;ve copied the API.</p>
+<p>I hope you find this useful!</p>
+]]></content:encoded>
+			<wfw:commentRss>/2016/02/09/working-with-multiple-of-lists-in-javascript/feed/</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+		</item>
+		<item>
+		<title>Brainfuck VM in Clojure</title>
+		<link>/2015/01/12/brainfuck-vm-in-clojure/</link>
+		<comments>/2015/01/12/brainfuck-vm-in-clojure/#respond</comments>
+		<pubDate>Mon, 12 Jan 2015 08:50:35 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Brainfuck]]></category>
+		<category><![CDATA[Clojure]]></category>
+		<category><![CDATA[Lisp]]></category>
+		<category><![CDATA[brainfuck]]></category>
+		<category><![CDATA[clojure]]></category>
+		<category><![CDATA[interpretor]]></category>
+		<category><![CDATA[vm]]></category>
+
+		<guid isPermaLink="false">/?p=285</guid>
+		<description><![CDATA[This is my second implementation for my repository of brainfuck interpretors, this time in the wonderful language Clojure (the first was JavaScript). It largely follows the same format of my initial machine but takes a route that I want to eventually refactor my JavaScript implementation to use as well. It builds a list of token <a class="read-more" href="/2015/01/12/brainfuck-vm-in-clojure/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>This is my second implementation for my repository of <a href="https://github.com/Wolfy87/brainfucks">brainfuck interpretors</a>, this time in the wonderful language Clojure (the first was <a title="Brainfuck VM in JavaScript" href="/2015/01/05/brainfuck-vm-in-javascript/">JavaScript</a>). It largely follows the same format of my initial machine but takes a route that I want to eventually refactor my JavaScript implementation to use as well. It builds a list of token hash-maps that each contain any required meta data. The JavaScript implementation (at the time of writing) uses two arrays, one for the tokens and one for the jump (loop) meta data.</p>
+<h2>The same but better</h2>
+<p>I feel that the approach I have taken with my Clojure version is far superior. This is because it allows me to encode an optimisation in the future extremely easily. I wish to detect batches of characters, such as &#8220;+++++&#8221;, and transform it into a single &#8220;+&#8221; token with a multiplier attribute that causes the &#8220;+&#8221; token handler to increment by the multiplier, not just one. This is small but potentially significant if there&#8217;s a lot of loops and batches of tokens. It may save quite a few iterations.</p>
+<p>I&#8217;d also like to eliminate dead code such as &#8220;[]&#8221; and &#8220;+++&#8212;&#8221; which may crop up by accident sometimes. Basically I want my program to optimise the given source as much as possible, I know a few ways and I will probably implement more of them as I develop more implementations. Speaking of which, my next one will hopefully be in Haskell. I may not survive that one.</p>
+<h2>My desired flow</h2>
+<p>Here&#8217;s my ideal scenario for a brainfuck interpreter as it stands. The Clojure version isn&#8217;t quite there, but it&#8217;s still a good example.</p>
+<ol>
+<li>Read the provided brainfuck source file into memory.</li>
+<li>Check if the square braces are balanced, exit early if not.</li>
+<li>Filter the source down to the valid characters.</li>
+<li>Eliminate noops such as &#8220;[]&#8221; and &#8220;+++&#8212;&#8220;</li>
+<li>Map those characters into objects with a token attribute.</li>
+<li>Condense chains of tokens (such as &#8220;+++++&#8221;) down to a single token with a multiplier attribute.</li>
+<li>Find all jumps between square braces and assign that data to the token objects.</li>
+</ol>
+<p>Now we have the compiled program we can execute it in the obvious way.</p>
+<ol>
+<li>Initialise a state object containing a state and memory pointer as well as a blank memory array.</li>
+<li>Iterate or recurse through the tokens passing the state and program values through the appropriate handler function for the token.</li>
+<li>Increment the program pointer after each step.</li>
+<li>Exit if the program pointer is equal to the length of the program.</li>
+</ol>
+<p>This is a fairly complex beast for such a simple language and problem, I just want to set the bar high so I really have to learn these languages in order to solve the problem with them. The harder I make it for myself the more I learn about JavaScript, Clojure, Haskell and, strangely, brainfuck. I currently have 10 more languages in my &#8220;to do&#8221; list for this project. I have no idea if I&#8217;ll ever hit that number but I can at least give it a go.</p>
+<h2>Multimethodmadness</h2>
+<p>I relied on Clojure&#8217;s multimethods for the &#8220;select a handler for this token&#8221; part, which worked really well. Here&#8217;s <strong>all</strong> of the execution code.</p><pre class="crayon-plain-tag">(def console-reader (ConsoleReader.))
+
+(defn read-character []
+  "Reads a character from STDIN"
+  (.readCharacter console-reader))
+
+(defn safe-inc [n]
+  "Treat nil values as zero."
+  (inc (if (= n nil) 0 n)))
+
+(defn safe-dec [n]
+  "Treat nil values as zero."
+  (dec (if (= n nil) 0 n)))
+
+(defn current-memory-zero? [state]
+  "Returns true if the current memory item of the state is 0."
+  (let [value (get-in state [:memory (:memory-pointer state)])]
+    (= 0 (if (= nil value) 0 value))))
+
+(defmulti step (fn [program state] (:token (nth program (:program-pointer state)))))
+(defmethod step \&gt; [program state] (update-in state [:memory-pointer] inc))
+(defmethod step \&lt; [program state] (update-in state [:memory-pointer] dec))
+(defmethod step \+ [program state] (update-in state [:memory (:memory-pointer state)] safe-inc))
+(defmethod step \- [program state] (update-in state [:memory (:memory-pointer state)] safe-dec))
+(defmethod step \. [program state] (print (char (get-in state [:memory (:memory-pointer state)]))) (flush) state)
+(defmethod step \, [program state] (assoc-in state [:memory (:memory-pointer state)] (read-character)))
+(defmethod step \[ [program state] (if (current-memory-zero? state)
+                                     (update-in state [:program-pointer] #(:destination (nth program %)))
+                                     state))
+(defmethod step \] [program state] (if (not (current-memory-zero? state))
+                                     (update-in state [:program-pointer] #(:destination (nth program %)))
+                                     state))
+
+(defn execute [program]
+  "Executes a compiled brainfuck program."
+  (let [program-length (count program)]
+    (loop [state {:memory (hash-map 0 0)
+                  :memory-pointer 0
+                  :program-pointer 0}]
+      (if (&lt; (:program-pointer state) program-length)
+        (recur (update-in (step program state) [:program-pointer] inc))))))</pre><p>You can find the rest of the source in the <a href="https://github.com/Wolfy87/brainfucks/blob/master/implementations/clojure/src/brainfuck/core.clj">Clojure implementation directory</a> of my project.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2015/01/12/brainfuck-vm-in-clojure/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>A JavaScript / Clojure mashup</title>
+		<link>/2014/12/15/a-javascript-clojure-mashup/</link>
+		<comments>/2014/12/15/a-javascript-clojure-mashup/#comments</comments>
+		<pubDate>Mon, 15 Dec 2014 20:23:13 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Clojure]]></category>
+		<category><![CDATA[JavaScript]]></category>
+		<category><![CDATA[Lisp]]></category>
+		<category><![CDATA[clojure]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[lisp]]></category>
+		<category><![CDATA[lodash]]></category>
+
+		<guid isPermaLink="false">/?p=256</guid>
+		<description><![CDATA[I&#8217;m going to create a nightmare inducing monster and you&#8217;re going to enjoy it. Hear me out: Data as code in plain JavaScript without a pre-compilation step or new language to learn (even if Clojure is beautiful and takes all of 10 minutes to memorise the syntax). Of course we don&#8217;t have the distinction of <a class="read-more" href="/2014/12/15/a-javascript-clojure-mashup/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>I&#8217;m going to create a nightmare inducing monster and you&#8217;re going to enjoy it. Hear me out: Data as code in plain JavaScript without a pre-compilation step or new language to learn (even if Clojure is beautiful and takes all of 10 minutes to memorise the syntax). Of course we don&#8217;t have the distinction of vectors and lists, so arrays will have to do, but I think things like<strong> mother flipping macros</strong> would more than make up for it.</p>
+<p>Join me on an adventure into insanity, forget your current opinions about JavaScript and the web that number more than the amount of stars in the known universe. Forget even the performance implications, they&#8217;re a (sort of) irrelevant detail right now. Just indulge in the concepts with me, this post isn&#8217;t planned, it&#8217;s a learning exercise as much for you as it is for myself.</p>
+<p><a href="http://xkcd.com/297/"><img class="aligncenter" src="http://imgs.xkcd.com/comics/lisp_cycles.png" alt="I've just received word that the Emperor has dissolved the MIT computer science program permanently." width="640" height="211" /></a></p>
+<h2><strong>What I want to end up with</strong></h2>
+<p>So my goal is to execute the following (very simple) Clojure code in JavaScript, but without any kind of string parsing, for example. The only thing I&#8217;ll need to cheat on is swapping parentheses for square braces, adding commas (sorry!) and correcting names that are illegal in JavaScript. My end goal is to start implementing the language in the language, just like Clojure. This little experiment could be cultivated into a DSL within JavaScript.</p><pre class="crayon-plain-tag">(if (&gt; 10 20)
+  "Uh, well this is awkward."
+  (str "EVERYTHING IS FINE, MOVE ALONG " (reduce + [1 2 3])))</pre><p>We should get &#8220;EVERYTHING IS FINE, MOVE ALONG 6&#8221; back. Obviously this won&#8217;t be able to execute directly, even with the array syntax in place and the dependant functions defined, so the JavaScript version will include a function to interpret the data structure. This could potentially cache the result of walking the tree for far greater performance, but I don&#8217;t care right now. Performance smermormance.</p><pre class="crayon-plain-tag">[$if, [$mt, 10, 20],
+    "Uh, well this is awkward.",
+    [str, "EVERYTHING IS FINE, MOVE ALONG ", [reduce, $add, [1, 2, 3]]]]</pre><p>In time I could have this supporting things like defn and multiple arity functions, I have my plans, but for the sake of brevity I&#8217;ve just used this dumb piece of code. It&#8217;s the concept I want to play with right now, not the finished product that could take weeks of work and testing. And for no reason in particular, here&#8217;s the normal JavaScript ES5 syntax for this if it didn&#8217;t use the extra functions I had to invent.</p><pre class="crayon-plain-tag">(function () {
+    if (10 &gt; 20) {
+        return "Uh, well this is awkward.";
+    }
+    else {
+        return "EVERYTHING IS FINE, MOVE ALONG " + [1, 2, 3].reduce(function (a, b) {
+            return a + b;
+        });
+    }
+}());</pre><p>I wrapped it in an IIFE because the return statements would have made no sense otherwise. The array syntax should pass the values back implicitly, normal JavaScript is not so lucky.</p>
+<h2><strong>Science time</strong></h2>
+<p>Let&#8217;s start off small, this function will walk a tree of arrays and execute the first item with the rest of the items as it&#8217;s arguments. The function will first recurse to the bottom of the stack then begin evaluation inside out, just like Lisp.</p><pre class="crayon-plain-tag">function walk(tree) {
+    return tree[0].apply(null, tree.slice(1).map(function (n) {
+        return Array.isArray(n) ? walk(n) : n;
+    }));
+}
+
+// It works!
+function $mt(a, b) { return a &gt; b; }
+function $eq(a, b) { return a === b; }
+walk([$eq, false, [$mt, 10, 20]]); // true</pre><p>Oh, wait, now we&#8217;re 80% of the way there. Hah. The main thing we&#8217;re lacking is meta data on functions and lists (I refuse to call them arrays from here on in) being able to change their behaviour as the walker plods through the data structure. We need a way to &#8220;quote&#8221; and &#8220;unquote&#8221; lists for example to defer execution and allow the existence of macros. This essentially means that we should be able to make some lists exempt from execution, so they&#8217;re just lists. How do we unquote? Well, the top level function is already an unquote! Amazing! Yet terrifying!</p><pre class="crayon-plain-tag">function unquote(tree) {
+    if (tree.$quoted) {
+        var unquoted = tree.map(function (n) {
+            return Array.isArray(n) ? unquote(n) : n;
+        });
+        delete unquoted.$quoted;
+        return unquoted;
+    }
+    else {
+        return tree[0].apply(null, tree.slice(1).map(function (n) {
+            return Array.isArray(n) ? unquote(n) : n;
+        }));
+    }
+}
+
+function quote(tree) {
+    var quoted = tree.map(function (n) {
+        return Array.isArray(n) ? quote(n) : n;
+    });
+
+    quoted.$quoted = true;
+    return quoted;
+}
+
+// Again, it works!
+function $map(fn, n) { return n.map(fn); }
+function $inc(n) { return n + 1; }
+unquote([$map, $inc, quote([1, 2, 3])]); // [2, 3, 4]</pre><p>One thing to note here is that I&#8217;m getting a lot of code duplication, this is because I wrote this part at midnight and I&#8217;m just trying to make a point. If you want it pretty, ask for a full on repository. And now for the silly magic. The point where we pull the metaphorical rabbit out of the metaphorical fedora. <a href="http://gph.is/1a0ge2I">Macros. In. JavaScript</a> (I was going to embed the gif on the other end of that link but I thought it might be too distracting / awesome).</p><pre class="crayon-plain-tag">function unquote(tree) {
+    if (tree.$quoted) {
+        var unquoted = tree.map(function (n) {
+            return Array.isArray(n) ? unquote(n) : n;
+        });
+        delete unquoted.$quoted;
+        return unquoted;
+    }
+    else {
+        var fn = tree[0];
+        var args = tree.slice(1);
+
+        if (fn.$macro) {
+            return fn.apply(null, args);
+        }
+        else {
+            return fn.apply(null, args.map(function (n) {
+                return Array.isArray(n) ? unquote(n) : n;
+            }));
+        }
+    }
+}
+
+function quote(tree) {
+    var quoted = tree.map(function (n) {
+        return Array.isArray(n) ? quote(n) : n;
+    });
+
+    quoted.$quoted = true;
+    return quoted;
+}
+
+function macro(fn) {
+    var wrapped = function () {
+        var result = fn.apply(null, arguments);
+        return Array.isArray(result) ? unquote(result) : result;
+    };
+
+    wrapped.$macro = true;
+    return wrapped;
+}
+
+// So now we define the macro "postfixNotation" (as used in Clojure for the Brave and True).
+// http://www.braveclojure.com/writing-macros/#2__Anatomy_of_a_Macro
+// And it works beautifully.
+function $add(a, b) { return a + b; }
+var postfixNotation = macro(function (expr) {
+    var butLast = expr.slice(0, -1);
+    var last = expr.slice(-1);
+    return last.concat(butLast);
+});
+var res = unquote([postfixNotation, [5, 5, $add]]);</pre><p>Getting this working caused me to swear in surprise involuntarily. I just defined a macro in my own little meta language that runs off of a few small functions. And now, without further ado, the if macro.</p><pre class="crayon-plain-tag">function $eq(a, b) { return a === b; }
+var $if = macro(function (expr, t, f) {
+    return unquote(expr) ? t : f;
+});
+
+unquote([$if, [$eq, 5, 5], 'Yep!', 'Nope!']); // Yep!</pre><p>I don&#8217;t know about you, but I find this incredible even if it does look <strong>really</strong> weird, the fact that it&#8217;s so easy to implement too is ludicrous. And now to bring it all together and run it.</p><pre class="crayon-plain-tag">function $mt (a, b) {
+    return a &gt; b;
+}
+
+function $add (a, b) {
+    return a + b;
+}
+
+function str() {
+    return [].slice.call(arguments).join('');
+}
+
+function reduce(fn, list) {
+    return list.reduce(fn);
+}
+
+var $if = macro(function (expr, t, f) {
+    return unquote(expr) ? t : f;
+});
+
+unquote(
+    [$if, [$mt, 10, 20],
+        'Uh, well this is awkward.',
+        [str, 'EVERYTHING IS FINE, MOVE ALONG ', [reduce, $add, quote([1, 2, 3])]]]);
+
+// EVERYTHING IS FINE, MOVE ALONG 6</pre><p>It works! Had to quote that array and define all of the required functions, but it works! Only the required code path is executed too, which I find very cool for an array.</p>
+<h2><strong>Take it further?</strong></h2>
+<p>It could perform some kind of caching as it walked the tree so you had a compile and execution step to this process. That allows you to build certain code paths and probably make it faster. Maybe not, maybe it&#8217;s fast enough right now and the simplicity is a far greater advantage. I would lean towards the latter. I would like to add defun, multiple arity functions and other such sugar. This is all something I would do if I carried this idea further into a more complex project. Even if nobody will ever use it, myself included, I think it would be fun. A language within a language.</p>
+<p>I could produce a standard library and obviously flesh it out into an open source repository with tests, documentation and the <a href="http://unlicense.org/">unlicense</a>, as is my way. Or maybe this concept is pure silliness and it should go no further than this page. Either way, I hope it provides at least a little entertainment for those of you that tread the sad line between JavaScript and Clojure. Where the grass is truly greener on the other side, as well as being shaped like parentheses, but you can&#8217;t quite drag it kicking and screaming into your day job. Just yet, anyway.</p>
+<p>Here&#8217;s <a href="https://github.com/Wolfy87/clojs">the repository</a> for the code I developed during this post. Complete with late night commit messages!</p>
+<p>Really thinking about how to implement a macro or macro system and why it should be like that has made Clojure macros quite a bit easier to understand too. So at the very least, I got that out of this exercise. I would love to hear your thoughts, even if they&#8217;re simply internal screaming.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2014/12/15/a-javascript-clojure-mashup/feed/</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+		</item>
+	</channel>
+</rss>

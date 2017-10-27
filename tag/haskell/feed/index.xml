@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>haskell &#8211; Oliver Caldwell&#039;s blog</title>
+	<atom:link href="/tag/haskell/feed/" rel="self" type="application/rss+xml" />
+	<link>/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Wed, 18 Oct 2017 13:50:23 +0000</lastBuildDate>
+	<language>en-GB</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>My 2015 Bucket Set</title>
+		<link>/2014/12/13/my-2015-bucket-set/</link>
+		<comments>/2014/12/13/my-2015-bucket-set/#respond</comments>
+		<pubDate>Sat, 13 Dec 2014 12:00:58 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[Meta]]></category>
+		<category><![CDATA[brainfuck]]></category>
+		<category><![CDATA[clojure]]></category>
+		<category><![CDATA[clojurescript]]></category>
+		<category><![CDATA[coursera]]></category>
+		<category><![CDATA[elixir]]></category>
+		<category><![CDATA[haskell]]></category>
+		<category><![CDATA[javascript]]></category>
+		<category><![CDATA[khan]]></category>
+
+		<guid isPermaLink="false">/?p=248</guid>
+		<description><![CDATA[I&#8217;m not really one for New Year&#8217;s resolutions, but this year I thought I&#8217;d create a sort of bucket list of programming related things to learn. But it&#8217;s more of a bucket set because the items are unique, I really want to focus on algorithms and data structures as well as a plethora of functional <a class="read-more" href="/2014/12/13/my-2015-bucket-set/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>I&#8217;m not really one for New Year&#8217;s resolutions, but this year I thought I&#8217;d create a sort of bucket list of programming related things to learn. But it&#8217;s more of a bucket set because the items are unique, I really want to focus on algorithms and data structures as well as a plethora of functional programming languages. So without further ado, here&#8217;s all the things I want to accomplish next year, this may grow considerably.</p>
+<ul>
+<li><a href="https://www.khanacademy.org/">Khan Academy</a> algorithms as well as anything else I can fit in. Especially math and computer science related topics. I want to have something on the go at all times.</li>
+<li>Algorithms <a href="https://www.coursera.org/course/algs4partI">part I</a> and <a href="https://www.coursera.org/course/algs4partII">part II</a> as well as <a href="https://www.coursera.org/course/datavisualization">Data Visualisation</a> courses on <a href="https://www.coursera.org/">Coursera</a>. I&#8217;ve completed the <a href="https://www.coursera.org/course/progfun">Functional Programming in Scala</a> course and completed most of Algo I, but this time I want to really ace it. I&#8217;ll have way more free time when I don&#8217;t have to commute for 2:30/3:00 hours a day.</li>
+<li>More Vim plugins, I want to have five by the end of the year. So that&#8217;s three more on top of <a href="https://github.com/Wolfy87/vim-enmasse">vim-enmasse</a> and <a href="https://github.com/Wolfy87/vim-expand">vim-expand</a>. I have a few ideas lined up, but I can always rip good configuration out of my <a href="https://github.com/Wolfy87/dotfiles">dotfiles</a> and flesh it out.</li>
+<li>A <a href="http://en.wikipedia.org/wiki/Brainfuck">brainfuck</a> VM (idea courtesy of <a href="https://twitter.com/krisajenkins/status/543359911821053953">Kris Jenkins</a>, thanks Kris!).</li>
+<li>A simple and useless language I am yet to design. I think it could end up being a project I can take as far as I want. Or drop it as soon as I get an MVP if I won&#8217;t learn any more.</li>
+</ul>
+<p>And the languages I&#8217;d like to learn and apply to this sort of thing are as follows.</p>
+<ul>
+<li>Clojure (I&#8217;m going to <a href="https://skillsmatter.com/conferences/6861-clojure-exchange-2015">ClojureX</a> at the end of 2015, so there&#8217;s an incentive!)</li>
+<li>ClojureScript</li>
+<li>Haskell</li>
+<li>Elixir</li>
+</ul>
+<p>Other languages I may dip into if I feel like it.</p>
+<ul>
+<li>C</li>
+<li>Java</li>
+<li>Scala</li>
+<li>Erlang</li>
+<li>Ruby</li>
+</ul>
+<p>I&#8217;m pretty handy with JavaScript, but I&#8217;d like to build some stuff with <a href="http://facebook.github.io/react/">React</a> at some point too.</p>
+<p>The projects and language lists may still grow, but I&#8217;d like to build and use these as a minimum. I&#8217;ll continue to blog about my endeavours and probably write a wrap up at the end of the year with a new set of goals for 2016. I think this goal based approach will help to accelerate my learning even more than my day to day work does. I may has skipped on university, but there&#8217;s no way I&#8217;m letting that leave a hole in my knowledge.</p>
+<h2>In closing</h2>
+<p>What&#8217;s better than a brainfuck VM?</p>
+<p>A whole repository of them in different languages and styles. I&#8217;m going to implement a VM in languages I&#8217;m trying to learn that runs a brainfuck &#8220;Hello, World!&#8221;. I think that&#8217;ll teach me a fair amount about each language. I think it&#8217;ll be pretty cool if I use brainfuck as my platform for learning over the next year, it also gives me an excuse to litter my posts with profanities. So expect to see them appearing over at <a href="https://github.com/Wolfy87/brainfucks">Wolfy87/brainfucks</a> in the near future.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2014/12/13/my-2015-bucket-set/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

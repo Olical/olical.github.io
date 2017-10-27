@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>changelog &#8211; Oliver Caldwell&#039;s blog</title>
+	<atom:link href="/tag/changelog/feed/" rel="self" type="application/rss+xml" />
+	<link>/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Wed, 18 Oct 2017 13:50:23 +0000</lastBuildDate>
+	<language>en-GB</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>Updating dependencies without CHANGES.md</title>
+		<link>/2017/04/05/updating-dependencies-without-changes-md/</link>
+		<comments>/2017/04/05/updating-dependencies-without-changes-md/#respond</comments>
+		<pubDate>Wed, 05 Apr 2017 09:41:47 +0000</pubDate>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+				<category><![CDATA[JavaScript]]></category>
+		<category><![CDATA[changelog]]></category>
+		<category><![CDATA[dependencies]]></category>
+		<category><![CDATA[github]]></category>
+
+		<guid isPermaLink="false">/?p=526</guid>
+		<description><![CDATA[I recently received an issue on EventEmitter, my longest running project I have carried through my entire career so far, asking where the change log was. The bad news is that there isn&#8217;t one. Although I have a pretty thorough&#160;change log for my newer projects like react-faux-dom, I didn&#8217;t even understand&#160;semver&#160;back when I started it <a class="read-more" href="/2017/04/05/updating-dependencies-without-changes-md/">[&#8230;]</a>]]></description>
+				<content:encoded><![CDATA[<p>I recently received an issue on <a href="https://github.com/Olical/EventEmitter">EventEmitter</a>, my longest running project I have carried through my entire career so far, asking<a href="https://github.com/Olical/EventEmitter/issues/126"> where the change log was</a>. The bad news is that there isn&#8217;t one.</p>
+<p>Although I have <a href="https://github.com/Olical/react-faux-dom/blob/master/CHANGES.md">a pretty thorough&nbsp;change log</a> for my newer projects like <a href="https://github.com/Olical/react-faux-dom">react-faux-dom</a>, I didn&#8217;t even understand&nbsp;<a href="http://semver.org/">semver</a>&nbsp;back when I started it all those years ago (it feels like a long time to me, okay). I never considered explaining what changed over time for my users because I&#8217;d never had that requirement or predicament myself. Yet.</p>
+<h2>Some tips will have to do</h2>
+<p>I couldn&#8217;t go back in time and tell younger me to track the changes and I certainly wasn&#8217;t going to trawl through every commit and build one retrospectively. All I could offer the nice fellow was advice I&#8217;ve picked up from books, people and mistakes over time. I&#8217;m putting that here to in the hopes that others outside of my projects issue tracker can learn from what I had to say. I hope it&#8217;s useful and helps you out some day. I pretty much copied it directly but fixed a handful of small typos.</p>
+<blockquote><p>I&#8217;m afraid I started this project at the start of my career and have carried it all the way through so far. I didn&#8217;t know the connotations of semver or the importance of change logs at the time, so I&#8217;m afraid there&#8217;s nothing.</p>
+<p>BUT, I can offer some advice and reassurance. When upgrading any library, even if you <em>think</em> they follow semver to the letter, you should write some tests in your suite around that library. This is a great way to <em>learn</em> a library as well as protect yourself against change. You may even end up fixing something upstream. I know it&#8217;s extra work, but some people think TDD or even tests are extra work, they offer the same reward. A stable system over time.</p>
+<p>The reassurance is that I have deliberately kept the surface API the same. I bumped the major version when I rewrote it, but kept the method signatures the same. I can&#8217;t see you having any issues, but you could always check the docs from the old version (use git tags) and compare them to your desired version.</p>
+<p>If you only use add and remove event listener, you only need to check how they work (or test them!).</p>
+<p>I know it&#8217;s not ideal, but I hope this helps a little, it&#8217;s all I can offer really. I have learnt from this on projects like <a href="https://github.com/Olical/react-faux-dom/blob/master/CHANGES.md">react-faux-dom</a>, but I didn&#8217;t learn that in time for EventEmitter.</p>
+<p>Semver is great and all, but you can&#8217;t put absolute trust in it, you need some tools in your brain to deal with changing dependencies and being sure that they work in your new system. Tests are the best way, in my opinion.</p>
+<p>(sorry that this turned into a sort of blog post, I didn&#8217;t want to just say &#8220;no changelog sorry&#8221;, I wanted to offer <em>some</em> sort of help too)</p></blockquote>
+<p>Well, now it isn&#8217;t a &#8220;sort of blog post&#8221;, now it&#8217;s a &#8220;blog post&#8221;. Just not a very good one I guess. I do think reiterating my points here will mean more people get to see them though, for better or worse.</p>
+<p>The main point I was trying to get across was that you can not trust your dependencies, especially in JavaScript where the default is to let dependencies of dependencies versions slide forward and update silently. <a href="https://yarnpkg.com/lang/en/">Yarn</a> helps with this problem, but you should always be vigilant in ecosystems that rely so&nbsp;heavily on huge trees of dependencies.</p>
+<p>A few tests ahead of time will save you from a world of hurt down the line.</p>
+]]></content:encoded>
+			<wfw:commentRss>/2017/04/05/updating-dependencies-without-changes-md/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+	</channel>
+</rss>

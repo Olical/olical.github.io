@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	
+	>
+<channel>
+	<title>Comments on: Tuples in JavaScript</title>
+	<atom:link href="/2013/07/12/tuples-in-javascript/feed/" rel="self" type="application/rss+xml" />
+	<link>/2013/07/12/tuples-in-javascript/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Mon, 22 May 2017 19:57:20 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>By: Deepu Mohan Puthrote</title>
+		<link>/2013/07/12/tuples-in-javascript/#comment-208</link>
+		<dc:creator><![CDATA[Deepu Mohan Puthrote]]></dc:creator>
+		<pubDate>Tue, 22 Dec 2015 20:22:00 +0000</pubDate>
+		<guid isPermaLink="false">/2013/07/12/tuples-in-javascript#comment-208</guid>
+		<description><![CDATA[What do you think about using array destructing instead?
+
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment
+
+
+
+const [x, y, z] = [30, 40, 50];]]></description>
+		<content:encoded><![CDATA[<p>What do you think about using array destructing instead?</p>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment" rel="nofollow">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment</a></p>
+<p>const [x, y, z] = [30, 40, 50];</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: pixelBender67</title>
+		<link>/2013/07/12/tuples-in-javascript/#comment-87</link>
+		<dc:creator><![CDATA[pixelBender67]]></dc:creator>
+		<pubDate>Tue, 07 Jan 2014 02:53:00 +0000</pubDate>
+		<guid isPermaLink="false">/2013/07/12/tuples-in-javascript#comment-87</guid>
+		<description><![CDATA[This is cool, python uses tuples as well]]></description>
+		<content:encoded><![CDATA[<p>This is cool, python uses tuples as well</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Oliver Caldwell</title>
+		<link>/2013/07/12/tuples-in-javascript/#comment-68</link>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+		<pubDate>Mon, 29 Jul 2013 21:17:00 +0000</pubDate>
+		<guid isPermaLink="false">/2013/07/12/tuples-in-javascript#comment-68</guid>
+		<description><![CDATA[Just copying the reply I sent to Jan so you get a notification: Done! Although I have simplified it and made it a lot more tuple-esc. Still does the same thing though! https://github.com/Wolfy87/tuple]]></description>
+		<content:encoded><![CDATA[<p>Just copying the reply I sent to Jan so you get a notification: Done! Although I have simplified it and made it a lot more tuple-esc. Still does the same thing though! <a href="https://github.com/Wolfy87/tuple" rel="nofollow">https://github.com/Wolfy87/tuple</a></p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Oliver Caldwell</title>
+		<link>/2013/07/12/tuples-in-javascript/#comment-67</link>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+		<pubDate>Mon, 29 Jul 2013 21:16:00 +0000</pubDate>
+		<guid isPermaLink="false">/2013/07/12/tuples-in-javascript#comment-67</guid>
+		<description><![CDATA[Done! Although I have simplified it and made it a lot more tuple-esc. Still does the same thing though! https://github.com/Wolfy87/tuple]]></description>
+		<content:encoded><![CDATA[<p>Done! Although I have simplified it and made it a lot more tuple-esc. Still does the same thing though! <a href="https://github.com/Wolfy87/tuple" rel="nofollow">https://github.com/Wolfy87/tuple</a></p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: bhurlow</title>
+		<link>/2013/07/12/tuples-in-javascript/#comment-65</link>
+		<dc:creator><![CDATA[bhurlow]]></dc:creator>
+		<pubDate>Mon, 29 Jul 2013 15:32:00 +0000</pubDate>
+		<guid isPermaLink="false">/2013/07/12/tuples-in-javascript#comment-65</guid>
+		<description><![CDATA[very nice!]]></description>
+		<content:encoded><![CDATA[<p>very nice!</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Ege</title>
+		<link>/2013/07/12/tuples-in-javascript/#comment-64</link>
+		<dc:creator><![CDATA[Ege]]></dc:creator>
+		<pubDate>Mon, 29 Jul 2013 12:27:00 +0000</pubDate>
+		<guid isPermaLink="false">/2013/07/12/tuples-in-javascript#comment-64</guid>
+		<description><![CDATA[With me, I guess there are at least two people, which means there is at least a bit of interest =)]]></description>
+		<content:encoded><![CDATA[<p>With me, I guess there are at least two people, which means there is at least a bit of interest =)</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Oliver Caldwell</title>
+		<link>/2013/07/12/tuples-in-javascript/#comment-61</link>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+		<pubDate>Mon, 29 Jul 2013 07:38:00 +0000</pubDate>
+		<guid isPermaLink="false">/2013/07/12/tuples-in-javascript#comment-61</guid>
+		<description><![CDATA[I would quite like to turn this into a full project too. With tests and exposure through AMD and CommonJS. As long as there&#039;s a bit of interest and it&#039;s not something only I would use then I would be happy to publish it.
+
+I&#039;ll might even start tonight. Thanks for the vote!]]></description>
+		<content:encoded><![CDATA[<p>I would quite like to turn this into a full project too. With tests and exposure through AMD and CommonJS. As long as there&#8217;s a bit of interest and it&#8217;s not something only I would use then I would be happy to publish it.</p>
+<p>I&#8217;ll might even start tonight. Thanks for the vote!</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Jan Lehnardt</title>
+		<link>/2013/07/12/tuples-in-javascript/#comment-60</link>
+		<dc:creator><![CDATA[Jan Lehnardt]]></dc:creator>
+		<pubDate>Sun, 28 Jul 2013 23:30:00 +0000</pubDate>
+		<guid isPermaLink="false">/2013/07/12/tuples-in-javascript#comment-60</guid>
+		<description><![CDATA[Here&#039;s a humble vote to put this up o. GitHub &#038; NPM.]]></description>
+		<content:encoded><![CDATA[<p>Here&#8217;s a humble vote to put this up o. GitHub &amp; NPM.</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>

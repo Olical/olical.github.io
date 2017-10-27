@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	
+	>
+<channel>
+	<title>Comments on: My thoughts on React, Flux and Reflux</title>
+	<atom:link href="/2014/12/06/my-thoughts-on-react-flux-and-reflux/feed/" rel="self" type="application/rss+xml" />
+	<link>/2014/12/06/my-thoughts-on-react-flux-and-reflux/</link>
+	<description>On programming and text editing. Addicted to lisps.</description>
+	<lastBuildDate>Mon, 22 May 2017 19:57:20 +0000</lastBuildDate>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.8.2</generator>
+	<item>
+		<title>By: 尤川豪</title>
+		<link>/2014/12/06/my-thoughts-on-react-flux-and-reflux/#comment-146</link>
+		<dc:creator><![CDATA[尤川豪]]></dc:creator>
+		<pubDate>Tue, 16 Jun 2015 04:27:00 +0000</pubDate>
+		<guid isPermaLink="false">/?p=237#comment-146</guid>
+		<description><![CDATA[Thanks for sharing this! it&#039;s very helpful! nice file structure!]]></description>
+		<content:encoded><![CDATA[<p>Thanks for sharing this! it&#8217;s very helpful! nice file structure!</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Oliver Caldwell</title>
+		<link>/2014/12/06/my-thoughts-on-react-flux-and-reflux/#comment-140</link>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+		<pubDate>Tue, 02 Jun 2015 10:16:00 +0000</pubDate>
+		<guid isPermaLink="false">/?p=237#comment-140</guid>
+		<description><![CDATA[Thanks a lot! I hope you found it useful. I&#039;ve since been playing with http://martyjs.org/ which is another approach that I really like. Simple todo list example can be found here: https://github.com/Wolfy87/marty-todo]]></description>
+		<content:encoded><![CDATA[<p>Thanks a lot! I hope you found it useful. I&#8217;ve since been playing with <a href="http://martyjs.org/" rel="nofollow">http://martyjs.org/</a> which is another approach that I really like. Simple todo list example can be found here: <a href="https://github.com/Wolfy87/marty-todo" rel="nofollow">https://github.com/Wolfy87/marty-todo</a></p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Cody</title>
+		<link>/2014/12/06/my-thoughts-on-react-flux-and-reflux/#comment-138</link>
+		<dc:creator><![CDATA[Cody]]></dc:creator>
+		<pubDate>Mon, 01 Jun 2015 22:52:00 +0000</pubDate>
+		<guid isPermaLink="false">/?p=237#comment-138</guid>
+		<description><![CDATA[Great post. I like your clear explanation of Reflux.]]></description>
+		<content:encoded><![CDATA[<p>Great post. I like your clear explanation of Reflux.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: Oliver Caldwell</title>
+		<link>/2014/12/06/my-thoughts-on-react-flux-and-reflux/#comment-122</link>
+		<dc:creator><![CDATA[Oliver Caldwell]]></dc:creator>
+		<pubDate>Sun, 01 Feb 2015 18:49:00 +0000</pubDate>
+		<guid isPermaLink="false">/?p=237#comment-122</guid>
+		<description><![CDATA[I thought about it more afterwards, and it doesn&#039;t actually solve anything. I think using the React.DOM object under an alias is just as good. Either way, here&#039;s it in action: https://github.com/Wolfy87/tm-challenge/blob/master/src/components/Dashboard.js this is actually the repository this post was originally written about.
+
+Maybe someone with more experience in React can tell if my function is better than React.DOM or not, but it seems pretty much an equivalent to me. I do like the fact that it&#039;s just arrays though, maybe it&#039;s a bit more expressive than nested function calls.
+
+I also have this post which turns JavaScript arrays into a syntax tree which can be executed with things such as macros. Combining that with React would give you a DSL for creating templates more expressively within JavaScript. /2014/12/15/a-javascript-clojure-mashup/]]></description>
+		<content:encoded><![CDATA[<p>I thought about it more afterwards, and it doesn&#8217;t actually solve anything. I think using the React.DOM object under an alias is just as good. Either way, here&#8217;s it in action: <a href="https://github.com/Wolfy87/tm-challenge/blob/master/src/components/Dashboard.js" rel="nofollow">https://github.com/Wolfy87/tm-challenge/blob/master/src/components/Dashboard.js</a> this is actually the repository this post was originally written about.</p>
+<p>Maybe someone with more experience in React can tell if my function is better than React.DOM or not, but it seems pretty much an equivalent to me. I do like the fact that it&#8217;s just arrays though, maybe it&#8217;s a bit more expressive than nested function calls.</p>
+<p>I also have this post which turns JavaScript arrays into a syntax tree which can be executed with things such as macros. Combining that with React would give you a DSL for creating templates more expressively within JavaScript. <a href="/2014/12/15/a-javascript-clojure-mashup/" rel="nofollow">/2014/12/15/a-javascript-clojure-mashup/</a></p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>By: ceedan</title>
+		<link>/2014/12/06/my-thoughts-on-react-flux-and-reflux/#comment-120</link>
+		<dc:creator><![CDATA[ceedan]]></dc:creator>
+		<pubDate>Sat, 24 Jan 2015 23:07:00 +0000</pubDate>
+		<guid isPermaLink="false">/?p=237#comment-120</guid>
+		<description><![CDATA[Nice writeup. I think you should include some usage of the compile utility that you made, though. How does using compile compare to an alternative solution? What problem is it solving for you, exactly?]]></description>
+		<content:encoded><![CDATA[<p>Nice writeup. I think you should include some usage of the compile utility that you made, though. How does using compile compare to an alternative solution? What problem is it solving for you, exactly?</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>
