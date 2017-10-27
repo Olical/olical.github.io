@@ -28,5 +28,8 @@
  :previews?            false
  :clean-urls?          true
  :hide-future-posts?   true
- :klipse               {}
+ :klipse               {:settings {:selector ".klipse-cljs"
+                                   :selector-reagent ".klipse-reagent"
+                                   :selector-eval-scheme ".klipse-scheme"
+                                   :selector-eval-js ".klipse-js"}}
  :debug?               false}
