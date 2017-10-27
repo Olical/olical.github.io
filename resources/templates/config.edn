@@ -1,0 +1,32 @@
+{:site-title           "Oliver Caldwell's blog"
+ :author               "Oliver Caldwell"
+ :description          "On languages and text editors."
+ :site-url             "https://oli.me.uk/"
+ :post-root            "posts"
+ :page-root            "pages"
+ :post-root-uri        "posts-output"
+ :page-root-uri        "pages-output"
+ :tag-root-uri         "tags-output"
+ :author-root-uri      "authors-output"
+ :blog-prefix          "/"
+ :rss-name             "feed.xml"
+ :rss-filters          []
+ :recent-posts         3
+ :post-date-format     "yyyy-MM-dd"
+ :archive-group-format "yyyy MMMM"
+ :sass-src             []
+ :sass-path            "sass"
+ :compass-path         "compass"
+ :theme                "blue"
+ :resources            ["img" "CNAME"]
+ :keep-files           [".git"]
+ :disqus?              true
+ :disqus-shortname     "olimeuk"
+ :ignored-files        [#"\.#.*" #".*\.swp$"]
+ :posts-per-page       5
+ :blocks-per-preview   2
+ :previews?            false
+ :clean-urls?          true
+ :hide-future-posts?   true
+ :klipse               {}
+ :debug?               false}
