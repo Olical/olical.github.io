@@ -16,7 +16,7 @@ I wanted to start fresh since my old blog is full of so many topics that I do no
 
 I used [Simply Static][simply-static] to generate a snapshot of my entire blog which I could then merge into my GitHub pages repositories top level. This means every URL that used to work with my original blog will work with this one.
 
-I don't promote my old posts through this anymore, but they're still there, I even preserved [the original homepage](/wp-index.html).
+I don't promote my old posts through this anymore, but they're still there, I even preserved [the original homepage][wp-index].
 
 ## The payoff
 
@@ -37,3 +37,4 @@ I also did this entire migration today while on trains and in cars over mobile i
 [klipse]: https://github.com/viebel/klipse
 [repo]: https://github.com/Olical/olical.github.io
 [simply-static]: https://en-gb.wordpress.org/plugins/simply-static/
+[wp-index]: https://oli.me.uk/wp-index.html
