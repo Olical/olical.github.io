@@ -32,7 +32,7 @@ brew install clojure
 
 I found that I could install it through the Arch Linux package manager, `pacman`, too. But this version was slightly out of date at the time of writing, so I don't recommend this just yet. If you're on Linux you can run the manual installer easily enough.
 
-> Note: Bfore running this, make sure you have `curl`, `rlwrap` (optional, allows you to use `clj` instead of `clojure` which has slightly better readline editing) and Java installed.
+> Note: Before running this, make sure you have `curl`, `rlwrap` (optional, allows you to use `clj` instead of `clojure` which has slightly better readline editing) and Java installed.
 
 ```bash
 curl -O https://download.clojure.org/install/linux-install-1.9.0.326.sh
