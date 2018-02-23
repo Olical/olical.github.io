@@ -10,9 +10,9 @@ This post is intended _primarily_ for two groups of people:
 1. People just starting out in Clojure, who know parts of the language but don't know how to begin structuring a real project.
 2. Seasoned Clojurians who wish to see how to structure a project with the new Clojure CLI + `deps.edn` and not `lein` or `boot` (even though they're still awesome).
 
-My goal is to teach you how to go from an empty directory, to a project you can run, test, compile and (if you wish to) publish with ease. This isn't just a copy and paste or template job, I want you to actually understand these parts of your project.
+My goal is to teach you how to go from an empty directory, to a project you can run, test, compile and (if you wish to) publish with ease. We're going to get there through a series of relatively small steps so you can understand all the tools you're using.
 
-There's won't be an awful lot of the Clojure language here, so don't worry if you're still getting your head around `defn`s and `keyword?`s. The only code example will be a "Hello, World!", if that helps.
+There's won't be an awful lot of Clojure code here, so don't worry if you're still getting your head around the language itself. The only code example will be a "Hello, World!", if that helps.
 
 > Note: This post assumes usage of Linux, OSX or similar, I'm afraid it isn't intended for Windows users since I just don't have the knowledge to help you there. Some of the information will apply, but you'll have to adapt things, I'm sure you can find Windows specific guides for the parts that don't fit.
 
@@ -30,16 +30,16 @@ If you're on OSX, you can use `brew` to install the CLI.
 $ brew install clojure
 ```
 
-I found that I could install it through the Arch Linux package manager, `pacman`, too. But this version was slightly out of date at the time of writing, so I don't recommend this just yet. If you're on Linux you can run the manual installer easily enough.
+I have found that I could install it through the Arch Linux package manager although it was slightly out of date at the time of writing, so I don't recommend this just yet. If you're on Linux you can run the manual installer easily enough.
 
 ```bash
 $ curl -O https://download.clojure.org/install/linux-install-1.9.0.326.sh
 $ sudo bash linux-install-1.9.0.326.sh
 ```
 
-To update, use the package manager you used for the installation (no surprises here) or find the latest Linux installer URL on the [getting started][getting-started] page.
+To update, use the package manager you used for the installation or find the latest Linux installer URL on the [getting started][getting-started] page.
 
-You should now be able to drop into a Clojure REPL with one command! You can use `clojure` or `clj`, the latter has a slightly better editing experience but requires you to have `rlwrap` installed.
+You should now be able to drop into a Clojure REPL with one command! You can run `clojure` or `clj` in your terminal, the latter has a slightly better editing experience but requires you to have `rlwrap` installed.
 
 ```bash
 $ clj
@@ -58,7 +58,7 @@ $ cd hey
 $ touch src/hey/core.clj test/hey/core_test.clj
 ```
 
-This leaves us with the following directory structure:
+This provides us with the following directory structure:
 
 ```
 $ tree
@@ -73,7 +73,7 @@ $ tree
 4 directories, 2 files
 ```
 
-Let's insert some basic content into these files:
+Let's insert some content into these files:
 
 ### src/hey/core.clj
 
@@ -96,6 +96,8 @@ Let's insert some basic content into these files:
     (t/is (= (with-out-str (sut/-main)) "Hello, World!\n"))))
 ```
 
+The main namespace simply prints "Hello, World!" when executed and the test confirms that functionality.
+
 ## Running your code
 
 Now that we have a bare bones program and test file in our project directory, we're probably going to want to run it. We can do that with the Clojure CLI, go ahead and execute the following:
@@ -104,7 +106,7 @@ Now that we have a bare bones program and test file in our project directory, we
 $ clj -m hey.core
 ```
 
-You should see "Hello, World!" printed in your terminal. We'll write up some scripts in a little bit that make running your code even easier, but this is a start. Let's try jumping into a REPL too, so we can interact with our code live:
+You should see "Hello, World!" printed in your terminal. Let's try jumping into a REPL so we can interact with our code directly:
 
 ```bash
 $ clj
@@ -118,7 +120,7 @@ Hello, World!
 nil
 ```
 
-Pretty cool!
+If your editor supports Clojure, you can probably connect a REPL and interact with your code through there too. With spacemacs I would type `,'` to "jack in" with CIDER. I can then use `,ee` to evaluate expressions as I work.
 
 ## Testing
 
@@ -129,14 +131,31 @@ Create a file called `deps.edn` at the top of your project and add the following
 ### deps.edn
 
 ```clojure
-{:aliases
- {:test {:extra-paths ["test"]
-         :extra-deps {com.cognitect/test-runner {:git/url "git@github.com:cognitect-labs/test-runner"
-                                                 :sha "5fb4fc46ad0bf2e0ce45eba5b9117a2e89166479"}}
-         :main-opts ["-m" "cognitect.test-runner"]}}}
+{:paths ["src"]
+
+ :deps
+ {org.clojure/clojure {:mvn/version "1.9.0"}}
+
+ :aliases
+ {:test
+  {:extra-paths ["test"]
+   :extra-deps
+   {com.cognitect/test-runner {:git/url "git@github.com:cognitect-labs/test-runner"
+                               :sha "5fb4fc46ad0bf2e0ce45eba5b9117a2e89166479"}}
+   :main-opts ["-m" "cognitect.test-runner"]}}}
 ```
 
-This tells the Clojure CLI that when we apply the `test` alias it should ensure that we have the `com.cognitect/test-runner` dependency to hand. The `test` directory is added to the paths so Clojure knows where to look for our test files. Then it instructs Clojure to execute the `cognitect.test-runner` namespace. This will discover and run our test for us, let's run it now:
+Let's break this down:
+
+ * `:paths` tells Clojure where to look for our source files, this will be useful when building a jar file.
+ * `:deps` is where we specify our dependencies, right now all we're depending on is Clojure 1.9.0.
+ * `:aliases` is where w specify special overrides that we can apply with the `-A` argument to the CLI.
+ * `:test` is the name of our alias, it adds the `test` directory to the paths list and `com.cognitect/test-runner` to the dependencies.
+ * `:main-opts` instructs Clojure that we want these arguments applied when the alias is active. In this case, we're using `-m` to specify which namespace to execute.
+
+The usage of `deps.edn` is documented further in [the deps guide][deps-guide].
+
+This will discover and run our test for us, let's run it now:
 
 ```bash
 $ clj -Atest
@@ -151,23 +170,30 @@ Ran 1 tests containing 1 assertions.
 
 Hopefully you see the same success message as myself. You can see that we applied the values specified in our alias with the `-Atest` argument.
 
-If you need dependencies that aren't in an alias, like these testing tools, you can add them under the `:deps` keyword:
-
-```clojure
-{:deps
- {clj-time {:mvn/version "0.14.2"}}
-
- :aliases
- {...}}
-```
-
-This is documented further in [the guide][deps-guide].
-
 ## Building jars
 
 You can now write additional namespaces, add dependencies, run your code and test things. You've actually got a lot of what you need already and with very little tooling or configuration! Eventually you're going to want to build a jar to either publish for others to use (in the case of a library) or run on a server (in the case of an application).
 
 Compiling your project into a jar will involve similar steps to getting your tests running, we're going to add another alias with another dependency which is does the job for us.
+
+Go ahead and add this new alias to the `:aliases` section of your `deps.edn` file, next to the `:test` alias:
+
+```clojure
+:uberjar
+{:extra-deps
+ {pack/pack.alpha
+  {:git/url "git@github.com:juxt/pack.alpha.git"
+   :sha     "eed89476315661e2389d5d078ec17375bec3efa5"}}
+ :main-opts ["-m" "mach.pack.alpha.jcl" "deps.edn" "hey.jar"]}
+```
+
+We can now build an "ubarjar" that we can execute directly through the `java` program, without the Clojure CLI:
+
+```bash
+$ clj -Auberjar
+$ java -jar hey.jar # Drop us into a Clojure REPL.
+$ java -jar hey.jar -m hey.core # Executes our "Hello, World!".
+```
 
 [cursive]: https://cursive-ide.com/
 [spacemacs]: http://spacemacs.org/
