@@ -149,7 +149,7 @@ Let's break this down:
 
  * `:paths` tells Clojure where to look for our source files, this will be useful when building a jar file.
  * `:deps` is where we specify our dependencies, right now all we're depending on is Clojure 1.9.0.
- * `:aliases` is where w specify special overrides that we can apply with the `-A` argument to the CLI.
+ * `:aliases` is where we specify special overrides that we can apply with the `-A` argument to the CLI.
  * `:test` is the name of our alias, it adds the `test` directory to the paths list and `com.cognitect/test-runner` to the dependencies.
  * `:main-opts` instructs Clojure that we want these arguments applied when the alias is active. In this case, we're using `-m` to specify which namespace to execute.
 
