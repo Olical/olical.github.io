@@ -179,7 +179,7 @@ Compiling your project into a jar will involve similar steps to getting your tes
 Go ahead and add this new alias to the `:aliases` section of your `deps.edn` file, next to the `:test` alias:
 
 ```clojure
-:uberjar
+:pack
 {:extra-deps
  {pack/pack.alpha
   {:git/url "git@github.com:juxt/pack.alpha.git"
@@ -187,10 +187,10 @@ Go ahead and add this new alias to the `:aliases` section of your `deps.edn` fil
  :main-opts ["-m" "mach.pack.alpha.jcl" "deps.edn" "hey.jar"]}
 ```
 
-We can now build an "ubarjar" that we can execute directly through the `java` program, without the Clojure CLI:
+We can now build a jar that we can execute directly through the `java` program, without the Clojure CLI:
 
 ```bash
-$ clj -Auberjar
+$ clj -Apack
 $ java -jar hey.jar # Drop us into a Clojure REPL.
 $ java -jar hey.jar -m hey.core # Executes our "Hello, World!".
 ```
