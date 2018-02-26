@@ -1,9 +1,8 @@
 {:title  "Clojure projects from scratch"
  :layout :post
- :date   "..."
+ :date   "2018-02-26"
  :tags   ["clojure"]
- :klipse false
- :draft? true}
+ :klipse false}
 
 This post is intended _primarily_ for two groups of people:
 
@@ -141,13 +140,13 @@ Create a file called `deps.edn` at the top of your project and add the following
   {:extra-paths ["test"]
    :extra-deps
    {com.cognitect/test-runner {:git/url "git@github.com:cognitect-labs/test-runner"
-                               :sha "5fb4fc46ad0bf2e0ce45eba5b9117a2e89166479"}}
+                               :sha "5f2b5c2efb444df76fb5252102b33f542ebf7f58"}}
    :main-opts ["-m" "cognitect.test-runner"]}}}
 ```
 
 Let's break this down:
 
- * `:paths` tells Clojure where to look for our source files, this will be useful when building a jar file.
+ * `:paths` tells Clojure where to look for our source files.
  * `:deps` is where we specify our dependencies, right now all we're depending on is Clojure 1.9.0.
  * `:aliases` is where we specify special overrides that we can apply with the `-A` argument to the CLI.
  * `:test` is the name of our alias, it adds the `test` directory to the paths list and `com.cognitect/test-runner` to the dependencies.
@@ -184,22 +183,22 @@ Go ahead and add this new alias to the `:aliases` section of your `deps.edn` fil
  {pack/pack.alpha
   {:git/url "git@github.com:juxt/pack.alpha.git"
    :sha     "e6d0691c5f58135e1ef6fb1c9dda563611d36205"}}
- :main-opts ["-m" "mach.pack.alpha.capsule" "deps.edn" "hey.jar"]}
+ :main-opts ["-m" "mach.pack.alpha.capsule" "deps.edn" "dist/hey.jar"]}
 ```
 
 We can now build a jar that we can execute directly through the `java` program, without the Clojure CLI:
 
 ```bash
 $ clj -Apack
-$ java -jar hey.jar # Drop us into a Clojure REPL.
-$ java -jar hey.jar -m hey.core # Executes our "Hello, World!".
+$ java -jar dist/hey.jar # Drop us into a Clojure REPL.
+$ java -jar dist/hey.jar -m hey.core # Executes our "Hello, World!".
 ```
 
 ## Publishing
 
 Now that you have your jar built you have a couple of options with regards to getting it out into the world. You may want to simply deploy your jar, possibly within a Docker container, to your own server. This is the route you'll take if you're building some sort of web application.
 
-Alternatively, you may have written a library that you wish to publish onto [Clojars][] for the world to use, we're going to use maven to accomplish this.
+Alternatively, you may have written a library that you wish to publish onto [Clojars][] for anyone to use, we're going to use maven to accomplish this.
 
 First, we're going to add your Clojars login to `~/.m2/settings.xml`:
 
@@ -215,23 +214,104 @@ First, we're going to add your Clojars login to `~/.m2/settings.xml`:
 </settings>
 ```
 
-Then we can tell maven to deploy the jar file we built with `clj -Apack`:
+Now we're going to generate your base `pom.xml` file, you should run this command whenever you're going to publish so the dependencies get update:
 
 ```bash
-$ mvn deploy:deploy-file -DgroupId=org.clojars.olical \
-   -DartifactId=hey \
-   -Dversion=1.5.0 \
-   -Dpackaging=jar \
-   -Dfile=hey.jar \
+$ clj -Spom
+```
+
+Here's my example version, it contains some extra Clojars specific fields that you may want to use:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.clojars.olical</groupId>
+  <artifactId>hey</artifactId>
+  <version>2.0.0-SNAPSHOT</version>
+  <name>hey</name>
+  <description>Just a Hello, World!</description>
+  <url>https://github.com/Olical/clojure-hey-example</url>
+  <licenses>
+    <license>
+      <name>Unlicense</name>
+      <url>https://unlicense.org/</url>
+    </license>
+  </licenses>
+  <scm>
+    <url>https://github.com/Olical/clojure-hey-example</url>
+  </scm>
+  <dependencies>
+    <dependency>
+      <groupId>org.clojure</groupId>
+      <artifactId>clojure</artifactId>
+      <version>1.9.0</version>
+    </dependency>
+  </dependencies>
+  <build>
+    <sourceDirectory>src</sourceDirectory>
+  </build>
+  <repositories>
+    <repository>
+      <id>clojars</id>
+      <url>https://clojars.org/repo</url>
+    </repository>
+  </repositories>
+</project>
+```
+
+We can now tell maven to deploy our built jar using this pom file:
+
+```bash
+$ mvn deploy:deploy-file \
+   -DpomFile=pom.xml \
+   -Dfile=dist/hey.jar \
    -DrepositoryId=clojars \
    -Durl=https://clojars.org/repo
 ```
 
-Take note of the fact that I specify a target group, name and version on the first three lines. You'll want to update these to suit your needs.
-
 A lot of this information comes from [Clojar's guide to pushing][pushing] and [Maven's guide to deploying 3rd party jars][deploying-jars]. If you find you need to have a custom `pom.xml` file, the steps are documented in the latter link.
 
 If everything went to plan, your Clojars account should now contain a fresh new jar.
+
+## Ergonomics
+
+As it stands, to deploy our jar to Clojars we'll want to take the following steps:
+
+ * Run the tests with `clj -Atest`.
+ * Build a fresh jar with `clj -Apack`.
+ * Run `clj -Spom` to update our `pom.xml` with any dependency changes. (this may require some manual XML grooming)
+ * Update the version number in our `pom.xml`.
+ * Run the `mvn deploy:deploy-file...` command.
+ 
+This isn't particularly catchy, so we'll wrap everything we've seen so far in a pretty little `Makefile`:
+
+```makefile
+.PHONY: run test pack deploy
+
+run:
+	clj -m hey.core
+
+test:
+	clj -Atest
+
+pack:
+	clj -Apack
+
+deploy: test pack
+	clj -Spom
+	mvn deploy:deploy-file \
+		-DpomFile=pom.xml \
+		-Dfile=dist/hey.jar \
+		-DrepositoryId=clojars \
+		-Durl=https://clojars.org/repo
+```
+
+Now all you need to do when you wish to deploy is bump the version number in your `pom.xml` and execute `make deploy`.
+
+## Thanks!
+
+If you've got this far I really hoped this post has helped you out. Happy Clojuring!
 
 [cursive]: https://cursive-ide.com/
 [spacemacs]: http://spacemacs.org/
