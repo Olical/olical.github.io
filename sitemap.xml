@@ -2,7 +2,15 @@
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
 <url>
 <loc>
-https://oli.me.uk/authors-output/Oliver Caldwell/index.html
+https://oli.me.uk/2018-02-26-clojure-projects-from-scratch/index.html
+</loc>
+<lastmod>
+2018-02-26
+</lastmod>
+</url>
+<url>
+<loc>
+https://oli.me.uk/Oliver Caldwell/index.html
 </loc>
 <lastmod>
 2018-02-26
@@ -34,7 +42,7 @@ https://oli.me.uk/tags/index.html
 </url>
 <url>
 <loc>
-https://oli.me.uk/tags-output/clojure/index.html
+https://oli.me.uk/2017-10-27-hello-world/index.html
 </loc>
 <lastmod>
 2018-02-26
@@ -50,15 +58,7 @@ https://oli.me.uk/index.html
 </url>
 <url>
 <loc>
-https://oli.me.uk/posts-output/2018-02-26-clojure-projects-from-scratch/index.html
-</loc>
-<lastmod>
-2018-02-26
-</lastmod>
-</url>
-<url>
-<loc>
-https://oli.me.uk/posts-output/2017-10-27-hello-world/index.html
+https://oli.me.uk/clojure/index.html
 </loc>
 <lastmod>
 2018-02-26

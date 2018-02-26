@@ -12,17 +12,17 @@ https://oli.me.uk/
 On languages and text editors.
 </description>
 <lastBuildDate>
-Mon, 26 Feb 2018 21:41:43 +0000
+Mon, 26 Feb 2018 21:53:51 +0000
 </lastBuildDate>
 <generator>
 clj-rss
 </generator>
 <item>
 <guid>
-https://oli.me.uk/posts-output/2018-02-26-clojure-projects-from-scratch/
+https://oli.me.uk/2018-02-26-clojure-projects-from-scratch/
 </guid>
 <link>
-https://oli.me.uk/posts-output/2018-02-26-clojure-projects-from-scratch/
+https://oli.me.uk/2018-02-26-clojure-projects-from-scratch/
 </link>
 <title>
 Clojure projects from scratch
@@ -174,10 +174,10 @@ Mon, 26 Feb 2018 00:00:00 +0000
 </item>
 <item>
 <guid>
-https://oli.me.uk/posts-output/2017-10-27-hello-world/
+https://oli.me.uk/2017-10-27-hello-world/
 </guid>
 <link>
-https://oli.me.uk/posts-output/2017-10-27-hello-world/
+https://oli.me.uk/2017-10-27-hello-world/
 </link>
 <title>
 Hello, World!
