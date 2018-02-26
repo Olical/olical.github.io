@@ -2,8 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
     <meta charset="utf-8"/>
-    <title>(ollie {:on :parens}): Hello, World!</title>
-    <link rel="canonical" href="https://oli.me.uk/posts-output/2017-10-27-hello-world/">
+    <title>(ollie {:on :parens}): Posts Tagged &quot;clojure&quot;</title>
+    <link rel="canonical" href="https://oli.me.uk/tags-output/clojure/">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href='http://fonts.googleapis.com/css?family=Alegreya:400italic,700italic,400,700' rel='stylesheet'
           type='text/css'>
@@ -46,49 +46,17 @@
         <div class="col-lg-9">
             <div id="content">
                 
-<div id="post">
-    <div class="post-header">
-    <div id="post-meta" class="row">
-        <div class="col-lg-6">27 October 2017</div>
-        
+<div id="posts-by-tag">
+    <div id="page-header">
+        <h2>Posts Tagged &quot;clojure&quot;</h2>
     </div>
-    <h2>Hello, World!</h2>
-</div>
-<div>
+    <ul>
     
-    <p>I've, once again, migrated my blog onto another platform. This time I've gone from WordPress on my own Linode to <a href="">Cryogen</a> on GitHub pages. This means a few things:</p><ol><li>I no longer need to worry about running my own server, even though Linode is fantastic. I just don't want to maintain anything, especially WordPress.</li><li>I can blog with a Clojure based platform and integrate <a href="">Klipse</a> easily for interactive lispy posts.</li><li>I can write my posts in markdown with Emacs and keep it all on <a href="https://github.com/Olical/olical.github.io">GitHub</a>.</li></ol><h2 id="the_migration">The migration</h2> <p>I wanted to start fresh since my old blog is full of so many topics that I do not feel reflect my true interests anymore, so here I am with a blank slate. Luckily I found a way to keep my WordPress site exactly how it was so as not to break a single URL without running WordPress itself.</p><p>I used <a href="https://en-gb.wordpress.org/plugins/simply-static/">Simply Static</a> to generate a snapshot of my entire blog which I could then merge into my GitHub pages repositories top level. This means every URL that used to work with my original blog will work with this one.</p><p>I don't promote my old posts through this anymore, but they're still there, I even preserved <a href="https://oli.me.uk/wp-index.html">the original homepage</a>.</p><h2 id="the_payoff">The payoff</h2><p>I think it was worth it since I no longer have to run a server and I can do things like this.</p><pre><code class="klipse-scheme nohighlight">(define (add a b)
-  (if (= b 0)
-    a
-    (add (+ a 1) (- b 1))))
+        <li>
+            <a href="/posts-output/2018-02-26-clojure-projects-from-scratch/">Clojure projects from scratch</a>
+        </li>
     
-(add 10 20)
-</code></pre><p>I also did this entire migration today while on trains and in cars over mobile internet, which was fun.</p>
-</div>
-
-
-    <div id="prev-next">
-        
-        <a href="/posts-output/2018-02-26-clojure-projects-from-scratch/">&laquo; Clojure projects from scratch</a>
-        
-        
-    </div>
-
-    
-    <div id="disqus_thread"></div>
-    <script type="text/javascript">
-        var disqus_config = function () {
-            this.page.url = "https://oli.me.uk/posts-output/2017-10-27-hello-world/";
-            this.page.identifier = "Hello, World!";
-        };
-        (function() {
-            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-            dsq.src = '//olimeuk.disqus.com/embed.js';
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        })();
-    </script>
-    
-
-
+    </ul>
 </div>
 
             </div>
@@ -135,16 +103,7 @@
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 <script src="/js/highlight.pack.js" type="text/javascript"></script>
 <script>hljs.initHighlightingOnLoad();</script>
- <link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
-<script>
-window.klipse_settings = {
-  "selector" : ".klipse-cljs",
-  "selector_reagent" : ".klipse-reagent",
-  "selector_eval_scheme" : ".klipse-scheme",
-  "selector_eval_js" : ".klipse-js"
-};
-</script>
-<script src="https://storage.googleapis.com/app.klipse.tech/plugin_prod/js/klipse_plugin.min.js"></script> 
+
 
 </body>
 </html>
