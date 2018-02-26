@@ -1,8 +1,7 @@
 {:title  "Clojure projects from scratch"
  :layout :post
  :date   "2018-02-26"
- :tags   ["clojure"]
- :klipse false}
+ :tags   ["clojure"]}
 
 This post is intended _primarily_ for two groups of people:
 
@@ -38,7 +37,7 @@ $ sudo bash linux-install-1.9.0.326.sh
 
 To update, use the package manager you used for the installation or find the latest Linux installer URL on the [getting started][getting-started] page.
 
-You should now be able to drop into a Clojure REPL with one command! You can run `clojure` or `clj` in your terminal, the latter has a slightly better editing experience but requires you to have `rlwrap` installed.
+You should now be able to drop into a Clojure REPL with one command. You can run `clojure` or `clj` in your terminal, the latter has a slightly better editing experience but requires you to have `rlwrap` installed.
 
 ```bash
 $ clj
@@ -83,7 +82,7 @@ Let's insert some content into these files:
   (println "Hello, World!"))
 ```
 
-### test/hey/core_test.clj
+### test/hey/core\_test.clj
 
 ```clojure
 (ns hey.core-test
@@ -146,11 +145,11 @@ Create a file called `deps.edn` at the top of your project and add the following
 
 Let's break this down:
 
- * `:paths` tells Clojure where to look for our source files.
- * `:deps` is where we specify our dependencies, right now all we're depending on is Clojure 1.9.0.
- * `:aliases` is where we specify special overrides that we can apply with the `-A` argument to the CLI.
- * `:test` is the name of our alias, it adds the `test` directory to the paths list and `com.cognitect/test-runner` to the dependencies.
- * `:main-opts` instructs Clojure that we want these arguments applied when the alias is active. In this case, we're using `-m` to specify which namespace to execute.
+* `:paths` tells Clojure where to look for our source files.
+* `:deps` is where we specify our dependencies, right now all we're depending on is Clojure 1.9.0.
+* `:aliases` is where we specify special overrides that we can apply with the `-A` argument to the CLI.
+* `:test` is the name of our alias, it adds the `test` directory to the paths list and `com.cognitect/test-runner` to the dependencies.
+* `:main-opts` instructs Clojure that we want these arguments applied when the alias is active. In this case, we're using `-m` to specify which namespace to execute.
 
 The usage of `deps.edn` is documented further in [the deps guide][deps-guide].
 
@@ -171,9 +170,9 @@ Hopefully you see the same success message as myself. You can see that we applie
 
 ## Building jars
 
-You can now write additional namespaces, add dependencies, run your code and test things. You've actually got a lot of what you need already and with very little tooling or configuration! Eventually you're going to want to build a jar to either publish for others to use (in the case of a library) or run on a server (in the case of an application).
+You can now write additional namespaces, add dependencies, run your code and test things. You've actually got a lot of what you need already and with very little tooling or configuration. Eventually you're going to want to build a jar to either publish for others to use (in the case of a library) or run on a server (in the case of an application).
 
-Compiling your project into a jar will involve similar steps to getting your tests running, we're going to add another alias with another dependency which is does the job for us.
+Compiling your project into a jar will involve similar steps to getting your tests running, we're going to add another alias with another dependency which does the job for us.
 
 Go ahead and add this new alias to the `:aliases` section of your `deps.edn` file, next to the `:test` alias:
 
@@ -214,7 +213,7 @@ First, we're going to add your Clojars login to `~/.m2/settings.xml`:
 </settings>
 ```
 
-Now we're going to generate your base `pom.xml` file, you should run this command whenever you're going to publish so the dependencies get update:
+Now we're going to generate your base `pom.xml` file, you should run this command whenever you're going to publish so the dependencies get updated:
 
 ```bash
 $ clj -Spom
@@ -270,7 +269,7 @@ $ mvn deploy:deploy-file \
    -Durl=https://clojars.org/repo
 ```
 
-A lot of this information comes from [Clojar's guide to pushing][pushing] and [Maven's guide to deploying 3rd party jars][deploying-jars]. If you find you need to have a custom `pom.xml` file, the steps are documented in the latter link.
+A lot of this information comes from [Clojar's guide to pushing][pushing] and [Maven's guide to deploying 3rd party jars][deploying-jars].
 
 If everything went to plan, your Clojars account should now contain a fresh new jar.
 
@@ -278,11 +277,11 @@ If everything went to plan, your Clojars account should now contain a fresh new 
 
 As it stands, to deploy our jar to Clojars we'll want to take the following steps:
 
- * Run the tests with `clj -Atest`.
- * Build a fresh jar with `clj -Apack`.
- * Run `clj -Spom` to update our `pom.xml` with any dependency changes. (this may require some manual XML grooming)
- * Update the version number in our `pom.xml`.
- * Run the `mvn deploy:deploy-file...` command.
+* Run the tests with `clj -Atest`.
+* Build a fresh jar with `clj -Apack`.
+* Run `clj -Spom` to update our `pom.xml` with any dependency changes. (this may require some manual XML grooming)
+* Update the version number in our `pom.xml`.
+* Run the `mvn deploy:deploy-file...` command.
  
 This isn't particularly catchy, so we'll wrap everything we've seen so far in a pretty little `Makefile`:
 
@@ -311,7 +310,9 @@ Now all you need to do when you wish to deploy is bump the version number in you
 
 ## Thanks!
 
-If you've got this far I really hoped this post has helped you out. Happy Clojuring!
+If you've got this far I really hoped this post has helped you out. You can find the example project I built during the writing of this post at [github.com/Olical/clojure-hey-example][example-repo].
+
+Happy Clojuring!
 
 [cursive]: https://cursive-ide.com/
 [spacemacs]: http://spacemacs.org/
@@ -321,3 +322,4 @@ If you've got this far I really hoped this post has helped you out. Happy Clojur
 [clojars]: https://clojars.org/
 [pushing]: https://github.com/clojars/clojars-web/wiki/Pushing
 [deploying-jars]: https://maven.apache.org/guides/mini/guide-3rd-party-jars-remote.html
+[example-repo]: https://github.com/Olical/clojure-hey-example
