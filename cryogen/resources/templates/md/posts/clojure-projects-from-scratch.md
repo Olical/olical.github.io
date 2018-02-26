@@ -12,7 +12,7 @@ This post is intended _primarily_ for two groups of people:
 
 My goal is to teach you how to go from an empty directory, to a project you can run, test, compile and (if you wish to) publish with ease. We're going to get there through a series of relatively small steps so you can understand all the tools you're using.
 
-There's won't be an awful lot of Clojure code here, so don't worry if you're still getting your head around the language itself. The only code example will be a "Hello, World!", if that helps.
+There won't be an awful lot of Clojure code here, so don't worry if you're still getting your head around the language itself. The only code example will be a "Hello, World!", if that helps.
 
 > Note: This post assumes usage of Linux, OSX or similar, I'm afraid it isn't intended for Windows users since I just don't have the knowledge to help you there. Some of the information will apply, but you'll have to adapt things, I'm sure you can find Windows specific guides for the parts that don't fit.
 
