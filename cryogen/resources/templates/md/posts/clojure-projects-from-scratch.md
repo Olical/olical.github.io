@@ -183,8 +183,8 @@ Go ahead and add this new alias to the `:aliases` section of your `deps.edn` fil
 {:extra-deps
  {pack/pack.alpha
   {:git/url "git@github.com:juxt/pack.alpha.git"
-   :sha     "eed89476315661e2389d5d078ec17375bec3efa5"}}
- :main-opts ["-m" "mach.pack.alpha.jcl" "deps.edn" "hey.jar"]}
+   :sha     "e6d0691c5f58135e1ef6fb1c9dda563611d36205"}}
+ :main-opts ["-m" "mach.pack.alpha.capsule" "deps.edn" "hey.jar" "hey" "1.0.0"]}
 ```
 
 We can now build a jar that we can execute directly through the `java` program, without the Clojure CLI:
@@ -195,8 +195,58 @@ $ java -jar hey.jar # Drop us into a Clojure REPL.
 $ java -jar hey.jar -m hey.core # Executes our "Hello, World!".
 ```
 
+## Publishing
+
+Now that you have your jar built you have a couple of options with regards to getting it out into the world. You may want to simply deploy your jar, possibly within a Docker container, to your own server. This is the route you'll take if you're building some sort of web application.
+
+Alternatively, you may have written a library that you wish to publish onto [Clojars][] for the world to use, we're going to use maven to accomplish this.
+
+First, we're going to generate an initial `pom.xml` file:
+
+```bash
+$ clj -Spom
+```
+
+We can open that XML (I know, sorry) and alter any fields we need to. You may want to update the `groupId` to your username, for example: I publish my packages under `olical`, I can also use `org.clojars.olical`, the default group Clojars provided me with.
+
+You'll need to add Clojars as the target repository:
+
+```xml
+<distributionManagement>
+  <repository>
+    <id>clojars</id>
+    <name>Clojars repository</name>
+    <url>https://clojars.org/repo</url>
+  </repository>
+</distributionManagement>
+```
+
+And be sure to add your Clojars login to `~/.m2/settings.xml`:
+
+```xml
+<settings>
+  <servers>
+    <server>
+      <id>clojars</id>
+      <username>username</username>
+      <password>password</password>
+    </server>
+  </servers>
+</settings>
+```
+
+These instructions [Clojar's guide to pushing][pushing]. Let's try it out:
+
+```bash
+$ mvn deploy
+```
+
+If everything went to plan, your Clojars account should now contain a fresh new jar.
+
 [cursive]: https://cursive-ide.com/
 [spacemacs]: http://spacemacs.org/
 [bridge]: https://github.com/robert-stuttaford/bridge
 [getting-started]: https://clojure.org/guides/getting_started
 [deps-guide]: https://clojure.org/guides/deps_and_cli
+[clojars]: https://clojars.org/
+[pushing]: https://github.com/clojars/clojars-web/wiki/Pushing
