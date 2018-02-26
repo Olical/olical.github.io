@@ -184,7 +184,7 @@ Go ahead and add this new alias to the `:aliases` section of your `deps.edn` fil
  {pack/pack.alpha
   {:git/url "git@github.com:juxt/pack.alpha.git"
    :sha     "e6d0691c5f58135e1ef6fb1c9dda563611d36205"}}
- :main-opts ["-m" "mach.pack.alpha.capsule" "deps.edn" "hey.jar" "hey" "1.0.0"]}
+ :main-opts ["-m" "mach.pack.alpha.capsule" "deps.edn" "hey.jar"]}
 ```
 
 We can now build a jar that we can execute directly through the `java` program, without the Clojure CLI:
@@ -201,27 +201,7 @@ Now that you have your jar built you have a couple of options with regards to ge
 
 Alternatively, you may have written a library that you wish to publish onto [Clojars][] for the world to use, we're going to use maven to accomplish this.
 
-First, we're going to generate an initial `pom.xml` file:
-
-```bash
-$ clj -Spom
-```
-
-We can open that XML (I know, sorry) and alter any fields we need to. You may want to update the `groupId` to your username, for example: I publish my packages under `olical`, I can also use `org.clojars.olical`, the default group Clojars provided me with.
-
-You'll need to add Clojars as the target repository:
-
-```xml
-<distributionManagement>
-  <repository>
-    <id>clojars</id>
-    <name>Clojars repository</name>
-    <url>https://clojars.org/repo</url>
-  </repository>
-</distributionManagement>
-```
-
-And be sure to add your Clojars login to `~/.m2/settings.xml`:
+First, we're going to add your Clojars login to `~/.m2/settings.xml`:
 
 ```xml
 <settings>
@@ -235,11 +215,19 @@ And be sure to add your Clojars login to `~/.m2/settings.xml`:
 </settings>
 ```
 
-These instructions [Clojar's guide to pushing][pushing]. Let's try it out:
+Then we can tell maven to deploy the jar file we built with `clj -Apack`:
 
 ```bash
-$ mvn deploy
+$ mvn deploy:deploy-file -DgroupId=org.clojars.olical \
+   -DartifactId=hey \
+   -Dversion=1.5.0 \
+   -Dpackaging=jar \
+   -Dfile=hey.jar \
+   -DrepositoryId=clojars \
+   -Durl=https://clojars.org/repo
 ```
+
+Take note of the fact that I specify a target group, name and version on the first three lines. You'll want to update these to suite your needs.
 
 If everything went to plan, your Clojars account should now contain a fresh new jar.
 
