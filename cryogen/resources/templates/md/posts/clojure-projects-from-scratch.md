@@ -229,6 +229,8 @@ $ mvn deploy:deploy-file -DgroupId=org.clojars.olical \
 
 Take note of the fact that I specify a target group, name and version on the first three lines. You'll want to update these to suite your needs.
 
+A lot of this information comes from [Clojar's guide to pushing][pushing] and [Maven's guide to deploying 3rd party jars][deploying-jars]. If you find you need to have a custom `pom.xml` file, the steps are documented in the latter link.
+
 If everything went to plan, your Clojars account should now contain a fresh new jar.
 
 [cursive]: https://cursive-ide.com/
@@ -238,3 +240,4 @@ If everything went to plan, your Clojars account should now contain a fresh new 
 [deps-guide]: https://clojure.org/guides/deps_and_cli
 [clojars]: https://clojars.org/
 [pushing]: https://github.com/clojars/clojars-web/wiki/Pushing
+[deploying-jars]: https://maven.apache.org/guides/mini/guide-3rd-party-jars-remote.html
