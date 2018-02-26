@@ -227,7 +227,7 @@ $ mvn deploy:deploy-file -DgroupId=org.clojars.olical \
    -Durl=https://clojars.org/repo
 ```
 
-Take note of the fact that I specify a target group, name and version on the first three lines. You'll want to update these to suite your needs.
+Take note of the fact that I specify a target group, name and version on the first three lines. You'll want to update these to suit your needs.
 
 A lot of this information comes from [Clojar's guide to pushing][pushing] and [Maven's guide to deploying 3rd party jars][deploying-jars]. If you find you need to have a custom `pom.xml` file, the steps are documented in the latter link.
 
