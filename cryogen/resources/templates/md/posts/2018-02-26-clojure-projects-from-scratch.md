@@ -168,16 +168,18 @@ Ran 1 tests containing 1 assertions.
 
 Hopefully you see the same success message as myself. You can see that we applied the values specified in our alias with the `-Atest` argument.
 
-## Building jars
+## Building executable jars
 
-You can now write additional namespaces, add dependencies, run your code and test things. You've actually got a lot of what you need already and with very little tooling or configuration. Eventually you're going to want to build a jar to either publish for others to use (in the case of a library) or run on a server (in the case of an application).
+In this section we're going to build an "uberjar" containing your application alongside all of the dependencies it requires to run.
 
-Compiling your project into a jar will involve similar steps to getting your tests running, we're going to add another alias with another dependency which does the job for us.
+> You only need to bother with uberjars if you're writing an application you wish to deploy and run somewhere. If you're building a library for others to depend on you probably won't need this.
+
+Compiling your project into an uberjar will involve similar steps to getting your tests running, we're going to add another alias with another dependency which does the job for us.
 
 Go ahead and add this new alias to the `:aliases` section of your `deps.edn` file, next to the `:test` alias:
 
 ```clojure
-:pack
+:uberjar
 {:extra-deps
  {pack/pack.alpha
   {:git/url "git@github.com:juxt/pack.alpha.git"
@@ -188,16 +190,16 @@ Go ahead and add this new alias to the `:aliases` section of your `deps.edn` fil
 We can now build a jar that we can execute directly through the `java` program, without the Clojure CLI:
 
 ```bash
-$ clj -Apack
-$ java -jar dist/hey.jar # Drop us into a Clojure REPL.
+$ clj -Auberjar
+$ java -jar dist/hey.jar # Drops us into a Clojure REPL.
 $ java -jar dist/hey.jar -m hey.core # Executes our "Hello, World!".
 ```
 
-## Publishing
+## Publishing to Clojars
 
-Now that you have your jar built you have a couple of options with regards to getting it out into the world. You may want to simply deploy your jar, possibly within a Docker container, to your own server. This is the route you'll take if you're building some sort of web application.
+In this section we're going to publish a small jar file to [Clojars][] containing only your source code, we'll be using maven to perform the deploy.
 
-Alternatively, you may have written a library that you wish to publish onto [Clojars][] for anyone to use, we're going to use maven to accomplish this.
+> This is intended for libraries that others will depend on and use, you won't need to worry about this section if you're building an application you'll be running.
 
 First, we're going to add your Clojars login to `~/.m2/settings.xml`:
 
@@ -219,27 +221,20 @@ Now we're going to generate your base `pom.xml` file, you should run this comman
 $ clj -Spom
 ```
 
-Here's my example version, it contains some extra Clojars specific fields that you may want to use:
+Here's my example version, I've annotated each section. There's some you'll want to change as well as a couple of parts you'll want to add and update:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
+
+  <!-- Here by default, but will need updating -->
   <groupId>org.clojars.olical</groupId>
   <artifactId>hey</artifactId>
-  <version>2.0.0-SNAPSHOT</version>
+  <version>2.1.0-SNAPSHOT</version>
   <name>hey</name>
-  <description>Just a Hello, World!</description>
-  <url>https://github.com/Olical/clojure-hey-example</url>
-  <licenses>
-    <license>
-      <name>Unlicense</name>
-      <url>https://unlicense.org/</url>
-    </license>
-  </licenses>
-  <scm>
-    <url>https://github.com/Olical/clojure-hey-example</url>
-  </scm>
+
+  <!-- Here by default, updated by `clj -Spom` -->
   <dependencies>
     <dependency>
       <groupId>org.clojure</groupId>
@@ -256,37 +251,54 @@ Here's my example version, it contains some extra Clojars specific fields that y
       <url>https://clojars.org/repo</url>
     </repository>
   </repositories>
+
+  <!-- Essential for pushing to Clojars -->
+  <distributionManagement>
+    <repository>
+      <id>clojars</id>
+      <name>Clojars repository</name>
+      <url>https://clojars.org/repo</url>
+    </repository>
+  </distributionManagement>
+
+  <!-- Optional extras for Clojars -->
+  <description>Just a Hello, World!</description>
+  <url>https://github.com/Olical/clojure-hey-example</url>
+  <licenses>
+    <license>
+      <name>Unlicense</name>
+      <url>https://unlicense.org/</url>
+    </license>
+  </licenses>
+  <scm>
+    <url>https://github.com/Olical/clojure-hey-example</url>
+  </scm>
 </project>
 ```
 
-We can now tell maven to deploy our built jar using this pom file:
+We can now tell maven to build and deploy a jar to Clojars:
 
 ```bash
-$ mvn deploy:deploy-file \
-   -DpomFile=pom.xml \
-   -Dfile=dist/hey.jar \
-   -DrepositoryId=clojars \
-   -Durl=https://clojars.org/repo
+$ mvn deploy
 ```
 
 A lot of this information comes from [Clojar's guide to pushing][pushing] and [Maven's guide to deploying 3rd party jars][deploying-jars].
 
-If everything went to plan, your Clojars account should now contain a fresh new jar.
+If everything went to plan, your Clojars account should now contain a fresh new jar. Note that this is _not_ and uberjar, it only contains your source files and dependency information. Not the actual dependencies themselves. The dependencies will be resolved by a tool such as the Clojure CLI.
 
 ## Ergonomics
 
 As it stands, to deploy our jar to Clojars we'll want to take the following steps:
 
-* Run the tests with `clj -Atest`.
-* Build a fresh jar with `clj -Apack`.
-* Run `clj -Spom` to update our `pom.xml` with any dependency changes. (this may require some manual XML grooming)
 * Update the version number in our `pom.xml`.
-* Run the `mvn deploy:deploy-file...` command.
+* Run the tests with `clj -Atest`.
+* Run `clj -Spom` to update our `pom.xml` with any dependency changes.
+* Run `mvn deploy`.
  
 This isn't particularly catchy, so we'll wrap everything we've seen so far in a pretty little `Makefile`:
 
 ```makefile
-.PHONY: run test pack deploy
+.PHONY: run test uberjar deploy
 
 run:
 	clj -m hey.core
@@ -294,23 +306,19 @@ run:
 test:
 	clj -Atest
 
-pack:
-	clj -Apack
+uberjar:
+	clj -Auberjar
 
-deploy: test pack
+deploy: test
 	clj -Spom
-	mvn deploy:deploy-file \
-		-DpomFile=pom.xml \
-		-Dfile=dist/hey.jar \
-		-DrepositoryId=clojars \
-		-Durl=https://clojars.org/repo
+	mvn deploy
 ```
 
 Now all you need to do when you wish to deploy is bump the version number in your `pom.xml` and execute `make deploy`.
 
 ## Thanks!
 
-If you've got this far I really hoped this post has helped you out. You can find the example project I built during the writing of this post at [github.com/Olical/clojure-hey-example][example-repo].
+I really hope this post has helped you out! You can find the example project I built during the writing of this post at [github.com/Olical/clojure-hey-example][example-repo] and the [Clojars page here][clojars-demo].
 
 Happy Clojuring!
 
@@ -323,3 +331,4 @@ Happy Clojuring!
 [pushing]: https://github.com/clojars/clojars-web/wiki/Pushing
 [deploying-jars]: https://maven.apache.org/guides/mini/guide-3rd-party-jars-remote.html
 [example-repo]: https://github.com/Olical/clojure-hey-example
+[clojars-demo]: https://clojars.org/org.clojars.olical/hey/versions/2.1.0-SNAPSHOT
