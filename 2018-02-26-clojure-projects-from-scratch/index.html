@@ -97,9 +97,7 @@ user=&gt; &#40;in-ns 'hey.core&#41;
 hey.core=&gt; &#40;-main&#41;
 Hello, World!
 nil
-</code></pre><p>If your editor supports Clojure, you can probably connect a REPL and interact with your code through there too. With spacemacs I would type <code>,'</code> to "jack in" with CIDER. I can then use <code>,ee</code> to evaluate expressions as I work.</p><h2 id="testing">Testing</h2><p>We have a test file but no way to run it. We could create our own test runner namespace that executed <code>clojure.test/run-all-tests</code>, but that requires telling it about every testing namespace we have in our project. It gets tedious after a while, so let's get something that does it for us.</p><p>Create a file called <code>deps.edn</code> at the top of your project and add the following to it:</p><h3 id="deps.edn">deps.edn</h3><pre><code class="clojure">{:paths &#91;&quot;src&quot;&#93;
-
- :deps
+</code></pre><p>If your editor supports Clojure, you can probably connect a REPL and interact with your code through there too. With spacemacs I would type <code>,'</code> to "jack in" with CIDER. I can then use <code>,ee</code> to evaluate expressions as I work.</p><h2 id="testing">Testing</h2><p>We have a test file but no way to run it. We could create our own test runner namespace that executed <code>clojure.test/run-all-tests</code>, but that requires telling it about every testing namespace we have in our project. It gets tedious after a while, so let's get something that does it for us.</p><p>Create a file called <code>deps.edn</code> at the top of your project and add the following to it:</p><h3 id="deps.edn">deps.edn</h3><pre><code class="clojure">{:deps
  {org.clojure/clojure {:mvn/version &quot;1.9.0&quot;}}
 
  :aliases
@@ -109,7 +107,7 @@ nil
    {com.cognitect/test-runner {:git/url &quot;git@github.com:cognitect-labs/test-runner&quot;
                                :sha &quot;5f2b5c2efb444df76fb5252102b33f542ebf7f58&quot;}}
    :main-opts &#91;&quot;-m&quot; &quot;cognitect.test-runner&quot;&#93;}}}
-</code></pre><p>Let's break this down:</p><ul><li><code>:paths</code> tells Clojure where to look for our source files.</li><li><code>:deps</code> is where we specify our dependencies, right now all we're depending on is Clojure 1.9.0.</li><li><code>:aliases</code> is where we specify special overrides that we can apply with the <code>-A</code> argument to the CLI.</li><li><code>:test</code> is the name of our alias, it adds the <code>test</code> directory to the paths list and <code>com.cognitect/test-runner</code> to the dependencies.</li><li><code>:main-opts</code> instructs Clojure that we want these arguments applied when the alias is active. In this case, we're using <code>-m</code> to specify which namespace to execute.</li></ul><p>The usage of <code>deps.edn</code> is documented further in <a href='https://clojure.org/guides/deps_and_cli'>the deps guide</a>.</p><p>This will discover and run our test for us, let's run it now:</p><pre><code class="bash">$ clj -Atest
+</code></pre><p>Let's break this down:</p><ul><li><code>:deps</code> is where we specify our dependencies, right now all we're depending on is Clojure 1.9.0.</li><li><code>:aliases</code> is where we specify special overrides that we can apply with the <code>-A</code> argument to the CLI.</li><li><code>:test</code> is the name of our alias, it adds the <code>test</code> directory to the paths list and <code>com.cognitect/test-runner</code> to the dependencies.</li><li><code>:main-opts</code> instructs Clojure that we want these arguments applied when the alias is active. In this case, we're using <code>-m</code> to specify which namespace to execute.</li></ul><p>The usage of <code>deps.edn</code> is documented further in <a href='https://clojure.org/guides/deps_and_cli'>the deps guide</a>.</p><p>This will discover and run our test for us, let's run it now:</p><pre><code class="bash">$ clj -Atest
 
 Running tests in #{&quot;test&quot;}
 

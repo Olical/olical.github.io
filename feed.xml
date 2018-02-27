@@ -12,7 +12,7 @@ https://oli.me.uk/
 On languages and text editors.
 </description>
 <lastBuildDate>
-Tue, 27 Feb 2018 22:21:10 +0000
+Tue, 27 Feb 2018 22:51:37 +0000
 </lastBuildDate>
 <generator>
 clj-rss
@@ -69,9 +69,7 @@ user=&amp;gt; &amp;#40;in-ns 'hey.core&amp;#41;
 hey.core=&amp;gt; &amp;#40;-main&amp;#41;
 Hello, World!
 nil
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;If your editor supports Clojure, you can probably connect a REPL and interact with your code through there too. With spacemacs I would type &lt;code&gt;,'&lt;/code&gt; to &quot;jack in&quot; with CIDER. I can then use &lt;code&gt;,ee&lt;/code&gt; to evaluate expressions as I work.&lt;/p&gt;&lt;h2 id=&quot;testing&quot;&gt;Testing&lt;/h2&gt;&lt;p&gt;We have a test file but no way to run it. We could create our own test runner namespace that executed &lt;code&gt;clojure.test/run-all-tests&lt;/code&gt;, but that requires telling it about every testing namespace we have in our project. It gets tedious after a while, so let's get something that does it for us.&lt;/p&gt;&lt;p&gt;Create a file called &lt;code&gt;deps.edn&lt;/code&gt; at the top of your project and add the following to it:&lt;/p&gt;&lt;h3 id=&quot;deps.edn&quot;&gt;deps.edn&lt;/h3&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;{:paths &amp;#91;&amp;quot;src&amp;quot;&amp;#93;
-
- :deps
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;If your editor supports Clojure, you can probably connect a REPL and interact with your code through there too. With spacemacs I would type &lt;code&gt;,'&lt;/code&gt; to &quot;jack in&quot; with CIDER. I can then use &lt;code&gt;,ee&lt;/code&gt; to evaluate expressions as I work.&lt;/p&gt;&lt;h2 id=&quot;testing&quot;&gt;Testing&lt;/h2&gt;&lt;p&gt;We have a test file but no way to run it. We could create our own test runner namespace that executed &lt;code&gt;clojure.test/run-all-tests&lt;/code&gt;, but that requires telling it about every testing namespace we have in our project. It gets tedious after a while, so let's get something that does it for us.&lt;/p&gt;&lt;p&gt;Create a file called &lt;code&gt;deps.edn&lt;/code&gt; at the top of your project and add the following to it:&lt;/p&gt;&lt;h3 id=&quot;deps.edn&quot;&gt;deps.edn&lt;/h3&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;{:deps
  {org.clojure/clojure {:mvn/version &amp;quot;1.9.0&amp;quot;}}
 
  :aliases
@@ -81,7 +79,7 @@ nil
    {com.cognitect/test-runner {:git/url &amp;quot;git@github.com:cognitect-labs/test-runner&amp;quot;
                                :sha &amp;quot;5f2b5c2efb444df76fb5252102b33f542ebf7f58&amp;quot;}}
    :main-opts &amp;#91;&amp;quot;-m&amp;quot; &amp;quot;cognitect.test-runner&amp;quot;&amp;#93;}}}
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Let's break this down:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;code&gt;:paths&lt;/code&gt; tells Clojure where to look for our source files.&lt;/li&gt;&lt;li&gt;&lt;code&gt;:deps&lt;/code&gt; is where we specify our dependencies, right now all we're depending on is Clojure 1.9.0.&lt;/li&gt;&lt;li&gt;&lt;code&gt;:aliases&lt;/code&gt; is where we specify special overrides that we can apply with the &lt;code&gt;-A&lt;/code&gt; argument to the CLI.&lt;/li&gt;&lt;li&gt;&lt;code&gt;:test&lt;/code&gt; is the name of our alias, it adds the &lt;code&gt;test&lt;/code&gt; directory to the paths list and &lt;code&gt;com.cognitect/test-runner&lt;/code&gt; to the dependencies.&lt;/li&gt;&lt;li&gt;&lt;code&gt;:main-opts&lt;/code&gt; instructs Clojure that we want these arguments applied when the alias is active. In this case, we're using &lt;code&gt;-m&lt;/code&gt; to specify which namespace to execute.&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;The usage of &lt;code&gt;deps.edn&lt;/code&gt; is documented further in &lt;a href='https://clojure.org/guides/deps_and_cli'&gt;the deps guide&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;This will discover and run our test for us, let's run it now:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;$ clj -Atest
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Let's break this down:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;code&gt;:deps&lt;/code&gt; is where we specify our dependencies, right now all we're depending on is Clojure 1.9.0.&lt;/li&gt;&lt;li&gt;&lt;code&gt;:aliases&lt;/code&gt; is where we specify special overrides that we can apply with the &lt;code&gt;-A&lt;/code&gt; argument to the CLI.&lt;/li&gt;&lt;li&gt;&lt;code&gt;:test&lt;/code&gt; is the name of our alias, it adds the &lt;code&gt;test&lt;/code&gt; directory to the paths list and &lt;code&gt;com.cognitect/test-runner&lt;/code&gt; to the dependencies.&lt;/li&gt;&lt;li&gt;&lt;code&gt;:main-opts&lt;/code&gt; instructs Clojure that we want these arguments applied when the alias is active. In this case, we're using &lt;code&gt;-m&lt;/code&gt; to specify which namespace to execute.&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;The usage of &lt;code&gt;deps.edn&lt;/code&gt; is documented further in &lt;a href='https://clojure.org/guides/deps_and_cli'&gt;the deps guide&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;This will discover and run our test for us, let's run it now:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;$ clj -Atest
 
 Running tests in #{&amp;quot;test&amp;quot;}
 
