@@ -334,7 +334,7 @@ Happy Clojuring!
 [clojars]: https://clojars.org/
 [pushing]: https://github.com/clojars/clojars-web/wiki/Pushing
 [deploying-jars]: https://maven.apache.org/guides/mini/guide-3rd-party-jars-remote.html
-[example-repo]: https://github.com/Olical/clojure-hey-example/tree/84623b13d2ac0ce9d3bc59f4ae00f18adb9b76ac
+[example-repo]: https://github.com/Olical/clojure-hey-example
 [clojars-demo]: https://clojars.org/org.clojars.olical/hey/versions/2.1.0-SNAPSHOT
 [lein]: https://leiningen.org/
 [boot]: http://boot-clj.com/
