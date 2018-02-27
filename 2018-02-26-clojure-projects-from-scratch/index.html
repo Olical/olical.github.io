@@ -56,7 +56,7 @@
 </div>
 <div>
     
-    <p>This post is intended <i>primarily</i> for two groups of people:</p><ol><li>People just starting out in Clojure, who know parts of the language but don't know how to begin structuring a real project.</li><li>Seasoned Clojurians who wish to see how to structure a project with the new Clojure CLI + <code>deps.edn</code> and not <code>lein</code> or <code>boot</code> (even though they're still awesome).</li></ol><p>My goal is to teach you how to go from an empty directory, to a project you can run, test, compile and (if you wish to) publish with ease. We're going to get there through a series of relatively small steps so you can understand all the tools you're using.</p><p>There won't be an awful lot of Clojure code here, so don't worry if you're still getting your head around the language itself. The only code example will be a "Hello, World!", if that helps.</p><blockquote><p> Note: This post assumes usage of Linux, OSX or similar, I'm afraid it isn't intended for Windows users since I just don't have the knowledge to help you there. Some of the information will apply, but you'll have to adapt things, I'm sure you can find Windows specific guides for the parts that don't fit. </p></blockquote><p>I'm not going into what editor you should use because that's a book in itself. If you're totally at a loss, check out <a href=''>Cursive</a>, although I use <a href=''>Spacemacs</a> because I can't survive without good Vim emulation. There's probably a great plugin for your editor of choice and instructions on getting started, have a Google.</p><p>A lot of what I'm going to be talking about can be found in practice in <a href='https://github.com/robert-stuttaford/bridge'>github.com/robert-stuttaford/bridge</a>, you may want to have a peruse at some point.</p><h2 id="installing&#95;the&#95;clojure&#95;cli">Installing the Clojure CLI</h2><p>To run Clojure you'll need the command line tool (introduced around the time of Clojure 1.9) that manages dependencies and allows you execute code.</p><p>If you're on OSX, you can use <code>brew</code> to install the CLI.</p><pre><code class="bash">$ brew install clojure
+    <p>This post is intended <i>primarily</i> for two groups of people:</p><ol><li>People just starting out in Clojure, who know parts of the language but don't know how to begin structuring a real project.</li><li>Seasoned Clojurians who wish to see how to structure a project with the new Clojure CLI + <code>deps.edn</code> and not <a href='https://leiningen.org/'>lein</a> or <a href='http://boot-clj.com/'>boot</a> (even though they're still awesome).</li></ol><p>My goal is to teach you how to go from an empty directory, to a project you can run, test, compile and (if you wish to) publish with ease. We're going to get there through a series of relatively small steps so you can understand all the tools you're using.</p><p>There won't be an awful lot of Clojure code here, so don't worry if you're still getting your head around the language itself. The only code example will be a "Hello, World!", if that helps.</p><blockquote><p> Note: This post assumes usage of Linux, OSX or similar, I'm afraid it isn't intended for Windows users since I just don't have the knowledge to help you there. Some of the information will apply, but you'll have to adapt things, I'm sure you can find Windows specific guides for the parts that don't fit. </p></blockquote><p>I'm not going into what editor you should use because that's a book in itself. If you're totally at a loss, check out <a href='https://cursive-ide.com/'>Cursive</a>, although I use <a href='http://spacemacs.org/'>Spacemacs</a> because I can't survive without good Vim emulation. There's probably a great plugin for your editor of choice and instructions on getting started, have a Google.</p><p>A lot of what I'm going to be talking about can be found in practice in <a href='https://github.com/robert-stuttaford/bridge'>github.com/robert-stuttaford/bridge</a>, you may want to have a peruse at some point.</p><h2 id="installing&#95;the&#95;clojure&#95;cli">Installing the Clojure CLI</h2><p>To run Clojure you'll need the command line tool (introduced around the time of Clojure 1.9) that manages dependencies and allows you execute code.</p><p>If you're on OSX, you can use <code>brew</code> to install the CLI.</p><pre><code class="bash">$ brew install clojure
 </code></pre><p>I have found that I could install it through the Arch Linux package manager although it was slightly out of date at the time of writing, so I don't recommend this just yet. If you're on Linux you can run the manual installer easily enough.</p><pre><code class="bash">$ curl -O https://download.clojure.org/install/linux-install-1.9.0.326.sh
 $ sudo bash linux-install-1.9.0.326.sh
 </code></pre><p>To update, use the package manager you used for the installation or find the latest Linux installer URL on the <a href='https://clojure.org/guides/getting_started'>getting started</a> page.</p><p>You should now be able to drop into a Clojure REPL with one command. You can run <code>clojure</code> or <code>clj</code> in your terminal, the latter has a slightly better editing experience but requires you to have <code>rlwrap</code> installed.</p><pre><code class="bash">$ clj
@@ -117,16 +117,16 @@ Testing hey.core-test
 
 Ran 1 tests containing 1 assertions.
 0 failures, 0 errors.
-</code></pre><p>Hopefully you see the same success message as myself. You can see that we applied the values specified in our alias with the <code>-Atest</code> argument.</p><h2 id="building&#95;jars">Building jars</h2><p>You can now write additional namespaces, add dependencies, run your code and test things. You've actually got a lot of what you need already and with very little tooling or configuration. Eventually you're going to want to build a jar to either publish for others to use (in the case of a library) or run on a server (in the case of an application).</p><p>Compiling your project into a jar will involve similar steps to getting your tests running, we're going to add another alias with another dependency which does the job for us.</p><p>Go ahead and add this new alias to the <code>:aliases</code> section of your <code>deps.edn</code> file, next to the <code>:test</code> alias:</p><pre><code class="clojure">:pack
+</code></pre><p>Hopefully you see the same success message as myself. You can see that we applied the values specified in our alias with the <code>-Atest</code> argument.</p><h2 id="building&#95;executable&#95;jars">Building executable jars</h2><p>In this section we're going to build an "uberjar" containing your application alongside all of the dependencies it requires to run.</p><blockquote><p> You only need to bother with uberjars if you're writing an application you wish to deploy and run somewhere. If you're building a library for others to depend on you probably won't need this. </p></blockquote><p>Compiling your project into an uberjar will involve similar steps to getting your tests running, we're going to add another alias with another dependency which does the job for us.</p><p>Go ahead and add this new alias to the <code>:aliases</code> section of your <code>deps.edn</code> file, next to the <code>:test</code> alias:</p><pre><code class="clojure">:uberjar
 {:extra-deps
  {pack/pack.alpha
   {:git/url &quot;git@github.com:juxt/pack.alpha.git&quot;
    :sha     &quot;e6d0691c5f58135e1ef6fb1c9dda563611d36205&quot;}}
  :main-opts &#91;&quot;-m&quot; &quot;mach.pack.alpha.capsule&quot; &quot;deps.edn&quot; &quot;dist/hey.jar&quot;&#93;}
-</code></pre><p>We can now build a jar that we can execute directly through the <code>java</code> program, without the Clojure CLI:</p><pre><code class="bash">$ clj -Apack
-$ java -jar dist/hey.jar # Drop us into a Clojure REPL.
+</code></pre><p>We can now build a jar that we can execute directly through the <code>java</code> program, without the Clojure CLI:</p><pre><code class="bash">$ clj -Auberjar
+$ java -jar dist/hey.jar # Drops us into a Clojure REPL.
 $ java -jar dist/hey.jar -m hey.core # Executes our &quot;Hello, World!&quot;.
-</code></pre><h2 id="publishing">Publishing</h2><p>Now that you have your jar built you have a couple of options with regards to getting it out into the world. You may want to simply deploy your jar, possibly within a Docker container, to your own server. This is the route you'll take if you're building some sort of web application.</p><p>Alternatively, you may have written a library that you wish to publish onto <a href=''>Clojars</a> for anyone to use, we're going to use maven to accomplish this.</p><p>First, we're going to add your Clojars login to <code>&#126;/.m2/settings.xml</code>:</p><pre><code class="xml">&lt;settings&gt;
+</code></pre><p>Please note that your code has not been AOT (ahead of time) compiled, it's still just plain Clojure that's compiled as and when it's required at run time. This can mean very slightly slower startup times when you're working with a large codebase.</p><p>If this becomes an issue for you you'll have to work out how to perform AOT compilation as you build your uberjar. By then, pack may even support it as a core feature.</p><h2 id="publishing&#95;to&#95;clojars">Publishing to Clojars</h2><p>In this section we're going to publish a small jar file to <a href='https://clojars.org/'>Clojars</a> containing only your source code, we'll be using maven to perform the deploy.</p><blockquote><p> This is intended for libraries that others will depend on and use, you won't need to worry about this section if you're building an application you'll be running. </p></blockquote><p>First, we're going to add your Clojars login to <code>&#126;/.m2/settings.xml</code>:</p><pre><code class="xml">&lt;settings&gt;
   &lt;servers&gt;
     &lt;server&gt;
       &lt;id&gt;clojars&lt;/id&gt;
@@ -136,24 +136,17 @@ $ java -jar dist/hey.jar -m hey.core # Executes our &quot;Hello, World!&quot;.
   &lt;/servers&gt;
 &lt;/settings&gt;
 </code></pre><p>Now we're going to generate your base <code>pom.xml</code> file, you should run this command whenever you're going to publish so the dependencies get updated:</p><pre><code class="bash">$ clj -Spom
-</code></pre><p>Here's my example version, it contains some extra Clojars specific fields that you may want to use:</p><pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+</code></pre><p>Here's my example version, I've annotated each section. There's some you'll want to change as well as a couple of parts you'll want to add and update:</p><pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;
   &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+
+  &lt;!-- Here by default, but will need updating --&gt;
   &lt;groupId&gt;org.clojars.olical&lt;/groupId&gt;
   &lt;artifactId&gt;hey&lt;/artifactId&gt;
-  &lt;version&gt;2.0.0-SNAPSHOT&lt;/version&gt;
+  &lt;version&gt;2.1.0-SNAPSHOT&lt;/version&gt;
   &lt;name&gt;hey&lt;/name&gt;
-  &lt;description&gt;Just a Hello, World!&lt;/description&gt;
-  &lt;url&gt;https://github.com/Olical/clojure-hey-example&lt;/url&gt;
-  &lt;licenses&gt;
-    &lt;license&gt;
-      &lt;name&gt;Unlicense&lt;/name&gt;
-      &lt;url&gt;https://unlicense.org/&lt;/url&gt;
-    &lt;/license&gt;
-  &lt;/licenses&gt;
-  &lt;scm&gt;
-    &lt;url&gt;https://github.com/Olical/clojure-hey-example&lt;/url&gt;
-  &lt;/scm&gt;
+
+  &lt;!-- Here by default, updated by `clj -Spom` --&gt;
   &lt;dependencies&gt;
     &lt;dependency&gt;
       &lt;groupId&gt;org.clojure&lt;/groupId&gt;
@@ -170,13 +163,31 @@ $ java -jar dist/hey.jar -m hey.core # Executes our &quot;Hello, World!&quot;.
       &lt;url&gt;https://clojars.org/repo&lt;/url&gt;
     &lt;/repository&gt;
   &lt;/repositories&gt;
+
+  &lt;!-- Essential for pushing to Clojars --&gt;
+  &lt;distributionManagement&gt;
+    &lt;repository&gt;
+      &lt;id&gt;clojars&lt;/id&gt;
+      &lt;name&gt;Clojars repository&lt;/name&gt;
+      &lt;url&gt;https://clojars.org/repo&lt;/url&gt;
+    &lt;/repository&gt;
+  &lt;/distributionManagement&gt;
+
+  &lt;!-- Optional extras for Clojars --&gt;
+  &lt;description&gt;Just a Hello, World!&lt;/description&gt;
+  &lt;url&gt;https://github.com/Olical/clojure-hey-example&lt;/url&gt;
+  &lt;licenses&gt;
+    &lt;license&gt;
+      &lt;name&gt;Unlicense&lt;/name&gt;
+      &lt;url&gt;https://unlicense.org/&lt;/url&gt;
+    &lt;/license&gt;
+  &lt;/licenses&gt;
+  &lt;scm&gt;
+    &lt;url&gt;https://github.com/Olical/clojure-hey-example&lt;/url&gt;
+  &lt;/scm&gt;
 &lt;/project&gt;
-</code></pre><p>We can now tell maven to deploy our built jar using this pom file:</p><pre><code class="bash">$ mvn deploy:deploy-file \
-   -DpomFile=pom.xml \
-   -Dfile=dist/hey.jar \
-   -DrepositoryId=clojars \
-   -Durl=https://clojars.org/repo
-</code></pre><p>A lot of this information comes from <a href='https://github.com/clojars/clojars-web/wiki/Pushing'>Clojar's guide to pushing</a> and <a href='https://maven.apache.org/guides/mini/guide-3rd-party-jars-remote.html'>Maven's guide to deploying 3rd party jars</a>.</p><p>If everything went to plan, your Clojars account should now contain a fresh new jar.</p><h2 id="ergonomics">Ergonomics</h2><p>As it stands, to deploy our jar to Clojars we'll want to take the following steps:</p><ul><li>Run the tests with <code>clj -Atest</code>.</li><li>Build a fresh jar with <code>clj -Apack</code>.</li><li>Run <code>clj -Spom</code> to update our <code>pom.xml</code> with any dependency changes. (this may require some manual XML grooming)</li><li>Update the version number in our <code>pom.xml</code>.</li><li>Run the <code>mvn deploy:deploy-file...</code> command. </li></ul><p>This isn't particularly catchy, so we'll wrap everything we've seen so far in a pretty little <code>Makefile</code>:</p><pre><code class="makefile">.PHONY: run test pack deploy
+</code></pre><p>We can now tell maven to build and deploy a jar to Clojars:</p><pre><code class="bash">$ mvn deploy
+</code></pre><p>A lot of this information comes from <a href='https://github.com/clojars/clojars-web/wiki/Pushing'>Clojar's guide to pushing</a> and <a href='https://maven.apache.org/guides/mini/guide-3rd-party-jars-remote.html'>Maven's guide to deploying 3rd party jars</a>.</p><p>If everything went to plan, your Clojars account should now contain a fresh new jar. Note that this is <i>not</i> an uberjar, it only contains your source files and dependency information, not the actual dependencies themselves. The dependencies will be resolved by a tool such as the Clojure CLI.</p><h2 id="ergonomics">Ergonomics</h2><p>As it stands, to deploy our jar to Clojars we'll want to take the following steps:</p><ul><li>Update the version number in our <code>pom.xml</code>.</li><li>Run the tests with <code>clj -Atest</code>.</li><li>Run <code>clj -Spom</code> to update our <code>pom.xml</code> with any dependency changes.</li><li>Run <code>mvn deploy</code>. </li></ul><p>This isn't particularly catchy, so we'll wrap everything we've seen so far in a pretty little <code>Makefile</code>:</p><pre><code class="makefile">.PHONY: run test uberjar deploy
 
 run:
 	clj -m hey.core
@@ -184,17 +195,13 @@ run:
 test:
 	clj -Atest
 
-pack:
-	clj -Apack
+uberjar:
+	clj -Auberjar
 
-deploy: test pack
+deploy: test
 	clj -Spom
-	mvn deploy:deploy-file \
-		-DpomFile=pom.xml \
-		-Dfile=dist/hey.jar \
-		-DrepositoryId=clojars \
-		-Durl=https://clojars.org/repo
-</code></pre><p>Now all you need to do when you wish to deploy is bump the version number in your <code>pom.xml</code> and execute <code>make deploy</code>.</p><h2 id="thanks!">Thanks!</h2><p>If you've got this far I really hoped this post has helped you out. You can find the example project I built during the writing of this post at <a href='https://github.com/Olical/clojure-hey-example'>github.com/Olical/clojure-hey-example</a>.</p><p>Happy Clojuring!</p>
+	mvn deploy
+</code></pre><p>Now all you need to do when you wish to deploy is bump the version number in your <code>pom.xml</code> and execute <code>make deploy</code>.</p><h2 id="thanks!">Thanks!</h2><p>I really hope this post has helped you out! You can find the example project I built during the writing of this post at <a href='https://github.com/Olical/clojure-hey-example/tree/84623b13d2ac0ce9d3bc59f4ae00f18adb9b76ac'>github.com/Olical/clojure-hey-example</a> and the <a href='https://clojars.org/org.clojars.olical/hey/versions/2.1.0-SNAPSHOT'>Clojars page here</a>.</p><p>Happy Clojuring!</p>
 </div>
 
 <div id="post-tags">
