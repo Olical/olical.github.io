@@ -129,9 +129,7 @@ Create a file called `deps.edn` at the top of your project and add the following
 ### deps.edn
 
 ```clojure
-{:paths ["src"]
-
- :deps
+{:deps
  {org.clojure/clojure {:mvn/version "1.9.0"}}
 
  :aliases
@@ -145,7 +143,6 @@ Create a file called `deps.edn` at the top of your project and add the following
 
 Let's break this down:
 
-* `:paths` tells Clojure where to look for our source files.
 * `:deps` is where we specify our dependencies, right now all we're depending on is Clojure 1.9.0.
 * `:aliases` is where we specify special overrides that we can apply with the `-A` argument to the CLI.
 * `:test` is the name of our alias, it adds the `test` directory to the paths list and `com.cognitect/test-runner` to the dependencies.
