@@ -6,7 +6,7 @@
 This post is intended _primarily_ for two groups of people:
 
 1. People just starting out in Clojure, who know parts of the language but don't know how to begin structuring a real project.
-2. Seasoned Clojurians who wish to see how to structure a project with the new Clojure CLI + `deps.edn` and not `lein` or `boot` (even though they're still awesome).
+2. Seasoned Clojurians who wish to see how to structure a project with the new Clojure CLI + `deps.edn` and not [lein][] or [boot][] (even though they're still awesome).
 
 My goal is to teach you how to go from an empty directory, to a project you can run, test, compile and (if you wish to) publish with ease. We're going to get there through a series of relatively small steps so you can understand all the tools you're using.
 
@@ -14,7 +14,7 @@ There won't be an awful lot of Clojure code here, so don't worry if you're still
 
 > Note: This post assumes usage of Linux, OSX or similar, I'm afraid it isn't intended for Windows users since I just don't have the knowledge to help you there. Some of the information will apply, but you'll have to adapt things, I'm sure you can find Windows specific guides for the parts that don't fit.
 
-I'm not going into what editor you should use because that's a book in itself. If you're totally at a loss, check out [Cursive][], although I use [Spacemacs][] because I can't survive without good Vim emulation. There's probably a great plugin for your editor of choice and instructions on getting started, have a Google.
+I'm not going into what editor you should use because that's a book in itself. If you're totally at a loss, check out [Cursive][cursive], although I use [Spacemacs][spacemacs] because I can't survive without good Vim emulation. There's probably a great plugin for your editor of choice and instructions on getting started, have a Google.
 
 A lot of what I'm going to be talking about can be found in practice in [github.com/robert-stuttaford/bridge][bridge], you may want to have a peruse at some point.
 
@@ -195,9 +195,13 @@ $ java -jar dist/hey.jar # Drops us into a Clojure REPL.
 $ java -jar dist/hey.jar -m hey.core # Executes our "Hello, World!".
 ```
 
+Please note that your code has not been AOT (ahead of time) compiled, it's still just plain Clojure that's compiled as and when it's required at run time. This can mean very slightly slower startup times when you're working with a large codebase.
+
+If this becomes an issue for you you'll have to work out how to perform AOT compilation as you build your uberjar. By then, pack may even support it as a core feature.
+
 ## Publishing to Clojars
 
-In this section we're going to publish a small jar file to [Clojars][] containing only your source code, we'll be using maven to perform the deploy.
+In this section we're going to publish a small jar file to [Clojars][clojars] containing only your source code, we'll be using maven to perform the deploy.
 
 > This is intended for libraries that others will depend on and use, you won't need to worry about this section if you're building an application you'll be running.
 
@@ -284,7 +288,7 @@ $ mvn deploy
 
 A lot of this information comes from [Clojar's guide to pushing][pushing] and [Maven's guide to deploying 3rd party jars][deploying-jars].
 
-If everything went to plan, your Clojars account should now contain a fresh new jar. Note that this is _not_ and uberjar, it only contains your source files and dependency information. Not the actual dependencies themselves. The dependencies will be resolved by a tool such as the Clojure CLI.
+If everything went to plan, your Clojars account should now contain a fresh new jar. Note that this is _not_ an uberjar, it only contains your source files and dependency information, not the actual dependencies themselves. The dependencies will be resolved by a tool such as the Clojure CLI.
 
 ## Ergonomics
 
@@ -332,3 +336,5 @@ Happy Clojuring!
 [deploying-jars]: https://maven.apache.org/guides/mini/guide-3rd-party-jars-remote.html
 [example-repo]: https://github.com/Olical/clojure-hey-example
 [clojars-demo]: https://clojars.org/org.clojars.olical/hey/versions/2.1.0-SNAPSHOT
+[lein]: https://leiningen.org/
+[boot]: http://boot-clj.com/
