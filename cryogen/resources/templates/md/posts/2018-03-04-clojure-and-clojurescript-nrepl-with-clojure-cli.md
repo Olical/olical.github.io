@@ -2,7 +2,7 @@
  :layout :post
  :date   "2018-03-04"
  :tags   ["clojure" "clojurescript" "clojure-cli" "nrepl"]}
- 
+
 If you've decided to try out the new Clojure CLI introduced with Clojure 1.9 you may have found yourself slightly lost when it comes to getting your CIDER (or other development environment) hooked up to your project through nREPL. My previous post, [Clojure projects from scratch][cpfs], may help you with understanding these concepts and tools if you're struggling to get going.
 
 In this post I'm going to show you a few simple steps you need to take to get your nREPL running smoothly. I am hosting the ClojureScript nREPL through NodeJS, you can probably adjust the configuration if you need it to run in something else.
