@@ -1,7 +1,7 @@
 {:title  "Clojure projects from scratch"
  :layout :post
  :date   "2018-02-26"
- :tags   ["clojure"]}
+ :tags   ["clojure" "clojure-cli"]}
 
 This post is intended _primarily_ for two groups of people:
 
