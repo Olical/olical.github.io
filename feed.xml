@@ -12,11 +12,59 @@ https://oli.me.uk/
 On languages and text editors.
 </description>
 <lastBuildDate>
-Tue, 27 Feb 2018 22:51:37 +0000
+Sun, 04 Mar 2018 11:37:29 +0000
 </lastBuildDate>
 <generator>
 clj-rss
 </generator>
+<item>
+<guid>
+https://oli.me.uk/2018-03-04-clojure-and-clojurescript-nrepl-with-clojure-cli/
+</guid>
+<link>
+https://oli.me.uk/2018-03-04-clojure-and-clojurescript-nrepl-with-clojure-cli/
+</link>
+<title>
+Clojure and ClojureScript nREPL with Clojure CLI
+</title>
+<description>
+&lt;p&gt;If you've decided to try out the new Clojure CLI introduced with Clojure 1.9 you may have found yourself slightly lost when it comes to getting your CIDER (or other development environment) hooked up to your project through nREPL. My previous post, &lt;a href='https://oli.me.uk/2018-02-26-clojure-projects-from-scratch/'&gt;Clojure projects from scratch&lt;/a&gt;, may help you with understanding these concepts and tools if you're struggling to get going.&lt;/p&gt;&lt;p&gt;In this post I'm going to show you a few simple steps you need to take to get your nREPL running smoothly. I am hosting the ClojureScript nREPL through NodeJS, you can probably adjust the configuration if you need it to run in something else.&lt;/p&gt;&lt;h2 id=&quot;the&amp;#95;deps&quot;&gt;The deps&lt;/h2&gt;&lt;p&gt;We're going to be using the following tools:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;a href='https://github.com/clojure/tools.nrepl'&gt;clojure/tools.nrepl&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href='https://github.com/clojure-emacs/cider-nrepl'&gt;clojure-emacs/cider-nrepl&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href='https://github.com/cemerick/piggieback'&gt;cemerick/piggieback&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;Here's the &lt;code&gt;deps.edn&lt;/code&gt; file we're going to want. This is the minimal required amount, so you'll need to integrate all of this into your own &lt;code&gt;deps.edn&lt;/code&gt;. The Clojure and ClojreScript versions may vary.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;{:deps
+ {org.clojure/clojure {:mvn/version &amp;quot;1.9.0&amp;quot;}
+  org.clojure/clojurescript {:mvn/version &amp;quot;1.10.64&amp;quot;}}
+
+ :aliases
+ {:nrepl-server
+  {:extra-paths &amp;#91;&amp;quot;dev&amp;quot;&amp;#93;
+   :extra-deps
+   {com.cemerick/piggieback {:mvn/version &amp;quot;0.2.2&amp;quot;}
+    org.clojure/tools.nrepl {:mvn/version &amp;quot;0.2.12&amp;quot;}
+    cider/cider-nrepl {:mvn/version &amp;quot;0.17.0-SNAPSHOT&amp;quot;}}
+   :main-opts &amp;#91;&amp;quot;-m&amp;quot; &amp;quot;nrepl-server&amp;quot;&amp;#93;}}}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;You may want to add a small Makefile to make executing with this alias a little smoother:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;Makefile&quot;&gt;.PHONY: nrepl-server
+
+nrepl-server:
+	clj -Anrepl-server
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&quot;the&amp;#95;namespaces&quot;&gt;The namespaces&lt;/h2&gt;&lt;p&gt;You may have noticed my reference to the &lt;code&gt;nrepl-server&lt;/code&gt; namespace and &lt;code&gt;dev&lt;/code&gt; directory in the &lt;code&gt;deps.edn&lt;/code&gt; file, we need to create these before our nREPL server will work.&lt;/p&gt;&lt;p&gt;Add the following files to your project:&lt;/p&gt;&lt;h3 id=&quot;dev/nrepl&amp;#95;server.clj&quot;&gt;dev/nrepl&amp;#95;server.clj&lt;/h3&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;&amp;#40;ns nrepl-server
+  &amp;#40;:require &amp;#91;cider-nrepl.main :as nrepl&amp;#93;&amp;#41;&amp;#41;
+
+&amp;#40;defn -main &amp;#91;&amp;#93;
+  &amp;#40;nrepl/init &amp;#91;&amp;quot;cider.nrepl/cider-middleware&amp;quot;
+               &amp;quot;cemerick.piggieback/wrap-cljs-repl&amp;quot;&amp;#93;&amp;#41;&amp;#41;
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&quot;dev/user.clj&quot;&gt;dev/user.clj&lt;/h3&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;&amp;#40;ns user
+  &amp;#40;:require &amp;#91;cemerick.piggieback :as piggieback&amp;#93;
+            &amp;#91;cljs.repl.node :as node-repl&amp;#93;&amp;#41;&amp;#41;
+
+&amp;#40;defn cljs-repl &amp;#91;&amp;#93;
+  &amp;#40;piggieback/cljs-repl &amp;#40;node-repl/repl-env&amp;#41;&amp;#41;&amp;#41;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;These files will allow us to firstly boot our nREPL server with the correct middleware and secondly allow us to easily drop into a ClojureScript REPL.&lt;/p&gt;&lt;h2 id=&quot;getting&amp;#95;connected&quot;&gt;Getting connected&lt;/h2&gt;&lt;p&gt;If you added a rule to your &lt;code&gt;Makefile&lt;/code&gt;, you can use &lt;code&gt;make nrepl-server&lt;/code&gt;, alternatively just type &lt;code&gt;clj -Anrepl-server&lt;/code&gt;. You should see something like this:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;$ make nrepl-server
+clj -Anrepl-server
+nREPL server started on port 40047 on host localhost - nrepl://localhost:40047
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Your bindings may vary, but in &lt;a href='http://spacemacs.org/'&gt;Spacemacs&lt;/a&gt; I would type &lt;code&gt;,sc&lt;/code&gt; and then just hit enter twice to select &lt;code&gt;localhost&lt;/code&gt; and the currently running server. CIDER knows the server port because it should've created a &lt;code&gt;.nrepl-port&lt;/code&gt; file in your current directory.&lt;/p&gt;&lt;p&gt;Once you're connected, you can start evaluating Clojure code, how wonderful! When you wish to drop into a ClojureScript REPL backed by NodeJS (by default), you can use the &lt;code&gt;cljs-repl&lt;/code&gt; function we defined in your &lt;code&gt;user&lt;/code&gt; namespace. Just open the REPL (&lt;code&gt;,ss&lt;/code&gt; in Spacemacs) and execute &lt;code&gt;&amp;#40;cljs-repl&amp;#41;&lt;/code&gt;.&lt;/p&gt;&lt;p&gt;If everything went according to plan, you should now be able to evaluate ClojureScript code as easy as Clojure. If you are jumping between Clojure and ClojureScript namespaces, you'll have to connect twice with one of those REPLs in ClojureScript mode.&lt;/p&gt;&lt;p&gt;A REPL can only ever be serving Clojure or ClojureScript, not both at the same time. Once you execute &lt;code&gt;&amp;#40;cljs-repl&amp;#41;&lt;/code&gt; that connection becomes ClojureScript specific.&lt;/p&gt;
+</description>
+<pubDate>
+Sun, 04 Mar 2018 00:00:00 +0000
+</pubDate>
+</item>
 <item>
 <guid>
 https://oli.me.uk/2018-02-26-clojure-projects-from-scratch/
