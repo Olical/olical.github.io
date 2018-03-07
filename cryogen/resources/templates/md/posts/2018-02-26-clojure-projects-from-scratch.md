@@ -245,6 +245,13 @@ Here's my example version, I've annotated each section. There's some you'll want
   </dependencies>
   <build>
     <sourceDirectory>src</sourceDirectory>
+
+    <!-- Essential for bundling your source files into the JAR -->
+    <resources>
+      <resource>
+        <directory>src</directory>
+      </resource>
+    </resources>
   </build>
   <repositories>
     <repository>
