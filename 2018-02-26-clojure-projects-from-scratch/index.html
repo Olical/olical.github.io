@@ -154,6 +154,13 @@ $ java -jar dist/hey.jar -m hey.core # Executes our &quot;Hello, World!&quot;.
   &lt;/dependencies&gt;
   &lt;build&gt;
     &lt;sourceDirectory&gt;src&lt;/sourceDirectory&gt;
+
+    &lt;!-- Essential for bundling your source files into the JAR --&gt;
+    &lt;resources&gt;
+      &lt;resource&gt;
+        &lt;directory&gt;src&lt;/directory&gt;
+      &lt;/resource&gt;
+    &lt;/resources&gt;
   &lt;/build&gt;
   &lt;repositories&gt;
     &lt;repository&gt;

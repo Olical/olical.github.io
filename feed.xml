@@ -12,7 +12,7 @@ https://oli.me.uk/
 On languages and text editors.
 </description>
 <lastBuildDate>
-Sun, 04 Mar 2018 11:37:29 +0000
+Wed, 07 Mar 2018 21:36:37 +0000
 </lastBuildDate>
 <generator>
 clj-rss
@@ -174,6 +174,13 @@ $ java -jar dist/hey.jar -m hey.core # Executes our &amp;quot;Hello, World!&amp;
   &amp;lt;/dependencies&amp;gt;
   &amp;lt;build&amp;gt;
     &amp;lt;sourceDirectory&amp;gt;src&amp;lt;/sourceDirectory&amp;gt;
+
+    &amp;lt;!-- Essential for bundling your source files into the JAR --&amp;gt;
+    &amp;lt;resources&amp;gt;
+      &amp;lt;resource&amp;gt;
+        &amp;lt;directory&amp;gt;src&amp;lt;/directory&amp;gt;
+      &amp;lt;/resource&amp;gt;
+    &amp;lt;/resources&amp;gt;
   &amp;lt;/build&amp;gt;
   &amp;lt;repositories&amp;gt;
     &amp;lt;repository&amp;gt;
