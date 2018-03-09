@@ -12,11 +12,47 @@ https://oli.me.uk/
 On languages and text editors.
 </description>
 <lastBuildDate>
-Wed, 07 Mar 2018 21:36:37 +0000
+Fri, 09 Mar 2018 17:37:47 +0000
 </lastBuildDate>
 <generator>
 clj-rss
 </generator>
+<item>
+<guid>
+https://oli.me.uk/2018-03-09-clojure-and-clojurescript-testing-with-the-clojure-cli/
+</guid>
+<link>
+https://oli.me.uk/2018-03-09-clojure-and-clojurescript-testing-with-the-clojure-cli/
+</link>
+<title>
+Clojure and ClojureScript testing with the Clojure CLI
+</title>
+<description>
+&lt;p&gt;This post is sort of an extension of a previous post, &lt;a href='https://oli.me.uk/2018-02-26-clojure-projects-from-scratch/'&gt;Clojure projects from scratch&lt;/a&gt;. That will introduce you to structuring your project around a &lt;code&gt;deps.edn&lt;/code&gt; file, here we're going to simply add a couple of dependencies that allow you to run your tests.&lt;/p&gt;&lt;p&gt;In a &lt;a href='https://leiningen.org/'&gt;Leiningen&lt;/a&gt; project, &lt;code&gt;lein test&lt;/code&gt; will execute your Clojure tests, no questions asked. In a Clojure CLI / &lt;code&gt;deps.edn&lt;/code&gt; based project we have no such command, tests have to be executed by a custom built test runner script.&lt;/p&gt;&lt;p&gt;You probably don't want to be writing and modifying a test runner namespace every time you add a test, that's why &lt;a href='https://github.com/cognitect-labs/test-runner'&gt;test-runner&lt;/a&gt; and &lt;a href='https://github.com/Olical/cljs-test-runner'&gt;cljs-test-runner&lt;/a&gt; exist. I'm the author of the latter, I hope that doesn't put you off.&lt;/p&gt;&lt;h2 id=&quot;test-runner&quot;&gt;test-runner&lt;/h2&gt;&lt;p&gt;First we'll add test-runner, the Clojure version. This will give us an equivalent to &lt;code&gt;lein test&lt;/code&gt;. Add a &lt;code&gt;test&lt;/code&gt; alias to your &lt;code&gt;aliases&lt;/code&gt; section of your &lt;code&gt;deps.edn&lt;/code&gt; file.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;{:deps ;; 1
+ {org.clojure/clojure {:mvn/version &amp;quot;1.9.0&amp;quot;}
+  org.clojure/clojurescript {:mvn/version &amp;quot;1.10.145&amp;quot;}}
+
+ :aliases
+ {:test ;; 2
+  {:extra-paths &amp;#91;&amp;quot;test&amp;quot;&amp;#93; ;; 3
+   :extra-deps
+   {com.cognitect/test-runner {:git/url &amp;quot;git@github.com:cognitect-labs/test-runner&amp;quot;
+                               :sha &amp;quot;76568540e7f40268ad2b646110f237a60295fa3c&amp;quot;}} ;; 4
+   :main-opts &amp;#91;&amp;quot;-m&amp;quot; &amp;quot;cognitect.test-runner&amp;quot;&amp;#93;}}} ;; 5
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Let's break this down a little, just in case you aren't super familiar with &lt;code&gt;deps.edn&lt;/code&gt; just yet.&lt;/p&gt;&lt;ol&gt;&lt;li&gt;Map of your dependencies, here we're depending on the latest Clojure and ClojureScript. Having your language as a versioned dependency is a wonderful thing.&lt;/li&gt;&lt;li&gt;Our test alias, we'll activate it with &lt;code&gt;clojure -Atest&lt;/code&gt;.&lt;/li&gt;&lt;li&gt;For Clojure tests, we need to add the test directory to the classpath.&lt;/li&gt;&lt;li&gt;Dependency on the test-runner, there may be a new commit by now. I'm waiting for my &lt;a href='https://github.com/cognitect-labs/test-runner/pull/12'&gt;return code fix&lt;/a&gt; to be merged.&lt;/li&gt;&lt;li&gt;Set the entry namespace to the test runner.&lt;/li&gt;&lt;/ol&gt;&lt;p&gt;We can now execute our tests as we would with &lt;code&gt;lein&lt;/code&gt;!&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;$ clojure -Atest
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;At the time of writing, even if your tests fail, the return code of the process will always be 0. This means that your CLI and CI will think the tests passed just fine. I've fixed this and it may have been merged by the time you're reading this. If not, feel free to use the fixed commit from my fork.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;{:git/url &amp;quot;git@github.com:Olical/test-runner.git&amp;quot;
+ :sha &amp;quot;427a16c634201492984d2161d305baa09ab864cd&amp;quot;}
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&quot;cljs-test-runner&quot;&gt;cljs-test-runner&lt;/h2&gt;&lt;p&gt;Running ClojureScript tests is usually a bit of a pain. You've got to work out how to get it compiling then have that plugged into a test runner such as &lt;a href='https://github.com/bensu/doo'&gt;doo&lt;/a&gt;. This doesn't account for test file discovery, so you've still got to specify each of your test namespaces manually.&lt;/p&gt;&lt;p&gt;I've wrapped up doo with a few namespace tools and the ClojureScript compiler to give you a single command that handles all of this for you. Let's add another alias containing cljs-test-runner. You may want to check for new versions since it may have changed since I wrote this.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;:test-cljs
+{:extra-deps
+ {olical/cljs-test-runner {:mvn/version &amp;quot;0.1.0&amp;quot;}}
+ :main-opts &amp;#91;&amp;quot;-m&amp;quot; &amp;quot;cljs-test-runner.main&amp;quot;&amp;#93;}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;As you can see it's extremely similar to the Clojure test-runner setup, one difference is that we don't need to add our test directory to the classpath. ClojureScript doesn't rely on the classpath, instead there is a flag that you can set if your tests are somewhere other than the default test directory.&lt;/p&gt;&lt;p&gt;You can execute your tests with the following command, it'll run them in node by default. You can change the environment to phantom if required, this may have changed since writing.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;$ clojure -Acljs-test
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;If everything went according to plan it should have found your &lt;code&gt;.cljs&lt;/code&gt; and &lt;code&gt;.cljc&lt;/code&gt; test namespaces, compiled them and executed them through node. If it didn't, I'm sure you can work it out, or raise an issue if you think there's a problem.&lt;/p&gt;&lt;h2 id=&quot;running&amp;#95;both&quot;&gt;Running both&lt;/h2&gt;&lt;p&gt;You'll now be able to run your Clojure and ClojureScript tests side by side, hassle free, locally or through CI.&lt;/p&gt;&lt;p&gt;Bear in mind that the Clojure test-runner will always return a good exit status, even when the tests fail at the time of writing. Make sure my fix has been merged or use my fork if you need the correct exit status.&lt;/p&gt;
+</description>
+<pubDate>
+Fri, 09 Mar 2018 00:00:00 +0000
+</pubDate>
+</item>
 <item>
 <guid>
 https://oli.me.uk/2018-03-04-clojure-and-clojurescript-nrepl-with-clojure-cli/
