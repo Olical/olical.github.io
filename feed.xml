@@ -12,11 +12,62 @@ https://oli.me.uk/
 On languages and text editors.
 </description>
 <lastBuildDate>
-Sat, 10 Mar 2018 12:44:51 +0000
+Thu, 29 Mar 2018 14:37:30 +0100
 </lastBuildDate>
 <generator>
 clj-rss
 </generator>
+<item>
+<guid>
+https://oli.me.uk/2018-03-29-clojure-and-clojurescript-tests-on-travis/
+</guid>
+<link>
+https://oli.me.uk/2018-03-29-clojure-and-clojurescript-tests-on-travis/
+</link>
+<title>
+Clojure and ClojureScript tests on Travis
+</title>
+<description>
+&lt;p&gt;As far as I can tell, there isn't a canonical way to run your Clojure(Script) tests on &lt;a href='http://travis-ci.org/'&gt;Travis&lt;/a&gt; through the Clojure CLI. I think it's slightly easier for those of you using &lt;code&gt;lein&lt;/code&gt;, but here's how to do it with &lt;code&gt;clj&lt;/code&gt;.&lt;/p&gt;&lt;h2 id=&quot;dependencies&quot;&gt;Dependencies&lt;/h2&gt;&lt;p&gt;You'll need a couple of deps to execute your tests, here's an example &lt;code&gt;deps.edn&lt;/code&gt;:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;{:deps {org.clojure/clojure {:mvn/version &amp;quot;1.9.0&amp;quot;}
+        org.clojure/clojurescript {:mvn/version &amp;quot;1.10.238&amp;quot;} }
+ :aliases {:test-clj {:extra-paths &amp;#91;&amp;quot;test&amp;quot;&amp;#93;
+                      :extra-deps {com.cognitect/test-runner {:git/url &amp;quot;https://github.com/Olical/test-runner.git&amp;quot;
+                                                              :sha &amp;quot;427a16c634201492984d2161d305baa09ab864cd&amp;quot;}}
+                      :main-opts &amp;#91;&amp;quot;-m&amp;quot; &amp;quot;cognitect.test-runner&amp;quot;&amp;#93;}
+           :test-cljs {:extra-deps {olical/cljs-test-runner {:mvn/version &amp;quot;0.1.1&amp;quot;}}
+                       :main-opts &amp;#91;&amp;quot;-m&amp;quot; &amp;quot;cljs-test-runner.main&amp;quot;&amp;#93;}}}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This pulls down my patched version of the cognitect test-runner and my ClojureScript (loose) clone of the same library. The current cognitect test-runner doesn't report non-zero exit statuses when tests fail, my patch adds them, I'm hoping to get it merged in some form or another soon.&lt;/p&gt;&lt;p&gt;Without the exit status patch Travis won't know that your tests actually failed.&lt;/p&gt;&lt;h2 id=&quot;convenience&quot;&gt;Convenience&lt;/h2&gt;&lt;p&gt;Here's a &lt;code&gt;Makefile&lt;/code&gt; that wraps up the test commands, it makes it a little easier to call:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;Makefile&quot;&gt;.PHONY: test test-clj test-cljs
+
+test: test-clj test-cljs
+
+test-clj:
+	clojure -Adev:test-clj
+
+test-cljs:
+	clojure -Adev:test-cljs
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This is obviously optional, feel free to avoid it if you want to.&lt;/p&gt;&lt;h2 id=&quot;travis&amp;#95;configuration&quot;&gt;Travis configuration&lt;/h2&gt;&lt;p&gt;Now we have some tools to test our code, let's configure Travis to execute them with your &lt;code&gt;.travis.yml&lt;/code&gt;:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;yaml&quot;&gt;sudo: true
+language: java
+script: make test
+install:
+  - curl -O https://download.clojure.org/install/linux-install-1.9.0.358.sh
+  - chmod +x linux-install-1.9.0.358.sh
+  - sudo ./linux-install-1.9.0.358.sh
+jdk:
+  - oraclejdk8
+cache:
+  directories:
+    - $HOME/.m2
+    - $HOME/.cljs
+    - $HOME/.gitlibs
+    - node&amp;#95;modules
+    - .cpcache
+    - cljs-test-runner-out
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This configuration will set up the Clojure CLI, cache all of the appropriate directories and run your test suites. Feel free to take parts of this that you find useful and ignore others.&lt;/p&gt;&lt;p&gt;You should now connect your repo to your Travis account, it will report to you whenever your tests start failing. Enjoy!&lt;/p&gt;
+</description>
+<pubDate>
+Thu, 29 Mar 2018 00:00:00 +0100
+</pubDate>
+</item>
 <item>
 <guid>
 https://oli.me.uk/2018-03-09-clojure-and-clojurescript-testing-with-the-clojure-cli/
