@@ -12,7 +12,7 @@ https://oli.me.uk/
 On languages and text editors.
 </description>
 <lastBuildDate>
-Thu, 29 Mar 2018 14:37:30 +0100
+Thu, 29 Mar 2018 14:39:54 +0100
 </lastBuildDate>
 <generator>
 clj-rss
@@ -41,10 +41,10 @@ Clojure and ClojureScript tests on Travis
 test: test-clj test-cljs
 
 test-clj:
-	clojure -Adev:test-clj
+	clojure -Atest-clj
 
 test-cljs:
-	clojure -Adev:test-cljs
+	clojure -Atest-cljs
 &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This is obviously optional, feel free to avoid it if you want to.&lt;/p&gt;&lt;h2 id=&quot;travis&amp;#95;configuration&quot;&gt;Travis configuration&lt;/h2&gt;&lt;p&gt;Now we have some tools to test our code, let's configure Travis to execute them with your &lt;code&gt;.travis.yml&lt;/code&gt;:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;yaml&quot;&gt;sudo: true
 language: java
 script: make test

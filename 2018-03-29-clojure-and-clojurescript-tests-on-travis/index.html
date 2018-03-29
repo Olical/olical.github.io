@@ -69,10 +69,10 @@
 test: test-clj test-cljs
 
 test-clj:
-	clojure -Adev:test-clj
+	clojure -Atest-clj
 
 test-cljs:
-	clojure -Adev:test-cljs
+	clojure -Atest-cljs
 </code></pre><p>This is obviously optional, feel free to avoid it if you want to.</p><h2 id="travis&#95;configuration">Travis configuration</h2><p>Now we have some tools to test our code, let's configure Travis to execute them with your <code>.travis.yml</code>:</p><pre><code class="yaml">sudo: true
 language: java
 script: make test

@@ -34,10 +34,10 @@ Here's a `Makefile` that wraps up the test commands, it makes it a little easier
 test: test-clj test-cljs
 
 test-clj:
-	clojure -Adev:test-clj
+	clojure -Atest-clj
 
 test-cljs:
-	clojure -Adev:test-cljs
+	clojure -Atest-cljs
 ```
 
 This is obviously optional, feel free to avoid it if you want to.
