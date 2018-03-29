@@ -57,7 +57,7 @@ I've wrapped up doo with a few namespace tools and the ClojureScript compiler to
 ```clojure
 :test-cljs
 {:extra-deps
- {olical/cljs-test-runner {:mvn/version "0.1.0"}}
+ {olical/cljs-test-runner {:mvn/version "0.1.1"}}
  :main-opts ["-m" "cljs-test-runner.main"]}
 ```
 
@@ -66,7 +66,7 @@ As you can see it's extremely similar to the Clojure test-runner setup, one diff
 You can execute your tests with the following command, it'll run them in node by default. You can change the environment to phantom if required, this may have changed since writing.
 
 ```bash
-$ clojure -Acljs-test
+$ clojure -Atest-cljs
 ```
 
 If everything went according to plan it should have found your `.cljs` and `.cljc` test namespaces, compiled them and executed them through node. If it didn't, I'm sure you can work it out, or raise an issue if you think there's a problem.
