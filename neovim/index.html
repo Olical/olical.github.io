@@ -2,8 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
     <meta charset="utf-8"/>
-    <title>(ollie {:on :parens}): Finding new dependencies with Depot</title>
-    <link rel="canonical" href="https://oli.me.uk/2018-03-29-finding-new-dependencies-with-depot/">
+    <title>(ollie {:on :parens}): Posts Tagged &quot;neovim&quot;</title>
+    <link rel="canonical" href="https://oli.me.uk/neovim/">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href='http://fonts.googleapis.com/css?family=Alegreya:400italic,700italic,400,700' rel='stylesheet'
           type='text/css'>
@@ -54,68 +54,17 @@
         <div class="col-lg-9">
             <div id="content">
                 
-<div id="post">
-    <div class="post-header">
-    <div id="post-meta" class="row">
-        <div class="col-lg-6">29 March 2018</div>
-        
+<div id="posts-by-tag">
+    <div id="page-header">
+        <h2>Posts Tagged &quot;neovim&quot;</h2>
     </div>
-    <h2>Finding new dependencies with Depot</h2>
-</div>
-<div>
+    <ul>
     
-    <p>If you're using lein you can use lein-ancient to find newer versions of your dependencies, if you're using boot you probably have something similar. With the Clojure CLI however you have to keep track of these things manually.</p><p>I've created a little tool called <a href='https://github.com/Olical/depot'>Depot</a> that aims to give you this same new version detection for your <code>deps.edn</code> file. The README is probably enough to get you going but here's a little example anyway.</p><h2 id="usage">Usage</h2><p>You'll want to add Depot to your <code>deps.edn</code> file, you can do this at the project level or within your user-wide file at <code>&#126;/.clojure/deps.edn</code>. I'd recommend you add it at a project level however since this'll allow anyone working on your codebase to use the same tooling, especially if it's wrapped up in a <code>Makefile</code>.</p><pre><code class="clojure">{:deps {org.clojure/clojure {:mvn/version &quot;1.9.0&quot;}
-        org.clojure/clojurescript {:mvn/version &quot;1.10.238&quot;}}
- :aliases {:outdated {:extra-deps {olical/depot {:mvn/version &quot;1.0.1&quot;}}
-                      :main-opts &#91;&quot;-m&quot; &quot;depot.outdated.main&quot;&#93;}}}
-</code></pre><p>We can now execute Depot by referring to our alias:</p><pre><code class="bash">$ clojure -Aoutdated
-</code></pre><p>At the time of writing this doesn't output anything since everything's up to date. If we were to depend on, say, ClojureScript 1.9.946 however:</p><pre><code class="bash">$ clojure -Aoutdated
-org.clojure/clojurescript: 1.9.946 =&gt; 1.10.238
-</code></pre><p>If we're also depending on Depot 1.0.0, as opposed to the currently released 1.0.1, we could even have it check it's own alias:</p><pre><code class="bash">$ clojure -Aoutdated --aliases outdated
-org.clojure/clojurescript: 1.9.946 =&gt; 1.10.238
-olical/depot: 1.0.0 =&gt; 1.0.1
-</code></pre><p>We can also ask it to consider non-release versions such as snapshots and qualified versions such as alphas. This will pick the very latest version, regardless of stability:</p><pre><code class="bash">$ clojure -Aoutdated --aliases outdated --consider-types qualified,release,snapshot
-org.clojure/clojure: 1.9.0 =&gt; 1.10.0-alpha4
-org.clojure/clojurescript: 1.9.946 =&gt; 1.10.238
-olical/depot: 1.0.0 =&gt; 1.0.1
-</code></pre><p>I hope you find Depot useful in keeping your dependencies up to date.</p>
-</div>
-
-<div id="post-tags">
-    <b>Tags: </b>
+        <li>
+            <a href="/2018-05-04-editing-clojure-with-neovim/">Editing Clojure with Neovim</a>
+        </li>
     
-    <a href="/clojure/">clojure</a>
-    
-    <a href="/clojure-cli/">clojure-cli</a>
-    
-</div>
-
-
-    <div id="prev-next">
-        
-        <a href="/2018-03-29-clojure-and-clojurescript-tests-on-travis/">&laquo; Clojure and ClojureScript tests on Travis</a>
-        
-        
-        <a class="right" href="/2018-03-09-clojure-and-clojurescript-testing-with-the-clojure-cli/">Clojure and ClojureScript testing with the Clojure CLI &raquo;</a>
-        
-    </div>
-
-    
-    <div id="disqus_thread"></div>
-    <script type="text/javascript">
-        var disqus_config = function () {
-            this.page.url = "https://oli.me.uk/2018-03-29-finding-new-dependencies-with-depot/";
-            this.page.identifier = "Finding new dependencies with Depot";
-        };
-        (function() {
-            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-            dsq.src = '//olimeuk.disqus.com/embed.js';
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        })();
-    </script>
-    
-
-
+    </ul>
 </div>
 
             </div>
