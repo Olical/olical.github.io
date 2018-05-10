@@ -52,8 +52,8 @@ I encountered some features I missed from CIDER, namely being able to reload eve
 ```viml
 autocmd FileType clojure nnoremap <buffer> <silent> <localleader>rA :FireplaceConnect nrepl://localhost:9001 %{getcwd()}<cr>
 autocmd FileType clojure nnoremap <buffer> <silent> <localleader>rU :FireplaceConnect nrepl://localhost:9002 %{getcwd()}<cr>:e dev/user.clj<cr>:Eval (cljs-repl)<cr>:bd<cr>
-autocmd FileType clojure nnoremap <buffer> <silent> <localleader>rx :Eval (do (bounce.system/stop!) (clojure.tools.namespace.repl/set-refresh-dirs "src/clj" "src/cljc") (clojure.tools.namespace.repl/refresh :after 'bounce.system/start!))<cr>
-autocmd FileType clojure nnoremap <buffer> <silent> <localleader>rX :Eval (do (bounce.system/stop!) (clojure.tools.namespace.repl/clear) (clojure.tools.namespace.repl/set-refresh-dirs "src/clj" "src/cljc") (clojure.tools.namespace.repl/refresh-all :after 'bounce.system/start!))<cr>
+autocmd FileType clojure nnoremap <buffer> <silent> <localleader>rx :Eval (do (require 'clojure.tools.namespace.repl) (bounce.system/stop!) (clojure.tools.namespace.repl/set-refresh-dirs "src/clj" "src/cljc") (clojure.tools.namespace.repl/refresh :after 'bounce.system/start!))<cr>
+autocmd FileType clojure nnoremap <buffer> <silent> <localleader>rX :Eval (do (require 'clojure.tools.namespace.repl) (bounce.system/stop!) (clojure.tools.namespace.repl/clear) (clojure.tools.namespace.repl/set-refresh-dirs "src/clj" "src/cljc") (clojure.tools.namespace.repl/refresh-all :after 'bounce.system/start!))<cr>
 ```
 
 * `,rA` connects me to my API REPL.

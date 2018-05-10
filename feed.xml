@@ -12,7 +12,7 @@ https://oli.me.uk/
 On languages and text editors.
 </description>
 <lastBuildDate>
-Fri, 04 May 2018 13:24:15 +0100
+Thu, 10 May 2018 09:24:47 +0100
 </lastBuildDate>
 <generator>
 clj-rss
@@ -39,12 +39,43 @@ autocmd FileType clojure nnoremap &amp;lt;buffer&amp;gt; &amp;lt;localleader&amp
 autocmd FileType clojure nnoremap &amp;lt;buffer&amp;gt; gd :normal &amp;#91;&amp;lt;c-d&amp;gt;&amp;lt;cr&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;My &lt;code&gt;localleader&lt;/code&gt; is set to &lt;code&gt;,&lt;/code&gt; so I usually hit &lt;code&gt;,rc&lt;/code&gt; to connect to a REPL then a mixture of &lt;code&gt;cpp&lt;/code&gt; to evaluate the innermost form and &lt;code&gt;,re&lt;/code&gt; to evaluate the outermost.&lt;/p&gt;&lt;p&gt;I encountered some features I missed from CIDER, namely being able to reload every namespace and reboot the system with a single binding. I also created some bindings to automatically connect to my API and UI REPLs at work, I have this &lt;code&gt;.lvimrc&lt;/code&gt; defined within my work repo.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;viml&quot;&gt;autocmd FileType clojure nnoremap &amp;lt;buffer&amp;gt; &amp;lt;silent&amp;gt; &amp;lt;localleader&amp;gt;rA :FireplaceConnect nrepl://localhost:9001 %{getcwd&amp;#40;&amp;#41;}&amp;lt;cr&amp;gt;
 autocmd FileType clojure nnoremap &amp;lt;buffer&amp;gt; &amp;lt;silent&amp;gt; &amp;lt;localleader&amp;gt;rU :FireplaceConnect nrepl://localhost:9002 %{getcwd&amp;#40;&amp;#41;}&amp;lt;cr&amp;gt;:e dev/user.clj&amp;lt;cr&amp;gt;:Eval &amp;#40;cljs-repl&amp;#41;&amp;lt;cr&amp;gt;:bd&amp;lt;cr&amp;gt;
-autocmd FileType clojure nnoremap &amp;lt;buffer&amp;gt; &amp;lt;silent&amp;gt; &amp;lt;localleader&amp;gt;rx :Eval &amp;#40;do &amp;#40;bounce.system/stop!&amp;#41; &amp;#40;clojure.tools.namespace.repl/set-refresh-dirs &amp;quot;src/clj&amp;quot; &amp;quot;src/cljc&amp;quot;&amp;#41; &amp;#40;clojure.tools.namespace.repl/refresh :after 'bounce.system/start!&amp;#41;&amp;#41;&amp;lt;cr&amp;gt;
-autocmd FileType clojure nnoremap &amp;lt;buffer&amp;gt; &amp;lt;silent&amp;gt; &amp;lt;localleader&amp;gt;rX :Eval &amp;#40;do &amp;#40;bounce.system/stop!&amp;#41; &amp;#40;clojure.tools.namespace.repl/clear&amp;#41; &amp;#40;clojure.tools.namespace.repl/set-refresh-dirs &amp;quot;src/clj&amp;quot; &amp;quot;src/cljc&amp;quot;&amp;#41; &amp;#40;clojure.tools.namespace.repl/refresh-all :after 'bounce.system/start!&amp;#41;&amp;#41;&amp;lt;cr&amp;gt;
+autocmd FileType clojure nnoremap &amp;lt;buffer&amp;gt; &amp;lt;silent&amp;gt; &amp;lt;localleader&amp;gt;rx :Eval &amp;#40;do &amp;#40;require 'clojure.tools.namespace.repl&amp;#41; &amp;#40;bounce.system/stop!&amp;#41; &amp;#40;clojure.tools.namespace.repl/set-refresh-dirs &amp;quot;src/clj&amp;quot; &amp;quot;src/cljc&amp;quot;&amp;#41; &amp;#40;clojure.tools.namespace.repl/refresh :after 'bounce.system/start!&amp;#41;&amp;#41;&amp;lt;cr&amp;gt;
+autocmd FileType clojure nnoremap &amp;lt;buffer&amp;gt; &amp;lt;silent&amp;gt; &amp;lt;localleader&amp;gt;rX :Eval &amp;#40;do &amp;#40;require 'clojure.tools.namespace.repl&amp;#41; &amp;#40;bounce.system/stop!&amp;#41; &amp;#40;clojure.tools.namespace.repl/clear&amp;#41; &amp;#40;clojure.tools.namespace.repl/set-refresh-dirs &amp;quot;src/clj&amp;quot; &amp;quot;src/cljc&amp;quot;&amp;#41; &amp;#40;clojure.tools.namespace.repl/refresh-all :after 'bounce.system/start!&amp;#41;&amp;#41;&amp;lt;cr&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;&lt;li&gt;&lt;code&gt;,rA&lt;/code&gt; connects me to my API REPL.&lt;/li&gt;&lt;li&gt;&lt;code&gt;,rU&lt;/code&gt; connects me to the UI REPL and evaluates the figwheel piggieback code to hook it up to my browser.&lt;/li&gt;&lt;li&gt;&lt;code&gt;,rx&lt;/code&gt; shuts the system down, reloads changed namespaces and starts it back up.&lt;/li&gt;&lt;li&gt;&lt;code&gt;,rX&lt;/code&gt; shuts the system down, reloads &lt;i&gt;every&lt;/i&gt; namespace and starts it back up.&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;Once I have my API or UI REPL connection up all evaluation and autocompletion works for the given context, so that'll either be Clojure or ClojureScript. I can only have one connection at a time, but that connection works really damn well.&lt;/p&gt;&lt;h3 id=&quot;&lt;a href='https://github.com/guns/vim-sexp'&gt;guns/vim-sexp&lt;/a&gt;&quot;&gt;&lt;a href='https://github.com/guns/vim-sexp'&gt;guns/vim-sexp&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;a href='https://github.com/easymotion/vim-easymotion'&gt;EasyMotion&lt;/a&gt; is still my favourite way to navigate but vim-sexp is my favourite way to edit. I use it in place of &lt;a href='https://github.com/sp3ctum/evil-lispy'&gt;evil-lispy&lt;/a&gt; in Emacs to manipulate s-expressions.&lt;/p&gt;&lt;p&gt;The default bindings involve holding down a few modifiers like &lt;code&gt;ctrl&lt;/code&gt; and &lt;code&gt;alt&lt;/code&gt; and pressing a mixture of &lt;code&gt;hjkl&lt;/code&gt; keys which I actually quite like. I still have &lt;a href='https://github.com/tpope/vim-sexp-mappings-for-regular-people'&gt;vim-sexp-mappings-for-regular-people&lt;/a&gt; installed but I've found myself using it less and less as I learn the extensive bindings of vim-sexp.&lt;/p&gt;&lt;p&gt;Maybe my slightly esoteric custom ErgoDox keyboard layout makes that easier than the bindings are on a regular keyboard. Luckily tpope's enhancement plugin provides more than a couple of simple rebindings so I'd highly recommend you use it even if you don't mind the meta key shenanigans.&lt;/p&gt;&lt;h3 id=&quot;so&amp;#95;many&amp;#95;more&quot;&gt;So many more&lt;/h3&gt;&lt;p&gt;The best way to explore this setup is to skim the README in &lt;a href='https://github.com/Olical/spacy-neovim'&gt;spacy-neovim&lt;/a&gt; as well as browse the source (which is pretty short). I list a few more of the features and link to their configuration source in the repository, you may find that useful.&lt;/p&gt;&lt;h2 id=&quot;:wq&quot;&gt;:wq&lt;/h2&gt;&lt;p&gt;I hope this repository helps you to get started with your own Neovim and Clojure editor setup. If you've tried Cursive and Spacemacs but decided it's not for you and you need to return to Vim I'm here to tell you that's it's totally possible.&lt;/p&gt;&lt;p&gt;Use what I've made as a starting point to get a bunch of low hanging fruit out of the way then customise your editor to your needs.&lt;/p&gt;&lt;p&gt;Feel free to reach out to me in the comments or on twitter (&lt;a href='https://twitter.com/OliverCaldwell'&gt;@OliverCaldwell&lt;/a&gt;) if you have any questions or insights for me.&lt;/p&gt;
 </description>
 <pubDate>
 Fri, 04 May 2018 00:00:00 +0100
+</pubDate>
+</item>
+<item>
+<guid>
+https://oli.me.uk/2018-03-29-finding-new-dependencies-with-depot/
+</guid>
+<link>
+https://oli.me.uk/2018-03-29-finding-new-dependencies-with-depot/
+</link>
+<title>
+Finding new dependencies with Depot
+</title>
+<description>
+&lt;p&gt;If you're using lein you can use lein-ancient to find newer versions of your dependencies, if you're using boot you probably have something similar. With the Clojure CLI however you have to keep track of these things manually.&lt;/p&gt;&lt;p&gt;I've created a little tool called &lt;a href='https://github.com/Olical/depot'&gt;Depot&lt;/a&gt; that aims to give you this same new version detection for your &lt;code&gt;deps.edn&lt;/code&gt; file. The README is probably enough to get you going but here's a little example anyway.&lt;/p&gt;&lt;h2 id=&quot;usage&quot;&gt;Usage&lt;/h2&gt;&lt;p&gt;You'll want to add Depot to your &lt;code&gt;deps.edn&lt;/code&gt; file, you can do this at the project level or within your user-wide file at &lt;code&gt;&amp;#126;/.clojure/deps.edn&lt;/code&gt;. I'd recommend you add it at a project level however since this'll allow anyone working on your codebase to use the same tooling, especially if it's wrapped up in a &lt;code&gt;Makefile&lt;/code&gt;.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;{:deps {org.clojure/clojure {:mvn/version &amp;quot;1.9.0&amp;quot;}
+        org.clojure/clojurescript {:mvn/version &amp;quot;1.10.238&amp;quot;}}
+ :aliases {:outdated {:extra-deps {olical/depot {:mvn/version &amp;quot;1.0.1&amp;quot;}}
+                      :main-opts &amp;#91;&amp;quot;-m&amp;quot; &amp;quot;depot.outdated.main&amp;quot;&amp;#93;}}}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;We can now execute Depot by referring to our alias:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;$ clojure -Aoutdated
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;At the time of writing this doesn't output anything since everything's up to date. If we were to depend on, say, ClojureScript 1.9.946 however:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;$ clojure -Aoutdated
+org.clojure/clojurescript: 1.9.946 =&amp;gt; 1.10.238
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;If we're also depending on Depot 1.0.0, as opposed to the currently released 1.0.1, we could even have it check it's own alias:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;$ clojure -Aoutdated --aliases outdated
+org.clojure/clojurescript: 1.9.946 =&amp;gt; 1.10.238
+olical/depot: 1.0.0 =&amp;gt; 1.0.1
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;We can also ask it to consider non-release versions such as snapshots and qualified versions such as alphas. This will pick the very latest version, regardless of stability:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;$ clojure -Aoutdated --aliases outdated --consider-types qualified,release,snapshot
+org.clojure/clojure: 1.9.0 =&amp;gt; 1.10.0-alpha4
+org.clojure/clojurescript: 1.9.946 =&amp;gt; 1.10.238
+olical/depot: 1.0.0 =&amp;gt; 1.0.1
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;I hope you find Depot useful in keeping your dependencies up to date.&lt;/p&gt;
+</description>
+<pubDate>
+Thu, 29 Mar 2018 00:00:00 +0100
 </pubDate>
 </item>
 <item>
@@ -93,37 +124,6 @@ cache:
     - .cpcache
     - cljs-test-runner-out
 &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This configuration will set up the Clojure CLI, cache all of the appropriate directories and run your test suites. Feel free to take parts of this that you find useful and ignore others.&lt;/p&gt;&lt;p&gt;You should now connect your repo to your Travis account, it will report to you whenever your tests start failing. Enjoy!&lt;/p&gt;
-</description>
-<pubDate>
-Thu, 29 Mar 2018 00:00:00 +0100
-</pubDate>
-</item>
-<item>
-<guid>
-https://oli.me.uk/2018-03-29-finding-new-dependencies-with-depot/
-</guid>
-<link>
-https://oli.me.uk/2018-03-29-finding-new-dependencies-with-depot/
-</link>
-<title>
-Finding new dependencies with Depot
-</title>
-<description>
-&lt;p&gt;If you're using lein you can use lein-ancient to find newer versions of your dependencies, if you're using boot you probably have something similar. With the Clojure CLI however you have to keep track of these things manually.&lt;/p&gt;&lt;p&gt;I've created a little tool called &lt;a href='https://github.com/Olical/depot'&gt;Depot&lt;/a&gt; that aims to give you this same new version detection for your &lt;code&gt;deps.edn&lt;/code&gt; file. The README is probably enough to get you going but here's a little example anyway.&lt;/p&gt;&lt;h2 id=&quot;usage&quot;&gt;Usage&lt;/h2&gt;&lt;p&gt;You'll want to add Depot to your &lt;code&gt;deps.edn&lt;/code&gt; file, you can do this at the project level or within your user-wide file at &lt;code&gt;&amp;#126;/.clojure/deps.edn&lt;/code&gt;. I'd recommend you add it at a project level however since this'll allow anyone working on your codebase to use the same tooling, especially if it's wrapped up in a &lt;code&gt;Makefile&lt;/code&gt;.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;{:deps {org.clojure/clojure {:mvn/version &amp;quot;1.9.0&amp;quot;}
-        org.clojure/clojurescript {:mvn/version &amp;quot;1.10.238&amp;quot;}}
- :aliases {:outdated {:extra-deps {olical/depot {:mvn/version &amp;quot;1.0.1&amp;quot;}}
-                      :main-opts &amp;#91;&amp;quot;-m&amp;quot; &amp;quot;depot.outdated.main&amp;quot;&amp;#93;}}}
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;We can now execute Depot by referring to our alias:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;$ clojure -Aoutdated
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;At the time of writing this doesn't output anything since everything's up to date. If we were to depend on, say, ClojureScript 1.9.946 however:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;$ clojure -Aoutdated
-org.clojure/clojurescript: 1.9.946 =&amp;gt; 1.10.238
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;If we're also depending on Depot 1.0.0, as opposed to the currently released 1.0.1, we could even have it check it's own alias:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;$ clojure -Aoutdated --aliases outdated
-org.clojure/clojurescript: 1.9.946 =&amp;gt; 1.10.238
-olical/depot: 1.0.0 =&amp;gt; 1.0.1
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;We can also ask it to consider non-release versions such as snapshots and qualified versions such as alphas. This will pick the very latest version, regardless of stability:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;$ clojure -Aoutdated --aliases outdated --consider-types qualified,release,snapshot
-org.clojure/clojure: 1.9.0 =&amp;gt; 1.10.0-alpha4
-org.clojure/clojurescript: 1.9.946 =&amp;gt; 1.10.238
-olical/depot: 1.0.0 =&amp;gt; 1.0.1
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;I hope you find Depot useful in keeping your dependencies up to date.&lt;/p&gt;
 </description>
 <pubDate>
 Thu, 29 Mar 2018 00:00:00 +0100
