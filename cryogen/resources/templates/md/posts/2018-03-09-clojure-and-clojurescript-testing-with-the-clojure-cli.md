@@ -45,7 +45,7 @@ At the time of writing, even if your tests fail, the return code of the process 
 
 ```clojure
 {:git/url "git@github.com:Olical/test-runner.git"
- :sha "427a16c634201492984d2161d305baa09ab864cd"}
+ :sha "7c4f5bd4987ec514889c7cd7e3d13f4ef95f256b"}
 ```
 
 ## cljs-test-runner

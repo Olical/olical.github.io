@@ -14,7 +14,7 @@ You'll need a couple of deps to execute your tests, here's an example `deps.edn`
         org.clojure/clojurescript {:mvn/version "1.10.238"} }
  :aliases {:test-clj {:extra-paths ["test"]
                       :extra-deps {com.cognitect/test-runner {:git/url "https://github.com/Olical/test-runner.git"
-                                                              :sha "427a16c634201492984d2161d305baa09ab864cd"}}
+                                                              :sha "7c4f5bd4987ec514889c7cd7e3d13f4ef95f256b"}}
                       :main-opts ["-m" "cognitect.test-runner"]}
            :test-cljs {:extra-deps {olical/cljs-test-runner {:mvn/version "0.1.1"}}
                        :main-opts ["-m" "cljs-test-runner.main"]}}}

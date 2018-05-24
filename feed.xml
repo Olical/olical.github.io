@@ -12,7 +12,7 @@ https://oli.me.uk/
 On languages and text editors.
 </description>
 <lastBuildDate>
-Thu, 10 May 2018 09:24:47 +0100
+Thu, 24 May 2018 16:23:18 +0100
 </lastBuildDate>
 <generator>
 clj-rss
@@ -93,7 +93,7 @@ Clojure and ClojureScript tests on Travis
         org.clojure/clojurescript {:mvn/version &amp;quot;1.10.238&amp;quot;} }
  :aliases {:test-clj {:extra-paths &amp;#91;&amp;quot;test&amp;quot;&amp;#93;
                       :extra-deps {com.cognitect/test-runner {:git/url &amp;quot;https://github.com/Olical/test-runner.git&amp;quot;
-                                                              :sha &amp;quot;427a16c634201492984d2161d305baa09ab864cd&amp;quot;}}
+                                                              :sha &amp;quot;7c4f5bd4987ec514889c7cd7e3d13f4ef95f256b&amp;quot;}}
                       :main-opts &amp;#91;&amp;quot;-m&amp;quot; &amp;quot;cognitect.test-runner&amp;quot;&amp;#93;}
            :test-cljs {:extra-deps {olical/cljs-test-runner {:mvn/version &amp;quot;0.1.1&amp;quot;}}
                        :main-opts &amp;#91;&amp;quot;-m&amp;quot; &amp;quot;cljs-test-runner.main&amp;quot;&amp;#93;}}}
@@ -153,7 +153,7 @@ Clojure and ClojureScript testing with the Clojure CLI
    :main-opts &amp;#91;&amp;quot;-m&amp;quot; &amp;quot;cognitect.test-runner&amp;quot;&amp;#93;}}} ;; 5
 &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Let's break this down a little, just in case you aren't super familiar with &lt;code&gt;deps.edn&lt;/code&gt; just yet.&lt;/p&gt;&lt;ol&gt;&lt;li&gt;Map of your dependencies, here we're depending on the latest Clojure and ClojureScript. Having your language as a versioned dependency is a wonderful thing.&lt;/li&gt;&lt;li&gt;Our test alias, we'll activate it with &lt;code&gt;clojure -Atest&lt;/code&gt;.&lt;/li&gt;&lt;li&gt;For Clojure tests, we need to add the test directory to the classpath.&lt;/li&gt;&lt;li&gt;Dependency on the test-runner, there may be a new commit by now. I'm waiting for my &lt;a href='https://github.com/cognitect-labs/test-runner/pull/12'&gt;return code fix&lt;/a&gt; to be merged.&lt;/li&gt;&lt;li&gt;Set the entry namespace to the test runner.&lt;/li&gt;&lt;/ol&gt;&lt;p&gt;We can now execute our tests as we would with &lt;code&gt;lein&lt;/code&gt;!&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;$ clojure -Atest
 &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;At the time of writing, even if your tests fail, the return code of the process will always be 0. This means that your CLI and CI will think the tests passed just fine. I've fixed this and it may have been merged by the time you're reading this. If not, feel free to use the fixed commit from my fork.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;{:git/url &amp;quot;git@github.com:Olical/test-runner.git&amp;quot;
- :sha &amp;quot;427a16c634201492984d2161d305baa09ab864cd&amp;quot;}
+ :sha &amp;quot;7c4f5bd4987ec514889c7cd7e3d13f4ef95f256b&amp;quot;}
 &lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&quot;cljs-test-runner&quot;&gt;cljs-test-runner&lt;/h2&gt;&lt;p&gt;Running ClojureScript tests is usually a bit of a pain. You've got to work out how to get it compiling then have that plugged into a test runner such as &lt;a href='https://github.com/bensu/doo'&gt;doo&lt;/a&gt;. This doesn't account for test file discovery, so you've still got to specify each of your test namespaces manually.&lt;/p&gt;&lt;p&gt;I've wrapped up doo with a few namespace tools and the ClojureScript compiler to give you a single command that handles all of this for you. Let's add another alias containing cljs-test-runner. You may want to check for new versions since it may have changed since I wrote this.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;:test-cljs
 {:extra-deps
  {olical/cljs-test-runner {:mvn/version &amp;quot;0.1.1&amp;quot;}}
