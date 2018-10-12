@@ -3,14 +3,14 @@
 <head>
     <meta charset="utf-8"/>
     <title>(ollie {:on :parens})</title>
-    <link rel="canonical" href="https://oli.me.uk/">
+    <link rel="canonical" href="https://oli.me.uk">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href='http://fonts.googleapis.com/css?family=Alegreya:400italic,700italic,400,700' rel='stylesheet'
           type='text/css'>
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/default.min.css">
-    <link href="css/screen.css" rel="stylesheet" type="text/css" />
+    <link href="/css/screen.css" rel="stylesheet" type="text/css" />
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-29131116-1"></script>
     <script>
@@ -55,225 +55,67 @@
             <div id="content">
                 
 <div id="post">
+    
     <div class="post-header">
-    <div id="post-meta" class="row">
-        <div class="col-lg-6">12 October 2018</div>
-        
+        <h2>Wake word detection with Clojure (or Java)</h2>
+        <div id="post-meta">
+            
+            <div class="date">12 October 2018</div>
+        </div>
     </div>
-    <h2>Wake word detection with Clojure (or Java)</h2>
-</div>
-<div>
+    <blockquote><p> Hello there, intrepid Clojurian. If you don't want to follow along with this post and just want to copy some code, go to <a href="https://github.com/Olical/clojure-wake-word-detection">Olical/clojure-wake-word-detection</a>. Enjoy! </p></blockquote><p>If you follow me on <a href="https://twitter.com/OliverCaldwell">twitter</a> or <a href="https://github.com/Olical/">GitHub</a> you've probably seen me working on <a href="https://github.com/Olical/snowball">Snowball</a>, a voice activated <a href="https://discordapp.com/">Discord</a> bot written in <a href="https://clojure.org/">Clojure</a>.</p>
+    <a href="/2018-10-12-wake-word-detection-with-clojure-or-java/">Continue reading &#8594;</a>
+    <hr>
     
-    <blockquote><p> Hello there, intrepid Clojurian. If you don't want to follow along with this post and just want to copy some code, go to <a href='https://github.com/Olical/clojure-wake-word-detection'>Olical/clojure-wake-word-detection</a>. Enjoy! </p></blockquote><p>If you follow me on <a href='https://twitter.com/OliverCaldwell'>twitter</a> or <a href='https://github.com/Olical/'>GitHub</a> you've probably seen me working on <a href='https://github.com/Olical/snowball'>Snowball</a>, a voice activated <a href='https://discordapp.com/'>Discord</a> bot written in <a href='https://clojure.org/'>Clojure</a>.</p><p>It works fairly well and allows my friends and I to move people around channels and control our music bot over voice while we're in a game. For example:</p><blockquote><p> O: Hey Snowball </p><p> S: Hey, Olical </p><p> O: Pause the music </p><p> S: Sure thing </p></blockquote><p>The voice control has a few steps to it:</p><ol><li>Receive all audio from a Discord voice channel and store per-user streams of audio data.</li><li>When someone says something and then stops speaking we need to check that audio for the wake phrase "hey snowball".</li><li>If we spot the wake phrase we then need to wait for them to say another sentence which we'll treat as a command.</li><li>Once we've got that second phrase it can be sent off to Google Cloud Platform (in my case) for speech recognition.</li><li>The program can then act on that command.</li></ol><p>Sending audio off to Google from Clojure or Java is actually pretty straightforward and well documented, you can also check out <a href='https://github.com/Olical/snowball/blob/b8be304046e98c2c082fa6f583ebf9950bf412ac/src/clojure/snowball/comprehension.clj#L139-L172'>snowball.comprehension</a> to see how I managed it.</p><p>The part that didn't seem to exist was the wake word detection, I had to write a little C and some Java to get it working. Here's what I ended up with so you can use it in your projects.</p><h2 id="tooling">Tooling</h2><p>I hunted high and low for a JVM compatible wake word detector, I tried to use <a href='https://cmusphinx.github.io/'>cmusphinx</a> for longer than I'd like to admit and couldn't get anything working. The one time I had it processing audio it was wildly inaccurate and hogging my CPU, I was probably doing something massively wrong.</p><p>I finally stumbled across <a href='https://github.com/Picovoice/Porcupine'>Porcupine</a> and can highly recommend it, it's specialised for this job and works great. The only problem was it didn't have any support for JVM on the desktop, there were some Android bindings but that's all. I wrote a little C and some Java so my Clojure could talk to Porcupine.</p><p>Before I get to that though, let's set up a little <code>Makefile</code> that will fetch Porcupine (watch out, the repository is around 3GB) and configure a wake phrase.</p><pre><code class="makefile">WAKE&#95;PHRASE := hey porcupine
-
-wake-word-engine: wake-word-engine/Porcupine wake-word-engine/wake&#95;phrase.ppn
-
-wake-word-engine/Porcupine:
-	mkdir -p wake-word-engine
-	cd wake-word-engine &amp;&amp; git clone git@github.com:Picovoice/Porcupine.git
-
-wake-word-engine/wake&#95;phrase.ppn: wake-word-engine/Porcupine
-	cd wake-word-engine/Porcupine &amp;&amp; tools/optimizer/linux/x86&#95;64/pv&#95;porcupine&#95;optimizer -r resources/ -w &quot;$&#40;WAKE&#95;PHRASE&#41;&quot; -p linux -o ../
-	mv &quot;wake-word-engine/$&#40;WAKE&#95;PHRASE&#41;&#95;linux.ppn&quot; wake-word-engine/wake&#95;phrase.ppn
-</code></pre><p>When we run <code>make</code> it'll download the Porcupine repo (if we don't have it already) and build the <code>.ppn</code> file. We use this file to configure Porcupine at runtime with the desired wake phrase. Run this so that we have Porcupine downloaded and ready to use.</p><h2 id="bindings">Bindings</h2><p>We have Porcupine but we have no way for the JVM to talk to it, it's a native library written in closed source C, luckily they expose enough through shared libraries that we can easily write our own bindings. You may want to extend the following Java and C yourself, but this was enough for me.</p><blockquote><p> I've chosen <code>wakeup</code> as a root namespace but obviously you could use something else. In Snowball I have <code>snowball.porcupine</code> instead of <code>wakeup.porcupine</code>, I just thought I'd make it generic for this post. </p></blockquote><p>Place this in <code>src/java/wakeup/porcupine/Porcupine.java</code>:</p><pre><code class="java">// Copied and modified from the Porcupine project Android binding.
-// https://github.com/Picovoice/Porcupine
-
-package wakeup.porcupine;
-
-public class Porcupine {
-    private final long object;
-
-    static {
-        System.loadLibrary&#40;&quot;pv&#95;porcupine&quot;&#41;;
-    }
-
-    public Porcupine&#40;String modelFilePath, String keywordFilePath, float sens&#41; throws Exception {
-        try {
-            object = init&#40;modelFilePath, keywordFilePath, sens&#41;;
-        } catch &#40;Exception e&#41; {
-            throw new Exception&#40;e&#41;;
-        }
-    }
-
-    public boolean processFrame&#40;short&#91;&#93; pcm&#41; throws Exception {
-        try {
-            return process&#40;object, pcm&#41;;
-        } catch &#40;Exception e&#41; {
-            throw new Exception&#40;e&#41;;
-        }
-    }
-
-    public void delete&#40;&#41; {
-        delete&#40;object&#41;;
-    }
-
-    public native int getFrameLength&#40;&#41;;
-
-    public native int getSampleRate&#40;&#41;;
-
-    private native long init&#40;String modelFilePath, String keywordFilePaths, float sensitivitie&#41;;
-
-    private native boolean process&#40;long object, short&#91;&#93; pcm&#41;;
-
-    private native void delete&#40;long object&#41;;
-}
-</code></pre><p>Place this in <code>src/c/porcupine.c</code>:</p><pre><code class="c">#include &lt;stdio.h&gt;
-#include &lt;pv&#95;porcupine.h&gt;
-#include &lt;wakeup&#95;porcupine&#95;Porcupine.h&gt;
-
-JNIEXPORT jlong JNICALL Java&#95;wakeup&#95;porcupine&#95;Porcupine&#95;init
-  &#40;JNIEnv &#42;env, jobject obj, jstring model&#95;raw, jstring keyword&#95;raw, jfloat sens&#41; {
-   const char &#42;model = &#40;&#42;env&#41;-&gt;GetStringUTFChars&#40;env, model&#95;raw, 0&#41;;
-   const char &#42;keyword = &#40;&#42;env&#41;-&gt;GetStringUTFChars&#40;env, keyword&#95;raw, 0&#41;;
-   pv&#95;porcupine&#95;object&#95;t &#42;handle;
-
-   const pv&#95;status&#95;t status = pv&#95;porcupine&#95;init&#40;model, keyword, sens, &amp;handle&#41;;
-
-   if &#40;status != PV&#95;STATUS&#95;SUCCESS&#41; {
-       printf&#40;&quot;Error: Failed to initialise the Porcupine instance.&quot;&#41;;
-   }
-
-   &#40;&#42;env&#41;-&gt;ReleaseStringUTFChars&#40;env, model&#95;raw, model&#41;;
-   &#40;&#42;env&#41;-&gt;ReleaseStringUTFChars&#40;env, keyword&#95;raw, keyword&#41;;
-
-   return &#40;long&#41;handle;
-}
-
-JNIEXPORT void JNICALL Java&#95;wakeup&#95;porcupine&#95;Porcupine&#95;delete
-  &#40;JNIEnv &#42;env, jobject obj, jlong handle&#41; {
-  pv&#95;porcupine&#95;delete&#40;&#40;pv&#95;porcupine&#95;object&#95;t&#42;&#41;handle&#41;;
-}
-
-JNIEXPORT jint JNICALL Java&#95;wakeup&#95;porcupine&#95;Porcupine&#95;getFrameLength
-  &#40;JNIEnv &#42;env, jobject obj&#41; {
-  return pv&#95;porcupine&#95;frame&#95;length&#40;&#41;;
-}
-
-JNIEXPORT jint JNICALL Java&#95;wakeup&#95;porcupine&#95;Porcupine&#95;getSampleRate
-  &#40;JNIEnv &#42;env, jobject obj&#41; {
-  return pv&#95;sample&#95;rate&#40;&#41;;
-}
-
-JNIEXPORT jboolean JNICALL Java&#95;wakeup&#95;porcupine&#95;Porcupine&#95;process
-  &#40;JNIEnv &#42;env, jobject obj, jlong handle, jshortArray pcm&#95;raw&#41; {
-  jshort &#42;pcm = &#40;&#42;env&#41;-&gt;GetShortArrayElements&#40;env, pcm&#95;raw, 0&#41;;
-  bool result;
-
-  pv&#95;porcupine&#95;process&#40;&#40;pv&#95;porcupine&#95;object&#95;t&#42;&#41;handle, pcm, &amp;result&#41;;
-
-  &#40;&#42;env&#41;-&gt;ReleaseShortArrayElements&#40;env, pcm&#95;raw, pcm, 0&#41;;
-
-  return result;
-}
-</code></pre><p>Now let's modify the <code>Makefile</code> to compile our C and Java code:</p><pre><code class="makefile">WAKE&#95;PHRASE := hey porcupine
-
-wake-word-engine: wake-word-engine/Porcupine wake-word-engine/wake&#95;phrase.ppn wake-word-engine/jni/libpv&#95;porcupine.so src/java/wakeup/porcupine/Porcupine.class
-
-# ------- 8&lt; -------
-
-src/java/wakeup/porcupine/Porcupine.class wake-word-engine/jni/wakeup&#95;porcupine&#95;Porcupine.h: src/java/wakeup/porcupine/Porcupine.java
-	mkdir -p wake-word-engine/jni
-	javac -h wake-word-engine/jni src/java/wakeup/porcupine/Porcupine.java
-
-wake-word-engine/jni/libpv&#95;porcupine.so: wake-word-engine/jni/wakeup&#95;porcupine&#95;Porcupine.h src/c/porcupine.c
-	gcc -shared -O3 \
-		-I/usr/include \
-		-I/usr/lib/jvm/default/include \
-		-I/usr/lib/jvm/default/include/linux \
-		-Iwake-word-engine/Porcupine/include \
-		-Iwake-word-engine/jni \
-		src/c/porcupine.c \
-		wake-word-engine/Porcupine/lib/linux/x86&#95;64/libpv&#95;porcupine.a \
-		-o wake-word-engine/jni/libpv&#95;porcupine.so
-</code></pre><p>So the default <code>make</code> command, <code>wake-word-engine</code>, now depends upon Porcupine, the <code>.ppn</code> file, C compiled to a <code>.so</code> and Java compiled to a <code>.class</code>. We can now write some Clojure that imports <code>&#91;wakeup.porcupine Porcupine&#93;</code> and runs some audio through it.</p><h2 id="using&#95;the&#95;binding">Using the binding</h2><p>I've written a Clojure namespace that grabs your microphone as input and streams it through the Porcupine binding, logging whenever it hears the wake phrase. I think this should be more than enough to get most people going with their own voice activated programs.</p><p>Place this in <code>src/clojure/wakeup/main.clj</code>:</p><pre><code class="clojure">&#40;ns wakeup.main
-  &#40;:import &#91;wakeup.porcupine Porcupine&#93;
-
-           ;; These are required for the microphone input.
-           &#91;javax.sound.sampled AudioFormat DataLine TargetDataLine AudioSystem&#93;&#41;&#41;
-
-;; Notes on audio formats:
-;; Discord provides audio as `48KHz 16bit stereo signed BigEndian PCM`.
-;; Porcupine requires `16KHz 16bit mono signed LittleEndian PCM` but in 512 length short-array frames &#40;a short is two bytes&#41;.
-;; GCP speech recognition requires the same as Porcupine but as byte pairs and without the 512 frames.
-
-&#40;defn init-porcupine &#91;&#93;
-  &#40;Porcupine. &quot;wake-word-engine/Porcupine/lib/common/porcupine&#95;params.pv&quot;
-              &quot;wake-word-engine/wake&#95;phrase.ppn&quot;
-              0.5&#41;&#41;
-
-;; Adapted from: https://gist.github.com/BurkeB/ebf5f01c0d20ff6b9dc111ac427ddea8
-&#40;defn with-microphone &#91;f&#93;
-  &#40;let &#91;audio-format &#40;new AudioFormat 16000 16 1 true true&#41;
-        info &#40;new javax.sound.sampled.DataLine$Info TargetDataLine audio-format&#41;&#93;
-
-    &#40;when-not &#40;AudioSystem/isLineSupported info&#41;
-      &#40;throw &#40;Error. &quot;AudioSystem/isLineSupported returned false&quot;&#41;&#41;&#41;
-
-    &#40;with-open &#91;line &#40;AudioSystem/getTargetDataLine audio-format&#41;&#93;
-      &#40;doto line
-        &#40;.open audio-format&#41;
-        &#40;.start&#41;&#41;
-
-      &#40;f line&#41;&#41;&#41;&#41;
-
-&#40;defn byte-pair-&gt;short &#91;&#91;a b&#93;&#93;
-  &#40;bit-or &#40;bit-shift-left a 8&#41; &#40;bit-and b 0xFF&#41;&#41;&#41;
-
-&#40;defn bytes-&gt;shorts &#91;buf&#93;
-  &#40;-&gt;&gt; buf
-       &#40;partition 2&#41;
-       &#40;map byte-pair-&gt;short&#41;
-       &#40;short-array&#41;&#41;&#41;
-
-&#40;defn -main &#91;&#93;
-  &#40;println &quot;Starting up wake word detector...&quot;&#41;
-  &#40;let &#91;porcupine &#40;init-porcupine&#41;&#93;
-    &#40;with-microphone
-      &#40;fn &#91;line&#93;
-        &#40;let &#91;size 1024
-              buf &#40;byte-array size&#41;&#93;
-          &#40;println &quot;Listening...&quot;&#41;
-          &#40;loop &#91;&#93;
-            &#40;when &#40;&gt; &#40;.read line buf 0 size&#41; 0&#41;
-              &#40;when &#40;.processFrame porcupine &#40;bytes-&gt;shorts buf&#41;&#41;
-                &#40;println &quot;Wake word detected!&quot;&#41;&#41;
-              &#40;recur&#41;&#41;&#41;&#41;&#41;&#41;&#41;&#41;
-</code></pre><p>We can now create a <code>deps.edn</code> for the <a href='https://clojure.org/guides/deps_and_cli'>Clojure CLI</a> (if you haven't already):</p><pre><code class="edn">{:paths &#91;&quot;src/clojure&quot; &quot;src/java&quot;&#93;
- :deps {org.clojure/clojure {:mvn/version &quot;1.9.0&quot;}}}
-</code></pre><p>And finally add a line to start our application as the first entry in our makefile:</p><pre><code class="makefile">default: wake-word-engine
-	LD&#95;LIBRARY&#95;PATH=&quot;wake-word-engine/jni&quot; clojure -m wakeup.main
-</code></pre><p>As you can see, we need to specify the <code>LD&#95;LIBRARY&#95;PATH</code> for our binding which I think varies depending on your operating system. This works for Linux but I think the name is slightly different for OSX, I'm afraid I have no idea how it would work on Windows.</p><p>When I execute <code>make</code> I can then say "hey porcupine" to my laptop and get this output:</p><pre><code>$ make
-LD&#95;LIBRARY&#95;PATH=&quot;wake-word-engine/jni&quot; clojure -m wakeup.main
-Starting up wake word detector...
-Listening...
-Wake word detected!
-</code></pre><p>I hope this has been helpful and allows you to build voice activated programs of your own.</p>
-</div>
-
-<div id="post-tags">
-    <b>Tags: </b>
-    
-    <a href="/clojure/">clojure</a>
-    
-    <a href="/porcupine/">porcupine</a>
-    
-    <a href="/java/">java</a>
-    
-    <a href="/audio/">audio</a>
-    
-</div>
-
-
-    
-    <div id="comments">
-        <a href="/2018-10-12-wake-word-detection-with-clojure-or-java/#disqus_thread">View Comments</a>
+    <div class="post-header">
+        <h2>Editing Clojure with Neovim</h2>
+        <div id="post-meta">
+            
+            <div class="date">04 May 2018</div>
+        </div>
     </div>
+    <p>I've used <a href="http://spacemacs.org/">Spacemacs</a> since I started working with <a href="https://clojure.org/">Clojure</a> a few years ago, it's an extremely powerful system on par with full IDEs such as <a href="https://cursive-ide.com/">Cursive</a>. I highly recommend either of these tools to the budding Clojure(Script) developer, they will carry you as far as you need to go and beyond.</p><p>The reason I have drifted back to <a href="https://www.vim.org/">Vim</a> (<a href="https://neovim.io/">Neovim</a> specifically) is because I never felt quite at home within <a href="https://www.gnu.org/software/emacs/">Emacs</a>, which Spacemacs is built upon. I wrote JavaScript (among other languages) in Vim for around five years before I began really studying Clojure. Vim and it's nuances are pretty deeply buried within my brain and muscle memory (if that's actually a thing).</p>
+    <a href="/2018-05-04-editing-clojure-with-neovim/">Continue reading &#8594;</a>
+    <hr>
+    
+    <div class="post-header">
+        <h2>Clojure and ClojureScript tests on Travis</h2>
+        <div id="post-meta">
+            
+            <div class="date">29 March 2018</div>
+        </div>
+    </div>
+    <p>As far as I can tell, there isn't a canonical way to run your Clojure(Script) tests on <a href="http://travis-ci.org/">Travis</a> through the Clojure CLI. I think it's slightly easier for those of you using <code>lein</code>, but here's how to do it with <code>clj</code>.</p><h2 id="dependencies">Dependencies</h2>
+    <a href="/2018-03-29-clojure-and-clojurescript-tests-on-travis/">Continue reading &#8594;</a>
+    <hr>
+    
+    <div class="post-header">
+        <h2>Finding new dependencies with Depot</h2>
+        <div id="post-meta">
+            
+            <div class="date">29 March 2018</div>
+        </div>
+    </div>
+    <p>If you're using lein you can use lein-ancient to find newer versions of your dependencies, if you're using boot you probably have something similar. With the Clojure CLI however you have to keep track of these things manually.</p><p>I've created a little tool called <a href="https://github.com/Olical/depot">Depot</a> that aims to give you this same new version detection for your <code>deps.edn</code> file. The README is probably enough to get you going but here's a little example anyway.</p>
+    <a href="/2018-03-29-finding-new-dependencies-with-depot/">Continue reading &#8594;</a>
+    <hr>
+    
+    <div class="post-header">
+        <h2>Clojure and ClojureScript testing with the Clojure CLI</h2>
+        <div id="post-meta">
+            
+            <div class="date">09 March 2018</div>
+        </div>
+    </div>
+    <p>This post is sort of an extension of a previous post, <a href="https://oli.me.uk/2018-02-26-clojure-projects-from-scratch/">Clojure projects from scratch</a>. That will introduce you to structuring your project around a <code>deps.edn</code> file, here we're going to simply add a couple of dependencies that allow you to run your tests.</p><p>In a <a href="https://leiningen.org/">Leiningen</a> project, <code>lein test</code> will execute your Clojure tests, no questions asked. In a Clojure CLI / <code>deps.edn</code> based project we have no such command, tests have to be executed by a custom built test runner script.</p>
+    <a href="/2018-03-09-clojure-and-clojurescript-testing-with-the-clojure-cli/">Continue reading &#8594;</a>
+    <hr>
     
 
     <div id="prev-next">
         
         
-        <a class="right" href="/2018-05-04-editing-clojure-with-neovim/">Editing Clojure with Neovim &raquo;</a>
+        <a class="right" href="/p/2/">Next &raquo;</a>
         
     </div>
 </div>
@@ -338,7 +180,7 @@ Wake word detected!
 </div>
 <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-<script src="js/highlight.pack.js" type="text/javascript"></script>
+<script src="/js/highlight.pack.js" type="text/javascript"></script>
 <script>hljs.initHighlightingOnLoad();</script>
 
 
