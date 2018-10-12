@@ -12,11 +12,211 @@ https://oli.me.uk/
 On languages and text editors.
 </description>
 <lastBuildDate>
-Fri, 12 Oct 2018 12:24:18 +0100
+Fri, 12 Oct 2018 16:37:04 +0100
 </lastBuildDate>
 <generator>
 clj-rss
 </generator>
+<item>
+<guid>
+https://oli.me.uk/2018-10-12-wake-word-detection-with-clojure-or-java/
+</guid>
+<link>
+https://oli.me.uk/2018-10-12-wake-word-detection-with-clojure-or-java/
+</link>
+<title>
+Wake word detection with Clojure (or Java)
+</title>
+<description>
+&lt;blockquote&gt;&lt;p&gt; Hello there, intrepid Clojurian. If you don't want to follow along with this post and just want to copy some code, go to &lt;a href='https://github.com/Olical/clojure-wake-word-detection'&gt;Olical/clojure-wake-word-detection&lt;/a&gt;. Enjoy! &lt;/p&gt;&lt;/blockquote&gt;&lt;p&gt;If you follow me on &lt;a href='https://twitter.com/OliverCaldwell'&gt;twitter&lt;/a&gt; or &lt;a href='https://github.com/Olical/'&gt;GitHub&lt;/a&gt; you've probably seen me working on &lt;a href='https://github.com/Olical/snowball'&gt;Snowball&lt;/a&gt;, a voice activated &lt;a href='https://discordapp.com/'&gt;Discord&lt;/a&gt; bot written in &lt;a href='https://clojure.org/'&gt;Clojure&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;It works fairly well and allows my friends and I to move people around channels and control our music bot over voice while we're in a game. For example:&lt;/p&gt;&lt;blockquote&gt;&lt;p&gt; O: Hey Snowball &lt;/p&gt;&lt;p&gt; S: Hey, Olical &lt;/p&gt;&lt;p&gt; O: Pause the music &lt;/p&gt;&lt;p&gt; S: Sure thing &lt;/p&gt;&lt;/blockquote&gt;&lt;p&gt;The voice control has a few steps to it:&lt;/p&gt;&lt;ol&gt;&lt;li&gt;Receive all audio from a Discord voice channel and store per-user streams of audio data.&lt;/li&gt;&lt;li&gt;When someone says something and then stops speaking we need to check that audio for the wake phrase &quot;hey snowball&quot;.&lt;/li&gt;&lt;li&gt;If we spot the wake phrase we then need to wait for them to say another sentence which we'll treat as a command.&lt;/li&gt;&lt;li&gt;Once we've got that second phrase it can be sent off to Google Cloud Platform (in my case) for speech recognition.&lt;/li&gt;&lt;li&gt;The program can then act on that command.&lt;/li&gt;&lt;/ol&gt;&lt;p&gt;Sending audio off to Google from Clojure or Java is actually pretty straightforward and well documented, you can also check out &lt;a href='https://github.com/Olical/snowball/blob/b8be304046e98c2c082fa6f583ebf9950bf412ac/src/clojure/snowball/comprehension.clj#L139-L172'&gt;snowball.comprehension&lt;/a&gt; to see how I managed it.&lt;/p&gt;&lt;p&gt;The part that didn't seem to exist was the wake word detection, I had to write a little C and some Java to get it working. Here's what I ended up with so you can use it in your projects.&lt;/p&gt;&lt;h2 id=&quot;tooling&quot;&gt;Tooling&lt;/h2&gt;&lt;p&gt;I hunted high and low for a JVM compatible wake word detector, I tried to use &lt;a href='https://cmusphinx.github.io/'&gt;cmusphinx&lt;/a&gt; for longer than I'd like to admit and couldn't get anything working. The one time I had it processing audio it was wildly inaccurate and hogging my CPU, I was probably doing something massively wrong.&lt;/p&gt;&lt;p&gt;I finally stumbled across &lt;a href='https://github.com/Picovoice/Porcupine'&gt;Porcupine&lt;/a&gt; and can highly recommend it, it's specialised for this job and works great. The only problem was it didn't have any support for JVM on the desktop, there were some Android bindings but that's all. I wrote a little C and some Java so my Clojure could talk to Porcupine.&lt;/p&gt;&lt;p&gt;Before I get to that though, let's set up a little &lt;code&gt;Makefile&lt;/code&gt; that will fetch Porcupine (watch out, the repository is around 3GB) and configure a wake phrase.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;makefile&quot;&gt;WAKE&amp;#95;PHRASE := hey porcupine
+
+wake-word-engine: wake-word-engine/Porcupine wake-word-engine/wake&amp;#95;phrase.ppn
+
+wake-word-engine/Porcupine:
+	mkdir -p wake-word-engine
+	cd wake-word-engine &amp;amp;&amp;amp; git clone git@github.com:Picovoice/Porcupine.git
+
+wake-word-engine/wake&amp;#95;phrase.ppn: wake-word-engine/Porcupine
+	cd wake-word-engine/Porcupine &amp;amp;&amp;amp; tools/optimizer/linux/x86&amp;#95;64/pv&amp;#95;porcupine&amp;#95;optimizer -r resources/ -w &amp;quot;$&amp;#40;WAKE&amp;#95;PHRASE&amp;#41;&amp;quot; -p linux -o ../
+	mv &amp;quot;wake-word-engine/$&amp;#40;WAKE&amp;#95;PHRASE&amp;#41;&amp;#95;linux.ppn&amp;quot; wake-word-engine/wake&amp;#95;phrase.ppn
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;When we run &lt;code&gt;make&lt;/code&gt; it'll download the Porcupine repo (if we don't have it already) and build the &lt;code&gt;.ppn&lt;/code&gt; file. We use this file to configure Porcupine at runtime with the desired wake phrase. Run this so that we have Porcupine downloaded and ready to use.&lt;/p&gt;&lt;h2 id=&quot;bindings&quot;&gt;Bindings&lt;/h2&gt;&lt;p&gt;We have Porcupine but we have no way for the JVM to talk to it, it's a native library written in closed source C, luckily they expose enough through shared libraries that we can easily write our own bindings. You may want to extend the following Java and C yourself, but this was enough for me.&lt;/p&gt;&lt;blockquote&gt;&lt;p&gt; I've chosen &lt;code&gt;wakeup&lt;/code&gt; as a root namespace but obviously you could use something else. In Snowball I have &lt;code&gt;snowball.porcupine&lt;/code&gt; instead of &lt;code&gt;wakeup.porcupine&lt;/code&gt;, I just thought I'd make it generic for this post. &lt;/p&gt;&lt;/blockquote&gt;&lt;p&gt;Place this in &lt;code&gt;src/java/wakeup/porcupine/Porcupine.java&lt;/code&gt;:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;java&quot;&gt;// Copied and modified from the Porcupine project Android binding.
+// https://github.com/Picovoice/Porcupine
+
+package wakeup.porcupine;
+
+public class Porcupine {
+    private final long object;
+
+    static {
+        System.loadLibrary&amp;#40;&amp;quot;pv&amp;#95;porcupine&amp;quot;&amp;#41;;
+    }
+
+    public Porcupine&amp;#40;String modelFilePath, String keywordFilePath, float sens&amp;#41; throws Exception {
+        try {
+            object = init&amp;#40;modelFilePath, keywordFilePath, sens&amp;#41;;
+        } catch &amp;#40;Exception e&amp;#41; {
+            throw new Exception&amp;#40;e&amp;#41;;
+        }
+    }
+
+    public boolean processFrame&amp;#40;short&amp;#91;&amp;#93; pcm&amp;#41; throws Exception {
+        try {
+            return process&amp;#40;object, pcm&amp;#41;;
+        } catch &amp;#40;Exception e&amp;#41; {
+            throw new Exception&amp;#40;e&amp;#41;;
+        }
+    }
+
+    public void delete&amp;#40;&amp;#41; {
+        delete&amp;#40;object&amp;#41;;
+    }
+
+    public native int getFrameLength&amp;#40;&amp;#41;;
+
+    public native int getSampleRate&amp;#40;&amp;#41;;
+
+    private native long init&amp;#40;String modelFilePath, String keywordFilePaths, float sensitivitie&amp;#41;;
+
+    private native boolean process&amp;#40;long object, short&amp;#91;&amp;#93; pcm&amp;#41;;
+
+    private native void delete&amp;#40;long object&amp;#41;;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Place this in &lt;code&gt;src/c/porcupine.c&lt;/code&gt;:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;c&quot;&gt;#include &amp;lt;stdio.h&amp;gt;
+#include &amp;lt;pv&amp;#95;porcupine.h&amp;gt;
+#include &amp;lt;wakeup&amp;#95;porcupine&amp;#95;Porcupine.h&amp;gt;
+
+JNIEXPORT jlong JNICALL Java&amp;#95;wakeup&amp;#95;porcupine&amp;#95;Porcupine&amp;#95;init
+  &amp;#40;JNIEnv &amp;#42;env, jobject obj, jstring model&amp;#95;raw, jstring keyword&amp;#95;raw, jfloat sens&amp;#41; {
+   const char &amp;#42;model = &amp;#40;&amp;#42;env&amp;#41;-&amp;gt;GetStringUTFChars&amp;#40;env, model&amp;#95;raw, 0&amp;#41;;
+   const char &amp;#42;keyword = &amp;#40;&amp;#42;env&amp;#41;-&amp;gt;GetStringUTFChars&amp;#40;env, keyword&amp;#95;raw, 0&amp;#41;;
+   pv&amp;#95;porcupine&amp;#95;object&amp;#95;t &amp;#42;handle;
+
+   const pv&amp;#95;status&amp;#95;t status = pv&amp;#95;porcupine&amp;#95;init&amp;#40;model, keyword, sens, &amp;amp;handle&amp;#41;;
+
+   if &amp;#40;status != PV&amp;#95;STATUS&amp;#95;SUCCESS&amp;#41; {
+       printf&amp;#40;&amp;quot;Error: Failed to initialise the Porcupine instance.&amp;quot;&amp;#41;;
+   }
+
+   &amp;#40;&amp;#42;env&amp;#41;-&amp;gt;ReleaseStringUTFChars&amp;#40;env, model&amp;#95;raw, model&amp;#41;;
+   &amp;#40;&amp;#42;env&amp;#41;-&amp;gt;ReleaseStringUTFChars&amp;#40;env, keyword&amp;#95;raw, keyword&amp;#41;;
+
+   return &amp;#40;long&amp;#41;handle;
+}
+
+JNIEXPORT void JNICALL Java&amp;#95;wakeup&amp;#95;porcupine&amp;#95;Porcupine&amp;#95;delete
+  &amp;#40;JNIEnv &amp;#42;env, jobject obj, jlong handle&amp;#41; {
+  pv&amp;#95;porcupine&amp;#95;delete&amp;#40;&amp;#40;pv&amp;#95;porcupine&amp;#95;object&amp;#95;t&amp;#42;&amp;#41;handle&amp;#41;;
+}
+
+JNIEXPORT jint JNICALL Java&amp;#95;wakeup&amp;#95;porcupine&amp;#95;Porcupine&amp;#95;getFrameLength
+  &amp;#40;JNIEnv &amp;#42;env, jobject obj&amp;#41; {
+  return pv&amp;#95;porcupine&amp;#95;frame&amp;#95;length&amp;#40;&amp;#41;;
+}
+
+JNIEXPORT jint JNICALL Java&amp;#95;wakeup&amp;#95;porcupine&amp;#95;Porcupine&amp;#95;getSampleRate
+  &amp;#40;JNIEnv &amp;#42;env, jobject obj&amp;#41; {
+  return pv&amp;#95;sample&amp;#95;rate&amp;#40;&amp;#41;;
+}
+
+JNIEXPORT jboolean JNICALL Java&amp;#95;wakeup&amp;#95;porcupine&amp;#95;Porcupine&amp;#95;process
+  &amp;#40;JNIEnv &amp;#42;env, jobject obj, jlong handle, jshortArray pcm&amp;#95;raw&amp;#41; {
+  jshort &amp;#42;pcm = &amp;#40;&amp;#42;env&amp;#41;-&amp;gt;GetShortArrayElements&amp;#40;env, pcm&amp;#95;raw, 0&amp;#41;;
+  bool result;
+
+  pv&amp;#95;porcupine&amp;#95;process&amp;#40;&amp;#40;pv&amp;#95;porcupine&amp;#95;object&amp;#95;t&amp;#42;&amp;#41;handle, pcm, &amp;amp;result&amp;#41;;
+
+  &amp;#40;&amp;#42;env&amp;#41;-&amp;gt;ReleaseShortArrayElements&amp;#40;env, pcm&amp;#95;raw, pcm, 0&amp;#41;;
+
+  return result;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Now let's modify the &lt;code&gt;Makefile&lt;/code&gt; to compile our C and Java code:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;makefile&quot;&gt;WAKE&amp;#95;PHRASE := hey porcupine
+
+wake-word-engine: wake-word-engine/Porcupine wake-word-engine/wake&amp;#95;phrase.ppn wake-word-engine/jni/libpv&amp;#95;porcupine.so src/java/wakeup/porcupine/Porcupine.class
+
+# ------- 8&amp;lt; -------
+
+src/java/wakeup/porcupine/Porcupine.class wake-word-engine/jni/wakeup&amp;#95;porcupine&amp;#95;Porcupine.h: src/java/wakeup/porcupine/Porcupine.java
+	mkdir -p wake-word-engine/jni
+	javac -h wake-word-engine/jni src/java/wakeup/porcupine/Porcupine.java
+
+wake-word-engine/jni/libpv&amp;#95;porcupine.so: wake-word-engine/jni/wakeup&amp;#95;porcupine&amp;#95;Porcupine.h src/c/porcupine.c
+	gcc -shared -O3 \
+		-I/usr/include \
+		-I/usr/lib/jvm/default/include \
+		-I/usr/lib/jvm/default/include/linux \
+		-Iwake-word-engine/Porcupine/include \
+		-Iwake-word-engine/jni \
+		src/c/porcupine.c \
+		wake-word-engine/Porcupine/lib/linux/x86&amp;#95;64/libpv&amp;#95;porcupine.a \
+		-o wake-word-engine/jni/libpv&amp;#95;porcupine.so
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;So the default &lt;code&gt;make&lt;/code&gt; command, &lt;code&gt;wake-word-engine&lt;/code&gt;, now depends upon Porcupine, the &lt;code&gt;.ppn&lt;/code&gt; file, C compiled to a &lt;code&gt;.so&lt;/code&gt; and Java compiled to a &lt;code&gt;.class&lt;/code&gt;. We can now write some Clojure that imports &lt;code&gt;&amp;#91;wakeup.porcupine Porcupine&amp;#93;&lt;/code&gt; and runs some audio through it.&lt;/p&gt;&lt;h2 id=&quot;using&amp;#95;the&amp;#95;binding&quot;&gt;Using the binding&lt;/h2&gt;&lt;p&gt;I've written a Clojure namespace that grabs your microphone as input and streams it through the Porcupine binding, logging whenever it hears the wake phrase. I think this should be more than enough to get most people going with their own voice activated programs.&lt;/p&gt;&lt;p&gt;Place this in &lt;code&gt;src/clojure/wakeup/main.clj&lt;/code&gt;:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;&amp;#40;ns wakeup.main
+  &amp;#40;:import &amp;#91;wakeup.porcupine Porcupine&amp;#93;
+
+           ;; These are required for the microphone input.
+           &amp;#91;javax.sound.sampled AudioFormat DataLine TargetDataLine AudioSystem&amp;#93;&amp;#41;&amp;#41;
+
+;; Notes on audio formats:
+;; Discord provides audio as `48KHz 16bit stereo signed BigEndian PCM`.
+;; Porcupine requires `16KHz 16bit mono signed LittleEndian PCM` but in 512 length short-array frames &amp;#40;a short is two bytes&amp;#41;.
+;; GCP speech recognition requires the same as Porcupine but as byte pairs and without the 512 frames.
+
+&amp;#40;defn init-porcupine &amp;#91;&amp;#93;
+  &amp;#40;Porcupine. &amp;quot;wake-word-engine/Porcupine/lib/common/porcupine&amp;#95;params.pv&amp;quot;
+              &amp;quot;wake-word-engine/wake&amp;#95;phrase.ppn&amp;quot;
+              0.5&amp;#41;&amp;#41;
+
+;; Adapted from: https://gist.github.com/BurkeB/ebf5f01c0d20ff6b9dc111ac427ddea8
+&amp;#40;defn with-microphone &amp;#91;f&amp;#93;
+  &amp;#40;let &amp;#91;audio-format &amp;#40;new AudioFormat 16000 16 1 true true&amp;#41;
+        info &amp;#40;new javax.sound.sampled.DataLine$Info TargetDataLine audio-format&amp;#41;&amp;#93;
+
+    &amp;#40;when-not &amp;#40;AudioSystem/isLineSupported info&amp;#41;
+      &amp;#40;throw &amp;#40;Error. &amp;quot;AudioSystem/isLineSupported returned false&amp;quot;&amp;#41;&amp;#41;&amp;#41;
+
+    &amp;#40;with-open &amp;#91;line &amp;#40;AudioSystem/getTargetDataLine audio-format&amp;#41;&amp;#93;
+      &amp;#40;doto line
+        &amp;#40;.open audio-format&amp;#41;
+        &amp;#40;.start&amp;#41;&amp;#41;
+
+      &amp;#40;f line&amp;#41;&amp;#41;&amp;#41;&amp;#41;
+
+&amp;#40;defn byte-pair-&amp;gt;short &amp;#91;&amp;#91;a b&amp;#93;&amp;#93;
+  &amp;#40;bit-or &amp;#40;bit-shift-left a 8&amp;#41; &amp;#40;bit-and b 0xFF&amp;#41;&amp;#41;&amp;#41;
+
+&amp;#40;defn bytes-&amp;gt;shorts &amp;#91;buf&amp;#93;
+  &amp;#40;-&amp;gt;&amp;gt; buf
+       &amp;#40;partition 2&amp;#41;
+       &amp;#40;map byte-pair-&amp;gt;short&amp;#41;
+       &amp;#40;short-array&amp;#41;&amp;#41;&amp;#41;
+
+&amp;#40;defn -main &amp;#91;&amp;#93;
+  &amp;#40;println &amp;quot;Starting up wake word detector...&amp;quot;&amp;#41;
+  &amp;#40;let &amp;#91;porcupine &amp;#40;init-porcupine&amp;#41;&amp;#93;
+    &amp;#40;with-microphone
+      &amp;#40;fn &amp;#91;line&amp;#93;
+        &amp;#40;let &amp;#91;size 1024
+              buf &amp;#40;byte-array size&amp;#41;&amp;#93;
+          &amp;#40;println &amp;quot;Listening...&amp;quot;&amp;#41;
+          &amp;#40;loop &amp;#91;&amp;#93;
+            &amp;#40;when &amp;#40;&amp;gt; &amp;#40;.read line buf 0 size&amp;#41; 0&amp;#41;
+              &amp;#40;when &amp;#40;.processFrame porcupine &amp;#40;bytes-&amp;gt;shorts buf&amp;#41;&amp;#41;
+                &amp;#40;println &amp;quot;Wake word detected!&amp;quot;&amp;#41;&amp;#41;
+              &amp;#40;recur&amp;#41;&amp;#41;&amp;#41;&amp;#41;&amp;#41;&amp;#41;&amp;#41;&amp;#41;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;We can now create a &lt;code&gt;deps.edn&lt;/code&gt; for the &lt;a href='https://clojure.org/guides/deps_and_cli'&gt;Clojure CLI&lt;/a&gt; (if you haven't already):&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;edn&quot;&gt;{:paths &amp;#91;&amp;quot;src/clojure&amp;quot; &amp;quot;src/java&amp;quot;&amp;#93;
+ :deps {org.clojure/clojure {:mvn/version &amp;quot;1.9.0&amp;quot;}}}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;And finally add a line to start our application as the first entry in our makefile:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;makefile&quot;&gt;default: wake-word-engine
+	LD&amp;#95;LIBRARY&amp;#95;PATH=&amp;quot;wake-word-engine/jni&amp;quot; clojure -m wakeup.main
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;As you can see, we need to specify the &lt;code&gt;LD&amp;#95;LIBRARY&amp;#95;PATH&lt;/code&gt; for our binding which I think varies depending on your operating system. This works for Linux but I think the name is slightly different for OSX, I'm afraid I have no idea how it would work on Windows.&lt;/p&gt;&lt;p&gt;When I execute &lt;code&gt;make&lt;/code&gt; I can then say &quot;hey porcupine&quot; to my laptop and get this output:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;$ make
+LD&amp;#95;LIBRARY&amp;#95;PATH=&amp;quot;wake-word-engine/jni&amp;quot; clojure -m wakeup.main
+Starting up wake word detector...
+Listening...
+Wake word detected!
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;I hope this has been helpful and allows you to build voice activated programs of your own.&lt;/p&gt;
+</description>
+<pubDate>
+Fri, 12 Oct 2018 00:00:00 +0100
+</pubDate>
+</item>
 <item>
 <guid>
 https://oli.me.uk/2018-05-04-editing-clojure-with-neovim/
