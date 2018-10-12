@@ -184,15 +184,68 @@ wake-word-engine/jni/libpv_porcupine.so: wake-word-engine/jni/wakeup_porcupine_P
 		-o wake-word-engine/jni/libpv_porcupine.so
 ```
 
-So the default `make` command, `wake-word-engine`, now depends upon Porcupine, the `.ppn` file, C compiled to a `.co` and Java compiled to a `.class`. We can now write some Clojure that imports `[snowball.porcupine Porcupine]` and runs some audio through it.
+So the default `make` command, `wake-word-engine`, now depends upon Porcupine, the `.ppn` file, C compiled to a `.so` and Java compiled to a `.class`. We can now write some Clojure that imports `[wakeup.porcupine Porcupine]` and runs some audio through it.
 
 ## Using the binding
 
-I've written a (heavily annotated) Clojure namespace that grabs your microphone as input and streams it through the Porcupine binding, logging whenever it hears the wake phrase. I think this should be more than enough to get most people going with their own voice activated programs.
+I've written a Clojure namespace that grabs your microphone as input and streams it through the Porcupine binding, logging whenever it hears the wake phrase. I think this should be more than enough to get most people going with their own voice activated programs.
 
 Place this in `src/clojure/wakeup/main.clj`:
 
 ```clojure
+(ns wakeup.main
+  (:import [wakeup.porcupine Porcupine]
+
+           ;; These are required for the microphone input.
+           [javax.sound.sampled AudioFormat DataLine TargetDataLine AudioSystem]))
+
+;; Notes on audio formats:
+;; Discord provides audio as `48KHz 16bit stereo signed BigEndian PCM`.
+;; Porcupine requires `16KHz 16bit mono signed LittleEndian PCM` but in 512 length short-array frames (a short is two bytes).
+;; GCP speech recognition requires the same as Porcupine but as byte pairs and without the 512 frames.
+
+(defn init-porcupine []
+  (Porcupine. "wake-word-engine/Porcupine/lib/common/porcupine_params.pv"
+              "wake-word-engine/wake_phrase.ppn"
+              0.5))
+
+;; Adapted from: https://gist.github.com/BurkeB/ebf5f01c0d20ff6b9dc111ac427ddea8
+(defn with-microphone [f]
+  (let [audio-format (new AudioFormat 16000 16 1 true true)
+        info (new javax.sound.sampled.DataLine$Info TargetDataLine audio-format)]
+
+    (when-not (AudioSystem/isLineSupported info)
+      (throw (Error. "AudioSystem/isLineSupported returned false")))
+
+    (with-open [line (AudioSystem/getTargetDataLine audio-format)]
+      (doto line
+        (.open audio-format)
+        (.start))
+
+      (f line))))
+
+(defn byte-pair->short [[a b]]
+  (bit-or (bit-shift-left a 8) (bit-and b 0xFF)))
+
+(defn bytes->shorts [buf]
+  (->> buf
+       (partition 2)
+       (map byte-pair->short)
+       (short-array)))
+
+(defn -main []
+  (println "Starting up wake word detector...")
+  (let [porcupine (init-porcupine)]
+    (with-microphone
+      (fn [line]
+        (let [size 1024
+              buf (byte-array size)]
+          (println "Listening...")
+          (loop []
+            (when (> (.read line buf 0 size) 0)
+              (when (.processFrame porcupine (bytes->shorts buf))
+                (println "Wake word detected!"))
+              (recur))))))))
 ```
 
 We can now create a `deps.edn` for the [Clojure CLI][cljcli] (if you haven't already):
@@ -210,6 +263,18 @@ default: wake-word-engine
 ```
 
 As you can see, we need to specify the `LD_LIBRARY_PATH` for our binding which I think varies depending on your operating system. This works for Linux but I think the name is slightly different for OSX, I'm afraid I have no idea how it would work on Windows.
+
+When I execute `make` I can then say "hey porcupine" to my laptop and get this output:
+
+```
+$ make
+LD_LIBRARY_PATH="wake-word-engine/jni" clojure -m wakeup.main
+Starting up wake word detector...
+Listening...
+Wake word detected!
+```
+
+I hope this has been helpful and allows you to build voice activated programs of your own.
 
 [twitter]: https://twitter.com/OliverCaldwell
 [GitHub]: https://github.com/Olical/
