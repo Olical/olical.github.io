@@ -94,7 +94,7 @@ Thankfully there's a way to have figwheel reloading your ClojureScript as well a
         com.bhauman/figwheel-main {:mvn/version "0.2.0"}}}
 ```
 
-And a small amount of code to start up figwheel then hook the prepl figwheel's `repl-env`. This means you can send code to the socket prepl but it'll rely on figwheel for compiling that ClojureScript and getting the resulting JavaScript into the browser (or node process!) for evaluation.
+And a small amount of code to start up figwheel then hook the prepl into figwheel's `repl-env`. This means you can send code to the socket prepl but it'll rely on figwheel for compiling that ClojureScript and getting the resulting JavaScript into the browser (or node process!) for evaluation.
 
 ```clojure
 (ns pfig.main
