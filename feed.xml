@@ -12,11 +12,89 @@ https://oli.me.uk/
 On languages and text editors.
 </description>
 <lastBuildDate>
-Fri, 12 Oct 2018 16:53:08 +0100
+Fri, 22 Mar 2019 17:28:59 +0000
 </lastBuildDate>
 <generator>
 clj-rss
 </generator>
+<item>
+<guid>
+https://oli.me.uk/2019-03-22-clojure-socket-prepl-cookbook/
+</guid>
+<link>
+https://oli.me.uk/2019-03-22-clojure-socket-prepl-cookbook/
+</link>
+<title>
+Clojure socket prepl cookbook
+</title>
+<description>
+&lt;p&gt;The socket prepl is a relatively new tool built into Clojure that allows you to REPL into a running application. It's essentially a much simpler &quot;official&quot; approach to the problem that nREPL also happens to solve. If your current nREPL tooling is working well for you then congratulations, carry on, this post won't be of much use to you.&lt;/p&gt;&lt;p&gt;I've been developing Clojure(Script) tooling for &lt;a href='https://neovim.io/'&gt;Neovim&lt;/a&gt; over a prepl connection for the past six months or so (involving three attempts in different languages). It's called &lt;a href='https://github.com/Olical/conjure'&gt;Conjure&lt;/a&gt;, you may have seen me constantly talking about it &lt;a href='https://twitter.com/OliverCaldwell'&gt;over on twitter&lt;/a&gt;. Since writing this has involved prepling into all sorts of environments and applications I ended up learning quite a few recipes for starting your prepls.&lt;/p&gt;&lt;p&gt;This post is intended to be a reference for various socket prepl techniques, I hope it comes in handy!&lt;/p&gt;&lt;h2 id=&quot;from&amp;#95;the&amp;#95;cli&quot;&gt;From the CLI&lt;/h2&gt;&lt;p&gt;You can start a prepl from the Clojure CLI without your program being aware of it at all.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;clj -J-Dclojure.server.jvm=&amp;quot;{:port 5555 :accept clojure.core.server/io-prepl}&amp;quot; \
+    -J-Dclojure.server.node=&amp;quot;{:port 5556 :accept cljs.server.node/prepl}&amp;quot; \
+    -J-Dclojure.server.browser=&amp;quot;{:port 5557 :accept cljs.server.browser/prepl}&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This starts up three prepls then drops into a regular REPL session. The REPL session and &lt;code&gt;jvm&lt;/code&gt; prepl share the same environment so changes in the CLI REPL affect the prepl and the other way around.&lt;/p&gt;&lt;p&gt;The &lt;code&gt;node&lt;/code&gt; and &lt;code&gt;browser&lt;/code&gt; prepls each start up their own environments upon eval. Give it a go! Start up the prepls then use &lt;a href='https://en.wikipedia.org/wiki/Netcat'&gt;netcat&lt;/a&gt; (or similar) to send them code.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;# JVM
+nc localhost 5555
+&amp;#40;+ 10 10&amp;#41;
+{:tag :ret, :val &amp;quot;20&amp;quot;, :ns &amp;quot;user&amp;quot;, :ms 2, :form &amp;quot;&amp;#40;+ 10 10&amp;#41;&amp;quot;}
+:repl/quit
+
+# node
+nc localhost 5556
+&amp;#40;+ 10 10&amp;#41;
+{:tag :ret, :val &amp;quot;20&amp;quot;, :ns &amp;quot;cljs.user&amp;quot;, :ms 9, :form &amp;quot;&amp;#40;+ 10 10&amp;#41;&amp;quot;}
+:repl/quit
+
+# browser
+nc localhost 5557
+{:tag :ret, :val &amp;quot;20&amp;quot;, :ns &amp;quot;cljs.user&amp;quot;, :ms 51, :form &amp;quot;&amp;#40;+ 10 10&amp;#41;&amp;quot;}
+:repl/quit
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;The resulting data structures you see are the prepl part, that's what prepl does, wraps things in a predictable data structure that tools like &lt;a href='https://github.com/Olical/conjure'&gt;Conjure&lt;/a&gt; can parse and work with.&lt;/p&gt;&lt;h2 id=&quot;from&amp;#95;your&amp;#95;code&quot;&gt;From your code&lt;/h2&gt;&lt;p&gt;You don't have to start things from the CLI, sometimes that's not practical. For example, at work we're running everything through &lt;code&gt;lein&lt;/code&gt; and I wasn't totally sure how the arguments would work with that, so I just added the code next to where we start our nREPL server.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;&amp;#40;ns my.project.prepl
+  &amp;#40;:require &amp;#91;clojure.core.server :as server&amp;#93;&amp;#41;&amp;#41;
+
+&amp;#40;defn start-prepl! &amp;#91;{:keys &amp;#91;bind port name&amp;#93;}&amp;#93;
+  &amp;#40;server/start-server {:accept 'clojure.core.server/io-prepl
+                        :address bind
+                        :port port
+                        :name name}&amp;#41;&amp;#41;
+
+;; In some -main fn somewhere...
+&amp;#40;start-prepl! {:bind &amp;quot;localhost&amp;quot;, :port 5555, :name &amp;quot;jvm&amp;quot;}&amp;#41;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This is &lt;i&gt;essentially&lt;/i&gt; the same as the first line in the CLI only approach, you can swap out the &lt;code&gt;:accept&lt;/code&gt; function for &lt;code&gt;cljs.server.node/prepl&lt;/code&gt; for example and get a node prepl.&lt;/p&gt;&lt;h2 id=&quot;gotcha:&amp;#95;multiple&amp;#95;node&amp;#95;prepls&quot;&gt;Gotcha: Multiple node prepls&lt;/h2&gt;&lt;p&gt;Something I got caught on and eventually worked out was why starting multiple node prepls on different ports conflicted with each other. Well it turns out there's a &lt;a href='https://github.com/clojure/clojurescript/blob/230e46aee2c9b76e426e85865ab8930c4c26e14f/src/main/clojure/cljs/server/node.clj#L27'&gt;hard coded port&lt;/a&gt; (49001, if you're interested) inside the node prepl source. Luckily this is just a default and you can configure it pretty easily.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;# Start these in two terminals and nc into both, only one will work.
+clj -J-Dclojure.server.nodea=&amp;quot;{:port 6661 :accept cljs.server.node/prepl}&amp;quot;
+clj -J-Dclojure.server.nodeb=&amp;quot;{:port 6662 :accept cljs.server.node/prepl}&amp;quot;
+
+# You can set the args the accept function receives though.
+# This means we can configure a port for the cljs.server.node/prepl function.
+clj -J-Dclojure.server.nodea=&amp;quot;{:port 6661 :accept cljs.server.node/prepl}&amp;quot;
+clj -J-Dclojure.server.nodeb=&amp;quot;{:port 6662 :accept cljs.server.node/prepl, :args &amp;#91;{:env-opts {:port 48000}}&amp;#93;}&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;With this configured you should be able to run multiple node prepls on one machine at the same time.&lt;/p&gt;&lt;h2 id=&quot;figwheel&amp;#95;and&amp;#95;prepl&quot;&gt;Figwheel and prepl&lt;/h2&gt;&lt;p&gt;For regular Clojure projects, the information above should be enough for all situations. For ClojureScript however it's rare that you would be developing &lt;i&gt;without&lt;/i&gt; figwheel, it's not an edge case, it's the norm. If you start up a browser prepl though that's going to launch another tab to evaluate in, it doesn't share the same context as figwheel.&lt;/p&gt;&lt;p&gt;Thankfully there's a way to have figwheel reloading your ClojureScript as well as prepl into that figwheel environment! I got this working with &lt;code&gt;figwheel-main&lt;/code&gt; and a few tips from &lt;a href='https://twitter.com/bhauman'&gt;Bruce&lt;/a&gt; himself over Slack and Twitter. Here's a minimal &lt;code&gt;deps.edn&lt;/code&gt; for this technique.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;{:paths &amp;#91;&amp;quot;src&amp;quot; &amp;quot;target&amp;quot;&amp;#93;
+ :deps {org.clojure/clojure {:mvn/version &amp;quot;1.10.0&amp;quot;}
+        org.clojure/clojurescript {:mvn/version &amp;quot;1.10.520&amp;quot;}
+        com.bhauman/figwheel-main {:mvn/version &amp;quot;0.2.0&amp;quot;}}}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;And a small amount of code to start up figwheel then hook the prepl figwheel's &lt;code&gt;repl-env&lt;/code&gt;. This means you can send code to the socket prepl but it'll rely on figwheel for compiling that ClojureScript and getting the resulting JavaScript into the browser (or node process!) for evaluation.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;&amp;#40;ns pfig.main
+  &amp;#40;:require &amp;#91;figwheel.main.api :as fig&amp;#93;
+            &amp;#91;clojure.core.server :as server&amp;#93;&amp;#41;&amp;#41;
+
+&amp;#40;defn -main &amp;#91;&amp;#93;
+  &amp;#40;figwheel.main.api/start
+    {:id &amp;quot;dev&amp;quot;
+     :options {:main 'pfig.test}
+     :config {:watch-dirs &amp;#91;&amp;quot;src&amp;quot;&amp;#93;
+              :mode :serve}}&amp;#41;
+
+  &amp;#40;println &amp;quot;=== START PREPL&amp;quot;&amp;#41;
+  &amp;#40;server/start-server {:accept 'cljs.core.server/io-prepl
+                        :address &amp;quot;127.0.0.1&amp;quot;
+                        :port 6776
+                        :name &amp;quot;pfig&amp;quot;
+                        :args &amp;#91;:repl-env &amp;#40;fig/repl-env &amp;quot;dev&amp;quot;&amp;#41;&amp;#93;}&amp;#41;
+
+  &amp;#40;fig/cljs-repl &amp;quot;dev&amp;quot;&amp;#41;&amp;#41;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;I'm using the newer figwheel-main but this is definitely doable in other iterations of figwheel, the API might just be a little different.&lt;/p&gt;&lt;h2 id=&quot;:repl/quit&quot;&gt;:repl/quit&lt;/h2&gt;&lt;p&gt;Got any more tips or comments? Say hi on twitter, I'm &lt;a href='https://twitter.com/OliverCaldwell'&gt;@OliverCaldwell&lt;/a&gt;. I hope these examples come in handy, have a great day!&lt;/p&gt;
+</description>
+<pubDate>
+Fri, 22 Mar 2019 00:00:00 +0000
+</pubDate>
+</item>
 <item>
 <guid>
 https://oli.me.uk/2018-10-12-wake-word-detection-with-clojure-or-java/
