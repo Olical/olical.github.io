@@ -7,7 +7,7 @@ The socket prepl is a relatively new tool built into Clojure that allows you to 
 
 I've been developing Clojure(Script) tooling for [Neovim][] over a prepl connection for the past six months or so (involving three attempts in different languages). It's called [Conjure][], you may have seen me constantly talking about it [over on twitter][twitter]. Since writing this has involved prepling into all sorts of environments and applications I ended up learning quite a few recipes for starting your prepls.
 
-This post is intended to be a reference for various socket prepl techniques, I hope it comes in handy!
+This post is intended to be a reference for various socket prepl techniques, I hope you find them useful!
 
 ## From the CLI
 
@@ -122,7 +122,7 @@ I'm using the newer figwheel-main but this is definitely doable in other iterati
 
 ## :repl/quit
 
-Got any more tips or comments? Say hi on twitter, I'm [@OliverCaldwell][twitter]. I hope these examples come in handy, have a great day!
+Got any more tips or comments? Say hi on twitter, I'm [@OliverCaldwell][twitter]. I hope you've learned something new, have a great day!
 
 [Conjure]: https://github.com/Olical/conjure
 [twitter]: https://twitter.com/OliverCaldwell
