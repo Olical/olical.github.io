@@ -12,7 +12,7 @@ https://oli.me.uk/
 On languages and text editors.
 </description>
 <lastBuildDate>
-Fri, 22 Mar 2019 17:28:59 +0000
+Fri, 22 Mar 2019 17:37:47 +0000
 </lastBuildDate>
 <generator>
 clj-rss
@@ -28,7 +28,7 @@ https://oli.me.uk/2019-03-22-clojure-socket-prepl-cookbook/
 Clojure socket prepl cookbook
 </title>
 <description>
-&lt;p&gt;The socket prepl is a relatively new tool built into Clojure that allows you to REPL into a running application. It's essentially a much simpler &quot;official&quot; approach to the problem that nREPL also happens to solve. If your current nREPL tooling is working well for you then congratulations, carry on, this post won't be of much use to you.&lt;/p&gt;&lt;p&gt;I've been developing Clojure(Script) tooling for &lt;a href='https://neovim.io/'&gt;Neovim&lt;/a&gt; over a prepl connection for the past six months or so (involving three attempts in different languages). It's called &lt;a href='https://github.com/Olical/conjure'&gt;Conjure&lt;/a&gt;, you may have seen me constantly talking about it &lt;a href='https://twitter.com/OliverCaldwell'&gt;over on twitter&lt;/a&gt;. Since writing this has involved prepling into all sorts of environments and applications I ended up learning quite a few recipes for starting your prepls.&lt;/p&gt;&lt;p&gt;This post is intended to be a reference for various socket prepl techniques, I hope it comes in handy!&lt;/p&gt;&lt;h2 id=&quot;from&amp;#95;the&amp;#95;cli&quot;&gt;From the CLI&lt;/h2&gt;&lt;p&gt;You can start a prepl from the Clojure CLI without your program being aware of it at all.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;clj -J-Dclojure.server.jvm=&amp;quot;{:port 5555 :accept clojure.core.server/io-prepl}&amp;quot; \
+&lt;p&gt;The socket prepl is a relatively new tool built into Clojure that allows you to REPL into a running application. It's essentially a much simpler &quot;official&quot; approach to the problem that nREPL also happens to solve. If your current nREPL tooling is working well for you then congratulations, carry on, this post won't be of much use to you.&lt;/p&gt;&lt;p&gt;I've been developing Clojure(Script) tooling for &lt;a href='https://neovim.io/'&gt;Neovim&lt;/a&gt; over a prepl connection for the past six months or so (involving three attempts in different languages). It's called &lt;a href='https://github.com/Olical/conjure'&gt;Conjure&lt;/a&gt;, you may have seen me constantly talking about it &lt;a href='https://twitter.com/OliverCaldwell'&gt;over on twitter&lt;/a&gt;. Since writing this has involved prepling into all sorts of environments and applications I ended up learning quite a few recipes for starting your prepls.&lt;/p&gt;&lt;p&gt;This post is intended to be a reference for various socket prepl techniques, I hope you find them useful!&lt;/p&gt;&lt;h2 id=&quot;from&amp;#95;the&amp;#95;cli&quot;&gt;From the CLI&lt;/h2&gt;&lt;p&gt;You can start a prepl from the Clojure CLI without your program being aware of it at all.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;clj -J-Dclojure.server.jvm=&amp;quot;{:port 5555 :accept clojure.core.server/io-prepl}&amp;quot; \
     -J-Dclojure.server.node=&amp;quot;{:port 5556 :accept cljs.server.node/prepl}&amp;quot; \
     -J-Dclojure.server.browser=&amp;quot;{:port 5557 :accept cljs.server.browser/prepl}&amp;quot;
 &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This starts up three prepls then drops into a regular REPL session. The REPL session and &lt;code&gt;jvm&lt;/code&gt; prepl share the same environment so changes in the CLI REPL affect the prepl and the other way around.&lt;/p&gt;&lt;p&gt;The &lt;code&gt;node&lt;/code&gt; and &lt;code&gt;browser&lt;/code&gt; prepls each start up their own environments upon eval. Give it a go! Start up the prepls then use &lt;a href='https://en.wikipedia.org/wiki/Netcat'&gt;netcat&lt;/a&gt; (or similar) to send them code.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;# JVM
@@ -70,7 +70,7 @@ clj -J-Dclojure.server.nodeb=&amp;quot;{:port 6662 :accept cljs.server.node/prep
  :deps {org.clojure/clojure {:mvn/version &amp;quot;1.10.0&amp;quot;}
         org.clojure/clojurescript {:mvn/version &amp;quot;1.10.520&amp;quot;}
         com.bhauman/figwheel-main {:mvn/version &amp;quot;0.2.0&amp;quot;}}}
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;And a small amount of code to start up figwheel then hook the prepl figwheel's &lt;code&gt;repl-env&lt;/code&gt;. This means you can send code to the socket prepl but it'll rely on figwheel for compiling that ClojureScript and getting the resulting JavaScript into the browser (or node process!) for evaluation.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;&amp;#40;ns pfig.main
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;And a small amount of code to start up figwheel then hook the prepl into figwheel's &lt;code&gt;repl-env&lt;/code&gt;. This means you can send code to the socket prepl but it'll rely on figwheel for compiling that ClojureScript and getting the resulting JavaScript into the browser (or node process!) for evaluation.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;&amp;#40;ns pfig.main
   &amp;#40;:require &amp;#91;figwheel.main.api :as fig&amp;#93;
             &amp;#91;clojure.core.server :as server&amp;#93;&amp;#41;&amp;#41;
 
@@ -89,7 +89,7 @@ clj -J-Dclojure.server.nodeb=&amp;quot;{:port 6662 :accept cljs.server.node/prep
                         :args &amp;#91;:repl-env &amp;#40;fig/repl-env &amp;quot;dev&amp;quot;&amp;#41;&amp;#93;}&amp;#41;
 
   &amp;#40;fig/cljs-repl &amp;quot;dev&amp;quot;&amp;#41;&amp;#41;
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;I'm using the newer figwheel-main but this is definitely doable in other iterations of figwheel, the API might just be a little different.&lt;/p&gt;&lt;h2 id=&quot;:repl/quit&quot;&gt;:repl/quit&lt;/h2&gt;&lt;p&gt;Got any more tips or comments? Say hi on twitter, I'm &lt;a href='https://twitter.com/OliverCaldwell'&gt;@OliverCaldwell&lt;/a&gt;. I hope these examples come in handy, have a great day!&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;I'm using the newer figwheel-main but this is definitely doable in other iterations of figwheel, the API might just be a little different.&lt;/p&gt;&lt;h2 id=&quot;:repl/quit&quot;&gt;:repl/quit&lt;/h2&gt;&lt;p&gt;Got any more tips or comments? Say hi on twitter, I'm &lt;a href='https://twitter.com/OliverCaldwell'&gt;@OliverCaldwell&lt;/a&gt;. I hope you've learned something new, have a great day!&lt;/p&gt;
 </description>
 <pubDate>
 Fri, 22 Mar 2019 00:00:00 +0000
