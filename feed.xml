@@ -12,7 +12,7 @@ https://oli.me.uk/
 On languages and text editors.
 </description>
 <lastBuildDate>
-Fri, 22 Mar 2019 17:37:47 +0000
+Sat, 23 Mar 2019 14:49:12 +0000
 </lastBuildDate>
 <generator>
 clj-rss
@@ -66,7 +66,7 @@ clj -J-Dclojure.server.nodeb=&amp;quot;{:port 6662 :accept cljs.server.node/prep
 # This means we can configure a port for the cljs.server.node/prepl function.
 clj -J-Dclojure.server.nodea=&amp;quot;{:port 6661 :accept cljs.server.node/prepl}&amp;quot;
 clj -J-Dclojure.server.nodeb=&amp;quot;{:port 6662 :accept cljs.server.node/prepl, :args &amp;#91;{:env-opts {:port 48000}}&amp;#93;}&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;With this configured you should be able to run multiple node prepls on one machine at the same time.&lt;/p&gt;&lt;h2 id=&quot;figwheel&amp;#95;and&amp;#95;prepl&quot;&gt;Figwheel and prepl&lt;/h2&gt;&lt;p&gt;For regular Clojure projects, the information above should be enough for all situations. For ClojureScript however it's rare that you would be developing &lt;i&gt;without&lt;/i&gt; figwheel, it's not an edge case, it's the norm. If you start up a browser prepl though that's going to launch another tab to evaluate in, it doesn't share the same context as figwheel.&lt;/p&gt;&lt;p&gt;Thankfully there's a way to have figwheel reloading your ClojureScript as well as prepl into that figwheel environment! I got this working with &lt;code&gt;figwheel-main&lt;/code&gt; and a few tips from &lt;a href='https://twitter.com/bhauman'&gt;Bruce&lt;/a&gt; himself over Slack and Twitter. Here's a minimal &lt;code&gt;deps.edn&lt;/code&gt; for this technique.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;{:paths &amp;#91;&amp;quot;src&amp;quot; &amp;quot;target&amp;quot;&amp;#93;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;With this configured you should be able to run multiple node prepls on one machine at the same time.&lt;/p&gt;&lt;h2 id=&quot;figwheel&amp;#95;and&amp;#95;prepl&quot;&gt;Figwheel and prepl&lt;/h2&gt;&lt;p&gt;For regular Clojure projects, the information above should be enough for all situations. For ClojureScript however it's rare that you would be developing &lt;i&gt;without&lt;/i&gt; figwheel, it's not an edge case, it's the norm. If you start up a browser prepl though that's going to launch another tab to evaluate in, it doesn't share the same context as figwheel.&lt;/p&gt;&lt;p&gt;Thankfully there's a way to have figwheel reloading your ClojureScript as well as prepl into that figwheel environment! I got this working with &lt;code&gt;figwheel-main&lt;/code&gt; and a few tips from Bruce himself over Slack and Twitter (&lt;a href='https://twitter.com/bhauman'&gt;@bhauman&lt;/a&gt;). Here's a minimal &lt;code&gt;deps.edn&lt;/code&gt; for this technique.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;{:paths &amp;#91;&amp;quot;src&amp;quot; &amp;quot;target&amp;quot;&amp;#93;
  :deps {org.clojure/clojure {:mvn/version &amp;quot;1.10.0&amp;quot;}
         org.clojure/clojurescript {:mvn/version &amp;quot;1.10.520&amp;quot;}
         com.bhauman/figwheel-main {:mvn/version &amp;quot;0.2.0&amp;quot;}}}
@@ -89,7 +89,11 @@ clj -J-Dclojure.server.nodeb=&amp;quot;{:port 6662 :accept cljs.server.node/prep
                         :args &amp;#91;:repl-env &amp;#40;fig/repl-env &amp;quot;dev&amp;quot;&amp;#41;&amp;#93;}&amp;#41;
 
   &amp;#40;fig/cljs-repl &amp;quot;dev&amp;quot;&amp;#41;&amp;#41;
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;I'm using the newer figwheel-main but this is definitely doable in other iterations of figwheel, the API might just be a little different.&lt;/p&gt;&lt;h2 id=&quot;:repl/quit&quot;&gt;:repl/quit&lt;/h2&gt;&lt;p&gt;Got any more tips or comments? Say hi on twitter, I'm &lt;a href='https://twitter.com/OliverCaldwell'&gt;@OliverCaldwell&lt;/a&gt;. I hope you've learned something new, have a great day!&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;I'm using the newer figwheel-main but this is definitely doable in other iterations of figwheel, the API might just be a little different.&lt;/p&gt;&lt;h2 id=&quot;:repl/quit&quot;&gt;:repl/quit&lt;/h2&gt;&lt;p&gt;Got any more tips or comments? Say hi on twitter, I'm &lt;a href='https://twitter.com/OliverCaldwell'&gt;@OliverCaldwell&lt;/a&gt;. I hope you've learned something new, have a great day!&lt;/p&gt;&lt;h2 id=&quot;edit&amp;#95;2019-03-23&quot;&gt;Edit 2019-03-23&lt;/h2&gt;&lt;p&gt;José Luis Lafuente (&lt;a href='https://twitter.com/jlesquembre'&gt;@jlesquembre&lt;/a&gt;) &lt;a href='https://twitter.com/jlesquembre/status/1109461402069225472'&gt;pointed out&lt;/a&gt; that you can put these prepl JVM args in your &lt;code&gt;deps.edn&lt;/code&gt; file but you're not allowed to use spaces which makes Clojure maps tricky to write. You can get around this issue by replacing the spaces in the string with commas since Clojure treats commas as whitespace anyway.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;{:deps {}
+
+ :aliases
+ {:prepl {:jvm-opts &amp;#91;&amp;quot;-Dclojure.server.repl={:port,40404,:accept,clojure.core.server/io-prepl}&amp;quot;&amp;#93;}}}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This example is taken from &lt;a href='https://github.com/seancorfield/dot-clojure/blob/c4a98f4a62b3caba92b1cd05b897eadad80e4a07/deps.edn#L55-L56'&gt;github.com/seancorfield/dot-clojure&lt;/a&gt;.&lt;/p&gt;
 </description>
 <pubDate>
 Fri, 22 Mar 2019 00:00:00 +0000

@@ -85,7 +85,7 @@ With this configured you should be able to run multiple node prepls on one machi
 
 For regular Clojure projects, the information above should be enough for all situations. For ClojureScript however it's rare that you would be developing _without_ figwheel, it's not an edge case, it's the norm. If you start up a browser prepl though that's going to launch another tab to evaluate in, it doesn't share the same context as figwheel.
 
-Thankfully there's a way to have figwheel reloading your ClojureScript as well as prepl into that figwheel environment! I got this working with `figwheel-main` and a few tips from [Bruce][] himself over Slack and Twitter. Here's a minimal `deps.edn` for this technique.
+Thankfully there's a way to have figwheel reloading your ClojureScript as well as prepl into that figwheel environment! I got this working with `figwheel-main` and a few tips from Bruce himself over Slack and Twitter ([@bhauman][bhauman]). Here's a minimal `deps.edn` for this technique.
 
 ```clojure
 {:paths ["src" "target"]
@@ -124,9 +124,25 @@ I'm using the newer figwheel-main but this is definitely doable in other iterati
 
 Got any more tips or comments? Say hi on twitter, I'm [@OliverCaldwell][twitter]. I hope you've learned something new, have a great day!
 
+## Edit 2019-03-23
+
+José Luis Lafuente ([@jlesquembre][jlesquembre]) [pointed out][comma-tweet] that you can put these prepl JVM args in your `deps.edn` file but you're not allowed to use spaces which makes Clojure maps tricky to write. You can get around this issue by replacing the spaces in the string with commas since Clojure treats commas as whitespace anyway.
+
+```clojure
+{:deps {}
+
+ :aliases
+ {:prepl {:jvm-opts ["-Dclojure.server.repl={:port,40404,:accept,clojure.core.server/io-prepl}"]}}}
+```
+
+This example is taken from [github.com/seancorfield/dot-clojure][dot-clojure].
+
 [Conjure]: https://github.com/Olical/conjure
 [twitter]: https://twitter.com/OliverCaldwell
 [Neovim]: https://neovim.io/
 [netcat]: https://en.wikipedia.org/wiki/Netcat
 [hardcoded]: https://github.com/clojure/clojurescript/blob/230e46aee2c9b76e426e85865ab8930c4c26e14f/src/main/clojure/cljs/server/node.clj#L27
-[Bruce]: https://twitter.com/bhauman
+[bhauman]: https://twitter.com/bhauman
+[jlesquembre]: https://twitter.com/jlesquembre
+[comma-tweet]: https://twitter.com/jlesquembre/status/1109461402069225472
+[dot-clojure]: https://github.com/seancorfield/dot-clojure/blob/c4a98f4a62b3caba92b1cd05b897eadad80e4a07/deps.edn#L55-L56
