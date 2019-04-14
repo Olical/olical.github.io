@@ -3,7 +3,7 @@
  :date   "2019-03-22"
  :tags   ["clojure" "prepl"]}
 
-> This post has been translated into [Russian][russian] by Vlad at [softdroid.net](http://softdroid.net/).
+> This post has been translated into [Russian][russian] by Vlad at [Softdroid][softdroid].
 
 The socket prepl is a relatively new tool built into Clojure that allows you to REPL into a running application. It's essentially a much simpler "official" approach to the problem that nREPL also happens to solve. If your current nREPL tooling is working well for you then congratulations, carry on, this post won't be of much use to you.
 
@@ -149,3 +149,4 @@ This example is taken from [github.com/seancorfield/dot-clojure][dot-clojure].
 [comma-tweet]: https://twitter.com/jlesquembre/status/1109461402069225472
 [dot-clojure]: https://github.com/seancorfield/dot-clojure/blob/c4a98f4a62b3caba92b1cd05b897eadad80e4a07/deps.edn#L55-L56
 [russian]: http://softdroid.net/povarennaya-kniga-clojure-socket-prepl
+[softdroid]: http://softdroid.net/
