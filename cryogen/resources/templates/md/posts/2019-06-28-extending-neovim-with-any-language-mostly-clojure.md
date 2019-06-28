@@ -121,7 +121,7 @@ Now if you think that concept is scary, what's more terrifying is that it actual
 
 Can you imagine self hosted ClojureScript running in Neovim directly? Now stop. It's an awful idea and will lead to so much pain further down the line when something breaks subtly, here be dragons. You have been warned.
 
-Worryingly, it almost worked.
+Worryingly, it almost worked. Check out [cljs-lua-experiment][] to see what I was playing with.
 
 ## Going remote
 
@@ -249,3 +249,4 @@ I hope this overview has been helpful!
 [neovim-lib]: https://github.com/daa84/neovim-lib
 [socket-prepl]: https://oli.me.uk/2019-03-22-clojure-socket-prepl-cookbook/
 [vim-london]: https://www.meetup.com/Vim-London/events/262032144/
+[cljs-lua-experiment]: https://github.com/Olical/cljs-lua-experiment
