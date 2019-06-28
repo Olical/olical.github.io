@@ -5,7 +5,7 @@
 https://oli.me.uk/2018-03-29-clojure-and-clojurescript-tests-on-travis/index.html
 </loc>
 <lastmod>
-2019-04-14
+2019-06-28
 </lastmod>
 </url>
 <url>
@@ -13,7 +13,7 @@ https://oli.me.uk/2018-03-29-clojure-and-clojurescript-tests-on-travis/index.htm
 https://oli.me.uk/2018-02-26-clojure-projects-from-scratch/index.html
 </loc>
 <lastmod>
-2019-04-14
+2019-06-28
 </lastmod>
 </url>
 <url>
@@ -21,7 +21,7 @@ https://oli.me.uk/2018-02-26-clojure-projects-from-scratch/index.html
 https://oli.me.uk/Oliver Caldwell/index.html
 </loc>
 <lastmod>
-2019-04-14
+2019-06-28
 </lastmod>
 </url>
 <url>
@@ -29,7 +29,7 @@ https://oli.me.uk/Oliver Caldwell/index.html
 https://oli.me.uk/2019-03-22-clojure-socket-prepl-cookbook/index.html
 </loc>
 <lastmod>
-2019-04-14
+2019-06-28
 </lastmod>
 </url>
 <url>
@@ -37,7 +37,7 @@ https://oli.me.uk/2019-03-22-clojure-socket-prepl-cookbook/index.html
 https://oli.me.uk/404.html
 </loc>
 <lastmod>
-2019-04-14
+2019-06-28
 </lastmod>
 </url>
 <url>
@@ -45,7 +45,7 @@ https://oli.me.uk/404.html
 https://oli.me.uk/archives/index.html
 </loc>
 <lastmod>
-2019-04-14
+2019-06-28
 </lastmod>
 </url>
 <url>
@@ -53,7 +53,7 @@ https://oli.me.uk/archives/index.html
 https://oli.me.uk/2018-05-04-editing-clojure-with-neovim/index.html
 </loc>
 <lastmod>
-2019-04-14
+2019-06-28
 </lastmod>
 </url>
 <url>
@@ -61,7 +61,7 @@ https://oli.me.uk/2018-05-04-editing-clojure-with-neovim/index.html
 https://oli.me.uk/tags/index.html
 </loc>
 <lastmod>
-2019-04-14
+2019-06-28
 </lastmod>
 </url>
 <url>
@@ -69,7 +69,7 @@ https://oli.me.uk/tags/index.html
 https://oli.me.uk/2018-03-29-finding-new-dependencies-with-depot/index.html
 </loc>
 <lastmod>
-2019-04-14
+2019-06-28
 </lastmod>
 </url>
 <url>
@@ -77,7 +77,7 @@ https://oli.me.uk/2018-03-29-finding-new-dependencies-with-depot/index.html
 https://oli.me.uk/clojure-cli/index.html
 </loc>
 <lastmod>
-2019-04-14
+2019-06-28
 </lastmod>
 </url>
 <url>
@@ -85,7 +85,7 @@ https://oli.me.uk/clojure-cli/index.html
 https://oli.me.uk/2017-10-27-hello-world/index.html
 </loc>
 <lastmod>
-2019-04-14
+2019-06-28
 </lastmod>
 </url>
 <url>
@@ -93,7 +93,7 @@ https://oli.me.uk/2017-10-27-hello-world/index.html
 https://oli.me.uk/2018-03-04-clojure-and-clojurescript-nrepl-with-clojure-cli/index.html
 </loc>
 <lastmod>
-2019-04-14
+2019-06-28
 </lastmod>
 </url>
 <url>
@@ -101,7 +101,23 @@ https://oli.me.uk/2018-03-04-clojure-and-clojurescript-nrepl-with-clojure-cli/in
 https://oli.me.uk/index.html
 </loc>
 <lastmod>
-2019-04-14
+2019-06-28
+</lastmod>
+</url>
+<url>
+<loc>
+https://oli.me.uk/conjure/index.html
+</loc>
+<lastmod>
+2019-06-28
+</lastmod>
+</url>
+<url>
+<loc>
+https://oli.me.uk/rust/index.html
+</loc>
+<lastmod>
+2019-06-28
 </lastmod>
 </url>
 <url>
@@ -109,7 +125,7 @@ https://oli.me.uk/index.html
 https://oli.me.uk/java/index.html
 </loc>
 <lastmod>
-2019-04-14
+2019-06-28
 </lastmod>
 </url>
 <url>
@@ -117,7 +133,7 @@ https://oli.me.uk/java/index.html
 https://oli.me.uk/2018-10-12-wake-word-detection-with-clojure-or-java/index.html
 </loc>
 <lastmod>
-2019-04-14
+2019-06-28
 </lastmod>
 </url>
 <url>
@@ -125,7 +141,7 @@ https://oli.me.uk/2018-10-12-wake-word-detection-with-clojure-or-java/index.html
 https://oli.me.uk/testing/index.html
 </loc>
 <lastmod>
-2019-04-14
+2019-06-28
 </lastmod>
 </url>
 <url>
@@ -133,7 +149,7 @@ https://oli.me.uk/testing/index.html
 https://oli.me.uk/porcupine/index.html
 </loc>
 <lastmod>
-2019-04-14
+2019-06-28
 </lastmod>
 </url>
 <url>
@@ -141,7 +157,7 @@ https://oli.me.uk/porcupine/index.html
 https://oli.me.uk/clojure/index.html
 </loc>
 <lastmod>
-2019-04-14
+2019-06-28
 </lastmod>
 </url>
 <url>
@@ -149,7 +165,7 @@ https://oli.me.uk/clojure/index.html
 https://oli.me.uk/prepl/index.html
 </loc>
 <lastmod>
-2019-04-14
+2019-06-28
 </lastmod>
 </url>
 <url>
@@ -157,7 +173,7 @@ https://oli.me.uk/prepl/index.html
 https://oli.me.uk/audio/index.html
 </loc>
 <lastmod>
-2019-04-14
+2019-06-28
 </lastmod>
 </url>
 <url>
@@ -165,7 +181,15 @@ https://oli.me.uk/audio/index.html
 https://oli.me.uk/nrepl/index.html
 </loc>
 <lastmod>
-2019-04-14
+2019-06-28
+</lastmod>
+</url>
+<url>
+<loc>
+https://oli.me.uk/vim/index.html
+</loc>
+<lastmod>
+2019-06-28
 </lastmod>
 </url>
 <url>
@@ -173,7 +197,7 @@ https://oli.me.uk/nrepl/index.html
 https://oli.me.uk/neovim/index.html
 </loc>
 <lastmod>
-2019-04-14
+2019-06-28
 </lastmod>
 </url>
 <url>
@@ -181,7 +205,7 @@ https://oli.me.uk/neovim/index.html
 https://oli.me.uk/clojurescript/index.html
 </loc>
 <lastmod>
-2019-04-14
+2019-06-28
 </lastmod>
 </url>
 <url>
@@ -189,7 +213,7 @@ https://oli.me.uk/clojurescript/index.html
 https://oli.me.uk/2018-03-09-clojure-and-clojurescript-testing-with-the-clojure-cli/index.html
 </loc>
 <lastmod>
-2019-04-14
+2019-06-28
 </lastmod>
 </url>
 <url>
@@ -197,7 +221,15 @@ https://oli.me.uk/2018-03-09-clojure-and-clojurescript-testing-with-the-clojure-
 https://oli.me.uk/p/2/index.html
 </loc>
 <lastmod>
-2019-04-14
+2019-06-28
+</lastmod>
+</url>
+<url>
+<loc>
+https://oli.me.uk/2019-06-28-extending-neovim-with-any-language-mostly-clojure/index.html
+</loc>
+<lastmod>
+2019-06-28
 </lastmod>
 </url>
 </urlset>

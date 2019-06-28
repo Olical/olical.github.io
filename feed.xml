@@ -12,11 +12,120 @@ https://oli.me.uk/
 On languages and text editors.
 </description>
 <lastBuildDate>
-Sun, 14 Apr 2019 11:33:21 +0100
+Fri, 28 Jun 2019 15:51:15 +0100
 </lastBuildDate>
 <generator>
 clj-rss
 </generator>
+<item>
+<guid>
+https://oli.me.uk/2019-06-28-extending-neovim-with-any-language-mostly-clojure/
+</guid>
+<link>
+https://oli.me.uk/2019-06-28-extending-neovim-with-any-language-mostly-clojure/
+</link>
+<title>
+Extending Neovim with any language (mostly Clojure)
+</title>
+<description>
+&lt;blockquote&gt;&lt;p&gt; This post is mainly to help me plan my talk at &lt;a href='https://www.meetup.com/Vim-London/events/262032144/'&gt;Vim London&lt;/a&gt; on 3rd July 2019 on the same topic. Come along if you can! &lt;/p&gt;&lt;/blockquote&gt;&lt;p&gt;You may have seen me constantly tweeting about &lt;a href='https://github.com/Olical/conjure'&gt;Conjure&lt;/a&gt; (Neovim Clojure(Script) tooling over prepl) on twitter at &lt;a href='https://twitter.com/OliverCaldwell'&gt;@OliverCaldwell&lt;/a&gt;, what you may not know is that it's my third re-write of the project already. I originally attempted to write it in Rust, then ClojureScript and finally Clojure.&lt;/p&gt;&lt;p&gt;The current state is a little more complex than that though! According to GitHub Conjure is made up of the following:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Clojure &lt;code&gt;81.5%&lt;/code&gt;&lt;/li&gt;&lt;li&gt;Vim script &lt;code&gt;10.3%&lt;/code&gt;&lt;/li&gt;&lt;li&gt;Lua &lt;code&gt;3.7%&lt;/code&gt;&lt;/li&gt;&lt;li&gt;Python &lt;code&gt;2.6%&lt;/code&gt; (only for the &lt;a href='https://github.com/Shougo/deoplete.nvim'&gt;Deoplete&lt;/a&gt; integration)&lt;/li&gt;&lt;li&gt;Shell &lt;code&gt;1.8%&lt;/code&gt; (mostly just for tests and builds)&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;Let's look into the different ways to write plugins in Neovim (and regular Vim to a slightly lesser extent) and how to avoid the pitfalls of remote plugin development.&lt;/p&gt;&lt;h2 id=&quot;traditional&amp;#95;plugins&quot;&gt;Traditional plugins&lt;/h2&gt;&lt;p&gt;Vim plugins have always been written in Vim Script (or VimL), it's a pretty messy language that's hard to learn and even harder to master. There's a lot of good information out there on the topic (such as &lt;a href='http://stevelosh.com/blog/2011/09/writing-vim-plugins/'&gt;Writing Vim Plugins&lt;/a&gt;) but it's still &lt;i&gt;really&lt;/i&gt; hard.&lt;/p&gt;&lt;p&gt;Not only is it hard to actually learn and use, you only get one thread which happens to be the same one as Vim's UI. This means if you have a CPU intensive plugin it'll noticeably block Vim's UI. To make matters worse, VimL is pretty slow in the first place so it's &lt;i&gt;easy&lt;/i&gt; to write something sluggish.&lt;/p&gt;&lt;p&gt;Despite all of this, it's still required in some places and always will be so it's worth understanding to some extent. Here's an example function that calculates Fibonacci numbers to show you some of the language.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;viml&quot;&gt;function! s:fib&amp;#40;n&amp;#41;
+  let l:a = 0
+  let l:b = 1
+  let l:t = 0
+
+  let l:i = 0
+
+  while i &amp;lt; a:n
+    let t = a + b
+    let a = b
+    let b = t
+    let i += 1
+  endwhile
+
+  return a
+endfunction
+
+echo s:fib&amp;#40;10&amp;#41;
+&amp;quot; =&amp;gt; 55
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;We usually store our code inside files under special directory names at the root of a repository.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;code&gt;plugin/foo.vim&lt;/code&gt;&lt;/li&gt;&lt;li&gt;&lt;code&gt;autoload/foo.vim&lt;/code&gt;&lt;/li&gt;&lt;li&gt;&lt;code&gt;doc/foo.txt&lt;/code&gt;&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;We can then depend on the plugin via a plugin manager such as &lt;a href='https://github.com/junegunn/vim-plug'&gt;vim-plug&lt;/a&gt; which will load the files for us. &lt;a href='http://learnvimscriptthehardway.stevelosh.com/'&gt;Learn Vimscript the Hard Way&lt;/a&gt; is an invaluable resource for writing the VimL parts of your plugins.&lt;/p&gt;&lt;h2 id=&quot;lua&amp;#95;enters&amp;#95;the&amp;#95;fray!&quot;&gt;Lua enters the fray!&lt;/h2&gt;&lt;p&gt;Amazingly, Neovim has &lt;a href='https://luajit.org/'&gt;LuaJIT&lt;/a&gt; built into the core binary. This means we have full &lt;a href='https://www.lua.org/'&gt;Lua&lt;/a&gt; support natively within the editor without any overhead of communicating to external processes, it's &lt;i&gt;within&lt;/i&gt; the process.&lt;/p&gt;&lt;p&gt;This should mean you can block the UI by running a lot of Lua, something I haven't tried. Luckily, LuaJIT is one of the fastest languages out there (&lt;a href='https://www.quora.com/Why-is-Lua-so-fast'&gt;Why is Lua so fast?&lt;/a&gt;), just look at these (possibly contrived) benchmarks!&lt;/p&gt;&lt;ul&gt;&lt;li&gt;22.29s C&lt;/li&gt;&lt;li&gt;23.29s LuaJIT&lt;/li&gt;&lt;li&gt;26.33s PyPy&lt;/li&gt;&lt;li&gt;54.30s Java&lt;/li&gt;&lt;li&gt;92.94s NodeJS&lt;/li&gt;&lt;li&gt;159.93s Lua&lt;/li&gt;&lt;li&gt;416.55s Python&lt;/li&gt;&lt;li&gt;????.??s Vim Script 🤔&lt;/li&gt;&lt;/ul&gt;&lt;blockquote&gt;&lt;p&gt; So, I think we can say Lua is fucking fast for a script language. &lt;/p&gt;&lt;p&gt; &amp;mdash; Hanno Behrens &lt;/p&gt;&lt;/blockquote&gt;&lt;p&gt;Lua gives us the benefit of a polished and &lt;i&gt;fast&lt;/i&gt; language without leaving Neovim. Here's how neat Fibonacci looks in Lua.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;lua&quot;&gt;function fib&amp;#40;n&amp;#41;
+  a, b = 0, 1
+
+  for i = 1, n do
+    a, b = b, a + b
+  end
+
+  return a   
+end
+
+print&amp;#40;fib&amp;#40;10&amp;#41;&amp;#41;
+-- =&amp;gt; 55
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;That's so much easier to work with and will run so very much faster. We'll still need to use some VimL to write our commands and mappings but now we can call through to our clever Lua functions which have access to the entirety of Neovim's API.&lt;/p&gt;&lt;p&gt;Here's a tiny extract from Conjure's Lua module, &lt;code&gt;lua/conjure.lua&lt;/code&gt;.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;lua&quot;&gt;local conjure = {}
+
+-- ...
+
+-- Close the log window if it's open in the current tabpage.
+function conjure.close&amp;#95;log&amp;#40;log&amp;#95;buf&amp;#95;name&amp;#41;
+  local match = find&amp;#95;log&amp;#40;log&amp;#95;buf&amp;#95;name&amp;#41;
+  if match.win then
+    local win&amp;#95;number = vim.api.nvim&amp;#95;win&amp;#95;get&amp;#95;number&amp;#40;match.win&amp;#41;
+    vim.api.nvim&amp;#95;command&amp;#40;win&amp;#95;number .. &amp;quot;close!&amp;quot;&amp;#41;
+  end
+end
+
+return conjure
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&quot;you&amp;#95;can&amp;#95;&lt;i&gt;technically&lt;/i&gt;&amp;#95;compile&amp;#95;javascript&amp;#95;to&amp;#95;lua...&quot;&gt;You can &lt;i&gt;technically&lt;/i&gt; compile JavaScript to lua...&lt;/h3&gt;&lt;p&gt;Using something like &lt;a href='https://github.com/PaulBernier/castl'&gt;castl&lt;/a&gt; or &lt;a href='https://github.com/wizzard0/js2lua'&gt;js2lua&lt;/a&gt; you can compile some JavaScript to Lua which could come in pretty handy. What they probably didn't intend was for me to compile &lt;a href='https://clojurescript.org/'&gt;ClojureScript&lt;/a&gt; to JavaScript and then to Lua.&lt;/p&gt;&lt;p&gt;Now if you think that concept is scary, what's more terrifying is that it actually &lt;em&gt;worked&lt;/em&gt;, sort of. I got a &quot;Hello, World!&quot; out of it but it exploded when I tried to use &lt;code&gt;core.async&lt;/code&gt; or self hosting. It mostly complained about too many local variables, apparently LuaJIT has an upper limit on that.&lt;/p&gt;&lt;p&gt;Can you imagine self hosted ClojureScript running in Neovim directly? Now stop. It's an awful idea and will lead to so much pain further down the line when something breaks subtly, here be dragons. You have been warned.&lt;/p&gt;&lt;p&gt;Worryingly, it almost worked.&lt;/p&gt;&lt;h2 id=&quot;going&amp;#95;remote&quot;&gt;Going remote&lt;/h2&gt;&lt;p&gt;Neovim supports the concept of &lt;a href='https://neovim.io/doc/user/remote_plugin.html'&gt;remote plugins&lt;/a&gt;. These are programs started by Neovim as a child process that it communicates with over msgpack RPC (through &lt;code&gt;stdio&lt;/code&gt;) allowing use of the same API that Lua has access to, albeit with interprocess communication overhead.&lt;/p&gt;&lt;p&gt;The main downside to this is that every request and response has a round trip time as the message is encoded, decoded and handled, this can get noticeable fairly quickly. The upside is that we're no longer tied to Neovim's UI thread, we can spawn our own threads in whatever language we see fit!&lt;/p&gt;&lt;p&gt;In my case, this means a Clojure process doing whatever it wants and calling back to Neovim when it needs some information or wants to change something within the editor such as displaying virtual text or appending some lines.&lt;/p&gt;&lt;h3 id=&quot;regular&amp;#95;vim?&quot;&gt;Regular Vim?&lt;/h3&gt;&lt;p&gt;I think Vim 8 introduced a similar system of remote plugins (possibly called &quot;jobs&quot;?) but I haven't looked into it too much. As far as I can tell it doesn't give you a rich API like Neovim, nor any Lua, so you end up rendering VimL strings to be sent across to the editor.&lt;/p&gt;&lt;p&gt;I can see this working to an extent but I would imagine it'll get pretty awkward as you try to batch requests or optimise your calls. I did consider supporting Vim 8 in Conjure but decided the API is so different that I'll end up spending quite a long time just keeping the API shim working correctly across both systems.&lt;/p&gt;&lt;p&gt;If your requirements are quite simple, try to support both systems. If you're building something pretty interactive that requires a lot of manipulation of buffers and windows then maybe just stick to Neovim, they've clearly designed the API with this in mind.&lt;/p&gt;&lt;h3 id=&quot;experiments&amp;#95;with&amp;#95;rust&quot;&gt;Experiments with Rust&lt;/h3&gt;&lt;p&gt;Before I tried to write the initial version of Conjure in Rust I played about with a toy plugin called &lt;a href='https://github.com/Olical/neofib'&gt;neofib&lt;/a&gt; that calculated Fibonacci numbers. Here's how it's core function looks though since we're on the topic of Fibonacci language comparisons.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;rust&quot;&gt;pub fn fib&amp;#40;n: u64&amp;#41; -&amp;gt; u64 {
+    let mut a = 0;
+    let mut b = 1;
+
+    for &amp;#95; in 0..n {
+        let t = a + b;
+        a = b;
+        b = t;
+    }
+
+    a
+}
+
+fib&amp;#40;10&amp;#41;
+// =&amp;gt; 55
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;That project demonstrates remote plugins in Rust using &lt;a href='https://github.com/daa84/neovim-lib'&gt;neovim-lib&lt;/a&gt; as a sort of framework. Once I got around to attempting Conjure in Rust I got tangled up in Rust as a language as well as managing so many different asynchronous requests as my first real Rust project.&lt;/p&gt;&lt;p&gt;Ultimately the final nail in the coffin of my Rust attempt was that the EDN parsing wasn't good enough for my needs. I needed a &lt;i&gt;real&lt;/i&gt; Clojure implementation to parse and format the results I was getting out of the &lt;a href='https://oli.me.uk/2019-03-22-clojure-socket-prepl-cookbook/'&gt;socket prepl&lt;/a&gt;. I think if you don't need to parse a lot of Clojure and you're comfortable in Rust then it's a fine choice for writing complex remote plugins.&lt;/p&gt;&lt;h3 id=&quot;dabbling&amp;#95;with&amp;#95;clojurescript&quot;&gt;Dabbling with ClojureScript&lt;/h3&gt;&lt;p&gt;It didn't last long, but I did try writing Conjure as a remote plugin running on top of node in ClojureScript.&lt;/p&gt;&lt;p&gt;I killed that attempt because I &lt;del&gt;don't think JavaScript is that great&lt;/del&gt; really struggled to manage all of the asynchronous complexity on the node platform through promises. I wanted a language that ate asynchronous problems for breakfast and could parse Clojure or ClojureScript with ease. I wanted my beloved Clojure on the JVM.&lt;/p&gt;&lt;h3 id=&quot;settling&amp;#95;down&amp;#95;with&amp;#95;clojure&quot;&gt;Settling down with Clojure&lt;/h3&gt;&lt;p&gt;The iteration you see today on &lt;a href='https://github.com/Olical/conjure'&gt;Conjure's repo&lt;/a&gt; is a Clojure JVM process that sits between your Neovim and your various Clojure project JVMs. It handles requests you initiate through Neovim, evaluates the right thing on the right prepl connection then manipulates your Neovim UI to display the results.&lt;/p&gt;&lt;p&gt;What's interesting about this particular project is that Conjure is used to build Conjure, so I edit the source in Neovim and can use the development version to develop itself. This does mean I've broken &lt;code&gt;eval&lt;/code&gt; in the past which meant I couldn't &lt;code&gt;eval&lt;/code&gt; the fixed &lt;code&gt;eval&lt;/code&gt; (luckily &quot;load the current file from disk&quot; still worked...). It's a weird feeling, growing the tool with the tool, but it's extremely &lt;i&gt;lispy&lt;/i&gt; and works so well. The feedback loop is ~0.&lt;/p&gt;&lt;h3 id=&quot;performance?&quot;&gt;Performance?&lt;/h3&gt;&lt;p&gt;Writing your plugins in a remote process is fantastic in so many ways. You get the power of whatever language and ecosystem you use to drive your favourite text editor!&lt;/p&gt;&lt;p&gt;The limit to this is that you need to encode and decode msgpack RPC payloads to get anything done, this is okay if you keep it to a minimum but won't allow you to execute something on every key press, for example. So as your functions grow in complexity and require more and more communication you'll start to see things slow down.&lt;/p&gt;&lt;p&gt;The way I worked around this is by writing most of Conjure in Clojure with atomically batched requests to Neovim for most of the work. I then fall through to calling pre-loaded Lua functions inside Neovim where the API calls would be noticeably slow.&lt;/p&gt;&lt;p&gt;That &lt;code&gt;conjure.close&amp;#95;log&lt;/code&gt; function I mentioned earlier ends up doing a lot of querying and filtering to find the Conjure log window (if it's open) in a way that doesn't require storing any state. I call it from Conjure like so.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;&amp;#40;defn &amp;#94;:dynamic call
+  &amp;quot;Simply a thin nvim specific wrapper around rpc/request.&amp;quot;
+  &amp;#91;req&amp;#93;
+  &amp;#40;let &amp;#91;{:keys &amp;#91;error result&amp;#93; :as resp} &amp;#40;rpc/request req&amp;#41;&amp;#93;
+    &amp;#40;when error
+      &amp;#40;log/error &amp;quot;Error while making nvim call&amp;quot; req &amp;quot;-&amp;gt;&amp;quot; resp&amp;#41;&amp;#41;
+    result&amp;#41;&amp;#41;
+
+&amp;#40;defn execute-lua &amp;#91;code &amp;amp; args&amp;#93;
+  {:method :nvim-execute-lua
+   :params &amp;#91;code args&amp;#93;}&amp;#41;
+
+&amp;#40;defn call-lua-function
+  &amp;quot;Execute Conjure lua functions.&amp;quot;
+  &amp;#91;fn-name &amp;amp; args&amp;#93;
+  &amp;#40;-&amp;gt;&amp;gt; &amp;#40;apply execute-lua
+              &amp;#40;str &amp;quot;return require&amp;#40;'conjure'&amp;#41;.&amp;quot; &amp;#40;util/kw-&amp;gt;snake fn-name&amp;#41; &amp;quot;&amp;#40;...&amp;#41;&amp;quot;&amp;#41;
+              args&amp;#41;
+       &amp;#40;call&amp;#41;&amp;#41;&amp;#41;
+
+&amp;#40;defn call-lua-function
+  &amp;quot;Execute Conjure lua functions.&amp;quot;
+  &amp;#91;fn-name &amp;amp; args&amp;#93;
+  &amp;#40;-&amp;gt;&amp;gt; &amp;#40;apply execute-lua
+              &amp;#40;str &amp;quot;return require&amp;#40;'conjure'&amp;#41;.&amp;quot; &amp;#40;util/kw-&amp;gt;snake fn-name&amp;#41; &amp;quot;&amp;#40;...&amp;#41;&amp;quot;&amp;#41;
+              args&amp;#41;
+       &amp;#40;call&amp;#41;&amp;#41;&amp;#41;
+
+&amp;#40;defn close-log
+  &amp;quot;Closes the log window. In other news: Bear shits in woods.&amp;quot;
+  &amp;#91;&amp;#93;
+  &amp;#40;call-lua-function :close-log log-buffer-name&amp;#41;&amp;#41;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;I essentially build up data structures that can either be called on their own or atomically alongside other requests. In this case, it's building one request that executes some Lua code which executes a function in the &lt;code&gt;conjure&lt;/code&gt; module.&lt;/p&gt;&lt;h2 id=&quot;actually&amp;#95;doing&amp;#95;this?&quot;&gt;Actually doing this?&lt;/h2&gt;&lt;p&gt;I highly recommend you dig through the source of &lt;a href='https://github.com/Olical/conjure'&gt;Conjure&lt;/a&gt; and &lt;a href='https://github.com/Olical/neofib'&gt;neofib&lt;/a&gt; to see how I implemented the underlying communication with Neovim. Once you've worked that out the rest is entirely up to you, just bear in mind my warning about performance.&lt;/p&gt;&lt;p&gt;You shouldn't put too much strain on the &lt;code&gt;stdio&lt;/code&gt; msgpack RPC layer, try to do as much as you can remotely then occasionally ask Neovim to update something. Ideally through a Lua function since that'll run the fastest and be extremely easy to write.&lt;/p&gt;&lt;p&gt;I hope this overview has been helpful!&lt;/p&gt;
+</description>
+<pubDate>
+Fri, 28 Jun 2019 00:00:00 +0100
+</pubDate>
+</item>
 <item>
 <guid>
 https://oli.me.uk/2019-03-22-clojure-socket-prepl-cookbook/
