@@ -139,6 +139,27 @@ José Luis Lafuente ([@jlesquembre][jlesquembre]) [pointed out][comma-tweet] tha
 
 This example is taken from [github.com/seancorfield/dot-clojure][dot-clojure].
 
+## Edit 2019-07-18
+
+[thecontinium][] over in issue [#49][conjure-issue-49] of Conjure got a prepl launched from Leiningen via `~/.lein/profiles.clj`.
+
+```clojure
+{:repl
+ {:repl-options
+  {:init (clojure.core.server/start-server {:accept 'clojure.core.server/io-prepl
+                                            :address "localhost"
+                                            :port 55555
+                                            :name "lein"})}}}
+```
+
+Which they could connect to Conjure with a `.conjure.edn` containing the following.
+
+```clojure
+{:conns {:lein {:port 55555}}}
+```
+
+Neat!
+
 [Conjure]: https://github.com/Olical/conjure
 [twitter]: https://twitter.com/OliverCaldwell
 [Neovim]: https://neovim.io/
@@ -150,3 +171,5 @@ This example is taken from [github.com/seancorfield/dot-clojure][dot-clojure].
 [dot-clojure]: https://github.com/seancorfield/dot-clojure/blob/c4a98f4a62b3caba92b1cd05b897eadad80e4a07/deps.edn#L55-L56
 [russian]: http://softdroid.net/povarennaya-kniga-clojure-socket-prepl
 [softdroid]: http://softdroid.net/
+[thecontinium]: https://github.com/thecontinium
+[conjure-issue-49]: https://github.com/Olical/conjure/issues/49
