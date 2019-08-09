@@ -5,6 +5,8 @@
 
 > This post has been translated into [Russian][russian] by Vlad at [Softdroid][softdroid].
 
+> I've since released [Propel][] which essentially does everything this blog post talks about but via an easy to use CLI or function. Feel free to have a read anyway!
+
 The socket prepl is a relatively new tool built into Clojure that allows you to REPL into a running application. It's essentially a much simpler "official" approach to the problem that nREPL also happens to solve. If your current nREPL tooling is working well for you then congratulations, carry on, this post won't be of much use to you.
 
 I've been developing Clojure(Script) tooling for [Neovim][] over a prepl connection for the past six months or so (involving three attempts in different languages). It's called [Conjure][], you may have seen me constantly talking about it [over on twitter][twitter]. Since writing this has involved prepling into all sorts of environments and applications I ended up learning quite a few recipes for starting your prepls.
@@ -173,3 +175,4 @@ Neat!
 [softdroid]: http://softdroid.net/
 [thecontinium]: https://github.com/thecontinium
 [conjure-issue-49]: https://github.com/Olical/conjure/issues/49
+[Propel]: https://github.com/Olical/propel

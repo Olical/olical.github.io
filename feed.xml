@@ -12,7 +12,7 @@ https://oli.me.uk/
 On languages and text editors.
 </description>
 <lastBuildDate>
-Thu, 18 Jul 2019 14:06:01 +0100
+Fri, 09 Aug 2019 16:00:04 +0100
 </lastBuildDate>
 <generator>
 clj-rss
@@ -227,7 +227,7 @@ https://oli.me.uk/2019-03-22-clojure-socket-prepl-cookbook/
 Clojure socket prepl cookbook
 </title>
 <description>
-&lt;blockquote&gt;&lt;p&gt; This post has been translated into &lt;a href='http://softdroid.net/povarennaya-kniga-clojure-socket-prepl'&gt;Russian&lt;/a&gt; by Vlad at &lt;a href='http://softdroid.net/'&gt;Softdroid&lt;/a&gt;. &lt;/p&gt;&lt;/blockquote&gt;&lt;p&gt;The socket prepl is a relatively new tool built into Clojure that allows you to REPL into a running application. It's essentially a much simpler &quot;official&quot; approach to the problem that nREPL also happens to solve. If your current nREPL tooling is working well for you then congratulations, carry on, this post won't be of much use to you.&lt;/p&gt;&lt;p&gt;I've been developing Clojure(Script) tooling for &lt;a href='https://neovim.io/'&gt;Neovim&lt;/a&gt; over a prepl connection for the past six months or so (involving three attempts in different languages). It's called &lt;a href='https://github.com/Olical/conjure'&gt;Conjure&lt;/a&gt;, you may have seen me constantly talking about it &lt;a href='https://twitter.com/OliverCaldwell'&gt;over on twitter&lt;/a&gt;. Since writing this has involved prepling into all sorts of environments and applications I ended up learning quite a few recipes for starting your prepls.&lt;/p&gt;&lt;p&gt;This post is intended to be a reference for various socket prepl techniques, I hope you find them useful!&lt;/p&gt;&lt;h2 id=&quot;from&amp;#95;the&amp;#95;cli&quot;&gt;From the CLI&lt;/h2&gt;&lt;p&gt;You can start a prepl from the Clojure CLI without your program being aware of it at all.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;clj -J-Dclojure.server.jvm=&amp;quot;{:port 5555 :accept clojure.core.server/io-prepl}&amp;quot; \
+&lt;blockquote&gt;&lt;p&gt; This post has been translated into &lt;a href='http://softdroid.net/povarennaya-kniga-clojure-socket-prepl'&gt;Russian&lt;/a&gt; by Vlad at &lt;a href='http://softdroid.net/'&gt;Softdroid&lt;/a&gt;. &lt;/p&gt;&lt;/blockquote&gt;&lt;blockquote&gt;&lt;p&gt; I've since released &lt;a href='https://github.com/Olical/propel'&gt;Propel&lt;/a&gt; which essentially does everything this blog post talks about but via an easy to use CLI or function. Feel free to have a read anyway! &lt;/p&gt;&lt;/blockquote&gt;&lt;p&gt;The socket prepl is a relatively new tool built into Clojure that allows you to REPL into a running application. It's essentially a much simpler &quot;official&quot; approach to the problem that nREPL also happens to solve. If your current nREPL tooling is working well for you then congratulations, carry on, this post won't be of much use to you.&lt;/p&gt;&lt;p&gt;I've been developing Clojure(Script) tooling for &lt;a href='https://neovim.io/'&gt;Neovim&lt;/a&gt; over a prepl connection for the past six months or so (involving three attempts in different languages). It's called &lt;a href='https://github.com/Olical/conjure'&gt;Conjure&lt;/a&gt;, you may have seen me constantly talking about it &lt;a href='https://twitter.com/OliverCaldwell'&gt;over on twitter&lt;/a&gt;. Since writing this has involved prepling into all sorts of environments and applications I ended up learning quite a few recipes for starting your prepls.&lt;/p&gt;&lt;p&gt;This post is intended to be a reference for various socket prepl techniques, I hope you find them useful!&lt;/p&gt;&lt;h2 id=&quot;from&amp;#95;the&amp;#95;cli&quot;&gt;From the CLI&lt;/h2&gt;&lt;p&gt;You can start a prepl from the Clojure CLI without your program being aware of it at all.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;clj -J-Dclojure.server.jvm=&amp;quot;{:port 5555 :accept clojure.core.server/io-prepl}&amp;quot; \
     -J-Dclojure.server.node=&amp;quot;{:port 5556 :accept cljs.server.node/prepl}&amp;quot; \
     -J-Dclojure.server.browser=&amp;quot;{:port 5557 :accept cljs.server.browser/prepl}&amp;quot;
 &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This starts up three prepls then drops into a regular REPL session. The REPL session and &lt;code&gt;jvm&lt;/code&gt; prepl share the same environment so changes in the CLI REPL affect the prepl and the other way around.&lt;/p&gt;&lt;p&gt;The &lt;code&gt;node&lt;/code&gt; and &lt;code&gt;browser&lt;/code&gt; prepls each start up their own environments upon eval. Give it a go! Start up the prepls then use &lt;a href='https://en.wikipedia.org/wiki/Netcat'&gt;netcat&lt;/a&gt; (or similar) to send them code.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;# JVM
@@ -537,37 +537,6 @@ Fri, 04 May 2018 00:00:00 +0100
 </item>
 <item>
 <guid>
-https://oli.me.uk/2018-03-29-finding-new-dependencies-with-depot/
-</guid>
-<link>
-https://oli.me.uk/2018-03-29-finding-new-dependencies-with-depot/
-</link>
-<title>
-Finding new dependencies with Depot
-</title>
-<description>
-&lt;p&gt;If you're using lein you can use lein-ancient to find newer versions of your dependencies, if you're using boot you probably have something similar. With the Clojure CLI however you have to keep track of these things manually.&lt;/p&gt;&lt;p&gt;I've created a little tool called &lt;a href='https://github.com/Olical/depot'&gt;Depot&lt;/a&gt; that aims to give you this same new version detection for your &lt;code&gt;deps.edn&lt;/code&gt; file. The README is probably enough to get you going but here's a little example anyway.&lt;/p&gt;&lt;h2 id=&quot;usage&quot;&gt;Usage&lt;/h2&gt;&lt;p&gt;You'll want to add Depot to your &lt;code&gt;deps.edn&lt;/code&gt; file, you can do this at the project level or within your user-wide file at &lt;code&gt;&amp;#126;/.clojure/deps.edn&lt;/code&gt;. I'd recommend you add it at a project level however since this'll allow anyone working on your codebase to use the same tooling, especially if it's wrapped up in a &lt;code&gt;Makefile&lt;/code&gt;.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;{:deps {org.clojure/clojure {:mvn/version &amp;quot;1.9.0&amp;quot;}
-        org.clojure/clojurescript {:mvn/version &amp;quot;1.10.238&amp;quot;}}
- :aliases {:outdated {:extra-deps {olical/depot {:mvn/version &amp;quot;1.0.1&amp;quot;}}
-                      :main-opts &amp;#91;&amp;quot;-m&amp;quot; &amp;quot;depot.outdated.main&amp;quot;&amp;#93;}}}
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;We can now execute Depot by referring to our alias:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;$ clojure -Aoutdated
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;At the time of writing this doesn't output anything since everything's up to date. If we were to depend on, say, ClojureScript 1.9.946 however:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;$ clojure -Aoutdated
-org.clojure/clojurescript: 1.9.946 =&amp;gt; 1.10.238
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;If we're also depending on Depot 1.0.0, as opposed to the currently released 1.0.1, we could even have it check it's own alias:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;$ clojure -Aoutdated --aliases outdated
-org.clojure/clojurescript: 1.9.946 =&amp;gt; 1.10.238
-olical/depot: 1.0.0 =&amp;gt; 1.0.1
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;We can also ask it to consider non-release versions such as snapshots and qualified versions such as alphas. This will pick the very latest version, regardless of stability:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;$ clojure -Aoutdated --aliases outdated --consider-types qualified,release,snapshot
-org.clojure/clojure: 1.9.0 =&amp;gt; 1.10.0-alpha4
-org.clojure/clojurescript: 1.9.946 =&amp;gt; 1.10.238
-olical/depot: 1.0.0 =&amp;gt; 1.0.1
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;I hope you find Depot useful in keeping your dependencies up to date.&lt;/p&gt;
-</description>
-<pubDate>
-Thu, 29 Mar 2018 00:00:00 +0100
-</pubDate>
-</item>
-<item>
-<guid>
 https://oli.me.uk/2018-03-29-clojure-and-clojurescript-tests-on-travis/
 </guid>
 <link>
@@ -612,6 +581,37 @@ cache:
     - .cpcache
     - cljs-test-runner-out
 &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This configuration will set up the Clojure CLI, cache all of the appropriate directories and run your test suites. Feel free to take parts of this that you find useful and ignore others.&lt;/p&gt;&lt;p&gt;You should now connect your repo to your Travis account, it will report to you whenever your tests start failing. Enjoy!&lt;/p&gt;
+</description>
+<pubDate>
+Thu, 29 Mar 2018 00:00:00 +0100
+</pubDate>
+</item>
+<item>
+<guid>
+https://oli.me.uk/2018-03-29-finding-new-dependencies-with-depot/
+</guid>
+<link>
+https://oli.me.uk/2018-03-29-finding-new-dependencies-with-depot/
+</link>
+<title>
+Finding new dependencies with Depot
+</title>
+<description>
+&lt;p&gt;If you're using lein you can use lein-ancient to find newer versions of your dependencies, if you're using boot you probably have something similar. With the Clojure CLI however you have to keep track of these things manually.&lt;/p&gt;&lt;p&gt;I've created a little tool called &lt;a href='https://github.com/Olical/depot'&gt;Depot&lt;/a&gt; that aims to give you this same new version detection for your &lt;code&gt;deps.edn&lt;/code&gt; file. The README is probably enough to get you going but here's a little example anyway.&lt;/p&gt;&lt;h2 id=&quot;usage&quot;&gt;Usage&lt;/h2&gt;&lt;p&gt;You'll want to add Depot to your &lt;code&gt;deps.edn&lt;/code&gt; file, you can do this at the project level or within your user-wide file at &lt;code&gt;&amp;#126;/.clojure/deps.edn&lt;/code&gt;. I'd recommend you add it at a project level however since this'll allow anyone working on your codebase to use the same tooling, especially if it's wrapped up in a &lt;code&gt;Makefile&lt;/code&gt;.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;{:deps {org.clojure/clojure {:mvn/version &amp;quot;1.9.0&amp;quot;}
+        org.clojure/clojurescript {:mvn/version &amp;quot;1.10.238&amp;quot;}}
+ :aliases {:outdated {:extra-deps {olical/depot {:mvn/version &amp;quot;1.0.1&amp;quot;}}
+                      :main-opts &amp;#91;&amp;quot;-m&amp;quot; &amp;quot;depot.outdated.main&amp;quot;&amp;#93;}}}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;We can now execute Depot by referring to our alias:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;$ clojure -Aoutdated
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;At the time of writing this doesn't output anything since everything's up to date. If we were to depend on, say, ClojureScript 1.9.946 however:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;$ clojure -Aoutdated
+org.clojure/clojurescript: 1.9.946 =&amp;gt; 1.10.238
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;If we're also depending on Depot 1.0.0, as opposed to the currently released 1.0.1, we could even have it check it's own alias:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;$ clojure -Aoutdated --aliases outdated
+org.clojure/clojurescript: 1.9.946 =&amp;gt; 1.10.238
+olical/depot: 1.0.0 =&amp;gt; 1.0.1
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;We can also ask it to consider non-release versions such as snapshots and qualified versions such as alphas. This will pick the very latest version, regardless of stability:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;$ clojure -Aoutdated --aliases outdated --consider-types qualified,release,snapshot
+org.clojure/clojure: 1.9.0 =&amp;gt; 1.10.0-alpha4
+org.clojure/clojurescript: 1.9.946 =&amp;gt; 1.10.238
+olical/depot: 1.0.0 =&amp;gt; 1.0.1
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;I hope you find Depot useful in keeping your dependencies up to date.&lt;/p&gt;
 </description>
 <pubDate>
 Thu, 29 Mar 2018 00:00:00 +0100
