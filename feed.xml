@@ -12,11 +12,80 @@ https://oli.me.uk/
 On languages and text editors.
 </description>
 <lastBuildDate>
-Fri, 09 Aug 2019 16:00:04 +0100
+Sat, 14 Sep 2019 15:21:22 +0100
 </lastBuildDate>
 <generator>
 clj-rss
 </generator>
+<item>
+<guid>
+https://oli.me.uk/2019-09-14-repling-into-projects-with-prepl-and-propel/
+</guid>
+<link>
+https://oli.me.uk/2019-09-14-repling-into-projects-with-prepl-and-propel/
+</link>
+<title>
+REPLing into projects with prepl and Propel
+</title>
+<description>
+&lt;p&gt;This post is intended for &lt;a href='https://clojure.org/'&gt;Clojure&lt;/a&gt; or &lt;a href='https://clojurescript.org/'&gt;ClojureScript&lt;/a&gt; developers who're interested in trying prepl based tooling over traditional &lt;a href='https://nrepl.org/'&gt;nREPL&lt;/a&gt; approaches. I hope to show you how to get started quickly with my own tool, &lt;a href='https://github.com/Olical/propel'&gt;Propel&lt;/a&gt;, then show you where to go once you outgrow it.&lt;/p&gt;&lt;p&gt;You may be interested in my other post, &lt;a href='https://oli.me.uk/2019-03-22-clojure-socket-prepl-cookbook/'&gt;Clojure socket prepl cookbook&lt;/a&gt;, which walks you through starting various socket prepls without any extra dependencies or tools.&lt;/p&gt;&lt;h2 id=&quot;interlude:&amp;#95;prepl?&quot;&gt;Interlude: prepl?&lt;/h2&gt;&lt;p&gt;If you aren't already aware, the prepl (pronounced &quot;prep-ul&quot; and written in lower case) is a new addition to Clojure and ClojureScript versions 1.10 and up. It's essentially a slight extension to the existing socket REPL which allows you to use a REPL over a socket as opposed to stdio.&lt;/p&gt;&lt;p&gt;Socket REPLs are fine for human interaction, over &lt;code&gt;netcat&lt;/code&gt; perhaps, but aren't great for connecting automated tooling to a running application. There's no way to tell what kind of output you've received: stdout, stderr, tap and evaluation results are all indistinguishable from each other.&lt;/p&gt;&lt;p&gt;The prepl is a &lt;strong&gt;p&lt;/strong&gt;rogrammable REPL, we send it code and it responds with EDN data structures that we can parse and handle with ease. Say we had a socket prepl on port &lt;code&gt;5555&lt;/code&gt;, we could perform the following interaction with it.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;$ nc localhost 5555
+&amp;#40;do &amp;#40;println &amp;quot;Hi!&amp;quot;&amp;#41; &amp;#40;+ 10 10&amp;#41;&amp;#41;
+{:tag :out, :val &amp;quot;Hi!\n&amp;quot;}
+{:tag :ret, :val &amp;quot;20&amp;quot;, :ns &amp;quot;user&amp;quot;, :ms 3, :form &amp;quot;&amp;#40;do &amp;#40;println \&amp;quot;Hi!\&amp;quot;&amp;#41; &amp;#40;+ 10 10&amp;#41;\n&amp;#41;&amp;quot;}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;The first line is the evaluation we performed, the other two are what the prepl responded with. We can clearly see stdout marked by &lt;code&gt;:tag :out&lt;/code&gt; and the return value of the evaluation by &lt;code&gt;:tag :ret&lt;/code&gt;. This is more than enough information to build tools on top of.&lt;/p&gt;&lt;h2 id=&quot;propel&quot;&gt;Propel&lt;/h2&gt;&lt;p&gt;&lt;a href='https://github.com/Olical/propel'&gt;Propel&lt;/a&gt; is a tool I've written to make starting prepls more succinct, it also helps with connecting a stdio REPL to an existing prepl which can come in very handy.&lt;/p&gt;&lt;blockquote&gt;&lt;p&gt; I do think that starting prepls will get easier in the future with built in support for simple command line flags that may look like Propel's. You'll also see them pop up natively in things like figwheel and shadow-cljs, the latter is being actively worked on (last I heard, anyway). My theory is that Propel won't be needed in the future but might be a nice stopgap and inspiration for future ideas. &lt;/p&gt;&lt;/blockquote&gt;&lt;p&gt;You can try it out for yourself by executing the following, providing you have the &lt;a href='https://clojure.org/guides/deps_and_cli'&gt;Clojure CLI&lt;/a&gt; installed.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;$ clj -Sdeps '{:deps {olical/propel {:mvn/version &amp;quot;1.3.0&amp;quot;}}}' -m propel.main
+&amp;#91;Propel&amp;#93; Started a :jvm prepl at 127.0.0.1:46677
+user=&amp;gt; &amp;#40;+ 10 20&amp;#41;
+30
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This command started a socket prepl on a free port and then started a stdio REPL that understands prepl and connected it to the socket. We can now connect whatever we want to that socket, such as &lt;a href='https://github.com/Olical/conjure'&gt;Conjure&lt;/a&gt; (my Neovim tooling for Clojure and ClojureScript) or even another REPL. This could be useful if you started your socket prepl inside a Docker container or on a remote server.&lt;/p&gt;&lt;blockquote&gt;&lt;p&gt; From here on in I'm going to assume you have a &lt;code&gt;deps.edn&lt;/code&gt; containing &lt;code&gt;{:deps {olical/propel {:mvn/version &amp;quot;...&amp;quot;}}}&lt;/code&gt; where the &lt;code&gt;...&lt;/code&gt; is replaced by the current latest version. &lt;/p&gt;&lt;/blockquote&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;$ clj -m propel.main -rp 46677
+user=&amp;gt; &amp;#40;def message &amp;quot;Hi!&amp;quot;&amp;#41;
+#'user/message
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;I've asked Propel to &lt;i&gt;not&lt;/i&gt; start a new prepl (&lt;code&gt;-r&lt;/code&gt; / &lt;code&gt;&amp;ndash;repl-only&lt;/code&gt;) and to set the port (&lt;code&gt;-p&lt;/code&gt; / &lt;code&gt;&amp;ndash;port&lt;/code&gt;) to the previously selected one.&lt;/p&gt;&lt;p&gt;Then we can access that value in our original REPL.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;user=&amp;gt; message
+&amp;quot;Hi!&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;We could connect &lt;a href='https://github.com/Olical/conjure'&gt;Conjure&lt;/a&gt; to our prepl by defining the following &lt;code&gt;.conjure.edn&lt;/code&gt;.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;edn&quot;&gt;{:conns {:my-prepl {:port 46677}}}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;The port will change on every execution which will probably get annoying, we &lt;i&gt;could&lt;/i&gt; get around this by specifying a chosen port when we start the socket prepl (&lt;code&gt;-p 5555&lt;/code&gt;, for example). Alternatively, we could have Propel write it's selected port to a file that our tooling can read from.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;$ clj -m propel.main --write-port-file # &amp;#40;or -w&amp;#41;
+&amp;#91;Propel&amp;#93; Started a :jvm prepl at 127.0.0.1:38957 &amp;#40;written to &amp;quot;.prepl-port&amp;quot;&amp;#41;
+user=&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;And then read that file in your &lt;code&gt;.conjure.edn&lt;/code&gt; or equivalent.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;edn&quot;&gt;{:conns {:my-prepl {:port #slurp-edn &amp;quot;.prepl-port&amp;quot;}}}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;You could even have this sort of configuration inside your home directory (or &lt;code&gt;&amp;#126;/.config/conjure/conjure.edn&lt;/code&gt;) to have this automatic connection across all of your projects.&lt;/p&gt;&lt;h2 id=&quot;clojurescript&quot;&gt;ClojureScript&lt;/h2&gt;&lt;p&gt;A lot of the ClojureScript use cases are extremely simple, we just need to change the environment from the default &lt;code&gt;:jvm&lt;/code&gt;.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;$ clj -m propel.main --env node # &amp;#40;or -e&amp;#41;
+cljs.user=&amp;gt; &amp;#40;+ 10 20&amp;#41;
+30
+&lt;/code&gt;&lt;/pre&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;$ clj -m propel.main -e browser
+cljs.user=&amp;gt; &amp;#40;js/alert &amp;quot;Hello!&amp;quot;&amp;#41;
+# You should see an alert dialog in a new tab in your browser.
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Figwheel is supported through the &lt;code&gt;:lein-figwheel&lt;/code&gt; and &lt;code&gt;:figwheel&lt;/code&gt; (the newer &lt;a href='https://github.com/bhauman/figwheel-main'&gt;figwheel-main&lt;/a&gt;) environments. With &lt;code&gt;:lein-figwheel&lt;/code&gt; it'll attempt to read your configuration from your &lt;code&gt;project.clj&lt;/code&gt;, it's like executing &lt;code&gt;lein figwheel&lt;/code&gt; but with a socket prepl automatically attached.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;# https://github.com/bhauman/flappy-bird-demo
+
+# Lein
+$ lein run -m propel.main -- -e lein-figwheel -w
+
+# Clojure CLI
+$ clj -m propel.main -e lein-figwheel -w
+
+Figwheel: Starting server at http://0.0.0.0:3449
+Figwheel: Watching build - flappy-bird-demo
+Compiling build :flappy-bird-demo to &amp;quot;resources/public/js/flappy&amp;#95;bird&amp;#95;demo.js&amp;quot; from &amp;#91;&amp;quot;src&amp;quot;&amp;#93;...
+Successfully compiled build :flappy-bird-demo to &amp;quot;resources/public/js/flappy&amp;#95;bird&amp;#95;demo.js&amp;quot; in 0.578 seconds.
+Figwheel: Starting CSS Watcher for paths  &amp;#91;&amp;quot;resources/public/css&amp;quot;&amp;#93;
+&amp;#91;Propel&amp;#93; Started a :lein-figwheel prepl at 127.0.0.1:42315 &amp;#40;written to &amp;quot;.prepl-port&amp;quot;&amp;#41;
+cljs.user=&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;With &lt;code&gt;:figwheel&lt;/code&gt; (&lt;a href='https://github.com/bhauman/figwheel-main'&gt;figwheel-main&lt;/a&gt;), you need to specify a &lt;code&gt;&amp;ndash;figwheel-build&lt;/code&gt; which tells figwheel which &lt;code&gt;&amp;#42;.cljs.edn&lt;/code&gt; file should be loaded. It defaults to &lt;code&gt;propel&lt;/code&gt; so you could put your configuration in &lt;code&gt;propel.cljs.edn&lt;/code&gt; and then execute the following.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;sh&quot;&gt;# https://github.com/bhauman/flappy-bird-demo-new
+$ clj -m propel.main -e figwheel --figwheel-build flappy -w 
+2019-09-14 15:07:03.203:INFO::main: Logging initialized @9786ms to org.eclipse.jetty.util.log.StdErrLog
+&amp;#91;Figwheel&amp;#93; Validating figwheel-main.edn
+&amp;#91;Figwheel&amp;#93; figwheel-main.edn is valid \&amp;#40;ツ&amp;#41;/
+&amp;#91;Figwheel&amp;#93; Compiling build flappy to &amp;quot;target/public/cljs-out/flappy-main.js&amp;quot;
+&amp;#91;Figwheel&amp;#93; Successfully compiled build flappy to &amp;quot;target/public/cljs-out/flappy-main.js&amp;quot; in 1.022 seconds.
+&amp;#91;Figwheel&amp;#93; Watching paths: &amp;#40;&amp;quot;src&amp;quot;&amp;#41; to compile build - flappy
+&amp;#91;Figwheel&amp;#93; Starting Server at http://localhost:9500
+Opening URL http://localhost:9500
+&amp;#91;Propel&amp;#93; Started a :figwheel prepl at 127.0.0.1:46075 &amp;#40;written to &amp;quot;.prepl-port&amp;quot;&amp;#41;
+Open URL http://localhost:9500
+cljs.user=&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&quot;outgrowing&amp;#95;propel&quot;&gt;Outgrowing Propel&lt;/h2&gt;&lt;p&gt;Propel isn't designed to be a comprehensive solution, it's a way to get going quickly but larger projects will most certainly find it limiting eventually. What happens when you want an nREPL + prepl + two figwheel instances all running inside the same JVM? You're going to need to have your own namespaces to start these things up yourself.&lt;/p&gt;&lt;p&gt;You can do most of this by calling the functions in the &lt;code&gt;propel.core&lt;/code&gt; namespace, but you may need to do some more manual work to hook up a particularly hairy figwheel configuration to a prepl. I'd highly recommend you have a read of &lt;a href='https://oli.me.uk/2019-03-22-clojure-socket-prepl-cookbook/'&gt;Clojure socket prepl cookbook&lt;/a&gt; to work that sort of thing out.&lt;/p&gt;&lt;p&gt;You can also learn a lot by reading Propel's source code, dive in and have a look at how I did things!&lt;/p&gt;&lt;p&gt;My point being: Propel will help you get going but you're going to need to have a read of some code to grow into multiple figwheel builds and prepls running alongside each other in the same JVM. &lt;i&gt;Hopefully&lt;/i&gt; this won't be a problem in the future and you'll just be able to provide a single argument to any ClojureScript environment of your choosing.&lt;/p&gt;
+</description>
+<pubDate>
+Sat, 14 Sep 2019 00:00:00 +0100
+</pubDate>
+</item>
 <item>
 <guid>
 https://oli.me.uk/2019-07-16-exploring-repl-tooling-with-prepl/
@@ -537,6 +606,37 @@ Fri, 04 May 2018 00:00:00 +0100
 </item>
 <item>
 <guid>
+https://oli.me.uk/2018-03-29-finding-new-dependencies-with-depot/
+</guid>
+<link>
+https://oli.me.uk/2018-03-29-finding-new-dependencies-with-depot/
+</link>
+<title>
+Finding new dependencies with Depot
+</title>
+<description>
+&lt;p&gt;If you're using lein you can use lein-ancient to find newer versions of your dependencies, if you're using boot you probably have something similar. With the Clojure CLI however you have to keep track of these things manually.&lt;/p&gt;&lt;p&gt;I've created a little tool called &lt;a href='https://github.com/Olical/depot'&gt;Depot&lt;/a&gt; that aims to give you this same new version detection for your &lt;code&gt;deps.edn&lt;/code&gt; file. The README is probably enough to get you going but here's a little example anyway.&lt;/p&gt;&lt;h2 id=&quot;usage&quot;&gt;Usage&lt;/h2&gt;&lt;p&gt;You'll want to add Depot to your &lt;code&gt;deps.edn&lt;/code&gt; file, you can do this at the project level or within your user-wide file at &lt;code&gt;&amp;#126;/.clojure/deps.edn&lt;/code&gt;. I'd recommend you add it at a project level however since this'll allow anyone working on your codebase to use the same tooling, especially if it's wrapped up in a &lt;code&gt;Makefile&lt;/code&gt;.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;{:deps {org.clojure/clojure {:mvn/version &amp;quot;1.9.0&amp;quot;}
+        org.clojure/clojurescript {:mvn/version &amp;quot;1.10.238&amp;quot;}}
+ :aliases {:outdated {:extra-deps {olical/depot {:mvn/version &amp;quot;1.0.1&amp;quot;}}
+                      :main-opts &amp;#91;&amp;quot;-m&amp;quot; &amp;quot;depot.outdated.main&amp;quot;&amp;#93;}}}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;We can now execute Depot by referring to our alias:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;$ clojure -Aoutdated
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;At the time of writing this doesn't output anything since everything's up to date. If we were to depend on, say, ClojureScript 1.9.946 however:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;$ clojure -Aoutdated
+org.clojure/clojurescript: 1.9.946 =&amp;gt; 1.10.238
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;If we're also depending on Depot 1.0.0, as opposed to the currently released 1.0.1, we could even have it check it's own alias:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;$ clojure -Aoutdated --aliases outdated
+org.clojure/clojurescript: 1.9.946 =&amp;gt; 1.10.238
+olical/depot: 1.0.0 =&amp;gt; 1.0.1
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;We can also ask it to consider non-release versions such as snapshots and qualified versions such as alphas. This will pick the very latest version, regardless of stability:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;$ clojure -Aoutdated --aliases outdated --consider-types qualified,release,snapshot
+org.clojure/clojure: 1.9.0 =&amp;gt; 1.10.0-alpha4
+org.clojure/clojurescript: 1.9.946 =&amp;gt; 1.10.238
+olical/depot: 1.0.0 =&amp;gt; 1.0.1
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;I hope you find Depot useful in keeping your dependencies up to date.&lt;/p&gt;
+</description>
+<pubDate>
+Thu, 29 Mar 2018 00:00:00 +0100
+</pubDate>
+</item>
+<item>
+<guid>
 https://oli.me.uk/2018-03-29-clojure-and-clojurescript-tests-on-travis/
 </guid>
 <link>
@@ -581,37 +681,6 @@ cache:
     - .cpcache
     - cljs-test-runner-out
 &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This configuration will set up the Clojure CLI, cache all of the appropriate directories and run your test suites. Feel free to take parts of this that you find useful and ignore others.&lt;/p&gt;&lt;p&gt;You should now connect your repo to your Travis account, it will report to you whenever your tests start failing. Enjoy!&lt;/p&gt;
-</description>
-<pubDate>
-Thu, 29 Mar 2018 00:00:00 +0100
-</pubDate>
-</item>
-<item>
-<guid>
-https://oli.me.uk/2018-03-29-finding-new-dependencies-with-depot/
-</guid>
-<link>
-https://oli.me.uk/2018-03-29-finding-new-dependencies-with-depot/
-</link>
-<title>
-Finding new dependencies with Depot
-</title>
-<description>
-&lt;p&gt;If you're using lein you can use lein-ancient to find newer versions of your dependencies, if you're using boot you probably have something similar. With the Clojure CLI however you have to keep track of these things manually.&lt;/p&gt;&lt;p&gt;I've created a little tool called &lt;a href='https://github.com/Olical/depot'&gt;Depot&lt;/a&gt; that aims to give you this same new version detection for your &lt;code&gt;deps.edn&lt;/code&gt; file. The README is probably enough to get you going but here's a little example anyway.&lt;/p&gt;&lt;h2 id=&quot;usage&quot;&gt;Usage&lt;/h2&gt;&lt;p&gt;You'll want to add Depot to your &lt;code&gt;deps.edn&lt;/code&gt; file, you can do this at the project level or within your user-wide file at &lt;code&gt;&amp;#126;/.clojure/deps.edn&lt;/code&gt;. I'd recommend you add it at a project level however since this'll allow anyone working on your codebase to use the same tooling, especially if it's wrapped up in a &lt;code&gt;Makefile&lt;/code&gt;.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;{:deps {org.clojure/clojure {:mvn/version &amp;quot;1.9.0&amp;quot;}
-        org.clojure/clojurescript {:mvn/version &amp;quot;1.10.238&amp;quot;}}
- :aliases {:outdated {:extra-deps {olical/depot {:mvn/version &amp;quot;1.0.1&amp;quot;}}
-                      :main-opts &amp;#91;&amp;quot;-m&amp;quot; &amp;quot;depot.outdated.main&amp;quot;&amp;#93;}}}
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;We can now execute Depot by referring to our alias:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;$ clojure -Aoutdated
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;At the time of writing this doesn't output anything since everything's up to date. If we were to depend on, say, ClojureScript 1.9.946 however:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;$ clojure -Aoutdated
-org.clojure/clojurescript: 1.9.946 =&amp;gt; 1.10.238
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;If we're also depending on Depot 1.0.0, as opposed to the currently released 1.0.1, we could even have it check it's own alias:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;$ clojure -Aoutdated --aliases outdated
-org.clojure/clojurescript: 1.9.946 =&amp;gt; 1.10.238
-olical/depot: 1.0.0 =&amp;gt; 1.0.1
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;We can also ask it to consider non-release versions such as snapshots and qualified versions such as alphas. This will pick the very latest version, regardless of stability:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;$ clojure -Aoutdated --aliases outdated --consider-types qualified,release,snapshot
-org.clojure/clojure: 1.9.0 =&amp;gt; 1.10.0-alpha4
-org.clojure/clojurescript: 1.9.946 =&amp;gt; 1.10.238
-olical/depot: 1.0.0 =&amp;gt; 1.0.1
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;I hope you find Depot useful in keeping your dependencies up to date.&lt;/p&gt;
 </description>
 <pubDate>
 Thu, 29 Mar 2018 00:00:00 +0100
