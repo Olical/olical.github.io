@@ -1,3 +1,5 @@
+> Warning! This project has been replaced by my new [blog](https://github.com/Olical/blog) project, it's a custom static site rendering from AsciiDoc. It completely supersedes this repository and contains all of the posts as well as some new ones, check it out! (same domain though)
+
 # Oliver Caldwell's blog
 
 This is the source for my blog, [oli.me.uk][blog]. It's a static site built by [Cryogen][] and hosted on GitHub pages.
